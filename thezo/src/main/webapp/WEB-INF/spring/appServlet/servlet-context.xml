@@ -25,4 +25,19 @@
 	
 	
 	
+	<!-- @author Jaewon.s -->
+	<!-- Handeler Intercepter를 등록하고싶은자 여기로 오라~~~  -->
+	<!-- mapping path에는 url 메핑값을 ! 넣어주시면됩니다. 
+	beans:bean의 id는 되도록! Interceptor파일명과 일치시켜주시고 class속성에는 class fullname을 써주시면 됩니다! -->
+	
+	<!-- 
+	<interceptors>
+		<interceptor>
+			<mapping path="/"/>
+			<mapping path="/"/>
+			<beans:bean id="" class=""/>
+		</interceptor>
+	</interceptors>
+	 -->
+	
 </beans:beans>

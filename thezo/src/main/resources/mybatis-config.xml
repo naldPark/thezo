@@ -3,15 +3,25 @@
 <configuration>
 
 	<settings>
-		<setting name="jdbcTypeForNull" value="NULL" />
+		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 	
 	<typeAliases>
 		<typeAlias type="com.kh.thezo.member.model.vo.Member" alias="Member"/>
+		<typeAlias type="com.kh.thezo.chatting.model.vo.Chatting" alias="Chatting"/>
+		<typeAlias type="com.kh.thezo.message.model.vo.Message" alias="Message"/>
+		<typeAlias type="com.kh.thezo.notification.model.vo.Notification" alias="Notification"/>
+		<typeAlias type="com.kh.thezo.statistic.model.vo.Statistic" alias="Statistic"/>
+		
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/member-mapper.xml"/>
+		<mapper resource="/mappers/chatting-mapper.xml"/>
+		<mapper resource="/mappers/common-mapper.xml"/>
+		<mapper resource="/mappers/message-mapper.xml"/>
+		<mapper resource="/mappers/notification-mapper.xml"/>
+		<mapper resource="/mappers/statistic-mapper.xml"/>		
 	</mappers>
 
 </configuration>

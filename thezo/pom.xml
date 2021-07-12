@@ -14,6 +14,14 @@
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	
+	<!-- 기본저장소에서 다운 받지 못하는 경우 직접 다운받고자 하는 사설 저장소를 등록 -->
+	<repositories>
+		<repository>
+			<id>Datanucleus</id>
+			<url>http://www.datanucleus.org/downloads/maven2/</url>
+		</repository>
+	</repositories>
+	
 	<!-- properties를 이용해서 변수를 선언하여 다른 소스에 참조하도록 함 -->
 	<properties>
 		<java-version>1.8</java-version>
@@ -22,13 +30,6 @@
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 	</properties>
 	
-	<!-- 기본저장소에서 다운 받지 못하는 경우 직접 다운받고자 하는 사설 저장소를 등록 -->
-	<repositories>
-		<repository>
-			<id>Datanucleus</id>
-			<url>http://www.datanucleus.org/downloads/maven2/</url>
-		</repository>
-	</repositories>
 	
 	<!-- 다운로드 받고자 하는 라이브러리들 -->
 	<dependencies>

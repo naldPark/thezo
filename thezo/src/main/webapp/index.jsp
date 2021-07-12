@@ -5,9 +5,22 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="author" content="Jaewon.s">
 <title>Insert title here</title>
 </head>
 <body>
-	로그인 페이지
+	<%-- 좀더 빠르게 찾기 위해서!!! scope영역까지 지정!   --%>
+	<%-- JSTL 구문은 !!!! 무조건 ! 스크립틀릿 주석문으로 처리할것 !!! 아니면 !!! 백빵 오류나요!!!  --%>
+	<c:choose>
+		<c:when test="${empty sessionScope.loginUser}">
+			<jsp:forward page="WEB-INF/views/common/login.jsp"/>				
+		</c:when>
+		<c:when test="${sessionScope.loginUser.userId eq 'admin'}">
+			<jsp:forward page="WEB-INF/views/common/adminMain.jsp"/>						
+		</c:when>
+		<c:otherwise>
+			<jsp:forward page="WEB-INF/views/main.jsp"/>
+		</c:otherwise>
+	</c:choose>
 </body>
 </html>

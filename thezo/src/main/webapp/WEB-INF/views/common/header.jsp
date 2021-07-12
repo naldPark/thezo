@@ -12,6 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
 <style>
     header{width: 100%; background-color: rgb(20,70,104);} 
@@ -119,7 +120,7 @@
                     </li>
 
                     <%-- 메일함 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
-                    <li><a href="">전자결제</a></li>
+                    <li><a href="">전자결재</a></li>
                     <li><a href="">일정관리</a></li>
 
                     <c:if test="${loginUser.userId eq 'admin' }">

@@ -132,7 +132,7 @@
                     <li id="user-basic-info"><a href="">${loginUser.userId}</a>님 반가워요 &nbsp;
                         <ul>
                             <li><a href="">내 정보 수정</a></li>
-                            <li><a href="">근태관리</a></li>
+                            <li><a href="attendance.ma">근태관리</a></li>
                             <li><a href="logout.me">로그아웃</a></li>
                         </ul>
                     </li>
@@ -200,8 +200,8 @@
                 <li><a href="">환경설정</a></li>
             </ul>
         </div>
-    </c:if>
     </div>               
+    </c:if>
 
     <!-- 스크립트 영역 !  -->
     <script>

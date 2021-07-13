@@ -78,6 +78,14 @@
 
 </head>
 <body>
+	<c:if test="${!empty alertMsg }">
+		<script>	
+			alert("${alertMsg}");
+		</script>
+	 	<!-- 뭔가가 담겨있는 경우 날려버리기~ -->	
+		<c:remove var="alertMsg" scope="session"/>	
+	</c:if>
+
     <header>
         <div id="header-outer"> <%-- header-outer 영역시작 --%>
             <div class="logo-area">

@@ -49,7 +49,7 @@
     #admin-nav>ul>li>ul{ width: 130px; padding: 5px 0px; line-height: 22px; font-size: 14px; list-style-type:none; background: rgb(224,224,224); z-index : 5; position: absolute; border-bottom-left-radius: 5px ; border-bottom-right-radius: 5px ;
         display: none;
     }
-    #admin-nav>ul>li>ul>li>a{ color: rgb(80, 80, 80); font-size: 15px; font-weight: bold; text-decoration: none; width: 100%; display: block; padding: 2px 10px;}
+    #admin-nav>ul>li>ul>li>a{ color: rgb(80, 80, 80); font-size: 14px; font-weight: bold; text-decoration: none; width: 100%; display: block; padding: 2px 10px;}
     #admin-nav>ul>li>ul>li>a:hover{ color: tomato;} 
     /* 3_1. 세부메뉴들 (요 두개가 핵심임)  */
     #admin-nav>ul>li>a:hover+ul{display: block;}
@@ -85,7 +85,7 @@
 	 	<!-- 뭔가가 담겨있는 경우 날려버리기~ -->	
 		<c:remove var="alertMsg" scope="session"/>	
 	</c:if>
-
+	
     <header>
         <div id="header-outer"> <%-- header-outer 영역시작 --%>
             <div class="logo-area">
@@ -196,10 +196,10 @@
                 <li><a href="">일정관리</a></li>
 
                 <%-- 재원(내꺼) urlMapping값 넣으면됨~ --%> 
-                <li><a href="">메신저</a>
+                <li><a href="list.adms">메신저</a>
                     <ul>
-                        <li><a href="">쪽지 신고처리</a></li>
-                        <li><a href="">알림 등록 및 기록</a></li>
+                        <li><a href="list.adms">쪽지 신고처리</a></li>
+                        <li><a href="list.adnf">알림 등록 및 기록</a></li>
                     </ul>
                 </li>
 

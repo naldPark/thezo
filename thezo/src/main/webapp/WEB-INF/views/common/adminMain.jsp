@@ -76,6 +76,11 @@
 <body>
 	<jsp:include page="header.jsp"/>
 	
+	<script>
+	    document.getElementById("admin-header").style.display ="block"; 
+        document.getElementById("admin-mode").style.color = "red";
+	</script>
+	
 	<section>
 		<div class="outer" style="width:1170px; margin-top:10px">
 			<%-- -------------------------------------------------------  왼쪽 사이트관리대장 영역 시작 --------------------------------------------------------- --%>

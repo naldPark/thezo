@@ -73,7 +73,7 @@
 
     /* ★ 모든 팀원의 각각페이지 영역 쓰는 공통 영역 ★*/
     section{width: 100%;}
-    .outer{width: 1200px; margin: auto; border: 1px solid red;}
+    .outer{width: 1200px; margin: auto; border: 1px solid red; font-family:'Noto Sans KR', sans-serif;}
 </style>
 
 </head>

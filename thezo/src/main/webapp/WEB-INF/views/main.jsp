@@ -8,7 +8,7 @@
 <title>The Zo</title>
 
 <style>
-    .outer{margin:auto; height: 770px; font-family:'Noto Sans KR', sans-serif; }
+    .outer{margin:auto; height: 770px;}
     .wrap{width: 100%; height:350px; margin-top:20px; border: 1px solid lightgray; font-size:11.5pt;}
     .outer-wrap{float: left; width:28%; margin: 15px;}
     .boxTitle{width:100%; height:40px; background-color: rgba(20, 70, 104, 0.123); color: black; padding-top:7px; padding-left:20px;text-align: left;}

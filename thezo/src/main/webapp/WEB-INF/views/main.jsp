@@ -24,8 +24,6 @@
         width:20%; 
     }
     .board > tbody  > tr {cursor: pointer;}
-    /* *{border: 1px solid red} */
-
 
 </style>
 </head>

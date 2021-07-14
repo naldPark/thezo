@@ -11,8 +11,18 @@ public class ApprovalController {
 
 	@RequestMapping("main.appr")
 	public String selectApprolvalMain() {
-
 		return "approval/approvalMain";
 	}
+	
+	@RequestMapping("new.appr")
+	public String newApprolval() {
+		return "approval/approvalNew";
+	}
+	
+	@RequestMapping("enrollForm.appr")
+	public String enrollApprolval() {
+		return "approval/approvalEnrollForm";
+	}
+	
 	
 }

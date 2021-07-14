@@ -6,25 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>The Zo</title>
-
-<style>
-    .outer{margin:auto; height: 770px;}
-    header{
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1; 
-    } 
-    .outer{padding-top: 70px;}
-    .recentDoc{color:rgb(20,70,104); font-size:15pt; font-weight: bold;}
-    .docMenu{border-radius: 50%; padding:10px; background-color: rgb(20,70,104); color:white}
-    .apprLine{ padding:5px; background-color: rgb(20,70,104); color:white}
-    .pagination > .active>a{background:rgb(20,70,104)!important; color: white!important;}
-    .pagination>li>a{color: rgb(20,70,104)!important;}
-    .apprList:hover{opacity:0.7; cursor: pointer;}
-
-</style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
@@ -33,7 +14,7 @@
         <div class="outer" align="center">    
             <jsp:include page="apprSidebar.jsp"/>
             <br> 
-            <div style="padding:0px 20px 0px 220px">
+            <div class="sideOuter">
                 <!-- 안읽은 문서 건수 안내 시작 -->
                 <div class="card-deck">
                     <div class="card bg-light">

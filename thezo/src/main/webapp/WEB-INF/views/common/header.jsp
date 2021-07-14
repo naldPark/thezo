@@ -118,7 +118,7 @@
                     </li>
 
                     <%-- 메일함 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
-                    <li><a href="">메일함</a>
+                    <li><a href="main.mail">메일함</a>
                         <ul>
                             <li><a href="">받은메일함</a></li>
                             <li><a href="">보낸메일함</a></li>
@@ -128,7 +128,7 @@
                     </li>
 
                     <%-- 메일함 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
-                    <li><a href="">전자결재</a></li>
+                    <li><a href="main.appr">전자결재</a></li>
                     <li><a href="">일정관리</a></li>
 
                     <c:if test="${loginUser.userId eq 'admin' }">

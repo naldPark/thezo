@@ -11,9 +11,11 @@ public class MessageController {
 	@RequestMapping("list.adms")
 	public ModelAndView selectBoard(ModelAndView mv) {
 
+		mv.addObject("subPage", "1");
 		mv.setViewName("message/adminReportedMessageListView");
 
 		return mv;
 	}
+
 
 }

@@ -169,9 +169,9 @@
 
 					<form action="" method="post">
 						<p>마지막 수정 개발자</p>
-						<input type="text" name="" id="" placeholder="성함을 입력해주세요">
+						<input type="text" name="" id="" placeholder="성함을 입력해주세요" required>
 						<p>간단한 수정내역</p>
-						<textarea id="dev-context" name="" style="resize: none;" placeholder="수정내역을                작성해주세요"></textarea>				   
+						<textarea id="dev-context" name="" style="resize: none;" placeholder="수정내역을                작성해주세요" required></textarea>				   
 					</div>
 					<!-- Modal footer -->
 					<div class="modal-footer" style="width:100%; height: 49px; padding: 0px; margin: 0px;">

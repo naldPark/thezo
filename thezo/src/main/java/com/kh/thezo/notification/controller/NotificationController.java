@@ -32,6 +32,7 @@ public class NotificationController {
 	@RequestMapping("list.adnf")
 	public ModelAndView selectBoard(ModelAndView mv) {
 
+		mv.addObject("subPage", "2");
 		mv.setViewName("notification/adminNotificationListView");
 
 		return mv;

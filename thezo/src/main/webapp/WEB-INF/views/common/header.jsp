@@ -175,41 +175,41 @@
 
     <!-- Admin header영역  개발자 도구에서 볼수없게 jstl 처리함 -->
     <c:if test="${loginUser.userId eq 'admin' }">
-    <div id="admin-header">
-        <div id="admin-nav">
-            <span>관리자메뉴</span>
-            <ul>
-                <%-- 재원(내꺼) urlMapping값 넣으면됨~ --%> 
-                <li><a href="">메인</a></li>
-
-                <%-- 해당영역 맡으신분들 ~ urlMapping값 넣어주세요~ --%> 
-                <li><a href="">게시판관리</a></li>
-                <li><a href="">인사근태</a></li>
-                <li><a href="">회원정보</a>
-                    <ul>
-                        <li><a href="">회원 정보 조회?</a></li>
-                        <li><a href="">사원등록</a></li>
-                    </ul>
-                </li>
-                <li><a href="">전자결재관리</a></li>
-                <li><a href="">전자메일</a></li>
-                <li><a href="">일정관리</a></li>
-
-                <%-- 재원(내꺼) urlMapping값 넣으면됨~ --%> 
-                <li><a href="list.adms">메신저</a>
-                    <ul>
-                        <li><a href="list.adms">쪽지 신고처리</a></li>
-                        <li><a href="list.adnf">알림 등록 및 기록</a></li>
-                    </ul>
-                </li>
-
-                <%-- 해당영역 맡으신분들 ~ urlMapping값 넣어주세요~ --%> 
-                <li><a href="">조직도</a></li>
-                <li><a href="">환경설정</a></li>
-            </ul>
-        </div>
+	    <div id="admin-header">
+	        <div id="admin-nav">
+	            <span>관리자메뉴</span>
+	            <ul>
+	                <%-- 재원(내꺼) urlMapping값 넣으면됨~ --%> 
+	                <li><a href="<%= request.getContextPath() %>">메인</a></li>
+	
+	                <%-- 해당영역 맡으신분들 ~ urlMapping값 넣어주세요~ --%> 
+	                <li><a href="">게시판관리</a></li>
+	                <li><a href="">인사근태</a></li>
+	                <li><a href="">회원정보</a>
+	                    <ul>
+	                        <li><a href="">회원 정보 조회?</a></li>
+	                        <li><a href="">사원등록</a></li>
+	                    </ul>
+	                </li>
+	                <li><a href="">전자결재관리</a></li>
+	                <li><a href="">전자메일</a></li>
+	                <li><a href="">일정관리</a></li>
+	
+	                <%-- 재원(내꺼) urlMapping값 넣으면됨~ --%> 
+	                <li><a href="list.adms">메신저</a>
+	                    <ul>
+	                        <li><a href="list.adms">쪽지 신고처리</a></li>
+	                        <li><a href="list.adnf">알림 등록 및 기록</a></li>
+	                    </ul>
+	                </li>
+	
+	                <%-- 해당영역 맡으신분들 ~ urlMapping값 넣어주세요~ --%> 
+	                <li><a href="">조직도</a></li>
+	                <li><a href="">환경설정</a></li>
+	            </ul>
+	        </div>
+	    </div>               
     </c:if>
-    </div>               
 
     <!-- 스크립트 영역 !  -->
     <script>

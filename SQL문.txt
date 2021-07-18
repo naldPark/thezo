@@ -1,0 +1,20 @@
+-- 관리자계정에서 아래와 같이 계정 및 계정권한 부여해주세요
+--CREATE USER thezo IDENTIFIED BY thezo;
+--GRANT CONNECT, RESOURCE TO thezo;
+--GRANT CREATE VIEW TO thezo;
+--이거 다 하고 나서 각 테이블 오른쪽 키 - 데이터임포트로 엑셀파일 불러오기
+
+
+--샘플입니다
+DROP TABLE MEMBER;
+DROP SEQUENCE SEQ_XXX;
+
+CREATE TABLE MEMBER (
+	
+);
+
+   CREATE SEQUENCE  "thezo"."SEQ_XXX"  MINVALUE 1 MAXVALUE 999999999999999999 INCREMENT BY 1 START WITH 5000 CACHE 20 NOORDER  NOCYCLE ;
+
+--샘플끝입니다
+
+

@@ -1,12 +1,13 @@
 
 
 /*공통*/
-    div{
+    div>*{
       color:rgb(99, 97, 97);
       box-sizing: border-box;
     }
 
-    .sideOuter{padding:70px 20px 0px 170px;};
+    .sideOuter{padding:70px 20px 0px 170px;}
+    .mailOuter{padding:70px 20px 0px 220px;}
     a{ text-decoration:none !important; cursor: pointer; }
     a:hover{ text-decoration:none !important; cursor: pointer; color : white;}
     header{
@@ -17,7 +18,7 @@
         z-index: 1; 
     } 
     .w3-sidebar{        
-      z-index: 0;  }
+      z-index: 0; text-align: center; padding: 10px;}
     .pagination > .active>a{background:rgb(20,70,104)!important; color: white!important;}
     .pagination>li>a{color: rgb(20,70,104)!important;}
 
@@ -26,8 +27,10 @@
     .pjtN{color:rgb(20,70,104)!important;}
     .btn-primary{background-color: rgb(20,70,104)!important; border:1px solid rgb(20,70,104)!important;}
     .text-primary{color: rgb(20,70,104)!important}
-
-  /*메인페이지꺼임*/
+    .bigCheckbox{ width:20px; height:20px;vertical-align: middle;}
+    .table-primary, .table-primary td, .table-primary th{background-color: rgb(20,70,104)!important; color: white!important; border-color:rgb(20,70,104)!important;}
+    .table-hover{cursor: pointer;}
+    /*메인페이지꺼임*/
     .board > tbody  > tr > td:nth-child(1) {
         width:60%; padding-left:20px;
         text-align: left;

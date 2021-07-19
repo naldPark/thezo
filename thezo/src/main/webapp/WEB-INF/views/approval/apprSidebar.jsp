@@ -9,13 +9,14 @@
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="resources/css/apprAmail.css">
 	<style>
+    /* *{border:1px solid red} */
 	</style>
 </head>
 <body>
 
-<nav class="w3-sidebar w3-light-grey" style=" width:200px;" id="mySidebar"><br>
+<nav class="w3-sidebar w3-light-grey" style=" width:150px;"><br>
   <div class="w3-bar-block">
-    <a href="../main/mainPage.jsp" class="w3-bar-item w3-button w3-padding"><i class="fas fa-folder"></i> &nbsp; 결제 HOME</a><br>
+    <a href="" class="w3-bar-item w3-button w3-padding"><i class="fas fa-folder"></i> &nbsp; 결제 HOME</a><br>
     <a href="new.appr" class="w3-bar-item w3-button w3-padding"><i class="far fa-minus-square"></i>  신규작성</a>
     <a class="w3-bar-item w3-button w3-padding" onclick="extend('sendDocu')"><i class="far fa-caret-square-down"></i>  결재상신함</a>
     <div id="sendDocu" class="w3-bar-block w3-hide w3-white w3-show">

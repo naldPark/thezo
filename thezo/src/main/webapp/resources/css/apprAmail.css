@@ -2,12 +2,11 @@
 
 /*공통*/
     div{
-      
       color:rgb(99, 97, 97);
       box-sizing: border-box;
     }
 
-    .sideOuter{padding:70px 20px 0px 220px};
+    .sideOuter{padding:70px 20px 0px 170px;};
     a{ text-decoration:none !important; cursor: pointer; }
     a:hover{ text-decoration:none !important; cursor: pointer; color : white;}
     header{
@@ -18,14 +17,14 @@
         z-index: 1; 
     } 
     .w3-sidebar{        
-      z-index: 0; }
+      z-index: 0;  }
     .pagination > .active>a{background:rgb(20,70,104)!important; color: white!important;}
     .pagination>li>a{color: rgb(20,70,104)!important;}
 
     .pjtWN{background-color: rgb(20,70,104)!important; color: white!important;}
     .pjtNY{background-color: rgb(20,70,104)!important; color: rgb(241,196,15)!important}
     .pjtN{color:rgb(20,70,104)!important;}
-    .btn-primary{background-color: rgb(20,70,104)!important}
+    .btn-primary{background-color: rgb(20,70,104)!important; border:1px solid rgb(20,70,104)!important;}
     .text-primary{color: rgb(20,70,104)!important}
 
   /*메인페이지꺼임*/

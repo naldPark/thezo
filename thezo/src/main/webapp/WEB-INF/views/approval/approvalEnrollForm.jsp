@@ -26,7 +26,7 @@
               ],
               lang: 'ko-KR',
               placeholder: '내용을 입력해주세요',
-              height: 500,
+              height: 700,
               disabledResizeEditor:true,            
               fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체'],
               fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],	 
@@ -85,7 +85,7 @@
     .active {
         display: block;
     }
-
+/* *{border:1px solid red} */
     #contactList table tbody tr td img{width:30px; height:30px;}
   </style>
 </head>
@@ -93,9 +93,10 @@
 	<jsp:include page="../common/header.jsp"/>
     <section>
         <div class="outer">    
+          <p class="pageTitle">  approval <b> 전자결재</b></p>
             <jsp:include page="apprSidebar.jsp"/>
-            <div class="sideOuter row">
-              <div class="card" style="margin-bottom: 5rem; width:80%">
+            <div class="sideOuter row ">
+              <div class="card border-0" style=" width:80%">
                 <div class="card-body">
                   <form action="" method="post" enctype="Multipart/form-data" id="form">
                     <h3 style="margin-bottom: 25px;">시말서</h3>
@@ -130,7 +131,7 @@
                 </div>
               </div>
              
-              <div class="card row" style="margin-bottom: 5rem; width:22%">
+              <div class="card row  border-0" style="margin-bottom: 5rem; width:21%">
                 <div class="card-body">
                   <h5>결재선 등록</h5>
                   <div class="input-group mb-3">

@@ -117,17 +117,7 @@
                         </ul>
                     </li>
 
-                    <%-- 메일함 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
-                    <li><a href="main.mail">메일함</a>
-                        <ul>
-                            <li><a href="">받은메일함</a></li>
-                            <li><a href="">보낸메일함</a></li>
-                            <li><a href="">휴지통</a></li>
-                            <li><a href="">스팸</a></li>
-                        </ul>
-                    </li>
-
-                    <%-- 메일함 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
+                    <li><a href="main.mail">메일함</a></li>
                     <li><a href="main.appr">전자결재</a></li>
                     <li><a href="">일정관리</a></li>
 
@@ -191,8 +181,7 @@
 	                        <li><a href="">사원등록</a></li>
 	                    </ul>
 	                </li>
-	                <li><a href="">전자결재관리</a></li>
-	                <li><a href="">전자메일</a></li>
+	                <li><a href="adminMain.appr">전자결재관리</a></li>
 	                <li><a href="">일정관리</a></li>
 	
 	                <%-- 재원(내꺼) urlMapping값 넣으면됨~ --%> 

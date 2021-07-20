@@ -47,6 +47,7 @@
 	<jsp:include page="../common/header.jsp"/>
     <section>
         <div class="outer">    
+          <p class="pageTitle">  e-mail <b> 전자메일</b></p>
             <jsp:include page="mailSidebar.jsp"/>
             <div class="mailOuter row">
               <div class="card" style="margin-bottom: 5rem; width:100%">
@@ -58,6 +59,12 @@
                         <span class="input-group-text bg-white border-0">제목</span>
                       </div>
                       <input type="text" placeholder="제목을 입력해주세요" class="form-control">
+                    </div>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text bg-white border-0">받는사람</span>
+                      </div>
+                      <input type="text" class="form-control" value="">
                     </div>
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">

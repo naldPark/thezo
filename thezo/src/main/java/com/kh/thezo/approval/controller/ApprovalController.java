@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ApprovalController {
 
 	@RequestMapping("main.appr")
-	public String selectApprolvalMain() {
+	public String selectApprovalMain() {
 		return "approval/approvalMain";
 	}
 	
 	@RequestMapping("new.appr")
-	public String newApprolval() {
+	public String newApproval() {
 		return "approval/approvalNew";
 	}
 	
@@ -23,6 +23,47 @@ public class ApprovalController {
 	public String enrollApprolval() {
 		return "approval/approvalEnrollForm";
 	}
+	
+	
+	@RequestMapping("reportDocu.appr")
+	public String reportApproval() {
+		return "approval/apprReportDocu";
+	}
+	
+	@RequestMapping("reportFinDocu.appr")
+	public String reportFinApproval() {
+		return "approval/apprReportFinDocu";
+	}
+	
+	
+	@RequestMapping("tempDocu.appr")
+	public String tempApproval() {
+		return "approval/apprTempDocu";
+	}
+
+	
+	@RequestMapping("waiting.appr")
+	public String waitingApproval() {
+		return "approval/apprWaiting";
+	}
+	
+	@RequestMapping("approved.appr")
+	public String approvedApproval() {
+		return "approval/apprApproved";
+	}
+	
+	@RequestMapping("reference.appr")
+	public String referenceApproval() {
+		return "approval/apprReference";
+	}
+	
+	@RequestMapping("adminMain.appr")
+	public String adminMainApproval() {
+		return "approval/apprAdmin";
+	}
+	
+	
+	
 	
 	
 }

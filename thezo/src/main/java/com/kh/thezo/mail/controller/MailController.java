@@ -19,5 +19,27 @@ public class MailController {
 		return "mail/mailEnrollForm";
 	}
 	
+	@RequestMapping("send.mail")
+	public String selectSendMail() {
+		return "mail/sendMail";
+	}
+
+	@RequestMapping("temp.mail")
+	public String selectTempMail() {
+		return "mail/tempMail";
+	}
+	
+	@RequestMapping("spam.mail")
+	public String selectSpamMail() {
+		return "mail/spamMail";
+	}
+	
+	@RequestMapping("trash.mail")
+	public String selectTrashMail() {
+		return "mail/trashMail";
+	}
+	
+	
+	
 	
 }

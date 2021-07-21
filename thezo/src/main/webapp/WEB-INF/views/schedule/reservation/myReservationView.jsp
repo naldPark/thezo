@@ -168,7 +168,7 @@
                 <div class="modal-footer">
                     <div class="button-area">
                         <button class="btn btn-primary" type="submit">확인</button>
-                        <a href="delete.rez" class="btn btn-danger" data-dismiss="modal">삭제</a>
+                        <a href="delete.rez" class="btn btn-danger" data-toggle="modal" data-target="#rez-del">삭제</a>
                     </div>
                 </div>
         
@@ -177,7 +177,7 @@
     </div>
     
     <!-- The Modal -->
-    <div class="modal" id="rez-delete">
+    <div class="modal" id="rez-del">
         <div class="modal-dialog">
             <div class="modal-content">
         
@@ -189,7 +189,8 @@
         
                 <!-- Modal body -->
                 <div class="modal-body">
-                	정말 삭제하시겠습니까?
+                	해당 예약을 정말 삭제하시겠습니까? <br>
+                	<b>*예약이 취소되고, 예약내역도 삭제됩니다.</b>
                 </div>
         
                 <!-- Modal footer -->

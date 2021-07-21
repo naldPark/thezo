@@ -105,7 +105,7 @@
                             <li><a href="noticeList.bo">공지사항</a></li>
                             <li><a href="list.doc">문서관리</a></li>
                             <li><a href="marketList.bo">벼룩시장</a></li>
-                            <li><a href="">사내게시판</a></li>
+                            <li><a href="boardList.bo">사내게시판</a></li>
                         </ul>
                     </li>
 

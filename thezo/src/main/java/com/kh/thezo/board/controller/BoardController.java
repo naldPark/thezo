@@ -18,4 +18,16 @@ public class BoardController {
 		return "board/noticeEnrollForm";
 	}
 	
+	// 사내게시판 리스트 페이지
+	@RequestMapping("boardList.bo")
+	public String selectBoardList() {
+		return "board/boardListView";
+	}
+	
+	// 공지사항 작성하기 페이지
+	@RequestMapping("boardEnrollForm.bo")
+	public String boardEnrollForm() {
+		return "board/boardEnrollForm";
+	}
+	
 }

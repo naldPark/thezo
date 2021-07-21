@@ -1,6 +1,8 @@
 package com.kh.thezo.notification.controller;
-//@author Jaewon.s
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class NotificationController {
@@ -24,4 +26,15 @@ public class NotificationController {
 		//	retunr "0";
 		//}
 	//}
+
+
+	//	일단은 나중에 생각해서 ModelAndView로 세팅 지금은 넘기기만 하자! 
+	@RequestMapping("list.adnf")
+	public ModelAndView selectBoard(ModelAndView mv) {
+
+		mv.addObject("subPage", "2");
+		mv.setViewName("notification/adminNotificationListView");
+
+		return mv;
+	}
 }

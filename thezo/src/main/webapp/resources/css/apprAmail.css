@@ -1,0 +1,64 @@
+
+
+/*공통*/
+    div>*{
+      color:rgb(99, 97, 97);
+      box-sizing: border-box;
+    }
+    .outer{margin-top:100px; border:1px solid lightgrey; }
+    .sideOuter{padding:40px 20px 0px 170px;}
+    .mailOuter{padding:40px 20px 0px 220px;}
+    a{ text-decoration:none !important; cursor: pointer; }
+    a:hover{ text-decoration:none !important; cursor: pointer; color : white;}
+    header{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1; 
+    } 
+    .pageTitle{font-size: 20pt; font-weight: bolder; color:rgb(241,196,15)!important; margin-top: 30px; margin-left: 20px; text-align: left; }
+    .pageTitle b{color: rgb(20,70,104); font-size: 25pt;}
+    .w3-sidebar{        
+      z-index: 0; text-align: center; padding: 10px;  line-height: 30px; margin: auto; position: absolute !important; height: auto !important;}
+    .pagination > .active>a{background:rgb(20,70,104)!important; color: white!important;}
+    .pagination>li>a{color: rgb(20,70,104)!important;}
+
+    .pjtWN{background-color: rgb(20,70,104)!important; color: white!important;}
+    .pjtNY{background-color: rgb(20,70,104)!important; color: rgb(241,196,15)!important}
+    .pjtN{color:rgb(20,70,104)!important;}
+    .btn-primary{background-color: rgb(20,70,104)!important; border:1px solid rgb(20,70,104)!important;}
+    .text-primary{color: rgb(20,70,104)!important}
+    .bigCheckbox{ width:20px; height:20px;vertical-align: middle;}
+    .table-primary, .table-primary td, .table-primary th{background-color: rgb(20,70,104)!important; color: white!important; border-color:rgb(20,70,104)!important;}
+    .table-hover{cursor: pointer;}
+    #admin-header{display: block !important;}
+    #admin-nav{display: block !important; margin-top:30px}
+    
+    /*메인페이지꺼임*/
+    .board > tbody  > tr > td:nth-child(1) {
+        width:60%; padding-left:20px;
+        text-align: left;
+    }
+    .board > tbody  > tr > td:nth-child(2) {
+        width:20%; 
+    }
+    .board > tbody  > tr > td:nth-child(3) {
+        width:20%; 
+    }
+    .board > tbody  > tr {cursor: pointer;}
+    
+    
+  /*전자결재*/
+    .recentDoc{color:rgb(20,70,104); font-size:15pt; font-weight: bold;}
+    .docMenu{border-radius: 50%; padding:10px; background-color: rgb(20,70,104); color:white}
+    .apprLine{ padding:5px; background-color: rgb(20,70,104); color:white}
+    .apprList:hover{opacity:0.7; cursor: pointer;}
+    .category{color: rgb(20,70,104);}
+    .category:hover{color: rgb(20,70,104); background-color: rgba(241, 196, 15, 0.274); cursor: pointer;}
+    .newDocu{height:90px; border: 1px solid lightgray;text-align: left; }
+    .newDocuCate{width:20%; background-color: rgba(20, 70, 104, 0.089);}
+
+    .filebox input[type="file"] {position: absolute;  overflow: hidden; clip:rect(0,0,0,0);} 
+    .filebox label { display: inline-block; padding: .5em .75em; color: rgb(133, 132, 132); cursor: pointer; border: 1px solid #ebebeb;} 
+    .filebox .upload-name { background-color: #f5f5f5; border: 1px solid #ebebeb; } 

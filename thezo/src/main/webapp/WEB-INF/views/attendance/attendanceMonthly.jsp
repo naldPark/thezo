@@ -17,8 +17,8 @@
 </script>
 
 <style>
-    .outer-wrap{height: 200px; border: 1px solid black;}
-    .sub-menu{float: left; width: 30%; height: 100%; border: 1px solid blue;}
+    .outer-wrap{height: 200px;}
+    .sub-menu{float: left; width: 30%; height: 100%;}
     .focus{
         border: 1px solid black !important;
         background-color: white !important;
@@ -27,7 +27,6 @@
         font-weight: bold;
     }
     #sub-name{
-        border: 1px solid red;
         width: 80%;
         text-align: left;
         margin-top: 10%;
@@ -35,8 +34,7 @@
         float: left;  
     }
     #sub-button{
-        border: 1px solid red;
-        margin-top: 48.3%;
+        margin-top: 48%;
         width: 100%;
     }
 
@@ -53,9 +51,8 @@
     #tab-1, #tab-2 {width: 14%;}
     #tab-4 {width: 26%;}
 
-    .sub-time{border: 1px solid red; float: right; width: 30%; height: 100%;}
+    .sub-time{float: right; width: 30%; height: 100%;}
     #sub-curtime{
-        border: 1px solid red;
         float: right;
         margin-right: 5%; 
         margin-top: 15%;
@@ -63,20 +60,18 @@
         font-size: 17px;
     }
     #time-image{
-        border: 1px solid red;
         float: right;
         margin-right: 5%;
         margin-top: 15%;
     }
     #search-box{
-        border: 1px solid blue;
         display: inline-flex;
         width: 20%;
         float: right;
         margin-top: 5%;
     }
 
-    .content{height: 1000px; border: 1px solid black;}
+    .content{height: 1000px;}
     .modal-lg{max-width: 17% !important; overflow: hidden;}
     .modal-body{max-height: calc(100vh - 200px); overflow-y: auto;}
 
@@ -100,9 +95,8 @@
     .modal-footer{font-size: 13px; }
     .modal-footer>a:hover{text-decoration: none; font-weight: bold;}
 
-    #yearly{width: 100%; height: 100%;}
+    #yearly{border:1px solid rgba(0, 0, 0, 0); width: 100%; height: 100%;}
     #yearly-top{
-        border: 1px solid blueviolet;
         width: 70%;
         height: 4%;
         margin: auto;
@@ -115,18 +109,16 @@
     #select{float: right; width:15%;}
 
     #yearly-content{
-        border: 1px solid blueviolet;
         width: 70%;
         height: 40%;
         margin-top: 5%;
     }
     #att-table{
         text-align: center;
-        border: 1px solid black;
         width: 100%;
         height: 30%;
     }
-    #yearly-content td{border-left: 1px solid lightgray; text-align: center; border-bottom: 1px solid lightgray; font-size: 12px;}
+    #yearly-content td{border-right: 1px solid lightgray; border-left: 1px solid lightgray; text-align: center; border-bottom: 1px solid lightgray; font-size: 12px;}
     #yearly-content th{width: 30px; background-color: rgb(214, 213, 213); text-align: center; border-bottom: 1px solid lightgray; font-size: 12px;}
 
     #enr-top{
@@ -163,7 +155,6 @@
     .term{display: none}
 
     #enr-content{
-        border: 1px solid blueviolet;
         width: 95%;
         height: 85%;
         margin-top: 3%;
@@ -173,13 +164,11 @@
     #enr-table td{border: 1px solid rgb(177, 177, 177);}
 
     #resthistory{
-        border: 1px solid black;
         width: 95%;
         height: 90%;
         margin-top: 5%;
     }
     #rest-inform{
-        border: 1px solid burlywood;
         width: 100%;
         height: 13%;
     }
@@ -190,14 +179,12 @@
         float: left;
     }
     #myinform-table{
-        border: 1px solid black;
         margin: auto;
         width: 100%;
         float: left;
     }
     #myinform-table th, #myinform-table td{border: 1px solid lightgray; text-align: center;}
     #rest-usedinform{
-        border: 1px solid burlywood;
         width: 100%;
         height: 13%;
         margin-top: 5%;
@@ -205,7 +192,6 @@
     #myused-table td{border: 1px solid lightgray; text-align: center;}
     #myused-table th{border: 1px solid lightgray; text-align: center; background-color: rgb(234,234,234);}
     #rest-usedhistory{
-        border: 1px solid burlywood;
         width: 100%;
         height: 60%;
         margin-top: 5%;
@@ -332,7 +318,7 @@
                                     <th>9월</th>
                                     <th>10월</th>
                                     <th>11월</th>
-                                    <th>12월</th>
+                                    <th style="border-right: 1px solid lightgray;;">12월</th>
                                 </tr>
                             </thead>
                             <tbody>

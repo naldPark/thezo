@@ -55,33 +55,38 @@
                 <br>
                 <!-- 안읽은 문서 건수 안내 끝 -->
                 <!-- 문서리스트 -->
-                <div class="d-flex mb-4 newDocu">
-                    <div class="p-4 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
+                <div class="d-flex mb-4 shadow newDocu">
+                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
                     <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                     <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
                 </div>
-                <div class="d-flex mb-4 newDocu">
-                    <div class="p-4 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
+                <div class="d-flex mb-4 shadow newDocu">
+                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
                     <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                     <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
                 </div>
-                <div class="d-flex mb-4 newDocu">
-                    <div class="p-4 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
+                <div class="d-flex mb-4 shadow newDocu">
+                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
                     <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                     <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
                 </div>
-                <div class="d-flex mb-4 newDocu">
-                    <div class="p-4 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
+                <div class="d-flex mb-4 shadow newDocu">
+                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
                     <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                     <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
                 </div>
-                <div class="d-flex mb-4 newDocu">
-                    <div class="p-4 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
+                 <div class="d-flex mb-4 shadow newDocu">
+                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
                     <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                     <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
                 </div>
-                <div class="d-flex mb-4 newDocu">
-                    <div class="p-4 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
+                <div class="d-flex mb-4 shadow newDocu">
+                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
+                    <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
+                    <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
+                </div>
+                 <div class="d-flex mb-4 shadow newDocu">
+                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
                     <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                     <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
                 </div>

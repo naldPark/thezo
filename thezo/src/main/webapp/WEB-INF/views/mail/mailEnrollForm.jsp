@@ -40,95 +40,171 @@
     .note-modal-footer,.note-modal-footer:before, .note-modal-footer:after{box-sizing: unset!important;}
     .input-group-text{width:80px}
       /* *{border:1px solid red} */
+   .drop-zone{margin-left:80px; width: 100%; height: 110px; border: 1px solid lightgray; overflow: auto;
+     
+    }
     
   </style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
     <section>
-        <div class="outer">    
-          <p class="pageTitle">  e-mail <b> 전자메일</b></p>
-            <jsp:include page="mailSidebar.jsp"/>
-            <div class="mailOuter row">
-              <div class="card" style="margin-bottom: 5rem; width:100%">
-                <div class="card-body">
-                  <form action="" method="post" enctype="Multipart/form-data" id="form">
-                    <h3 style="margin-bottom: 25px;">메일쓰기</h3>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white border-0">제목</span>
-                      </div>
-                      <input type="text" placeholder="제목을 입력해주세요" class="form-control">
-                    </div>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white border-0">받는사람</span>
-                      </div>
-                      <input type="text" class="form-control" value="">
-                    </div>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white border-0">수신참조</span>
-                      </div>
-                      <input type="text" class="form-control" value="">
-                    </div>
-                  
-                    <div class="form-group">
-                        <textarea class="form-control" id="summernote" maxlength="140" rows="7" autocomplete="off"></textarea>
-                    </div><br>
-                    <div class="filebox justify-content-center">
-                      <input class="upload-name" value="" disabled="disabled"> 
-                      <label for="rwFilename" style="font-size: 11pt;">파일 첨부하기</label> 
-                      <input type="file" id="rwFilename" name="rwFilename" class="upload-hidden" onchange="checkSize(this)"> 
-                    </div>
-                      <br>
-                    <div class="row justify-content-center">
-                      <button type="button" id="submitBtn" class="btn btn-primary">발송하기</button>
-                      <button type="button" onclick="location.href=''" class="btn btn-secondary">취소</button>
-                    </div>
-
-                  </form>
+      <div class="outer">    
+        <p class="pageTitle">  e-mail <b> 전자메일</b></p>
+        <jsp:include page="mailSidebar.jsp"/>
+        <div class="mailOuter row">
+          <div class="card" style="margin-bottom: 5rem; width:100%">
+            <div class="card-body">
+              <form action="insertDocu.appr" method="post" id="fileForm" name="fileForm" enctype="multipart/form-data">
+                <h3 style="margin-bottom: 25px;">메일쓰기</h3>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-white border-0">제목</span>
+                  </div>
+                  <input type="text" placeholder="제목을 입력해주세요" class="form-control">
                 </div>
-              </div>
-             
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-white border-0">받는사람</span>
+                  </div>
+                  <input type="text" class="form-control" value="">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-white border-0">수신참조</span>
+                  </div>
+                  <input type="text" class="form-control" value="">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-white border-0">파일첨부</span>
+                  </div>
+                  <input type="file" id="file" name="upfile" multiple>
+                  <div class="drop-zone" style="text-align: center; font-size: 15pt;">
+                    <br>
+                    <i class="far fa-clone"></i>
+                    파일을 여기로 드래그하세요.
+                  </div>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" name="summernote" id="summernote" maxlength="140" rows="7" autocomplete="off"></textarea>
+                </div><br>
+                <div class="row justify-content-center">
+                  <button type="button" id="submitBtn" class="btn btn-primary">발송하기</button>&nbsp;
+                  <button type="button" onclick="location.href=''" class="btn btn-secondary">취소</button>
+                </div>
+              </form>
             </div>
-    	</div>
+          </div>
+        </div>
+      </div>
+      <br>
     </section>
+
+
+    <script>
+        
+      (function() {
+          
+          var $file = document.getElementById("file")
+          var dropZone = document.querySelector(".drop-zone")
+
+          var toggleClass = function(className) {
+              
+              console.log("current event: " + className)
+
+              var list = ["dragenter", "dragleave", "dragover", "drop"]
+
+              for (var i = 0; i < list.length; i++) {
+                  if (className === list[i]) {
+                      dropZone.classList.add("drop-zone-" + list[i])
+                  } else {
+                      dropZone.classList.remove("drop-zone-" + list[i])
+                  }
+              }
+          }
+          
+          var showFiles = function(files) {
+              dropZone.innerHTML = ""
+              for(var i = 0, len = files.length; i < len; i++) {
+                  dropZone.innerHTML += "<p>" + files[i].name + "</p>"
+              }
+          }
+
+          var selectFile = function(files) {
+              // input file 영역에 드랍된 파일들로 대체
+              $file.files = files
+              showFiles($file.files)
+              
+          }
+          
+          $file.addEventListener("change", function(e) {
+              showFiles(e.target.files)
+          })
+
+          // 드래그한 파일이 최초로 진입했을 때
+          dropZone.addEventListener("dragenter", function(e) {
+              e.stopPropagation()
+              e.preventDefault()
+             
+              toggleClass("dragenter")
+
+          })
+
+          // 드래그한 파일이 dropZone 영역을 벗어났을 때
+          dropZone.addEventListener("dragleave", function(e) {
+              e.stopPropagation()
+              e.preventDefault()
+              $(this).css("background-color", "#FFF");
+              toggleClass("dragleave")
+
+          })
+
+          // 드래그한 파일이 dropZone 영역에 머물러 있을 때
+          dropZone.addEventListener("dragover", function(e) {
+              e.stopPropagation()
+              e.preventDefault()
+              $(this).css("background-color", "rgb(248, 241, 214)");
+              toggleClass("dragover")
+
+          })
+
+          // 드래그한 파일이 드랍되었을 때
+          dropZone.addEventListener("drop", function(e) {
+              e.preventDefault()
+              $(this).css("background-color", "#FFF");
+              $(this).css("font-size", "11pt");
+              $(this).css("text-align", "left");
+              
+              toggleClass("drop")
+
+              var files = e.dataTransfer && e.dataTransfer.files
+              console.log(files)
+
+              if (files != null) {
+                  if (files.length < 1) {
+                      alert("폴더 업로드 불가")
+                      return
+                  }
+                  selectFile(files)
+              } else {
+                  alert("ERROR")
+              }
+
+          })
+
+      })();
+  </script>
+
 
 <script>
      $(document).on('click','#submitBtn',function(){
           if(confirm("정말로 제출하시겠습니까?\n기안 후엔 수정이 불가능합니다.")){
-            $("#form").submit();
+            $("#fileForm").submit();
           }					
         });
-
-              // 파일첨부 시작
-      $(document).ready(function(){
-        var fileTarget = $('.filebox .upload-hidden'); fileTarget.on('change', function(){
-            if(window.FileReader){
-              var filename = $(this)[0].files[0].name; 
-            } else { 
-              var filename = $(this).val().split('/').pop().split('\\').pop(); 
-            } 
-            $(this).siblings('.upload-name').val(filename); 
-          }); 
-       });
-
-        function checkSize(input) {
-        	
-        	pathpoint = input.value.lastIndexOf('.');
-        	filepoint = input.value.substring(pathpoint+1,input.length);
-        	filetype = filepoint.toLowerCase();
-
-        	
-          if (input.files && input.files[0].size > (20 * 1024 * 1024)) {
-              alert("파일 사이즈가 20mb 를 넘습니다.");
-              input.value = null; 
-            }
-          } //파일첨부 끝
 </script>
     
-
 
 
 </body>

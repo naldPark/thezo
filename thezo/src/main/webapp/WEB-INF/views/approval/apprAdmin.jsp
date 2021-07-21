@@ -38,47 +38,71 @@
                  </form>
                 
                 <br>
-                <!-- 안읽은 문서 건수 안내 끝 -->
+                <!-- 검색 area 끝 -->
                 <!-- 문서리스트 -->
-                <div class="d-flex mb-2 newDocu">
+                <div class="d-flex mb-5 shadow newDocu">
+                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
+                    <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
+                    <div class="pr-3" align="center">
+                        <h5><span class="badge badge-pill badge-success">사용중</span></h5>
+                        <button type="button" onclick="location.href='editForm.appr'" class="btn btn-sm btn-outline-primary">수정</button>
+                        <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#delete">삭제</button>
+                    </div>
+                </div>
+                <div class="d-flex mb-5 shadow newDocu">
                     <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
                     <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                     <div class="pr-3" align="center">
-                        <h5><span class="badge badge-pill badge-warning">사용중</span></h5>
-                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-secondary">수정</button>
-                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-secondary">삭제</button>
+                        <h5><span class="badge badge-pill badge-secondary">미사용</span></h5>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">수정</button>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">삭제</button>
                     </div>
                 </div>
-                <div class="d-flex mb-2 newDocu">
+                <div class="d-flex mb-5 shadow newDocu">
                     <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
                     <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                     <div class="pr-3" align="center">
-                        <h5><span class="badge badge-pill badge-warning">사용중</span></h5>
-                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-secondary">수정</button>
-                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-secondary">삭제</button>
+                        <h5><span class="badge badge-pill badge-success">사용중</span></h5>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">수정</button>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">삭제</button>
                     </div>
                 </div>
-                <div class="d-flex mb-2 newDocu">
+                <div class="d-flex mb-5 shadow newDocu">
                     <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
                     <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                     <div class="pr-3" align="center">
-                        <h5><span class="badge badge-pill badge-warning">사용중</span></h5>
-                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-secondary">수정</button>
-                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-secondary">삭제</button>
+                        <h5><span class="badge badge-pill badge-success">사용중</span></h5>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">수정</button>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">삭제</button>
                     </div>
                 </div>
-                <div class="d-flex mb-2 newDocu">
+                <div class="d-flex mb-5 shadow newDocu">
                     <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
                     <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                     <div class="pr-3" align="center">
-                        <h5><span class="badge badge-pill badge-warning">사용중</span></h5>
-                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-secondary">수정</button>
-                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-secondary">삭제</button>
+                        <h5><span class="badge badge-pill badge-success">사용중</span></h5>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">수정</button>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">삭제</button>
                     </div>
                 </div>
-                
-                
-
+                <div class="d-flex mb-5 shadow newDocu">
+                    <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
+                    <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
+                    <div class="pr-3" align="center">
+                        <h5><span class="badge badge-pill badge-success">사용중</span></h5>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">수정</button>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">삭제</button>
+                    </div>
+                </div>
+                <div class="d-flex mb-5 shadow newDocu">
+                    <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
+                    <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
+                    <div class="pr-3" align="center">
+                        <h5><span class="badge badge-pill badge-success">사용중</span></h5>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">수정</button>
+                        <button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-sm btn-outline-primary">삭제</button>
+                    </div>
+                </div>
                 <br><br>
                 <ul class="pagination justify-content-center">
                     <li class="page-item"><a class="page-link" href="#">이전</a></li>
@@ -89,6 +113,21 @@
                   </ul>
             </div>
     	</div>
+
+        <div class="modal" id="delete">
+            <div class="modal-dialog">
+              <div class="modal-content" style="width:400px">
+                <div class="modal-body" align="center"><br>
+	                <form action="" method="post">
+	                    <h4><b>ㅇㅇㅇ문서 삭제</b></h4><br>삭제 이후 복원이 불가합니다.<br>해당문서를 삭제하시겠습니까?<br><br>
+	                    <button type="submit" class="btn btn-primary" class="deleteButton">삭제</button>
+	                    <button type="button" class="btn btn-secondary"  data-dismiss="modal">취소</button>
+	               </form>
+                   <br>
+                </div>
+              </div>
+            </div>
+        </div>
     </section>
 
   

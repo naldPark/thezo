@@ -6,8 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
-<!-- 왜 안보여지지...????  일단 수정하기!! -->
 <!-- include summernote css/js-->
 <link
 	href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css"
@@ -33,14 +31,13 @@
 </style>
 </head>
 <body>
-
 	<jsp:include page="../common/header.jsp" />
 
 	<div class="outer">
 
 		<div class="innerOuter">
 			<h2>
-				<b>공지사항</b>
+				<b>사내게시판</b>
 			</h2>
 			<br>
 			<br>
@@ -86,8 +83,6 @@
 		</div>
 
 	</div>
-
-
 
 </body>
 </html>

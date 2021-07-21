@@ -174,7 +174,12 @@
 	
 	                <%-- 해당영역 맡으신분들 ~ urlMapping값 넣어주세요~ --%> 
 	                <li><a href="">게시판관리</a></li>
-	                <li><a href="">인사근태</a></li>
+	                <li><a href="">인사근태</a>
+                        <ul>
+                            <li><a href="">부서관리</a></li>
+                            <li><a href="">근태관리</a></li>
+                        </ul>
+                    </li>
 	                <li><a href="">회원정보</a>
 	                    <ul>
 	                        <li><a href="">회원 정보 조회?</a></li>

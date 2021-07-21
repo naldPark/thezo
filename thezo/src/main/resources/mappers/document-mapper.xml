@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="documentMapper">
+
+	<resultMap id="documentResult" type="Document">
+		<result column="doc_no" property="docNo"/>
+		<result column="doc_writer" property="docWriter"/>
+		<result column="doc_content" property="docContent"/>
+		<result column="doc_category" property="docCategory"/>
+		<result column="create_date" property="createDate"/>
+		<result column="origin_name" property="originName"/>
+		<result column="change_name" property="changeName"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	
+	
+	<select id="selectListCount" resultType="_int">
+		select
+			   count(*)
+		  from document
+		 where status = 'Y'
+		   and doc_category = '공용'
+	</select>
+	
+	<select id="selectDocumentList" resultMap="documentResult">
+		select
+			   doc_no
+			 , doc_writer
+			 , doc_content
+			 , doc_category
+			 , create_date
+			 , origin_name
+			 , change_name
+			 , status
+		  from document
+		 where status = 'Y'
+		   and doc_category = '공용'
+		 order
+		    by create_date desc
+	</select>
+	
+	<insert id="insertDocument">
+		insert
+		  into document
+		  (
+		    doc_no
+		  , doc_writer
+		  , doc_content
+		  , doc_category
+		  , create_date
+		  , origin_name
+		  , change_name
+		  , status
+		  )
+		 values
+	 	   (
+	 	     seq_docno.nextval
+	 	   , #{docWriter}
+	 	   , #{docContent}
+	 	   , #{docCategory}
+	 	   , sysdate
+	 	   , #{originName}
+	 	   , #{changeName}
+	 	   , 'Y'
+	 	   )
+	</insert>
+</mapper>
+

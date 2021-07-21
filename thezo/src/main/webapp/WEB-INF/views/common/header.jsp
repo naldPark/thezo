@@ -103,7 +103,7 @@
                     <li><a href="noticeList.bo">게시판</a>
                         <ul>
                             <li><a href="noticeList.bo">공지사항</a></li>
-                            <li><a href="">문서관리</a></li>
+                            <li><a href="list.doc">문서관리</a></li>
                             <li><a href="marketList.bo">벼룩시장</a></li>
                             <li><a href="">사내게시판</a></li>
                         </ul>
@@ -119,7 +119,7 @@
 
                     <li><a href="main.mail">메일함</a></li>
                     <li><a href="main.appr">전자결재</a></li>
-                    <li><a href="">일정관리</a></li>
+                    <li><a href="main.sc">일정관리</a></li>
 
                     <c:if test="${loginUser.userId eq 'admin' }">
                         <li><a href="javascript:showAdminNav()" style="font-size: 17px; color: gray;" id="admin-mode">관리자모드</a></li>
@@ -187,7 +187,7 @@
 	                    </ul>
 	                </li>
 	                <li><a href="adminMain.appr">전자결재관리</a></li>
-	                <li><a href="">일정관리</a></li>
+	                <li><a href="main.sc">일정관리</a></li>
 	
 	                <%-- 재원(내꺼) urlMapping값 넣으면됨~ --%> 
 	                <li><a href="list.adms">메신저</a>

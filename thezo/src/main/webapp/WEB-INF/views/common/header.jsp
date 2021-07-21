@@ -100,9 +100,9 @@
                     <li><a href="<%= request.getContextPath() %>" style="padding: 0px 12px;">홈</a></li>
                 
                     <%-- 게시판 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
-                    <li><a href="">게시판</a>
+                    <li><a href="noticeList.bo">게시판</a>
                         <ul>
-                            <li><a href="">공지사항</a></li>
+                            <li><a href="noticeList.bo">공지사항</a></li>
                             <li><a href="">문서관리</a></li>
                             <li><a href="">벼룩시장</a></li>
                             <li><a href="">사내게시판</a></li>

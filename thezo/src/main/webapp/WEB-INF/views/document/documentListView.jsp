@@ -97,7 +97,7 @@
 			                	<c:otherwise>
 				                	<c:forEach var="d" items="${ list }">
 				                		<tr>
-						                    <td><input type="checkbox" id="${ d.docNo }"></td>
+						                    <td><input type="checkbox" class="docCheck" value="${ d.docNo }"></td>
 						                    <td>${ d.docNo }</td>
 						                    <td>${ d.docWriter }</td>
 						                    <td>${ d.docContent }</td>
@@ -119,22 +119,41 @@
 		        </table>
 		        
 		        <div class="button-area" align="left">
-			            <a href="update.doc" class="btn btn-primary">수정</a>
-			            <a href="delete.doc" class="btn btn-danger">삭제</a>
+			            <a href="#" onclick="updateDoc();" class="btn btn-primary">수정</a>
+			            <a href="#" onclick="deleteDoc();" class="btn btn-danger">삭제</a>
 		            
 		            
 		            <button class="btn btn-primary" data-toggle="modal" data-target="#insertDoc" style="float:right;">등록</button>
 		    	</div>
 		    	
-		    	<%-- update, delete 기능 수행 할 스크립트 수정중 --------------------------- --%>
+		    	<%-- update, delete 기능 수행 할 스크립트 -------------------------- --%>
 		    	<script>
-		    		var test1 = document.getElementById('fruit1');
-		    		var test1 = document.getElementById('fruit1');
-		    		$(function(){
-		    			if($(input[checkbox]).attr("checked")){
-		    				console.log($(this));
+		    		// checked 된 값 가져오기..ㅠㅠ 왜안됨
+			    	var array = Array();
+		    		var count = 0;
+		    		var chkbox = $(".docCheck");
+		    		
+		    		for(i=0; i<chkbox.length; i++){
+			    		if(chkbox[i].checked == true){
+			    			array[count] = chkbox[i].value;
+			    			count++;
+			    		}
+		    		}
+		    		// 삭제하기 기능
+		    		function deleteDoc(){
+			    		console.log(array);
+			    		//location.href = "delete.doc";
+		    		}
+		    		
+		    		// 수정하기 기능
+		    		function updateDoc(){
+		    			if(chkbox.length == 1){
+		    				location.href = "update.doc";
+		    			}else{
+		    				alert("한 개만 선택해주세요");
 		    			}
-		    		})
+		    		}
+		    		
 		    	</script>
 		    		
 		        

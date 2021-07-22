@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,31 +44,34 @@
                 <button class="btn btn-primary" style="width: 180px;" align="center">일정 추가</button>
 				<hr>
 
-				<button class="btn" function="click();">▼</button><b>오늘 일정</b>
-                <ul id="todaySchedule">
-					
-					<!-- 오늘일정 수만큼 li태그가 반복되는 반복문 -->
-					<li><input type="checkbox">Conference</li>
-					<li><input type="checkbox">Meeting</li>
-					<li><input type="checkbox">Lunch</li>
-
-				</ul>
-
+				<button class="btn down_sc" onclick="slideDown_sc();">▼</button>
+				<button class="btn up_sc" onclick="slideUp_sc();" hidden>▲</button>
+				<b>오늘 일정</b>
+				
+				<div class="slide_sc">
+	                <ul id="todaySchedule">
+						
+						<!-- 오늘일정 수만큼 li태그가 반복되는 반복문 -->
+						<li><input type="checkbox">Conference</li>
+						<li><input type="checkbox">Meeting</li>
+						<li><input type="checkbox">Lunch</li>
+	
+					</ul>
+				</div>
                 <hr>
 
-				<button class="btn" function="click();">▼</button> <b>메뉴 바로가기</b>	
-				<label for="">
+				<button class="btn down_menu" onclick="slideDown_menu();">▼</button> 
+				<button class="btn up_menu" onclick="slideUp_menu();" hidden>▲</button> 
+				<b>메뉴 바로가기</b>	
+				
+				
+				<div class="slide_menu">
 					<a href="list.nt" id="note-list">노트 목록</a>
-				</label>
-				<br>
-				<label for="">
+					<br>
 					<a href="" id="note-list">업무 보고</a>
-				</label>
-				<br>
-				<label for="">
+					<br>
 					<a href="myList.rez" id="note-list">자원 예약</a>
-				</label>
-
+				</div>
 				<hr>
 
 				<div class="table-bordered" id="do-navbar" style="width:200px; margin-top: 10px; padding: 5px;">
@@ -90,70 +94,36 @@
 	   		<%-- 캘린더 영역 ------------------------------------------------------------------------------- --%>
 			<jsp:include page="fullcalendar.jsp"/>
 	        
-	        <%-- 일정추가 (모달창) -------------------------------------------------------------------------------%>
-	        <form action="일정추가url">
-				<!-- The Modal -->
-				<div class="modal" id="scAdd">
-				  <div class="modal-dialog modal-lg">
-				    <div class="modal-content">
-				
-				      <!-- Modal Header -->
-				      <div class="modal-header">
-				        <h4 class="modal-title">일정 추가</h4>
-				        <button type="button" class="close" data-dismiss="modal">&times;</button>
-				      </div>
-				
-				      <!-- Modal body -->
-				      <div class="modal-body">
-					    <table class="" align="center">
-					        <tr>
-					            <th width="120px">일정 제목</th>
-					            <td colspan="2"><input type="text" name="scheduleTitle" style="width: 380px;" placeholder="일정 제목을 입력해주세요"></td>
-					            <td>
-					                <select name="scType" id="scType">
-					                    <option value="personal">개인</option>
-					                    <option value="dep">부서</option>
-					                    <option value="com">회사</option>
-					                </select>
-					            </td>
-					        </tr>
-					        
-					        <tr>
-					            <th>시작일</th>
-					            <td><input type="date" name="startDate"></td>
-					            <td><input type="text" name="startTime"></td>
-					            <td rowspan="2"><input type="checkbox">시간설정</td> <!-- 시간설정 체크 해제시 시간 input 사라지게 / 기본값: 체크설정-->
-					        </tr>
-					        <tr>
-					            <th>종료일</th>
-					            <td><input type="date" name="endDate"></td>
-					            <td><input type="text" name="endTime"></td>
-					        </tr>
-					        <tr>
-					            <th>내용</th>
-					            <td colspan="2"><textarea name="sheduleContent" id="" cols="50" rows="10" style="resize: none;"></textarea></td>
-					        </tr>
-					
-					    </table>
-					    
-				      </div>
-				
-				      <!-- Modal footer -->
-				      <div class="modal-footer center">
-					      <div class="button-area">
-						        <button class="btn btn-secondary" data-dismiss="modal">취소</button>
-						        <button class="btn btn-primary" type="submit">저장</button>
-						  </div>
-				      </div>
-				
-				    </div>
-				  </div>
-				</div>
-	        </form>
-	        
 	    </div>
 	    
    </section>
+   
+   <!-- 메뉴바 display 효과 -->
+   <script>
+   		function slideDown_sc(){
+			$(".slide_sc").hide();
+			$(".down_sc").hide();
+			$(".up_sc").removeAttr("hidden");
+   		}
+   		
+   		function slideUp_sc(){
+			$(".slide_sc").show();
+			$(".down_sc").show();
+			$(".up_sc").attr("hidden", true);
+   		}
+   		
+   		function slideDown_menu(){
+			$(".slide_menu").hide();
+			$(".down_menu").hide();
+			$(".up_menu").removeAttr("hidden");
+   		}
+   		
+   		function slideUp_menu(){
+			$(".slide_menu").show();
+			$(".down_menu").show();
+			$(".up_menu").attr("hidden", true);
+   		}
+   </script>
 
 
 </body>

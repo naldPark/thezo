@@ -2,10 +2,12 @@ package com.kh.thezo.document.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,14 +76,20 @@ public class DocumentController {
 		
 	}
 	
-	/*
 	@RequestMapping("delete.doc")
-	public String deleteDocument(Model model, int docNo) {
+	public String deleteDocument(Model model, int docNo, HttpSession session) {
 		int result = dService.deleteDocument(docNo);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "해당 문서가 삭제되었습니다.");
+			return ":redirect:list.doc";
+		} else {
+			session.setAttribute("alertMsg","오류가 발생했습니다.");
+			return ":redirect:list.doc";
+		}
 		
 		
 	}
-	*/
 	
 	
 	

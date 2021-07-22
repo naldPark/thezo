@@ -173,17 +173,21 @@
 	                <li><a href="<%= request.getContextPath() %>">메인</a></li>
 	
 	                <%-- 해당영역 맡으신분들 ~ urlMapping값 넣어주세요~ --%> 
-	                <li><a href="">게시판관리</a></li>
+	                <li><a href="boardReport.bo">게시판관리</a>
+	                 	<ul>
+	                        <li><a href="boardReport.bo">신고 관리</a></li>
+	                    </ul>
+	                </li>
 	                <li><a href="">인사근태</a>
                         <ul>
                             <li><a href="">부서관리</a></li>
                             <li><a href="">근태관리</a></li>
                         </ul>
                     </li>
-	                <li><a href="">회원정보</a>
+	                <li><a href="memberInfo.me">회원정보</a>
 	                    <ul>
-	                        <li><a href="">회원 정보 조회?</a></li>
-	                        <li><a href="">사원등록</a></li>
+	                        <li><a href="memberInfo.me">회원정보관리</a></li>
+	                        <li><a href="memberDelete.me">회원 삭제</a></li>
 	                    </ul>
 	                </li>
 	                <li><a href="adminMain.appr">전자결재관리</a></li>

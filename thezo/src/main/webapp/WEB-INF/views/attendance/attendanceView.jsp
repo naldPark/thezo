@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 <!-- select를 위한 부트스트랩-->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script>
     window.onload = function(){
@@ -37,8 +38,6 @@
         margin-top: 48%;
         width: 100%;
     }
-
-    .content-other{display: none;}
 
     .cbtn{
         font-size: 12px;
@@ -121,6 +120,10 @@
     #yearly-content td{border-right: 1px solid lightgray; border-left: 1px solid lightgray; text-align: center; border-bottom: 1px solid lightgray; font-size: 12px;}
     #yearly-content th{width: 30px; background-color: rgb(214, 213, 213); text-align: center; border-bottom: 1px solid lightgray; font-size: 12px;}
 
+    #enrstatement{
+        width: 95%;
+        height: 90%;
+    }
     #enr-top{
         border: 1px solid lightgray;
         width: 95%;
@@ -291,7 +294,7 @@
                 </div>
 
                 <!--연간-->
-                <div class="content content-other" id="yearly">
+                <div id="yearly">
                     <div id="yearly-top">
                         <h2>2021</h2> 
                         <div id="select">
@@ -388,7 +391,7 @@
                 </div>
 
                 <!--근태조정신청내역-->
-                <div class="content content-other" id="enrstatement">
+                <div id="enrstatement">
                     <div id="enr-top">
                         <div id="enr-front">검색기간</div>
                             <div class="form-check">
@@ -478,7 +481,7 @@
                 </div>
 
                 <!--내 휴가기록-->
-                <div class="content content-other" id="resthistory">
+                <div id="resthistory">
                     <div id="rest-inform">
                         <p id="myinform">&gt; 내 연차 정보</p>
                         <br><br>
@@ -579,7 +582,7 @@
                         <div id="att-form">
                             <table>
                                 <tr>
-                                    <th width="30%">신청 날짜</th>
+                                    <th width="300">신청 날짜</th>
                                     <td><input type="text" value="2021년 8월 2일 (월요일)" disabled></td>
                                 </tr>
                                 <tr>
@@ -587,7 +590,7 @@
                                     <td><input type="text" value="출근 (2021/08/02 월) 13:45" disabled></td>
                                 </tr>
                                 <tr>
-                                    <td>사유</td>
+                                    <th>사유</th>
                                     <td><textarea> 출근 시간이 잘못 입력되었습니다.</textarea>
                                 </tr>
                             </table>

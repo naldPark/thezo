@@ -180,8 +180,8 @@
 	                </li>
 	                <li><a href="">인사근태</a>
                         <ul>
-                            <li><a href="">부서관리</a></li>
-                            <li><a href="">근태관리</a></li>
+                            <li><a href="adminDept.ma">부서관리</a></li>
+                            <li><a href="adminAtt.ma">근태관리</a></li>
                         </ul>
                     </li>
 	                <li><a href="memberInfo.me">회원정보</a>

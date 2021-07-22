@@ -7,8 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AttendanceController{
 	
 	@RequestMapping("attendance.ma")
-	public String attendanceMonthly() {
-		return "attendance/attendanceMonthly";
+	public String attendance() {
+		return "attendance/attendanceView";
+	}
+	
+	@RequestMapping("adminDept.ma")
+	public String deptManage() {
+		return "attendance/adminDeptManage";
+	}
+	
+	@RequestMapping("adminAtt.ma")
+	public String attManage() {
+		return "attendance/adminAttManage";
 	}
 	
 }

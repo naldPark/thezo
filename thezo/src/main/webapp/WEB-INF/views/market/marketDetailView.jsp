@@ -67,6 +67,7 @@
             <hr width="700">
            </div>
            <br>
+           <!-- 댓글 신고하기 넣기  -->
            <table id="replyArea" class="table-borderless" align="center">
                 <thead>
                     <tr>
@@ -116,7 +117,7 @@
                       
                             <!-- Modal Header -->
                             <div class="modal-header">
-                              <h4 class="modal-title">신고하기</h4>
+                              <h4 class="modal-title">게시글 신고하기</h4>
                               <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
                       

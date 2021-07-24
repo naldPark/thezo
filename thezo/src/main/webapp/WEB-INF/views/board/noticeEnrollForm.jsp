@@ -133,16 +133,16 @@
 							class="form-control-file border" name=""></td>
 					</tr>
 				</table>
+			
+				<br> <br>
+	
+				<div align="center">
+					<!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
+					<button type="submit" class="btn btn-secondary">등록</button>
+					<button type="reset" class="btn btn-secondary">취소</button>
+				</div>
+				<br> <br>
 			</form>
-			<br> <br>
-
-			<div align="center">
-				<!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
-				<button type="submit" class="btn btn-secondary">등록</button>
-				<button type="reset" class="btn btn-secondary">취소</button>
-			</div>
-			<br> <br>
-
 
 		</div>
 

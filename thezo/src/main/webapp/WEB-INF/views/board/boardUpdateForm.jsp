@@ -148,17 +148,15 @@
 					</tr>
 
 				</table>
-				</form>
 				<br> <br>
 
 				<div align="center">
-					<!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
 					<button type="submit" class="btn btn-secondary">수정</button>
-					<button type="button" class="btn btn-secondary"
-						onclick="javascript:history.go(-1);">이전</button>
+					<button type="button" class="btn btn-secondary"onclick="javascript:history.go(-1);">이전</button>
 				</div>
-				<br>
-				<br>
+				
+			</form>	
+			<br><br>
 		</div>
 		<br>
 

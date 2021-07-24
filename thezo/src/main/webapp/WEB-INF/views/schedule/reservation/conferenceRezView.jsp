@@ -28,24 +28,6 @@
 
 </script>
 <style>
-	#nav{
-	    width: 200px;
-        height: 1000px; 
-	    margin: 0;
-	    float: left;
-        background-color:rgb(219, 219, 219);
-        box-sizing: border-box;
-	}
-	
-	#nav button{
-        margin: 10px;
-    }
-
-    #nav a{
-        margin: 20px;
-        color: black;
-    }
-    
     #calendar{
     	padding: 20px;
     }
@@ -58,26 +40,8 @@
     <section>
 	    <div class="outer">
 	    	<!-- 예약관리 네비바 -->
-            <div id="nav">
-                <b style="margin-left: 30px; font-size: 25px;">자원예약</b> 
-				<button class="btn btn-sm btn-primary" style="margin-left: 15px;">뒤로</button>
-                <button class="btn btn-primary" style="width: 180px;" align="center">예약하기</button>
-                <a href="myList.rez"><b>나의 예약 목록</b></a> <br>
-                <a href="con.rez">회의실</a> <br>
-                <a href="sup.rez">비품</a> <br>
-                <a href="car.rez">차량</a> <br>
-
-                <hr>
-
-                <button class="btn btn-primary" style="width: 180px;" align="center">자원 관리하기</button>
-            </div>
-	                <%--
-	                	관리자가 자원을 추가, 관리할 수 있도록 해놓았는데,
-	                	그럼 메뉴바에서도 카테고리가 동적으로 추가되고, 삭제되어야 함.
-	                	=> 새로 추가된 자원 분류에 대해서도 매핑값을 각각 주어야 한다.
-	                	=> 이걸 동적으로 가능할까?..
-	                 --%>
-	    	<!-- 여기까지 예약관리 네비바 --------------------------------------------------- -->
+            <jsp:include page="rezMenubar.jsp"/>
+	                
 	    	
 	    	<div id="calendar"></div>
 	    	

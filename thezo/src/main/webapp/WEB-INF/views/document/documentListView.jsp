@@ -6,74 +6,34 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <style>
-	#nav{
-		width: 200px;
-		height: 800px; 
-		margin: 0;
-		float: left;
-		background-color:rgb(236, 236, 236);
-		box-sizing: border-box;
-	}
-	
-	#nav button{
-		margin: 10px;
-	}
-	
-	#nav a{
-		color: black;
-	}
-	
-	#nav ul{
-		padding: 0;
-		list-style-type: none;
-	}
-	
-	.list-area{
-		width: 900px;
-		height: 800px;
-		margin-left: 50px;
-		float: right;
-	}
-	      
-	.list-area img:hover {
-		cursor: porinter;
-	}
-  </style>
+	.list-area{width: 900px; height: 800px; margin-left: 50px; float: right;}
+	#search{width: 300px; margin: 0; box-sizing: border-box;}
+	.btn-search{text-align: left; padding: 10px; margin: 10px;}
+	.search-area{margin:auto 0;text-align: center;}
+	#condition{text-align: left; margin: 10px;}
+</style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
     
     <section>
     	<div class="outer">
-			<br>
-			<%-- -- 문서관리 네비바 ------------------------------%>
-            <div id="nav">
-            	문서관리 메뉴바 수정 해야함 <br>
-                <b style="margin-left: 30px; font-size: 25px;">문서양식</b> 
-				<hr>
-                <div id="nav">
-					<ul align="left">
-						<a href="list.doc"><li>공용 문서양식</li></a>
-						<a href=""><li>부서별 문서양식</li></a>
-						<!-- 클릭 시 부서별 게시판 이름이 나오게 -->
-						
-						<!-- 홈페이지에서 생성하게 할 수 있을까?-->
-						<!-- 각각 a링크를 주지말고 category=""의 조건을 줘서 조회되면 좋겠다 -->
-						<ul>
-							<a href=""><li>재무팀</li></a>
-							<a href=""><li>영업팀</li></a>
-							<a href=""><li>총무팀</li></a>
-						</ul>
-					</ul>
-					
-					
-				</div>
-            </div>
-            <%------------------------------네비바 끝 ------------------ --%>
+			<!-- -- 문서관리 네비바 --->
+			<jsp:include page="documentMenubar.jsp"/>            
 		    
+
+		    <br>
 		    
-		    
+			<select style="float:right; margin:15px;">
+				<option value="5">5개씩</option>
+				<option value="10">10개씩</option>
+				<option value="15" selected>15개씩</option>
+				<option value="20">20개씩</option>
+				<option value="30">30개씩</option>
+			</select>
+			
 		    <div class="list-area" align="center">
 		        <table border="1" class="table table-bordered text-center" id="list-tb">
 		            <thead>
@@ -87,48 +47,44 @@
 		                </tr>
 		            </thead>
 		            <tbody>
-		                
-		                	<c:choose>
-			                	<c:when test="${ empty list }">
-				                	<tr>
-				                		<td colspan="6">등록된 문서양식이 없습니다.</td>
-				                	</tr>
-			                	</c:when>
-			                	<c:otherwise>
-				                	<c:forEach var="d" items="${ list }">
-				                		<tr>
-						                    <td><input type="checkbox" class="docCheck" value="${ d.docNo }"></td>
-						                    <td>${ d.docNo }</td>
-						                    <td>${ d.docWriter }</td>
-						                    <td>${ d.docContent }</td>
-						                    <td>
-												<a href="${ d.changeName }" download="${ d.originName }">
-													<div>
-														<img style="width:20px; height:20px;" src='${pageContext.request.contextPath}/resources/images/downloadIcon.png');>
-													</div>
-												</a>
-											</td>
-						                    <td>${ d.createDate }</td>
-					                    </tr>
-					                </c:forEach>
-					             </c:otherwise>
-			                </c:choose>
-		                
-		                
+						<c:choose>
+							<c:when test="${ empty list }">
+								<tr>
+									<td colspan="6">등록된 문서양식이 없습니다.</td>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<c:forEach var="d" items="${ list }">
+									<tr>
+										<td><input type="checkbox" class="docCheck" value="${ d.docNo }"></td>
+										<td>${ d.docNo }</td>
+										<td>${ d.docWriter }</td>
+										<td>${ d.docContent }</td>
+										<td>
+											<a href="${ d.changeName }" download="${ d.originName }">
+												<div>
+													<i class='far fa-file' style='font-size:20px'></i>
+												</div>
+											</a>
+										</td>
+										<td>${ d.createDate }</td>
+									</tr>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
 		            </tbody>
 		        </table>
 		        
 		        <div class="button-area" align="left">
-			            <a href="#" onclick="updateDoc();" class="btn btn-primary">수정</a>
-			            <a href="#" onclick="deleteDoc();" class="btn btn-danger">삭제</a>
-		            
-		            
+					<a href="#" data-toggle="modal" data-target="#updateDoc" class="btn btn-primary">수정</a>
+					<a href="#" data-toggle="modal" data-target="#deleteDoc" class="btn btn-danger">삭제</a>
 		            <button class="btn btn-primary" data-toggle="modal" data-target="#insertDoc" style="float:right;">등록</button>
 		    	</div>
 		    	
 		    	<%-- update, delete 기능 수행 할 스크립트 -------------------------- --%>
 		    	<script>
 		    		// checked 된 값 가져오기..ㅠㅠ 왜안됨
+		    		/*
 			    	var array = Array();
 		    		var count = 0;
 		    		var chkbox = $(".docCheck");
@@ -150,72 +106,27 @@
 		    			if(chkbox.length == 1){
 		    				location.href = "update.doc";
 		    			}else{
-		    				alert("한 개만 선택해주세요");
+		    				//alert("한 개만 선택해주세요");
 		    			}
 		    		}
+		    		*/
 		    		
 		    	</script>
 		    		
 		        
 		        <br><br>
 		        
-		        <%-- 문서등록 창 ------------------------------------------------------------------------%>
-		        	<form action="insert.doc" id="docEnrollForm" method="post" enctype="multipart/form-data">
-						<!-- The Modal -->
-						<div class="modal" id="insertDoc">
-						  <div class="modal-dialog modal-lg">
-						    <div class="modal-content">
-						
-						      <!-- Modal Header -->
-						      <div class="modal-header">
-						        <h4 class="modal-title">문서등록</h4>
-						        <button type="button" class="close" data-dismiss="modal">&times;</button>
-						      </div>
-						
-						      <!-- Modal body -->
-						      <div class="modal-body">
-						      	<input type="hidden" name="docWriter" value="${ loginUser.userId }">
-							    <table class="" align="center">
-							        <tr>
-							            <th width="120px">작성자</th>
-							            <td colspan="2">${ loginUser.userId }</td>
-							            <td>
-							                <select name="docCategory" id="docCategory">
-							                	<option value="공용">공용</option>
-							                    <option value="재무팀">재무팀</option>
-							                    <option value="영업팀">영업팀</option>
-							                    <option value="총무팀">총무팀</option>
-							                </select>
-							            </td>
-							        </tr>
-							        
-							        <tr>
-							            <th>내용</th>
-							            <td colspan="2"><textarea name="docContent" id="" cols="50" rows="10" style="resize: none;" required></textarea></td>
-							        </tr>
-							        <tr>
-							            <th>첨부파일</th>
-							            <td><input type="file" name="upfile" required></td>
-							        </tr>
-							        
-							
-							    </table>
-							    
-						      </div>
-						
-						      <!-- Modal footer -->
-						      <div class="modal-footer center">
-							      <div class="button-area">
-								        <button class="btn btn-secondary" data-dismiss="modal">취소</button>
-								        <button class="btn btn-primary" type="submit">저장</button>
-								  </div>
-						      </div>
-						
-						    </div>
-						  </div>
-						</div>
-			        </form>
+		        <%-- 문서등록 모달창 --------%>
+				<jsp:include page="documentInsertView.jsp"/>
 		        
+		        <%-- 문서수정 모달창 -------%>
+		        <jsp:include page="documentUpdateView.jsp"/>
+		        
+		        <%-- 문서삭제 모달창 ----- --%>
+		        <jsp:include page="documentDeleteView.jsp"/>
+
+
+
 		        <%-- 페이징바 ------------------------------------------------------------------------ --%>
 		        <div class="paging-area">
 		            <ul class="pagination justify-content-center">
@@ -241,9 +152,21 @@
 		            </ul>
 		        </div>
 		        <%------------------------------------------------------------------------------ 페이징바 끝--%>
-		        
+
+				<%-- 검색바 ------%>
+				<div class="search-area">
+					<form class="form-inline justify-content-center" action="search.doc">
+						<select class="form-control" name="condition" id="condition">
+							<option value="docWriter" selected>작성자</option>
+							<option value="docContent">내용</option>
+						</select>
+						<input type="search" class="form-control" placeholder="검색어를 입력하세요" id="search">
+						<button type="submit" class="btn btn-primary btn-search">검색</button>
+					</form>
+				</div>
 			</div>
     	</div>
+		
     </section>
     
 </body>

@@ -38,13 +38,13 @@
 			right: 'dayGridMonth,dayGridWeek,dayGridDay'
         },
         
-        initialDate: '2021-07-13', // ?
+        initialDate: '2021-07-13', // 초기날짜
         navLinks: true, // can click day/week names to navigate views
         editable: true,
         dayMaxEvents: true, // allow "more" link when too many events
         locale: 'ko', // 한국어 설정
         themeSystem: 'bootstrap', // 테마 설정
-        events: [
+        events: [ // ajax로 일정 불러오기 
           {
             title: 'All Day Event',
             start: '2021-07-01'
@@ -63,36 +63,6 @@
             groupId: 999,
             title: 'Repeating Event',
             start: '2021-07-16T16:00:00'
-          },
-          {
-            title: 'Conference',
-            start: '2021-07-11',
-            end: '2021-07-13'
-          },
-          {
-            title: 'Meeting',
-            start: '2021-07-12T10:30:00',
-            end: '2021-07-12T12:30:00'
-          },
-          {
-            title: 'Lunch',
-            start: '2021-07-12T12:00:00'
-          },
-          {
-            title: 'Meeting',
-            start: '2021-07-12T14:30:00'
-          },
-          {
-            title: 'Happy Hour',
-            start: '2021-07-12T17:30:00'
-          },
-          {
-            title: 'Dinner',
-            start: '2021-07-12T20:00:00'
-          },
-          {
-            title: 'Birthday Party',
-            start: '2021-07-13T07:00:00'
           },
           {
             title: 'Click for Google',
@@ -123,88 +93,6 @@
 	<br>
 	<div id="calendar"></div>
 	
-	<%-- 일정추가 모달창 ----------------------------------------------------------------------------%>
-	<form action="insert.sc">
-		<!-- The Modal -->
-		<input type="hidden" value="${ loginUser.userId }"> <!-- 현재 로그인한 유저 아이디 전달 -->
-		<div class="modal" id="insertSc">
-		  <div class="modal-dialog modal-lg">
-		    <div class="modal-content">
-		
-		      <!-- Modal Header -->
-		      <div class="modal-header">
-		        <h4 class="modal-title">일정 추가</h4>
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		      </div>
-		
-		      <!-- Modal body -->
-		      <div class="modal-body">
-			    <table align="center">
-			        <tr>
-			            <th width="120px">일정 제목</th>
-			            <td colspan="2"><input type="text" name="scTitle" style="width: 380px;" placeholder="일정 제목을 입력해주세요"></td>
-			            <td>
-			                <select name="scType" id="scType">
-			                    <option value="personal">개인</option>
-			                    <option value="dep">부서</option>
-			                    <option value="com">회사</option>
-			                </select>
-			            </td>
-			        </tr>
-			        
-			        <tr>
-			            <th>시작일</th>
-			            <td><input type="date" name="startDate" id="startDate"></td>
-			            <td><input type="time" name="startTime" id="startDate"></td>
-			            <td rowspan="2"><input type="checkbox" id="timeCheck" name="allDay" checked>시간설정</td> 
-			            <!-- 시간설정 체크 해제시 시간 input 사라지게 / 기본값: 체크설정-->
-			        </tr>
-			        
-			        <script>
-			        	// 시간설정 -> 기본을 체크로 두고, 체크해제시 시간설정 input을 hidden처리하고 입력받지않는다.
-			        	// 시간 input의 value값을 지우는 설정도 해야될듯 안그러면 값입력하고 hidden 처리시 값이 넘어오니까
-			        	
-			        	// => 체크해제시 하루종일 Y로.. 되게 ..ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
-			        	$(function(){
-			        		 $("#timeCheck").change(function(){
-		        		        if($("#timeCheck").is(":checked")){
-		        		        	$('#startTime').show();
-				        			$('#endTime').show();
-		        		        }
-		        		        else{
-		        		            $('#startTime').val('');
-				        			$('#endTime').val('');
-				        			$('#startTime').hide();
-				        			$('#endTime').hide();
-		        		        }
-			        		});
-	        		    });
-			        </script>
-			        <tr>
-			            <th>종료일</th>
-			            <td><input type="date" name="endDate" id="endDate"></td>
-			            <td><input type="time" name="endTime" id="endDate"></td>
-			        </tr>
-			        <tr>
-			            <th>내용</th>
-			            <td colspan="2"><textarea name="sheduleContent" id="" cols="50" rows="10" style="resize: none;"></textarea></td>
-			        </tr>
-			
-			    </table>
-			    
-		      </div>
-		
-		      <!-- Modal footer -->
-		      <div class="modal-footer center">
-			      <div class="button-area">
-				        <button class="btn btn-secondary" data-dismiss="modal">취소</button>
-				        <button class="btn btn-primary" type="submit">저장</button>
-				  </div>
-		      </div>
-		
-		    </div>
-		  </div>
-		</div>
-	</form>
+	<jsp:include page="scheduleInsertView.jsp"/>
 </body>
 </html>

@@ -7,45 +7,15 @@
 <meta charset="UTF-8">
 <title>예약하기-나의예약목록</title>
 <style>
-
-    #nav{
-	    width: 200px;
-        height: 800px; 
-	    margin: 0;
-	    float: left;
-        background-color:rgb(236, 236, 236);
-        box-sizing: border-box;
-	}
-
     #myList{
-        width: 950px; /*왜.. 1000px하면 딱 안맞지?..*/
+        width: 950px;
         margin: 0;
         float: left;
         box-sizing: border-box;
         padding: 25px;
     }
-
-    #nav button{
-        margin: 10px;
-    }
-
-    #nav a{
-        margin: 20px;
-        color: black;
-    }
-
-    
-
-    #myList>table{
-        text-align: center;
-        width: 800px;
-    }
-
-    #myList>table th{
-        width: 10%;
-    }
-
-   
+    #myList>table{text-align: center; width: 800px;}
+    #myList>table th{width: 10%;}  
 </style>
 </head>
 <body>
@@ -53,22 +23,8 @@
     <jsp:include page="../../common/header.jsp"/>
     <section>
         <div class="outer">
-
-            <!-- 예약관리 네비바 -->
-            <div id="nav">
-                <b style="margin-left: 30px; font-size: 25px;">자원예약</b> 
-				<button class="btn btn-sm btn-primary" style="margin-left: 15px;">뒤로</button>
-                <button class="btn btn-primary" style="width: 180px;" align="center">예약하기</button>
-                <a href="myList.rez"><b>나의 예약 목록</b></a> <br>
-                <a href="con.rez">회의실</a> <br>
-                <a href="sup.rez">비품</a> <br>
-                <a href="car.rez">차량</a> <br>
-
-                <hr>
-
-                <button class="btn btn-primary" style="width: 180px;" align="center">자원 관리하기</button>
-            </div>
-            <!-------------------------------네비바 끝-->
+			<!-- 예약관리 메뉴바 -->
+            <jsp:include page="rezMenubar.jsp"/>
 
             <div id="myList">
                 &nbsp;&nbsp;&nbsp;
@@ -197,7 +153,7 @@
                 <div class="modal-footer">
                     <div class="button-area">
                         <a href="delete.rez" class="btn btn-danger">삭제</a>
-                        <button class="btn btn-primary" type="submit">확인</button>
+                        <button class="btn btn-secondary" class="close" data-dismiss="modal">취소</button>
                     </div>
                 </div>
         

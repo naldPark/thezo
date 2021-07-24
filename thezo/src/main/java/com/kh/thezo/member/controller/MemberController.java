@@ -26,4 +26,10 @@ public class MemberController {
 	public String memberDelete() {
 		return "member/memberDelete";
 	}
+	
+	// 사용자 내 정보 수정 페이지 응답 - 이성경
+	@RequestMapping("myPage.me")
+	public String myPage() {
+		return "member/memberMyPage";
+	}
 }

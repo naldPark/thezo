@@ -129,7 +129,7 @@
                     <%-- 연락처 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
                     <li id="user-basic-info"><a href="">${loginUser.userId}</a>님 반가워요 &nbsp;
                         <ul>
-                            <li><a href="">내 정보 수정</a></li>
+                            <li><a href="myPage.me">내 정보 수정</a></li>
                             <li><a href="attendance.ma">근태관리</a></li>
                             <li><a href="logout.me">로그아웃</a></li>
                         </ul>

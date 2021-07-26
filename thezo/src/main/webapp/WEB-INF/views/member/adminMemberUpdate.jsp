@@ -6,44 +6,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
-   .innerOuter{
-        width: 1000px;
-        margin:auto;
-        padding:5% 5%;
-        background:white;
-    }
-
-    #content1{
-        width:80%;
-        margin:auto;
-    }
-    #content , #address-area, #department{width:50%;}
-
-    #department>table{width: 100%;}
-
-
-    body{position:relative;}
-	.container{position:absolute; top:30%; left:20%;}
-	table tbody{cursor:pointer;}
-	#sPhoto{border-radius:50%; object-fit:cover;}
-</style>
 </head>
 <body>
 
-	<!-- 관리자 : 사원 등록 (이성경)  -->
+	<!-- 관리자 : 사원 수정 (이성경) -->
+
 	<jsp:include page="../common/header.jsp" />
 	
 	<script>
 		document.getElementById("admin-header").style.display = "block";
 		document.getElementById("admin-mode").style.color = "red";
 	</script>
-	
-	
+
     <div class="outer">
 
         <div class="innerOuter">
-            <h2><b>사원 등록</b></h2>
+            <h2><b>사원 수정</b></h2>
             <br>
 
             <div id="content1">
@@ -56,21 +34,18 @@
                             <input type="hidden" name="originName" value="origin">
                             <!-- if( 사원정보 != null ){ 처리 }-->
                             <input id="reUpfile" type="file" name="reUpfile" onchange="loadImg(this);">
-                            <img id="sPhoto" width="200" height="200" src="resources/images/userProfile.png">
+                            <img id="sPhoto" width="200" height="200" src="">
                         </div>
                         <div id="content" class="form-row">
+                            <label for="memNo" align="left">사원번호</label>
+                            <input type="text" class="form-control" id="memNo" name="memNo" value="101" readonly><br>
+
                             <label for="memId">아이디</label>
-                            <input type="text" class="form-control" id="memId" name="memId" required><br>
+                            <input type="text" class="form-control" id="memId" name="memId" value="user01" readonly><br>
 
                             <label for="memName">이름</label>
-                            <input type="text" class="form-control" id="memName" name="memName" required><br>
+                            <input type="text" class="form-control" id="memName" name="memName" value="김춘식"><br>
 
-                            <label for="memPwd">비밀번호</label>
-                            <input type="text" class="form-control" id="memPwd" name="memPwd" required><br>
-
-                            <label for="checkPwd">비밀번호 확인</label>
-                            <input type="password" class="form-control" id="checkPwd" required><br><br>
-                            
                             <label for="gender">성별</label>&nbsp;&nbsp;&nbsp;&nbsp;
                             <div class="form-check-inline">
                                 <label class="form-check-label">
@@ -83,31 +58,31 @@
                                 </label>
                             </div>
 
-							<!-- 여기가 문제...해결하기  -->
                             <label for="phone">전화번호</label>
-                            <input type="text" class="form-control" id="phone" name="phone" required><br>
+                            <input type="text" class="form-control" id="phone" name="phone" value="010-1111-2222" required><br>
 
                             <label for="email">이메일</label>
-                            <input type="text" class="form-control" id="email" name="email" required><br>
+                            <input type="text" class="form-control" id="email" name="email"  value="user02@thezo.com" required><br>
                             
                             <label for="birth">생년월일</label>
-                            <input type="date" class="form-control" id="birth" name="birth" required><br>
+                            <input type="date" class="form-control" id="birth" name="birth" value="1980-11-11" required><br>
                         </div>    
 
                         <div id="address-area">
                             <label for="address"  class="form-row" align="left">&nbsp;주소</label>
                             <div id="zip_code" class="form-inline">
-                                <input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" name="zipCode" placeholder="우편번호" required style="width: 100px;">
-                                <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="btn-address"  class="btn btn-primary mb-2">
+                                <input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" name="zipCode"  value="01342" required style="width: 100px;">
+                                <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="btn-address"  class="btn btn-primary mb-2"><br>
                             </div>
-                            <input type="text"  class="form-control" id="sample6_address" name="addressS" placeholder="주소" required>
+                            <div style="width:130px; display:inline-block;"></div>
+                            <input type="text"  class="form-control" id="sample6_address" name="addressS" value="서울시 강남" required>
                             <div id="div-name"></div>
-                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소" required>
+                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" value="kh"required>
                         </div>
 
                         <div class="form-row" id="content">
                             <label for="birth">입사일</label>
-                            <input type="date" class="form-control" id="enrollDate" name="enrollDate" required><br>
+                            <input type="date" class="form-control" id="enrollDate" name="enrollDate" value="2014-11-11" required><br>
                         </div>
 
                         <div id="department">
@@ -169,8 +144,7 @@
                         <br><br>
                                     
                         <div align="center">
-                            <button type="submit" class="btn btn-primary">등록</button>
-                            <button type="reset" class="btn btn-secondary"> 초기화</button>
+                            <button type="submit" class="btn btn-primary">수정</button>
                         </div>
                                     
                     </form>

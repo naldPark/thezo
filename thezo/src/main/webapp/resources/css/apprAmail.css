@@ -5,8 +5,8 @@
       color:rgb(99, 97, 97);
       box-sizing: border-box;
     }
-    .modal{z-index: 99999!important }
-    .outer{margin-top:80px; border:1px solid lightgrey; }
+    .modal{z-index: 99999!important; font-family:'Noto Sans KR', sans-serif; color:rgb(99, 97, 97);}
+    .outer{margin-top:80px; margin-bottom:80px; border:1px solid lightgrey; min-height: 800px!important;}
     .sideOuter{padding:10px 20px 0px 170px;}
     .mailOuter{padding:10px 20px 0px 220px;}
     a{ text-decoration:none !important; cursor: pointer; }
@@ -35,6 +35,7 @@
     .bigCheckbox{ width:20px; height:20px;vertical-align: middle;}
     .table-primary, .table-primary td, .table-primary th{background-color: rgb(20,70,104)!important; color: white!important; border-color:rgb(20,70,104)!important;}
     .table-hover{cursor: pointer;}
+    .selectBoxCustom{padding:2px; border:0.5px solid lightgray; font-weight: lighter;}
     #admin-header{display: block !important;}
     #admin-nav{display: block !important; margin-top:30px}
     

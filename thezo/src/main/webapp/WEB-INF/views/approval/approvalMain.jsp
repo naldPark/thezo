@@ -78,11 +78,11 @@
                 <!-- 문서리스트 -->
                 <div class="apprList shadow p-4 mb-3 bg-white w3-cell-row">
                     <div class="w3-cell" style="width:10%">
-                        <h3 class="w3-cell"><i class="fas fa-coins docMenu"></i></h3>
-                        <span>비용</span>
+                        <h3 class="w3-cell"><i class="fas fa-couch docMenu"></i></h3>
+                        <span>인사</span>
                     </div>
                     <div class="w3-cell text-left">
-                        <h5 class="w3-cell">법인카드요청</h5>
+                        <h5 class="w3-cell">휴가신청서</h5>
                         <small>2021-01-13 13:03</small>
                     </div>
                     <div class="w3-cell">
@@ -203,7 +203,7 @@
                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                     <li class="page-item"><a class="page-link" href="#">다음</a></li>
                 </ul>
-                <br><br>
+                <br>
             </div>
     	</div>
     </section>

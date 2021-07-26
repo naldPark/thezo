@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="approvalMapper">
+
+	<resultMap id="approvalResult" type="Approval">
+		<result column="doc_no" property="docNo"/>
+		<result column="mem_no" property="memNo"/>
+		<result column="form_no" property="formNo"/>
+		<result column="doc_name" property="docName"/>
+		<result column="DOC_CONTENT" property="content"/>
+		<result column="STATUS" property="status"/>
+		<result column="DOC_TYPE" property="docType"/>
+		<result column="DOC_DATE" property="docDate"/>
+	</resultMap>
+	
+	
+	<!-- 
+	<select id=" resultXXXX="">
+	
+	
+	</select>
+
+	<insert>
+	</insert>
+
+	<update>
+	</update>	
+
+	<delete>
+	</delete>
+ 	-->
+</mapper>

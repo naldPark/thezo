@@ -61,9 +61,9 @@
                     <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
                 </div>
                 <div class="d-flex mb-4 shadow newDocu">
-                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
-                    <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
-                    <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
+                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-couch docMenu"></i> 인사</b> <br>휴가신청서</div>
+                    <div class="p-4 flex-grow-1">휴가(연차/경조사) 신청 시 사용하는 문서입니다 </div>
+                    <div class="p-4"><button type="button"  onclick="location.href='leaveEnrollForm.appr'" class="btn btn-primary">작성</button></div>
                 </div>
                 <div class="d-flex mb-4 shadow newDocu">
                     <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>

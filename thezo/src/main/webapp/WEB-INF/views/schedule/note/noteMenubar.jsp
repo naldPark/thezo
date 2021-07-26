@@ -28,13 +28,13 @@
 		</div>
 		<script>
 			$(document).ready(function(){
-			  $('[data-toggle="tooltip"]').tooltip();   
+				$('[data-toggle="tooltip"]').tooltip();   
 			});
 		</script>
 		
-		<button class="btn btn-primary" style="width: 180px;" align="center" data-toggle="modal" data-target="#insertSc">
+		<a href="insertForm.note" class="btn btn-primary" style="width: 180px; margin:10px;">
 			노트 작성
-		</button>
+		</a>
 		<hr>
 		
 		<button class="btn down_sc" onclick="slideDown_sc();" style="font-size: 20px; margin: 3px; padding: 3px;">
@@ -68,7 +68,7 @@
 		
 		
 		<div class="slide_menu">
-			<a href="list.nt" id="note-list"><b>노트 목록</b></a>
+			<a href="list.note" id="note-list"><b>노트 목록</b></a>
 			<br>
 			<a href="">업무 보고</a>
 			<br>

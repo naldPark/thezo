@@ -27,7 +27,7 @@
                 <div class="modal-footer">
                     <div class="button-area">
                         <a href="delete.doc" class="btn btn-danger">삭제</a>
-                        <button class="btn btn-primary" type="submit">취소</button>
+                        <button class="btn btn-secondary"data-dismiss="modal">취소</button>
                     </div>
                 </div>
         

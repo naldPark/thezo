@@ -15,8 +15,9 @@
 	.subject{font-size: x-large; text-align: center;}
 	.fa-reply{color: black;}
 	.fa-reply:hover{color:rgb(243,156,18);}
-	#nav a{color: black; margin-left: 20px;}
+	.rezMenu>a{color: black; margin-left: 20px;}
 	a>b{color:rgb(243,156,18);}
+	.btn>b{font-size: 18px; margin: 10px;}
 </style>
 <body>
 	<!-- 예약관리 네비바 -->
@@ -25,28 +26,31 @@
 	    <div class="subject">
 			<i class='fas fa-clock' style='font-size:20px'></i>
 			<b>자원예약</b>
-			<a class="back" href="main.sc" data-toggle="tooltip" title="일정관리로 돌아가기"><i class='fas fa-reply' style='font-size:15px'></i></a>
+			<a class="back" href="main.sc" data-toggle="tooltip" title="일정관리로 돌아가기"><i class='fas fa-reply' style='font-size:15px;'></i></a>
 		</div>
 		<script>
 			$(document).ready(function(){
 			  $('[data-toggle="tooltip"]').tooltip();   
 			});
 		</script>
-		<button class="btn btn-primary" style="width: 180px;" align="center" data-toggle="modal" data-target="#insertRez">
+		<button class="btn btn-primary" style="width: 180px;" align="center" data-toggle="modal" data-target="#insert">
 			자원 예약
 		</button>
 		<hr>
-		<a href="myList.rez"><b>나의 예약 목록</b></a> <br>
-		<a href="con.rez">회의실</a> <br>
-		<a href="sup.rez">비품</a> <br>
-		<a href="car.rez">차량</a> <br>
+		<div class="rezMenu">
+			<a href="myList.rez"><b>나의 예약 목록</b></a> <br>
+			<a href="con.rez">회의실</a> <br>
+			<a href="sup.rez">비품</a> <br>
+			<a href="car.rez">차량</a> <br>
+		</div>
 		<c:set var="URI" value="${pageContext.request.requestURI}"/>
 		<hr>
-		<script>
-			
-		</script>
+
+
+		<!-- 사용자 == 관리자일때 !!-->
 		<button class="btn btn-primary" style="width: 180px;" align="center">자원 관리하기</button>
 	</div>
-	<!-------------------------------네비바 끝-->
+	
+	<jsp:include page="rezInsertView.jsp" />
 </body>
 </html>

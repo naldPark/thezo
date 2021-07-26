@@ -114,7 +114,7 @@
 		    	</script>
 		    		
 		        
-		        <br><br>
+		        <br>
 		        
 		        <%-- 문서등록 모달창 --------%>
 				<jsp:include page="documentInsertView.jsp"/>

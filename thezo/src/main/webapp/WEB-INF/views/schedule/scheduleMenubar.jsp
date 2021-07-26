@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	#nav{width: 200px; height: 800px; margin: 0; float: left; background-color:rgb(236, 236, 236); box-sizing: border-box;}
+	#nav{width: 200px; height: 700px; margin: 0; float: left; background-color:rgb(236, 236, 236); box-sizing: border-box;}
 	#nav button{margin: 10px;}
 	#nav ul{list-style-type: none; padding-left: 20px;}
 	.subject{font-size: x-large;text-align: center;}
@@ -46,6 +46,7 @@
 		
 			</ul>
 		</div>
+		
         <hr>
 		
 		<button class="btn down_menu" onclick="slideDown_menu();" style="font-size: 20px; margin: 3px; padding: 3px;">
@@ -59,7 +60,7 @@
 		
 		
 		<div class="slide_menu">
-			<a href="list.nt" id="note-list">노트 목록</a>
+			<a href="list.note" id="note-list">노트 목록</a>
 			<br>
 			<a href="" id="note-list">업무 보고</a>
 			<br>

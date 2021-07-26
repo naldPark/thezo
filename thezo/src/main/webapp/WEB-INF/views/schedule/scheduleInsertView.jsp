@@ -26,21 +26,26 @@
 			    <table align="center">
 			        <tr>
 			            <th width="120px">일정 제목</th>
-			            <td colspan="2"><input type="text" name="scTitle" style="width: 380px;" placeholder="일정 제목을 입력해주세요"></td>
-			            <td>
-			                <select name="scType" id="scType">
+			            <td colspan="2">
+			            	<input type="text" name="scTitle" style="width: 350px;" placeholder="일정 제목을 입력해주세요">
+			            	<select name="scType" id="scType">
 			                    <option value="personal">개인</option>
 			                    <option value="dep">부서</option>
 			                    <option value="com">회사</option>
 			                </select>
 			            </td>
+			            <td>
+			                
+			            </td>
 			        </tr>
 			        
 			        <tr>
 			            <th>시작일</th>
-			            <td><input type="date" name="startDate" id="startDate"></td>
-			            <td><input type="time" name="startTime" id="startDate"></td>
-			            <td rowspan="2"><input type="checkbox" id="timeCheck" name="allDay" checked>시간설정</td> 
+			            <td><input type="date" name="startDate" id="startDate"> <input type="time" name="startTime" id="startDate"></td>
+			            <td rowspan="2">
+							<input type="checkbox" id="timeCheck" name="allDay" checked>시간설정
+						</td>
+
 			            <!-- 시간설정 체크 해제시 시간 input 사라지게 / 기본값: 체크설정-->
 			        </tr>
 			        
@@ -50,28 +55,22 @@
 			        	
 			        	// => 체크해제시 하루종일 Y로.. 되게 ..ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
 			        	$(function(){
-			        		 $("#timeCheck").change(function(){
-		        		        if($("#timeCheck").is(":checked")){
-		        		        	$('#startTime').show();
-				        			$('#endTime').show();
-		        		        }
-		        		        else{
-		        		            $('#startTime').val('');
-				        			$('#endTime').val('');
-				        			$('#startTime').hide();
-				        			$('#endTime').hide();
-		        		        }
-			        		});
+			        		 $("#timeCheck").click(function(){
+								if($("#timeCheck").attr("checked", true)){
+									$("input[type='time']").show();
+								}else{
+									$("input[type='time']").hide();
+								}
+							 });
 	        		    });
 			        </script>
 			        <tr>
 			            <th>종료일</th>
-			            <td><input type="date" name="endDate" id="endDate"></td>
-			            <td><input type="time" name="endTime" id="endDate"></td>
+			            <td><input type="date" name="endDate" id="endDate"> <input type="time" name="endTime" id="endDate"></td>
 			        </tr>
 			        <tr>
 			            <th>내용</th>
-			            <td colspan="2"><textarea name="sheduleContent" id="" cols="50" rows="10" style="resize: none;"></textarea></td>
+			            <td colspan="2"><textarea name="sheduleContent" id="" cols="45" rows="10" style="resize: none;" placeholder="내용을 입력해주세요"></textarea></td>
 			        </tr>
 			
 			    </table>

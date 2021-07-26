@@ -17,15 +17,12 @@
 	    <div class="outer">
             
 			<%-- -- 일정관리 네비바 ------------------------------%>
-			<jsp:include page="scheduleMenubar.jsp"/>
+            <jsp:include page="scheduleMenubar.jsp"/>
+            			
 	    	
 	   		<%-- 캘린더 영역 --------------------------------------- --%>
-               <br>
 			<jsp:include page="fullcalendar.jsp"/>
 	        
-           
-            
-
 	    </div>
 	    
    </section>

@@ -17,5 +17,9 @@ public class MessageController {
 		return mv;
 	}
 
-
+	@RequestMapping("search.me")
+	public ModelAndView searchMemberWidow(ModelAndView mv) {
+		mv.setViewName("common/jwMemberSearch");
+		return mv;
+	}
 }

@@ -18,15 +18,13 @@
 	#unhandeled-msgarea>table, #handeled-msgarea>table{width: 950px; text-align: center; margin-bottom: 10px; border-top: 10px solid rgb(44, 62, 80); border-bottom: 1px solid lightgray;}
 	#unhandeled-msgarea thead, #handeled-msgarea thead{height: 36px; line-height: 22px; background-color: rgb(234,234,234);}
 	#unhandeled-msgarea tbody tr, #handeled-msgarea tbody tr {height: 35px; font-size: 14px; border-bottom: 0.5px solid rgb(204,204,204);}
-
 	#unhandeled-msgarea tbody tr:not(:last-child):hover{cursor: pointer; font-weight: bold; background-color: rgba(254,246,234,0.6);}	
-	
 	#handeled-msgarea tbody tr:hover{cursor: pointer; font-weight: bold; background-color: rgba(254,246,234,0.6);}	
 	#unhandeled-msgarea thead>tr>th, #handeled-msgarea thead>tr>th{font-size: 14px; border-bottom: 1px solid gray;}
 	#unhandeled-msgarea thead>tr>th{width: 16.6%;}
 	#handeled-msgarea thead>tr>th{width: 14.28%;}
 	#unhandeled-msgarea tbody>tr>td, #handeled-msgarea tbody>tr>td{padding: 0px; border: none; vertical-align: middle;}
-	.report-btn{width: 100px; height: 28px; color: white; font-size: 12px; border: none; border-radius: 3px; transform: translateX(5px); background-color: rgb(155,89,182);}  
+	.report-btn{width: 100px; height: 28px; color: white; font-size: 12px; border: none; border-radius: 3px; margin-left: 5px; background-color: rgb(155,89,182);}  
 
 	/* 내가 만든 paging-area 재원 ~ */
 	.paging-area{text-align: center; margin: 10px 0px;} 
@@ -60,6 +58,10 @@
 <body>
 	<jsp:include page="../common/header.jsp"/>
 	<script>
+		$(function(){
+			var adminNav = document.getElementById("admin-header");
+			$("section").css("margin-top", (adminNav.style.display != 'none'?"115px":"70px"));
+		})
 		document.getElementById("admin-header").style.display ="block"; 
         document.getElementById("admin-mode").style.color = "red";
 	</script>
@@ -164,7 +166,6 @@
 		</div>
 	</section>
 <%----------------------------------------------------------- 스크립트영역 시작 ----------------------------------------------------------%>	
-
 	<script>
 		// 신고처리 버튼 클릭시 신고번호 모달로 넘기는 스크립트 
 		function btnTossReportNo(reportNo){
@@ -187,8 +188,6 @@
 		}
 	</script>
 <%----------------------------------------------------------- 스크립트영역 끝 ----------------------------------------------------------%>	
-
-
 <%----------------------------------------------------------- 신고처리 모달 영역 시작----------------------------------------------------------%>	
 
 	<%-- 모달을 2개만 만들자 조회용 신고처리용  먼저 만들것은 신고처리 모달이다 그래야지 좀 수월하게 만든다  위치는 나중에 바꿔주고 --%>
@@ -235,7 +234,7 @@
 							</div>
 							<div class="right-content">
 								<p class="text-purple">※ 답변내용</p>
-								<textarea name="" id="" required></textarea>
+								<textarea name="" required></textarea>
 							</div>
 						</div>
 					</div>
@@ -246,7 +245,7 @@
 						<div>
 							<!--값들 가져와서 뿌려야함-->
 							<span>신고대상</span>
-							<input type="text" name="" id="" required>  
+							<input type="text" name="" required>  
 							<span>징계정도</span>
 							<select name="">
 								<option value="">기능제한</option>
@@ -256,7 +255,7 @@
 						</div>
 						<div>
 							<span>처리상태</span>
-							<select name="" id="">
+							<select name="" >
 								<option value="">처리중</option>
 								<option value="">처리완료</option>
 							</select>
@@ -313,7 +312,7 @@
 						</div>
 						<div class="right-content">
 							<p class="text-purple">※ 답변내용</p>
-							<textarea name="" id="" disabled></textarea>
+							<textarea name="" disabled></textarea>
 						</div>
 					</div>
 				</div>
@@ -324,7 +323,7 @@
 					<div>
 						<!--값들 가져와서 뿌려야함-->
 						<span>신고대상</span>
-						<input type="text" name="" id="" disabled>  
+						<input type="text" name="" disabled>  
 						<span>징계정도</span>
 						<select name="" disabled>
 							<option value="">기능제한</option>
@@ -334,7 +333,7 @@
 					</div>
 					<div>
 						<span>처리상태</span>
-						<select name="" id="" disabled>
+						<select name=""  disabled>
 							<option value="">처리중</option>
 							<option value="">처리완료</option>
 						</select>
@@ -345,6 +344,5 @@
 		</div>
 	</div>
 <%----------------------------------------------------------- 신고상세 모달 영역 끝----------------------------------------------------------%>	
-
 </body>
 </html>

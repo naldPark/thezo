@@ -73,7 +73,7 @@
 	.view-modify-content{width: 95%; margin: auto; margin-top: 0px;}
 	#nfModal .view-modify-content{padding: 0px;}
 	.re-notification{width: 310px; height: 27px; color: red; font-size: 13px; font-weight: bold; margin: auto; margin-top: 8px; padding: 0px 10px; background: white;}
-	.re-notification>i{font-size: 17px;}
+	.re-notification>i{font-size: 16px;}
 	.re-notification>input{width: 20px; height: 20px; margin-left: 8px; transform: translateY(3px);}
 	
 	/* displayNone으로 조회냐 수정이냐에 따라 보이게 하기 */
@@ -100,6 +100,12 @@
 <body>
 	<jsp:include page="../common/header.jsp"/>
 	<script>
+		$(function(){
+			var adminNav = document.getElementById("admin-header");
+			$("section").css("margin-top", (adminNav.style.display != 'none'?"115px":"70px"));
+		})
+
+
 		document.getElementById("admin-header").style.display ="block"; 
         document.getElementById("admin-mode").style.color = "red";
 	</script>
@@ -284,10 +290,10 @@
 					<form action="" method="post">
 						<div>
 							<div><i class="fas fa-lightbulb"></i></div>
-							<select name="" id="" class="for-view" disabled>
+							<select name=""  class="for-view" disabled>
 								<option value=""></option>
 							</select>
-							<select name="" id="" class="for-modify">
+							<select name=""  class="for-modify">
 								<option value="">ssss</option>
 								<option value=""></option>
 								<option value=""></option>
@@ -313,7 +319,7 @@
 						<textarea name="" class="notification-content for-view" placeholder="알림을 작성해주세요." disabled></textarea>
 						<textarea name="" class="notification-view-content for-modify" placeholder="알림을 작성해주세요." required></textarea>						
 						<div class="re-notification for-modify">
-							<i class="fas fa-lightbulb"></i> &nbsp; &nbsp;다시 알림을 하고 싶을 시 선택해 주세요  
+							<i class="fas fa-lightbulb"></i> &nbsp;다시 알림을 하고 싶을 시 선택해 주세요  
 							<input type="checkbox" name="" value="">
 						</div>
 						<button type="submit" class="for-modify" data-dismiss="modal">등록하기</button>

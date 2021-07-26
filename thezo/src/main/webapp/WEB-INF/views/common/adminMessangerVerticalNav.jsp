@@ -16,7 +16,6 @@
 	.menubox>a:hover{color: orangered; font-size: 18px; letter-spacing: -0.3px; text-decoration: none;}	
 	.menubox a:nth-child(${requestScope.subPage}){color: orange; font-weight: bold;}
 </style>
-
 </head>
 <body>
 	<div class="vertical-nav">

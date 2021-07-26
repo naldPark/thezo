@@ -7,6 +7,8 @@ import com.kh.thezo.common.model.vo.PageInfo;
 
 public interface ApprovalService {
 
+	int selectListCount(Approval a);
+	
 	ArrayList<Approval> selectApprovalMain(int memNo, PageInfo pi);
 	
 }

@@ -137,7 +137,7 @@
                   </form>
                 </div>
               </div>
-             
+             <!--오른쪽 결재선 시작-->
               <div class="card row  border-0" style="margin-bottom: 5rem; width:21%">
                 <div class="card-body">
                   <h5>결재선 등록</h5>
@@ -189,7 +189,7 @@
                   </div>
                 </div>
               </div>
-
+              <!--오른쪽 결재선 끝-->
 
             </div>
     	</div>

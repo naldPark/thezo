@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.thezo.approval.model.vo.Approval;
+import com.kh.thezo.approval.model.vo.ApprovalAccept;
 import com.kh.thezo.common.model.vo.PageInfo;
 
 
@@ -14,11 +15,18 @@ import com.kh.thezo.common.model.vo.PageInfo;
 public class ApprovalDao {
 	
 	
-	public ArrayList<Approval> selectApprovalMain(SqlSessionTemplate sqlSession, PageInfo pi){
+	public int selectListCount(Approval a, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("approvalMapper.selectListCount",a);
+	}
+	
+	
+	public ArrayList<Approval> selectApprovalMain(int memNo, SqlSessionTemplate sqlSession, PageInfo pi){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		ArrayList<Approval> list = (ArrayList)sqlSession.selectList("approvalMapper.selectApprovalMain", memNo, rowBounds);
+
 		
-		return (ArrayList)sqlSession.selectList("approvalMapper.selectApprovalMain", null, rowBounds);
+		return list;
 		
 	}
 	

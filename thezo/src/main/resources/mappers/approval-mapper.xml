@@ -7,11 +7,65 @@
 		<result column="mem_no" property="memNo"/>
 		<result column="form_no" property="formNo"/>
 		<result column="doc_name" property="docName"/>
+		<result column="category" property="category"/>
+		<result column="form_name" property="formName"/>
 		<result column="DOC_CONTENT" property="content"/>
 		<result column="STATUS" property="status"/>
 		<result column="DOC_TYPE" property="docType"/>
 		<result column="DOC_DATE" property="docDate"/>
+		<result column="line" property="line"/>
+		<result column="SORT" property="sort"/>
+		
 	</resultMap>
+
+
+	<select id="selectListCount" resultType="_int">
+		select
+		       count(*)
+		  from approval
+		 where mem_no = #{memNo}
+		 and status like '%' || #{status} || '%'
+	 		
+		 
+	</select>
+
+
+	<select id ="selectApprovalMain" resultMap="approvalResult">
+
+			select 
+				 a.doc_no
+				,a.form_no
+				,doc_name
+			    ,category
+			    ,form_name
+				,doc_content
+	            ,doc_date
+				,a.status
+			    ,line
+			    ,SORT
+		    from approval a
+		    join appr_form f on(f.form_no = a.form_no)
+		    JOIN (SELECT DOC_NO, LISTAGG(mem_name ||' '|| rank,',') WITHIN GROUP (ORDER BY APPR_LEVEL) AS line
+		            FROM APPR_ACCEPT
+		            JOIN MEMBER USING(MEM_NO)
+		            GROUP BY DOC_NO
+		            ORDER BY DOC_NO) AL ON (A.DOC_NO = AL.DOC_NO)
+		    JOIN(
+		        SELECT *
+		        FROM(
+		            select DOC_NO, mem_name ||' '|| rank SORT
+		            ,RANK() OVER (PARTITION BY DOC_NO ORDER BY APPR_LEVEL ASC) AS RANK
+		            from appr_accept aa
+		            join member m using(mem_no)
+		            where aa.status='대기'
+		            order by APPR_level)
+		        WHERE RANK=1
+		        ) CURRENT_LEVEL ON(A.DOC_NO = CURRENT_LEVEL.DOC_NO)
+			where a.mem_no=#{memNo}
+			order by doc_date desc
+	</select>
+	
+	
 	
 	
 	<!-- 

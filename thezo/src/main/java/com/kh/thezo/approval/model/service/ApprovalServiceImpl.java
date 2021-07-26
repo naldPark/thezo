@@ -19,13 +19,21 @@ public class ApprovalServiceImpl implements ApprovalService {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
+	@Override
+	public int selectListCount(Approval a) {
+		int count = aDao.selectListCount(a, sqlSession);
+		return count;
+	}
+		
 
 	@Override
 	public ArrayList<Approval> selectApprovalMain(int memNo, PageInfo pi) {
 		
-		ArrayList<Approval> alist = aDao.selectApprovalMain(sqlSession, pi);
+		ArrayList<Approval> alist = aDao.selectApprovalMain(memNo, sqlSession, pi);
 		
 		return alist;
 	}
+
+
 	
 }

@@ -6,17 +6,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.thezo.approval.model.service.ApprovalService;
+import com.kh.thezo.approval.model.vo.Approval;
+import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.mail.model.vo.Attachment;
 import com.kh.thezo.member.model.vo.TestMember;
 
@@ -32,11 +35,27 @@ public class ApprovalController {
 	
 
 	@RequestMapping("main.appr")
-	public String selectApprovalMain(HttpServletRequest request) {
-		System.out.println(request.getSession().getAttribute("loginUser"));
-		String memId = (String)((TestMember) request.getSession().getAttribute("loginUser")).getUserId();
+	public ModelAndView selectApprovalMain(ModelAndView mv, HttpSession session, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
 		
-		return "approval/approvalMain";
+		
+		
+		// 일단 member 객체 생성되고 login구현될떄까지 임시로 넣는 값
+//		int memNo = Integer.parseInt(((TestMember) session.getAttribute("loginUser")).getUserId());
+		int memNo = 1;
+		
+		// 페이징 확인
+		Approval a = new Approval();
+		a.setStatus("");
+		a.setMemNo(memNo);
+		int listCount = aService.selectListCount(a);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		ArrayList<Approval> list = aService.selectApprovalMain(memNo, pi);
+//		System.out.println(list);
+		mv.addObject("list", list)
+		  .addObject("pi", pi)
+		  .setViewName("approval/approvalMain");
+		return mv;
 	}
 	
 	@RequestMapping("new.appr")
@@ -94,6 +113,12 @@ public class ApprovalController {
 		  .setViewName("approval/approvalTemp");
 		return mv;
 	}
+	
+	@RequestMapping("detailDocu.appr")
+	public String detailApproval() {
+		return "approval/apprDetailDocu";
+	}
+	
 	
 	@RequestMapping("reportDocu.appr")
 	public String reportApproval() {

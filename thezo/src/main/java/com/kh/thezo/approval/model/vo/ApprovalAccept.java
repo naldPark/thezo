@@ -12,19 +12,15 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class Approval {
+public class ApprovalAccept {
 	
-	private int docNo;
-	private int memNo;
-	private int formNo;
-	private String docName;
-	private String category;
-	private String formName;
-	private String content;
+	private int lineNo;
+	private int docNo;   
+	private int memNo;  
+	private int apprLevel;
+	private String type;
 	private String status;
-	private String docType;
-	private Date docDate;
-	private String line;
-	private String sort;
-
+	private String comment;
+	private String read;
+	private Date apprDate;
 }

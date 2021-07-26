@@ -32,23 +32,27 @@
         text-align: left;
         margin-top: 10%;
         margin-left: 10%;
-        float: left;  
+        float: left;
+        font-weight: bold;
+        font-size: 30px;
     }
     #sub-button{
         margin-top: 48%;
         width: 100%;
+        height : 15%;
     }
 
     .cbtn{
-        font-size: 12px;
+        font-size: 14px;
         background-color: gray;
         color: white;
         border: 0;
         padding-left : 3%;
         padding-right : 3%;
     }
-    #tab-1, #tab-2 {width: 14%;}
-    #tab-4 {width: 26%;}
+    #tab-1, #tab-2 {width: 14%; height: 100%;}
+    #tab-3 {height: 100%;}
+    #tab-4 {width: 26%; height: 100%;}
 
     .sub-time{float: right; width: 30%; height: 100%;}
     #sub-curtime{
@@ -96,7 +100,7 @@
 
     #yearly{border:1px solid rgba(0, 0, 0, 0); width: 100%; height: 100%;}
     #yearly-top{
-        width: 70%;
+        width: 90%;
         height: 4%;
         margin: auto;
         margin-top: 10%;
@@ -104,12 +108,12 @@
         font-weight: bold;
         font-size: 25px;
     }
-    #yearly-top>h2{float: left;}
+    #year{font-weight: bold; font-size: 30px; float: left;}
     #select{float: right; width:15%;}
 
     #yearly-content{
-        width: 70%;
-        height: 40%;
+        width: 90%;
+        height: 60%;
         margin-top: 5%;
     }
     #att-table{
@@ -117,8 +121,8 @@
         width: 100%;
         height: 30%;
     }
-    #yearly-content td{border-right: 1px solid lightgray; border-left: 1px solid lightgray; text-align: center; border-bottom: 1px solid lightgray; font-size: 12px;}
-    #yearly-content th{width: 30px; background-color: rgb(214, 213, 213); text-align: center; border-bottom: 1px solid lightgray; font-size: 12px;}
+    #yearly-content td{border-right: 1px solid lightgray; border-left: 1px solid lightgray; text-align: center; border-bottom: 1px solid lightgray; font-size: 14px;}
+    #yearly-content th{width: 100px; background-color: rgb(214, 213, 213); text-align: center; border-bottom: 1px solid lightgray; font-size: 15px;}
 
     #enrstatement{
         width: 95%;
@@ -243,7 +247,7 @@
 		<div class="outer" align="center">
             <div class="outer-wrap">
                 <div class="sub-menu">
-                    <div id="sub-name"><h4>근태관리</h4></div>
+                    <div id="sub-name"><i class="fas fa-briefcase"></i> 근태관리</div>
                     <div class="tab" id="sub-button">
                         <button onclick="changetab1()" id="tab-1" type="button" class="cbtn">월간</button>&nbsp;
                         <button onclick="changetab2()" id="tab-2" type="button" class="cbtn">연간</button>&nbsp;
@@ -296,7 +300,7 @@
                 <!--연간-->
                 <div id="yearly">
                     <div id="yearly-top">
-                        <h2>2021</h2> 
+                        <div id="year">2021</div> 
                         <div id="select">
                             <select class="form-select" name="select-year" id="selectyear">
                                 <option value="year">2021년</option>
@@ -309,7 +313,7 @@
                         <table id="att-table">
                             <thead>
                                 <tr>                                
-                                    <th>&nbsp;</th>
+                                    <th style="border-left: 1px solid lightgray;">&nbsp;</th>
                                     <th>1월</th>
                                     <th>2월</th>
                                     <th>3월</th>
@@ -321,7 +325,7 @@
                                     <th>9월</th>
                                     <th>10월</th>
                                     <th>11월</th>
-                                    <th style="border-right: 1px solid lightgray;;">12월</th>
+                                    <th style="border-right: 1px solid lightgray;">12월</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -483,7 +487,7 @@
                 <!--내 휴가기록-->
                 <div id="resthistory">
                     <div id="rest-inform">
-                        <p id="myinform">&gt; 내 연차 정보</p>
+                        <p id="myinform"><i class="fas fa-window-restore"></i> 내 연차 정보</p>
                         <br><br>
                         <table id="myinform-table">
                             <tr>
@@ -501,7 +505,7 @@
                         </table>
                     </div>
                     <div id="rest-usedinform">
-                        <p id="myused-name">&gt; 연차 사용일수</p>
+                        <p id="myused-name"><i class="fas fa-rainbow"></i> 연차 사용일수</p>
                         <br><br>
                         <table id="myused-table">
                             <tr>
@@ -519,7 +523,7 @@
                         </table>
                     </div>
                     <div id="rest-usedhistory">
-                        <p id="history-name">&gt; 연차 사용현황</p>
+                        <p id="history-name"><i class="fas fa-history"></i> 연차 사용현황</p>
                         <br><br>
                         <table id="histroy-table">
                             <tr>
@@ -575,7 +579,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header" id="myModalheader">
-                    <div class="modal-title" id="myModalLabel">근태 조정 신청</div>
+                    <div class="modal-title" id="myModalLabel"><i class="fas fa-bars"></i> 근태 조정 신청</div>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -583,15 +587,19 @@
                             <table>
                                 <tr>
                                     <th width="300">신청 날짜</th>
-                                    <td><input type="text" value="2021년 8월 2일 (월요일)" disabled></td>
+                                    <td><input type="text" class="form-control form-control-sm" value="2021년 8월 2일 (월요일)" disabled></td>
                                 </tr>
                                 <tr>
                                     <th>현재 상태</th>
-                                    <td><input type="text" value="출근 (2021/08/02 월) 13:45" disabled></td>
+                                    <td><input type="text" class="form-control form-control-sm" value="출근 (2021/08/02 월) 13:45" disabled></td>
                                 </tr>
                                 <tr>
                                     <th>사유</th>
-                                    <td><textarea> 출근 시간이 잘못 입력되었습니다.</textarea>
+                                    <td>
+                                        <div class="form-group">
+                                            <textarea class="form-control" id="comment"></textarea>
+                                        </div>
+                                    </td>
                                 </tr>
                             </table>
                         </div>

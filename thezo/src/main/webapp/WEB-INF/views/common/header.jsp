@@ -114,6 +114,7 @@
                         <ul>
                             <li><a href="">직원 연락처</a></li>
                             <li><a href="">조직도</a></li>
+                            <li><a href="company.info">회사정보</a></li>
                         </ul>
                     </li>
 
@@ -203,7 +204,7 @@
 	
 	                <%-- 해당영역 맡으신분들 ~ urlMapping값 넣어주세요~ --%> 
 	                <li><a href="">조직도</a></li>
-	                <li><a href="">환경설정</a></li>
+	                <li><a href="adminCompanyInfo.st">회사정보설정</a></li>
 	            </ul>
 	        </div>
 	    </div>

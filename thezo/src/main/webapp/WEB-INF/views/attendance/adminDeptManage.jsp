@@ -16,9 +16,13 @@
         text-align: left;
         margin-top: 10%;
         margin-left: 10%;
-        float: left;  
+        float: left;
+        font-weight: bold;
+        font-size: 30px;  
     }
     .content{height: 1000px; border: 1px solid darkblue;}
+    /*기본적으로 적용해야할 스타일*/
+    
     .form-check{margin-left: 0% !important; position: static !important; margin-top: 0% !important; padding-left: 0% !important;}
     .form-check-input{margin-left: 20% !important; position: static !important; margin-top: 0% !important; padding-left: 0% !important;}
     #dept-table{width: 70%; margin-top: 20%;}
@@ -27,27 +31,17 @@
     #dept-table th{background-color: lightgray;}
     #deletebtn{float: left; margin-left: 15%; margin-top: 20%;}
     #createbtn{float: right; margin-right: 15%; margin-top: 20%;}
-    .modal-lg{max-width: 17% !important; overflow: hidden;}
+    .modal-lg{max-width: 16% !important; overflow: hidden;}
     .modal-body{max-height: calc(100vh - 200px); overflow-y: auto;}
 
     .dept-modal{color:black; text-decoration: none;}
     #myModalheader{background-color: rgb(94,94,94);}
     #myModalLabel{color: white; font-size: 14px; font-weight: bold;}
-    #dept-form{font-weight: bold;}
-    #dept-form input[type="text"]{
-        width: 250px;
-        height: 30px;
-        font-size: 12px;
-        padding-left: 10px;
+    #dept-form{
+        font-weight: bold;
+        width: 100%;
     }
-    #deptcodebtn{
-        width: 37%;
-        font-size: 13px;
-        padding: 1.5% !important;
-        margin-bottom: 1.5px;
-        margin-left: 10px;
-    }
-    
+
     .modal-footer{font-size: 13px; }
     .modal-footer>a:hover{text-decoration: none; font-weight: bold;}
 </style>
@@ -58,7 +52,7 @@
 		<div class="outer" align="center">
             <div class="outer-wrap">
                 <div class="sub-menu">
-                    <div id="sub-name"><h4>부서관리</h4></div>
+                    <div id="sub-name"><i class="fas fa-building"></i> 부서관리</div>
                 </div>
             </div>
             <div class="content form-check">
@@ -118,24 +112,28 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header" id="myModalheader">
-                    <div class="modal-title" id="myModalLabel">부서 등록</div>
+                    <div class="modal-title" id="myModalLabel"><i class="fas fa-bars"></i> 부서 등록</div>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div id="dept-form">
                             <table>
                                 <tr>
-                                    <th width="30%">부서 코드</th>
-                                    <td width="200"><input type="text" style="width: 50%;"><button  class="btn btn-secondary" id="deptcodebtn">중복여부</button></td>
-
+                                    <th width="100">부서 코드</th>
+                                    <td width="75%">
+                                        <div class="input-group mb-3" style="margin-bottom: 0% !important;">
+                                            <input type="text" class="form-control form-control-sm" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                            <button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon2">중복여부</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>부서명</th>
-                                    <td><input type="text"></td>
+                                    <td><input type="text" class="form-control form-control-sm"></td>
                                 </tr>
                                 <tr>
                                     <td>부서순위</td>
-                                    <td><input type="text"></td>
+                                    <td><input type="text" class="form-control form-control-sm"></td>
                                 </tr>
                             </table>
                         </div>
@@ -153,24 +151,25 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header" id="myModalheader">
-                    <div class="modal-title" id="myModalLabel">부서 등록</div>
+                    <div class="modal-title" id="myModalLabel"><i class="fas fa-bars"></i> 부서 수정</div>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div id="dept-form">
                             <table>
                                 <tr>
-                                    <th width="300">부서 코드</th>
-                                    <td width="200"><input type="text" value="D0100" disabled></td>
-
+                                    <th width="100">부서 코드</th>
+                                    <td width="75%">
+                                        <input type="text" class="form-control form-control-sm" value="D0100" disabled>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>부서명</th>
-                                    <td><input type="text" value="총무팀"></td>
+                                    <td><input type="text" class="form-control form-control-sm" value="총무팀"></td>
                                 </tr>
                                 <tr>
-                                    <td>부서순위</td>
-                                    <td><input type="text" value="1"></td>
+                                    <th>부서순위</th>
+                                    <td><input type="text" class="form-control form-control-sm" value="1"></td>
                                 </tr>
                             </table>
                         </div>

@@ -30,31 +30,32 @@
         text-align: left;
         margin-top: 10%;
         margin-left: 10%;
-        float: left;  
+        float: left;
+        font-weight: bold;
+        font-size: 30px;  
     }
     #sub-button{
-        border: 1px solid blue;
         margin-top: 48%;
         width: 100%;
+        height : 15%;
     }
 
     .content-other{display: none;}
 
     .cbtn{
-        font-size: 12px;
+        font-size: 14px;
         background-color: gray;
         color: white;
         border: 0;
         padding-left : 3%;
         padding-right : 3%;
     }
-    #tab-1 {width: 30%;}
-    #tab-2 {width: 40%;}
+    #tab-1 {width: 30%; height: 100%;}
+    #tab-2 {width: 40%; height: 100%;}
 
     .content{height: 900px;}
 
     #restEditTap{
-        border: 1px solid rebeccapurple;
         margin-top: 10%;
         width: 95%;
         height: 80%;
@@ -68,7 +69,8 @@
     #restEditTable button{padding:5% !important; height: 4%; font-size: 12px;}
     #restEditBtn{float: right; margin-right: 40px; margin-top: 500px; width: 7%;}
 
-    .modal-lg{max-width: 20% !important; overflow: hidden;}
+    .modal-lg{max-width: 30% !important; overflow: hidden;}
+    .modal-sm{max-width: 17% !important; overflow: hidden;}
     .modal-body{max-height: calc(100vh - 200px); overflow-y: auto;}
     #myModalheader{background-color: rgb(94,94,94);}
     #myModalLabel{color: white; font-size: 14px; font-weight: bold;}
@@ -147,8 +149,7 @@
         resize: none;
         padding-left: 10px;
     }
-
-    #rest-history-table{width: 95%;}
+    #rest-history-table{width: 100%;}
     #rest-history-table th, #rest-history-table td{border: 1px solid lightgray;}
     #rest-history-table th{text-align: center; background-color: rgb(234,234,234)}
     #rest-used-history {
@@ -157,6 +158,7 @@
         margin: auto;
         float: left;
     }
+
 </style>
 </head>
 <body>
@@ -178,7 +180,7 @@
 		<div class="outer" align="center">
             <div class="outer-wrap">
                 <div class="sub-menu">
-                    <div id="sub-name"><h4>근태관리</h4></div>
+                    <div id="sub-name"><i class="fas fa-laptop-house"></i> 근태관리</div>
                     <div class="tab" id="sub-button">
                         <button onclick="changetab1()" id="tab-1" type="button" class="cbtn">휴가일수 수정</button>&nbsp;
                         <button onclick="changetab2()" id="tab-2" type="button" class="cbtn">근태조정신청내역</button>&nbsp;
@@ -209,21 +211,21 @@
                                 <td>대표</td>
                                 <td style="text-align: center;">김한우</td>
                                 <td></td>
-                                <td style="text-align: center;"><input type="number" value="20"></td>
+                                <td style="text-align: center;"><input type="number" class="form-control form-control-sm" value="20"></td>
                                 <td style="text-align: center;"><button type="button" class="btn btn-secondary" data-toggle="modal" href="#rest-used">휴가 사용 현황</button></td>
                             </tr>
                             <tr>
                                 <td>상무이사</td>
                                 <td style="text-align: center;">박성우</td>
                                 <td>총무팀</td>
-                                <td style="text-align: center;"><input type="number" value="13"></td>
+                                <td style="text-align: center;"><input type="number" class="form-control form-control-sm" value="13"></td>
                                 <td style="text-align: center;"><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal">휴가 사용 현황</button></td>
                             </tr>
                             <tr>
                                 <td>팀장</td>
                                 <td style="text-align: center;">전선영</td>
                                 <td></td>
-                                <td style="text-align: center;"><input type="number" value="13"></td>
+                                <td style="text-align: center;"><input type="number" class="form-control form-control-sm" value="13"></td>
                                 <td style="text-align: center;"><button type="button" class="btn btn-secondary">휴가 사용 현황</button></td>
                             </tr>
                             <!--페이지네이션-->
@@ -329,7 +331,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header" id="myModalheader">
-                    <div class="modal-title" id="myModalLabel">대표 김한우 휴가 사용 현황</div>
+                    <div class="modal-title" id="myModalLabel"><i class="fas fa-bars"></i> 대표 김한우 휴가 사용 현황</div>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -378,10 +380,10 @@
 
     <!--근태조정신청확인 모달-->
     <div class="modal fade" id="enrcode-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header" id="myModalheader2">
-                    <div class="modal-title" id="myModalLabel">근태 조정 신청</div>
+                    <div class="modal-title" id="myModalLabel"><i class="fas fa-bars"></i> 근태 조정 신청</div>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -389,23 +391,27 @@
                             <table id="enr-modal-table">
                                 <tr>
                                     <th width="100">신청 날짜</th>
-                                    <td><input type="text" value="2021년 7월 1일 (월요일)" disabled></td>
+                                    <td><input type="text" class="form-control form-control-sm" value="2021년 7월 1일 (월요일)" disabled></td>
                                 </tr>
                                 <tr>
                                     <th>현재 상태</th>
-                                    <td><input type="text" value="출근 (2021/07/01 월) 13:45" disabled></td>
+                                    <td><input type="text" class="form-control form-control-sm" value="출근 (2021/07/01 월) 13:45" disabled></td>
                                 </tr>
                                 <tr>
                                     <th>사유</th>
-                                    <td><textarea disabled>출근 시간이 잘못 입력되었습니다.</textarea>
+                                    <td>
+                                        <div class="form-group">
+                                            <textarea class="form-control" disabled>출근 시간이 잘못 입력되었습니다.</textarea>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>출근</th>
-                                    <td><input type="text" value="13:45" ></td>
+                                    <td><input type="text" class="form-control form-control-sm" value="13:45" ></td>
                                 </tr>
                                 <tr>
                                     <th>퇴근</th>
-                                    <td><input type="text" value="20:30" ></td>
+                                    <td><input type="text" class="form-control form-control-sm" value="20:30" ></td>
                                 </tr>
                             </table>
                         </div>

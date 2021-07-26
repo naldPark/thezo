@@ -13,6 +13,9 @@
 		<typeAlias type="com.kh.thezo.notification.model.vo.Notification" alias="Notification"/>
 		<typeAlias type="com.kh.thezo.statistic.model.vo.Statistic" alias="Statistic"/>
 		<typeAlias type="com.kh.thezo.document.model.vo.Document" alias="Document"/>
+		<typeAlias type="com.kh.thezo.approval.model.vo.Approval" alias="Approval"/>
+		<typeAlias type="com.kh.thezo.mail.model.vo.Mail" alias="Mail"/>
+		
 		
 	</typeAliases>
 	
@@ -23,7 +26,9 @@
 		<mapper resource="/mappers/message-mapper.xml"/>
 		<mapper resource="/mappers/notification-mapper.xml"/>
 		<mapper resource="/mappers/statistic-mapper.xml"/>
-		<mapper resource="/mappers/document-mapper.xml"/>			
+		<mapper resource="/mappers/document-mapper.xml"/>		
+		<mapper resource="/mappers/approval-mapper.xml"/>		
+		<mapper resource="/mappers/mail-mapper.xml"/>	
 	</mappers>
 
 </configuration>

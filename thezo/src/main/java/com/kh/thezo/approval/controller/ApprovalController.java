@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.thezo.approval.model.service.ApprovalService;
 import com.kh.thezo.mail.model.vo.Attachment;
-import com.kh.thezo.member.model.vo.Member;
+import com.kh.thezo.member.model.vo.TestMember;
 
 //@author YI
 
@@ -32,8 +34,7 @@ public class ApprovalController {
 	@RequestMapping("main.appr")
 	public String selectApprovalMain(HttpServletRequest request) {
 		System.out.println(request.getSession().getAttribute("loginUser"));
-		Member m = (Member)request.getSession().getAttribute("loginUser");
-		String memId= m.getUserId();
+		String memId = (String)((TestMember) request.getSession().getAttribute("loginUser")).getUserId();
 		
 		return "approval/approvalMain";
 	}

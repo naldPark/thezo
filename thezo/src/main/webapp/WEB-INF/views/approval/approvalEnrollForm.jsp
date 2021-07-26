@@ -85,8 +85,10 @@
     .active {
         display: block;
     }
-/* *{border:1px solid red} */
-    #contactList table tbody tr td img{width:30px; height:30px;}
+    .drop-zone{margin-left:80px; width: 100%; height: 110px; border: 1px solid lightgray; overflow: auto;
+     
+    }
+    label{margin-bottom: 0rem !important;}
   </style>
 </head>
 <body>
@@ -98,7 +100,7 @@
             <div class="sideOuter row ">
               <div class="card border-0" style=" width:80%">
                 <div class="card-body">
-                  <form action="" method="post" enctype="Multipart/form-data" id="form">
+                  <form action="insertDocu.appr" method="post" enctype="Multipart/form-data" id="form">
                     <h3 style="margin-bottom: 25px;">시말서</h3>
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
@@ -112,16 +114,21 @@
                       </div>
                       <input type="text" class="form-control" value="">
                     </div>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text bg-white border-0">파일첨부</span>
+                      </div>
+                      <input type="file" id="file" name="upfile" multiple>
+                      <div class="drop-zone" style="text-align: center; font-size: 15pt;">
+                        <br>
+                        <i class="far fa-clone"></i>
+                        파일을 여기로 드래그하세요.
+                      </div>
+                    </div>
                   
                     <div class="form-group">
-                        <textarea class="form-control" id="summernote" maxlength="140" rows="7" autocomplete="off"></textarea>
+                        <textarea class="form-control" name="summernote" id="summernote" maxlength="140" rows="7" autocomplete="off"></textarea>
                     </div><br>
-                    <div class="filebox justify-content-center">
-                      <input class="upload-name" value="" disabled="disabled"> 
-                      <label for="rwFilename" style="font-size: 11pt;">파일 첨부하기</label> 
-                      <input type="file" id="rwFilename" name="rwFilename" class="upload-hidden" onchange="checkSize(this)"> 
-                    </div>
-                      <br>
                     <div class="row justify-content-center">
                       <button type="button" id="submitBtn" class="btn btn-primary">기안하기</button>
                       <button type="button" onclick="location.href=''" class="btn btn-secondary">취소</button>
@@ -140,7 +147,7 @@
                       <button class="btn btn-primary" type="submit" data-toggle="modal" data-target="#myModal">추가</button>
                     </div>
                   </div>
-                  <div class="newDocu mb-2">
+                  <div class="mb-2 p-2 shadow-sm">
                     <div class="d-flex justify-content-around">
                       <div class="p-2 text-primary"><b>이성경</b></div>
                       <div class="p-2"> </div>
@@ -150,17 +157,27 @@
                       <span class="pl-3">인사팀 팀장</span>
                     </div>
                   </div>
-                  <div class="newDocu mb-2">
+                  <div class="mb-2 p-2 shadow-sm">
                     <div class="d-flex justify-content-around">
                       <div class="p-2 text-primary"><b>이성경</b></div>
                       <div class="p-2"> </div>
-                      <div class="p-2"><span class="btn-sm btn-secondary">합의</span></div>
+                      <div class="p-2"><span class="btn-sm btn-secondary">결재</span></div>
                     </div>
                     <div class="d-flex flex-row mb-3">
                       <span class="pl-3">인사팀 팀장</span>
                     </div>
                   </div>
-                  <div class="newDocu mb-2">
+                  <div class="mb-2 p-2 shadow-sm">
+                    <div class="d-flex justify-content-around">
+                      <div class="p-2 text-primary"><b>이성경</b></div>
+                      <div class="p-2"> </div>
+                      <div class="p-2"><span class="btn-sm btn-secondary">결재</span></div>
+                    </div>
+                    <div class="d-flex flex-row mb-3">
+                      <span class="pl-3">인사팀 팀장</span>
+                    </div>
+                  </div>
+                  <div class="mb-2 p-2 shadow-sm">
                     <div class="d-flex justify-content-around">
                       <div class="p-2 text-primary"><b>이성경</b></div>
                       <div class="p-2"> </div>
@@ -178,6 +195,101 @@
     	</div>
     </section>
 
+
+    <script>
+        
+      (function() {
+          
+          var $file = document.getElementById("file")
+          var dropZone = document.querySelector(".drop-zone")
+
+          var toggleClass = function(className) {
+              
+              console.log("current event: " + className)
+
+              var list = ["dragenter", "dragleave", "dragover", "drop"]
+
+              for (var i = 0; i < list.length; i++) {
+                  if (className === list[i]) {
+                      dropZone.classList.add("drop-zone-" + list[i])
+                  } else {
+                      dropZone.classList.remove("drop-zone-" + list[i])
+                  }
+              }
+          }
+          
+          var showFiles = function(files) {
+              dropZone.innerHTML = ""
+              for(var i = 0, len = files.length; i < len; i++) {
+                  dropZone.innerHTML += "<p>" + files[i].name + "</p>"
+              }
+          }
+
+          var selectFile = function(files) {
+              // input file 영역에 드랍된 파일들로 대체
+              $file.files = files
+              showFiles($file.files)
+              
+          }
+          
+          $file.addEventListener("change", function(e) {
+              showFiles(e.target.files)
+          })
+
+          // 드래그한 파일이 최초로 진입했을 때
+          dropZone.addEventListener("dragenter", function(e) {
+              e.stopPropagation()
+              e.preventDefault()
+             
+              toggleClass("dragenter")
+
+          })
+
+          // 드래그한 파일이 dropZone 영역을 벗어났을 때
+          dropZone.addEventListener("dragleave", function(e) {
+              e.stopPropagation()
+              e.preventDefault()
+              $(this).css("background-color", "#FFF");
+              toggleClass("dragleave")
+
+          })
+
+          // 드래그한 파일이 dropZone 영역에 머물러 있을 때
+          dropZone.addEventListener("dragover", function(e) {
+              e.stopPropagation()
+              e.preventDefault()
+              $(this).css("background-color", "rgb(248, 241, 214)");
+              toggleClass("dragover")
+
+          })
+
+          // 드래그한 파일이 드랍되었을 때
+          dropZone.addEventListener("drop", function(e) {
+              e.preventDefault()
+              $(this).css("background-color", "#FFF");
+              $(this).css("font-size", "11pt");
+              $(this).css("text-align", "left");
+              
+              toggleClass("drop")
+
+              var files = e.dataTransfer && e.dataTransfer.files
+              console.log(files)
+
+              if (files != null) {
+                  if (files.length < 1) {
+                      alert("폴더 업로드 불가")
+                      return
+                  }
+                  selectFile(files)
+              } else {
+                  alert("ERROR")
+              }
+
+          })
+
+      })();
+  </script>
+
 <script>
      $(document).on('click','#submitBtn',function(){
           if(confirm("정말로 제출하시겠습니까?\n기안 후엔 수정이 불가능합니다.")){
@@ -185,30 +297,6 @@
           }					
         });
 
-              // 파일첨부 시작
-      $(document).ready(function(){
-        var fileTarget = $('.filebox .upload-hidden'); fileTarget.on('change', function(){
-            if(window.FileReader){
-              var filename = $(this)[0].files[0].name; 
-            } else { 
-              var filename = $(this).val().split('/').pop().split('\\').pop(); 
-            } 
-            $(this).siblings('.upload-name').val(filename); 
-          }); 
-       });
-
-        function checkSize(input) {
-        	
-        	pathpoint = input.value.lastIndexOf('.');
-        	filepoint = input.value.substring(pathpoint+1,input.length);
-        	filetype = filepoint.toLowerCase();
-
-        	
-          if (input.files && input.files[0].size > (20 * 1024 * 1024)) {
-              alert("파일 사이즈가 20mb 를 넘습니다.");
-              input.value = null; 
-            }
-          } //파일첨부 끝
 </script>
     
 
@@ -233,24 +321,132 @@
                     <ul id="myUL">
                         <li> 대표이사</span>
                             <ul>
-                                <li><span class="line">본부1</span></li>
-                                <li><span class="line">본부2</span></li>
                                 <li>
-                                    <span class="box">본부3</span>
+                                    <span class="box">경영관리본부</span>
                                     <ul class="nested">
-                                        <li><span class="line">팀1</span></li>
-                                        <li><span class="line">팀2</span></li>
-                                        <li>
-                                            <span class="box">팀시리리리3</span>
-                                            <ul class="nested">
-                                                <li>김말똥 과장</span></li>
-                                                <li>김개똥 부장</span></li>
-                                                <li>김개순</span></li>
-                                                <li>김밀똥</span></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>  
+                                      <li>
+                                          <span class="box">인사팀</span>
+                                          <ul class="nested">
+                                              <li><label><input type="checkbox"/> 김말똥 과장</label></li>
+                                              <li><label><input type="checkbox"/> 김말똥 과장</label></li>
+                                              <li>김개순</li>
+                                              <li>김밀똥</li>
+                                          </ul>
+                                      </li>
+                                      <li>
+                                          <span class="box">총무팀</span>
+                                          <ul class="nested">
+                                              <li>김말똥 과장</li>
+                                              <li>김개똥 부장</li>
+                                              <li>김개순</li>
+                                              <li>김밀똥</li>
+                                          </ul>
+                                      </li>
+                                      <li>
+                                          <span class="box">재무팀</span>
+                                          <ul class="nested">
+                                            <li>김말똥 과장</li>
+                                            <li>김개똥 부장</li>
+                                            <li>김개순</li>
+                                            <li>김밀똥</li>
+                                        </ul>
+                                      </li>
+                                      <li>
+                                          <span class="box">회계팀</span>
+                                          <ul class="nested">
+                                            <li>김말똥 과장</li>
+                                            <li>김개똥 부장</li>
+                                            <li>김개순</li>
+                                            <li>김밀똥</li>
+                                        </ul>
+                                      </li>
+                                  </ul>
+                                </li>
+                                <li>
+                                  <li>
+                                    <span class="box">개발본부</span>
+                                    <ul class="nested">
+                                      <li>
+                                          <span class="box">개발1팀</span>
+                                          <ul class="nested">
+                                            <li>김말똥 과장</li>
+                                            <li>김개똥 부장</li>
+                                            <li>김개순</li>
+                                            <li>김밀똥</li>
+                                          </ul>
+                                      </li>
+                                      <li>
+                                          <span class="box">개발2팀</span>
+                                          <ul class="nested">
+                                            <li>김말똥 과장</li>
+                                            <li>김개똥 부장</li>
+                                            <li>김개순</li>
+                                            <li>김밀똥</li>
+                                          </ul>
+                                      </li>
+                                      <li>
+                                          <span class="box">개발3팀</span>
+                                          <ul class="nested">
+                                            <li>김말똥 과장</li>
+                                            <li>김개똥 부장</li>
+                                            <li>김개순</li>
+                                            <li>김밀똥</li>
+                                          </ul>
+                                      </li>
+                                      <li>
+                                          <span class="box">인프라개발팀</span>
+                                          <ul class="nested">
+                                            <li>김말똥 과장</li>
+                                            <li>김개똥 부장</li>
+                                            <li>김개순</li>
+                                            <li>김밀똥</li>
+                                          </ul>
+                                      </li>
+                                      <li>
+                                        <span class="box">인프라보안팀</span>
+                                        <ul class="nested">
+                                          <li>김말똥 과장</li>
+                                          <li>김개똥 부장</li>
+                                          <li>김개순</li>
+                                          <li>김밀똥</li>
+                                        </ul>
+                                    </li>
+                                  </ul>
+                                </li>
+                                <li>
+                                  <li>
+                                    <span class="box">운영본부</span>
+                                    <ul class="nested">
+                                      <li>
+                                          <span class="box">운영팀</span>
+                                          <ul class="nested">
+                                            <li>김말똥 과장</li>
+                                            <li>김개똥 부장</li>
+                                            <li>김개순</li>
+                                            <li>김밀똥</li>
+                                          </ul>
+                                      </li>
+                                      <li>
+                                          <span class="box">영업팀</span>
+                                          <ul class="nested">
+                                            <li>김말똥 과장</li>
+                                            <li>김개똥 부장</li>
+                                            <li>김개순</li>
+                                            <li>김밀똥</li>
+                                          </ul>
+                                      </li>
+                                      <li>
+                                          <span class="box">컨시어지팀</span>
+                                          <ul class="nested">
+                                            <li>김말똥 과장</li>
+                                            <li>김개똥 부장</li>
+                                            <li>김개순</li>
+                                            <li>김밀똥</li>
+                                          </ul>
+                                      </li>
+                                  </ul>
+                                </li>
+                                <li>
                             </ul>
                         </li>
                     </ul>

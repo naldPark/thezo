@@ -13,7 +13,6 @@
 <script>
     window.onload = function(){
         $("#tab-1").click();
-
     }
 </script>
 

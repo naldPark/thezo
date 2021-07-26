@@ -25,7 +25,7 @@
     #company-table input{width: 300px;}
     #company-table input[type="date"]{height: 40px;}
     #sub-title{margin-top: 60px; margin-bottom: 30px;}
-    #company-table{margin-top: 100px; width: 95%;}
+    #company-table{margin-top: 10px; width: 95%;}
     #company-table textarea{
         width: 390px;
         height: 32px;
@@ -37,7 +37,7 @@
     #company-btn{
         float: right; width: 100px;
         margin-right: 100px;
-        margin-top: 100px;
+        margin-top: 40px;
     }
 </style>
 

@@ -179,7 +179,7 @@
 	                        <li><a href="boardReport.bo">신고 관리</a></li>
 	                    </ul>
 	                </li>
-	                <li><a href="">인사근태</a>
+	                <li><a href="adminDept.ma">인사근태</a>
                         <ul>
                             <li><a href="adminDept.ma">부서관리</a></li>
                             <li><a href="adminAtt.ma">근태관리</a></li>

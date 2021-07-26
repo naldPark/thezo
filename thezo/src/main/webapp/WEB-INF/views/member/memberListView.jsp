@@ -73,7 +73,7 @@ table tbody {
 			<br>
 			<div id="outerHeader">
 				<div class="header1">
-					<a class="btn btn-primary btn-sm" id="approval">등록</a>
+					<a class="btn btn-primary btn-sm" id="approval" href="enrollForm.me">등록</a>
 				</div>
 
 				<div class="header2">

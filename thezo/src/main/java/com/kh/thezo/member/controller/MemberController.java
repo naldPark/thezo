@@ -32,4 +32,11 @@ public class MemberController {
 	public String myPage() {
 		return "member/memberMyPage";
 	}
+	
+	
+	// 관리자 사원등록 페이지 
+	@RequestMapping("enrollForm.me")
+	public String memberEmrollForm() {
+		return "member/memberEnrollForm";
+	}
 }

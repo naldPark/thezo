@@ -6,10 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- 주소 api-->
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <style>
-    .innerOuter{
+   .innerOuter{
         width: 1000px;
         margin:auto;
         padding:5% 5%;
@@ -20,33 +18,37 @@
         width:80%;
         margin:auto;
     }
-    #content, #address-area{width:50%;}   
+    #content , #address-area, #department{width:50%;}
+
+    #department>table{width: 100%;}
+
+
     body{position:relative;}
 	.container{position:absolute; top:30%; left:20%;}
 	table tbody{cursor:pointer;}
 	#sPhoto{border-radius:50%; object-fit:cover;}
-    
-
 </style>
 </head>
 <body>
-	<!-- 사용자 내 정보 수정 페이지 : 이성경 -->
-	<!-- 일단 주소 api 적용되는지만 확인 (화면은 나중에 붙이기)-->
-	<!-- 주소 api적용은 되는데 입력이 안됨 -->
-	<!-- 화면 손보기...ㅠㅠ엉망진창-->
 	<jsp:include page="../common/header.jsp" />
 	
-
+	<script>
+		document.getElementById("admin-header").style.display = "block";
+		document.getElementById("admin-mode").style.color = "red";
+	</script>
+	
+	
     <div class="outer">
 
         <div class="innerOuter">
-            <h2><b>내 정보 수정</b></h2>
+            <h2><b>사원 등록</b></h2>
             <br>
 
             <div id="content1">
+
                 <div align="center" class="d-flex justify-content-center">
                     <form action="" method="post" enctype="multipart/form-data">
-						<div class="form-group d-flex justify-content-center">
+                        <div class="form-group d-flex justify-content-center">
                             <!-- 프로필 사진이 비어있지 않은 경우-->
                             <input type="hidden" name="path" value="path">
                             <input type="hidden" name="originName" value="origin">
@@ -55,32 +57,41 @@
                             <img id="sPhoto" width="200" height="200" src="resources/images/userProfile.png">
                         </div>
                         <div id="content" class="form-row">
-                            <label for="memNo" align="left">사원번호</label>
-                            <input type="text" class="form-control" id="memNo" name="memNo" value="101" readonly><br>
-
                             <label for="memId">아이디</label>
-                            <input type="text" class="form-control" id="memId" name="memId" value="user02" readonly><br>
+                            <input type="text" class="form-control" id="memId" name="memId" required><br>
 
                             <label for="memName">이름</label>
-                            <input type="text" class="form-control" id="memName" name="memName" value="김춘식" readonly><br>
+                            <input type="text" class="form-control" id="memName" name="memName" required><br>
 
                             <label for="memPwd">비밀번호</label>
-                            <input type="text" class="form-control" id="memPwd" name="memPwd" value="" ><br>
+                            <input type="text" class="form-control" id="memPwd" name="memPwd" required><br>
 
                             <label for="checkPwd">비밀번호 확인</label>
-                            <input type="password" class="form-control" id="checkPwd" required><br>
+                            <input type="password" class="form-control" id="checkPwd" required><br><br>
                             
+                            <label for="gender">성별</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="form-check-inline">
+                                <label class="form-check-label">
+                                  <input type="radio" class="form-check-input" name="gender" id="Male" value="M">남자
+                                </label>
+                              </div>
+                              <div class="form-check-inline">
+                                <label class="form-check-label">
+                                  <input type="radio" class="form-check-input" name="gender" id="Female" value="F">여자
+                                </label>
+                            </div>
+
+							<!-- 여기가 문제...해결하기  -->
                             <label for="phone">전화번호</label>
-                            <input type="text" class="form-control" id="phone" name="phone" value="010-1111-2222"><br>
+                            <input type="text" class="form-control" id="phone" name="phone" required><br>
 
                             <label for="email">이메일</label>
-                            <input type="text" class="form-control" id="email" name="email" value="user02@thezo.com"><br>
+                            <input type="text" class="form-control" id="email" name="email" required><br>
                             
                             <label for="birth">생년월일</label>
-                            <input type="date" class="form-control" id="birth" name="birth" value="1980-11-11"><br>
+                            <input type="date" class="form-control" id="birth" name="birth" required><br>
                         </div>    
 
-                        
                         <div id="address-area">
                             <label for="address"  class="form-row" align="left">&nbsp;주소</label>
                             <div id="zip_code" class="form-inline">
@@ -90,17 +101,76 @@
                             <input type="text"  class="form-control" id="sample6_address" name="addressS" placeholder="주소" required>
                             <div id="div-name"></div>
                             <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소" required>
-                                
                         </div>
-                        
+
+                        <div class="form-row" id="content">
+                            <label for="birth">입사일</label>
+                            <input type="date" class="form-control" id="enrollDate" name="enrollDate" required><br>
+                        </div>
+
+                        <div id="department">
+                            <table>
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="form-group" class="form-row" align="left">
+                                            <label for="sel1" align="left">부서</label>
+                                            <select class="form-control" id="sel1" required>
+                                              <option>인사팀</option>
+                                              <option>총무팀</option>
+                                              <option>회계팀</option>
+                                              <option>개발1팀</option>
+                                              <option>개발2팀</option>
+                                              <option>인프라팀</option>
+                                              <option>운영팀</option>
+                                              <option>영업팀</option>
+                                              <option>구매팀</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><!--직책을 따로..? 만들어야하나..?-->
+                                        <div class="form-group" class="form-row" align="left">
+                                            <label for="sel1">직책</label>
+                                            <select class="form-control" id="sel1" style="width: 90%;" align="center">
+                                                <option></option>
+                                                <option>팀장</option>
+                                                <option>본부장</option>
+                                                <option>대표이사</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group" class="form-row" align="left">
+                                            <label for="sel1" align="left">부서</label>
+                                            <select class="form-control" id="sel1" style="width: 90%;" align="center">
+                                                <option>사원</option>
+                                                <option>대리</option>
+                                                <option>과장</option>
+                                                <option>부장</option>
+                                                <option>상무</option>
+                                                <option>대표이사</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <label for="extensionNo">내선번호</label>
+                                        <input type="text" class="form-control" id="extensionNo" name="extensionNo"><br>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
 
                         <br><br>
                                     
                         <div align="center">
-                            <button type="submit" class="btn btn-secondary">수정</button>
+                            <button type="submit" class="btn btn-primary">등록</button>
+                            <button type="reset" class="btn btn-secondary"> 초기화</button>
                         </div>
                                     
-
                     </form>
 
                 </div>
@@ -186,6 +256,5 @@
         </div>
 
     </div>
-    
 </body>
 </html>

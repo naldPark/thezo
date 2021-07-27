@@ -286,11 +286,15 @@
         <!-- 스크립트 영역 !  -->
         <script>
 			$(function(){
-				var forExceptionCont = document.getElementById("admin-mode").style.color;
-				if(forExceptionCont == 'gray'){
-	                $("section").css("margin-top","70px");
+				//var adMode = $("#admin-mode");
+				if(${loginUser.userId != 'admin'}){				
+	            	$("section").css("margin-top","70px");					
+				}else{
+					var forExceptionCont = document.getElementById("admin-mode").style.color;
+					if(forExceptionCont == 'gray'){
+	            	$("section").css("margin-top","70px");
+					}
 				}
-                
 			})
         
         

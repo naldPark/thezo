@@ -69,8 +69,8 @@
     #restEditTable button{padding:5% !important; height: 4%; font-size: 12px;}
     #restEditBtn{float: right; margin-right: 40px; margin-top: 500px; width: 7%;}
 
-    .modal-lg{max-width: 30% !important; overflow: hidden;}
-    .modal-sm{max-width: 17% !important; overflow: hidden;}
+    .modal-lg{max-width: 500px !important; overflow: hidden;}
+    .modal-sm{max-width: 400px !important; overflow: hidden;}
     .modal-body{max-height: calc(100vh - 200px); overflow-y: auto;}
     #myModalheader{background-color: rgb(94,94,94);}
     #myModalLabel{color: white; font-size: 14px; font-weight: bold;}
@@ -83,10 +83,10 @@
         margin: auto;
         float: left;
     }
+    .modal-footer{font-size: 13px;}
     .modal-footer>a:hover{text-decoration: none; font-weight: bold;}
 
     #adminenrstatement{
-        border: 1px solid black;
         margin-top: 10%;
         width: 95%;
         height: 90%;
@@ -149,7 +149,7 @@
         resize: none;
         padding-left: 10px;
     }
-    #rest-history-table{width: 100%;}
+    #rest-history-table{width: 465px;}
     #rest-history-table th, #rest-history-table td{border: 1px solid lightgray;}
     #rest-history-table th{text-align: center; background-color: rgb(234,234,234)}
     #rest-used-history {

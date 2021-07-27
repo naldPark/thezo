@@ -61,10 +61,10 @@ table tbody {
 		document.getElementById("admin-header").style.display = "block";
 		document.getElementById("admin-mode").style.color = "red";
 	</script>
-
+	<section>
 
 	<div class="outer">
-
+		<br><br><br><br>
 		<div class="innerOuter">
 			<h2>
 				<b>사원 삭제</b>
@@ -186,7 +186,7 @@ table tbody {
 
 	</div>
 
-
+	</section>
 
 </body>
 </html>

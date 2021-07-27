@@ -46,7 +46,7 @@
 	<!--  .innerOuter 넣어서 크기 조절하기  -->
 	<!-- 찜하기, 판매내역 수정하기 -->
 	<jsp:include page="../common/header.jsp"/>
-	
+	<section>
 	
     <div class="outer">
         <br>
@@ -190,7 +190,7 @@
             <br clear="both"><br>
 
     </div>
-  
+  	</section>
 	
 </body>
 </html>

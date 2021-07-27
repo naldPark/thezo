@@ -39,9 +39,10 @@
 		document.getElementById("admin-mode").style.color = "red";
 	</script>
 	
+	<section>
 	
     <div class="outer">
-
+		<br><br><br><br>
         <div class="innerOuter">
             <h2><b>사원 등록</b></h2>
             <br>
@@ -135,7 +136,7 @@
                                         <div class="form-group" class="form-row" align="left">
                                             <label for="sel1">직책</label>
                                             <select class="form-control" id="sel1" style="width: 90%;" align="center">
-                                                <option></option>
+                                                <option>팀원</option>
                                                 <option>팀장</option>
                                                 <option>본부장</option>
                                                 <option>대표이사</option>
@@ -144,7 +145,7 @@
                                     </td>
                                     <td>
                                         <div class="form-group" class="form-row" align="left">
-                                            <label for="sel1" align="left">부서</label>
+                                            <label for="sel1" align="left">직급</label>
                                             <select class="form-control" id="sel1" style="width: 90%;" align="center">
                                                 <option>사원</option>
                                                 <option>대리</option>
@@ -258,5 +259,6 @@
         </div>
 
     </div>
+    </section>
 </body>
 </html>

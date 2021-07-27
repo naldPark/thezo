@@ -106,7 +106,7 @@
 	<!-- 전체적으로 에디터 적용 후 수정하기 -->
 	<jsp:include page="../common/header.jsp" />
 
-
+	<section>
 	<div class="outer">
 
 		<div class="innerOuter">
@@ -161,5 +161,6 @@
 		<br>
 
 	</div>
+	</section>
 </body>
 </html>

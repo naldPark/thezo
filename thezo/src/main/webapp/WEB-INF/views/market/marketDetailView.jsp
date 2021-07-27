@@ -18,7 +18,7 @@
 <body>
 
 	<jsp:include page="../common/header.jsp"/>
-	
+	<section>
 	
 
     <div class="outer">
@@ -153,7 +153,7 @@
 
 
     </div>
-  
+  	</section>
 	
 	
 </body>

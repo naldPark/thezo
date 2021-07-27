@@ -28,7 +28,7 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
-
+	<section>
 	 <div class="outer">
 
 	 	<div class="innerOuter">
@@ -123,7 +123,7 @@
 	      <br clear="both"><br>
 	    
 	   </div>
-        
     </div>
+    </section>
 </body>
 </html>

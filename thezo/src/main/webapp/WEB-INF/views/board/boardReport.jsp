@@ -53,9 +53,10 @@ table tbody {
 		document.getElementById("admin-mode").style.color = "red";
 	</script>
 	
+	<section>
 
 	<div class="outer">
-
+		<br><br><br><br>
 		<div class="innerOuter">
 			<h2>
 				<b>신고관리</b>
@@ -179,5 +180,6 @@ table tbody {
 		</div>
 
 	</div>
+	</section>
 </body>
 </html>

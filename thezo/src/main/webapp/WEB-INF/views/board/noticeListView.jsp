@@ -43,7 +43,8 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
-
+	<section>
+	
 	<div class="outer">
 
 		<div class="innerOuter">
@@ -142,5 +143,6 @@
 		</div>
 
 	</div>
+	</section>
 </body>
 </html>

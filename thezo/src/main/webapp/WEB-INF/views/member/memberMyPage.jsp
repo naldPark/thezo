@@ -36,9 +36,12 @@
 	<!-- 화면 손보기...ㅠㅠ엉망진창-->
 	<jsp:include page="../common/header.jsp" />
 	
-
+	<!--  관리자로 로그인 했을 때 관리자 메뉴바 보여지도록  -->
+	
+	<section>
+	
     <div class="outer">
-
+		
         <div class="innerOuter">
             <h2><b>내 정보 수정</b></h2>
             <br>
@@ -186,6 +189,7 @@
         </div>
 
     </div>
+    </section>
     
 </body>
 </html>

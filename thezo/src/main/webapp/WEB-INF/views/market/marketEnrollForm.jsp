@@ -103,7 +103,7 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
-
+	<section>
 	<!-- api 적용문제 해결하기 -->
 	<div class="outer">
 
@@ -262,7 +262,7 @@
 
 
 	</div>
-
+	</section>
 
 </body>
 </html>

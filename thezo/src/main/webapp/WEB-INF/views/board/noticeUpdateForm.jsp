@@ -104,7 +104,7 @@
 <body>
 
 	<jsp:include page="../common/header.jsp" />
-
+	<section>
 
 	<div class="outer">
 
@@ -165,7 +165,7 @@
 		<br>
 
 	</div>
-
+	</section>
 
 
 

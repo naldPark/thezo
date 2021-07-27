@@ -10,7 +10,55 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<!-- 풀캘린더  -->
+<link href='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/main.css' rel='stylesheet' />
+<script src='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/main.js'></script>
+<!-- 한국어설정 -->
+<script src='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/locales/ko.js'></script> 
 <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+        	
+        	eventClick: function() { 
+        		$("#att-modal").modal("show");
+        		
+        	},
+          initialView: 'dayGridMonth',
+               locale: 'ko', // 한국어 설정
+          themeSystem: 'bootstrap', // 테마 설정 
+          	 navLinks: true,
+          	 editable: true,
+           selectable: true,
+           dayMaxEvents: true,
+        headerToolbar: { // 헤더부 설정
+          		   		start : 'prevYear,prev',
+          		   		center : 'title',
+          		   		end : 'today next,nextYear',
+	          		   	close: 'fa-times',
+	          		  	prev: 'fa-chevron-left',
+	          		  	next: 'fa-chevron-right',
+	          		  	prevYear: 'fa-angle-double-left',
+	          		  	nextYear: 'fa-angle-double-right'
+          	   			},
+        
+        views: {
+        	
+        	
+        },
+          	   			
+        events:[
+	        {
+	            title: '출근',
+	            start: '2021-07-27'
+	        }
+        ]
+          
+        });
+        calendar.render();
+      });
+      
     window.onload = function(){
         $("#tab-1").click();
     }
@@ -66,6 +114,7 @@
         margin-right: 5%;
         margin-top: 15%;
     }
+    #calendar{padding-top: 80px; width: 65%;}
     #search-box{
         display: inline-flex;
         width: 20%;
@@ -73,8 +122,8 @@
         margin-top: 5%;
     }
 
-    .content{height: 1000px;}
-    .modal-lg{max-width: 17% !important; overflow: hidden;}
+    .content{height: 800px;}
+    .modal-lg{max-width: 400px !important; overflow: hidden;}
     .modal-body{max-height: calc(100vh - 200px); overflow-y: auto;}
 
     .att-modal{color:black; text-decoration: none;}
@@ -124,14 +173,14 @@
     #yearly-content th{width: 100px; background-color: rgb(214, 213, 213); text-align: center; border-bottom: 1px solid lightgray; font-size: 15px;}
 
     #enrstatement{
-        width: 95%;
-        height: 90%;
+        width: 100%;
+        height: 100%;
+        padding-top: 10%;
     }
     #enr-top{
         border: 1px solid lightgray;
         width: 95%;
-        height: 4%;
-        margin-top: 3%;
+        height: 5%;
     }
     #enr-front{
         float: left;
@@ -144,18 +193,18 @@
     }
     .form-check{
         text-align: center;
-        line-height: 35px;
+        line-height: 30px;
         font-weight: bold;
         float: left;
         margin-left: 3%;
         width: 15%;
     }
     .form-check input[type="radio"]{
-        margin-top: 10px;
+        margin-top: 8px;
         vertical-align: middle;
     }
     #total-search{
-        margin-top: 5px;
+        margin-top: 2px;
         vertical-align: middle;
     }
     .term{display: none}
@@ -276,6 +325,9 @@
             <div class="content">
                 <!--월간-->
                 <div id="monthly">
+                	<div id="calendar"></div>
+                	
+                	<!-- 
                     <form id="search-date">
                         <div id="search-box">
                             <select class="form-select" name="select-year">
@@ -295,6 +347,7 @@
                         <a class="att-modal" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#att-modal">출근</a>
                     </div>
                 </div>
+                   	필요시 사용--> 
 
                 <!--연간-->
                 <div id="yearly">
@@ -586,11 +639,11 @@
                             <table>
                                 <tr>
                                     <th width="300">신청 날짜</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="2021년 8월 2일 (월요일)" disabled></td>
+                                    <td><input type="text" class="form-control form-control-sm" value="2021년 7월 27일 (월요일)" disabled></td>
                                 </tr>
                                 <tr>
                                     <th>현재 상태</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="출근 (2021/08/02 월) 13:45" disabled></td>
+                                    <td><input type="text" class="form-control form-control-sm" value="출근 (2021/07/27 월) 13:45" disabled></td>
                                 </tr>
                                 <tr>
                                     <th>사유</th>

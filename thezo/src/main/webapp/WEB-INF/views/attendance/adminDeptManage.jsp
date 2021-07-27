@@ -20,7 +20,7 @@
         font-weight: bold;
         font-size: 30px;  
     }
-    .content{height: 1000px; border: 1px solid darkblue;}
+    .content{height: 1000px;}
     /*기본적으로 적용해야할 스타일*/
     
     .form-check{margin-left: 0% !important; position: static !important; margin-top: 0% !important; padding-left: 0% !important;}
@@ -31,7 +31,7 @@
     #dept-table th{background-color: lightgray;}
     #deletebtn{float: left; margin-left: 15%; margin-top: 20%;}
     #createbtn{float: right; margin-right: 15%; margin-top: 20%;}
-    .modal-lg{max-width: 16% !important; overflow: hidden;}
+    .modal-lg{max-width: 350px !important; overflow: hidden;}
     .modal-body{max-height: calc(100vh - 200px); overflow-y: auto;}
 
     .dept-modal{color:black; text-decoration: none;}

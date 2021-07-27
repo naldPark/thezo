@@ -21,10 +21,10 @@
         font-weight: bold;
         font-size: 30px;  
     }
-    .content{height: 1000px;}
+    .content{height: 800px;}
     #company-table input{width: 300px;}
-    #sub-title{margin-top: 80px; margin-bottom: 30px;}
-    #company-table{margin-top: 100px; width: 95%;}
+    #sub-title{margin-top: 60px; margin-bottom: 30px;}
+    #company-table{margin-top: 10px; width: 95%;}
     #company-table textarea{
         width: 390px;
         height: 32px;

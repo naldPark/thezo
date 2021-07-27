@@ -321,10 +321,14 @@
                 if(adminNav != null){
                     showdiv.style.top =(adminNav.style.display != 'none'?"114px":"70px");                       
                 }
-				var forExceptionCont = document.getElementById("admin-mode").style.color;
-				if(forExceptionCont == 'gray'){
-					showdiv.style.top = "70px";
-				}
+
+                if(${loginUser.userId == 'admin'}){				
+                    var forExceptionCont = document.getElementById("admin-mode").style.color;
+                    if(forExceptionCont == 'gray'){
+                        showdiv.style.top = "70px";
+                    }
+                }
+
                 
             };
 

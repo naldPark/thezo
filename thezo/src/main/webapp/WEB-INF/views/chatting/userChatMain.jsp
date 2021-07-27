@@ -78,7 +78,7 @@
             //console.log("더블클릭임");
             $("#chatting-outer").hide();
             $("#open-chat-Room").show();
-
+            $("#chat-content-body").scrollTop($("#chat-content-body")[0].scrollHeight);
         } 
     </script>
 

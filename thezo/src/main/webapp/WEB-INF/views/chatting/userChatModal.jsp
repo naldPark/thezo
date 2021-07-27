@@ -324,7 +324,7 @@
         }
 
         
-        #createGroupChat-Modal .modal-footer>button:nth-child(2), #createGroupChat-Modal .modal-footer>button:nth-child(3){
+        #createGroupChat-Modal .modal-footer>button:nth-child(2), #createGroupChat-Modal .modal-footer>button:nth-child(3), #createGroupChat-Modal .modal-footer>button:nth-child(4){
             background-color: rgb(66,87,107);
             color: white;
         }
@@ -344,6 +344,7 @@
                 <div class="modal-header">
                     <p class="group-create-title">단체 채팅방 만들기</p>
                     <p class="group-add-title">단체 채팅방 인원 초대</p>
+                    <p class="change-room-name" style="display: none;">단체 채팅방 이름 바꾸기</p>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -351,7 +352,10 @@
 
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <table>
+                        <div id="beforeCreateGroupRoom" style="display: none;">
+                            <span style="font-size: 18px;"><b>※ 단체 채팅방 이름</b></span><input type="text" id="group-room-name-content" name="" style="padding-left: 10px;" required>
+                        </div>
+                        <table id="my-colleage-group-list">
                             <thead>
                                 <tr>
                                     <th>나의 동료 목록</th>
@@ -403,8 +407,9 @@
                     <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal">취소</button>
-                        <button type="button" class="create-group-btn" onclick="createAndMoveToGroupChat();">단체톡 만들기</button>
+                        <button type="button" class="create-group-btn" style="display: none;" onclick="createAndMoveToGroupChat();">단체톡 만들기</button>
                         <button type="button" class="add-group-btn" style="display: none;" onclick="createAndMoveToGroupChat();">인원 추가</button>
+                        <button type="button" class="change-room-name" style="display: none;" onclick=";">방이름 바꾸기</button>
                     </div>
                 </form>
                 
@@ -419,19 +424,44 @@
             // JSTL로다가 만약에 방번호가 이미 있다면 ! 그떄는 ! 추가하는 방향으로 진행을 하고 
             // 아니면 기존에 내가 가진 동료를 싸그리 보여주는 형식이다. 
             // 추가같은 경우 방번호에 이미 나의 친구가 추가되어있다면 걔는 제외한 나머지가 추가되게 해줘야한다. 
-            console.log(mode);
+            //console.log(mode);
             if(mode == 'gc'){
+                $("#beforeCreateGroupRoom").show();
+                $("#group-room-name-content").val("");
                 $(".group-create-title").show();;
                 $(".group-add-title").hide();
                 $(".create-group-btn").show();
                 $(".add-group-btn").hide();
 
-            }else{
+                $("#my-colleage-group-list").show();
+                $(".change-room-name").hide();
+                $("#createGroupChat-Modal .modal-body").css("height", "410px");
+                $("#createGroupChat-Modal .modal-content").css("height", "520px");
+
+            }else if(mode == 'ga'){
+                $("#beforeCreateGroupRoom").hide();
                 $(".group-create-title").hide();
                 $(".group-add-title").show();
                 $(".create-group-btn").hide();
                 $(".add-group-btn").show();
 
+                $("#my-colleage-group-list").show();
+                $(".change-room-name").hide();
+                $("#createGroupChat-Modal .modal-body").css("height", "410px");
+                $("#createGroupChat-Modal .modal-content").css("height", "520px");
+
+            }else{//mode 인자에 cgn 이 들어가있다. 
+                $("#my-colleage-group-list").hide();
+                $(".group-create-title").hide();;
+                $(".group-add-title").hide();
+                $(".create-group-btn").hide();
+                $(".add-group-btn").hide();
+                $("#beforeCreateGroupRoom").show();
+                $(".change-room-name").show();
+                $("#group-room-name-content").val($("#group-chat-room-name").text());
+                $("#createGroupChat-Modal .modal-body").css("height", "100px");
+                $("#createGroupChat-Modal .modal-content").css("height", "210px");
+                
             }
             $("#createGroupChat-Modal").modal();
         }

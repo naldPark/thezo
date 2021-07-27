@@ -122,7 +122,7 @@
         margin-top: 5%;
     }
 
-    .content{height: 800px; border:1px solid black;}
+    .content{height: 800px;}
     .modal-lg{max-width: 400px !important; overflow: hidden;}
     .modal-body{max-height: calc(100vh - 200px); overflow-y: auto;}
 

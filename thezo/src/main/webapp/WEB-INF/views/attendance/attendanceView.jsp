@@ -346,8 +346,9 @@
                     <div id="att-enroll">
                         <a class="att-modal" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#att-modal">출근</a>
                     </div>
+                    	필요시 사용--> 
                 </div>
-                   	필요시 사용--> 
+                   	
 
                 <!--연간-->
                 <div id="yearly">

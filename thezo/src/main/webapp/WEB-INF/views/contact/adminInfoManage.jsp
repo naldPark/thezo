@@ -21,10 +21,10 @@
         font-weight: bold;
         font-size: 30px;  
     }
-    .content{height: 1000px;}
+    .content{height: 800px;}
     #company-table input{width: 300px;}
     #company-table input[type="date"]{height: 40px;}
-    #sub-title{margin-top: 60px; margin-bottom: 30px;}
+    #sub-title{margin-top: 30px; margin-bottom: 10px;}
     #company-table{margin-top: 10px; width: 95%;}
     #company-table textarea{
         width: 390px;
@@ -37,13 +37,20 @@
     #company-btn{
         float: right; width: 100px;
         margin-right: 100px;
-        margin-top: 40px;
     }
 </style>
 
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
+	<script>
+		$(function(){
+			var adminNav = document.getElementById("admin-header");
+			$("section").css("margin-top", (adminNav.style.display != 'none'?"115px":"70px"));
+		})
+		document.getElementById("admin-header").style.display ="block"; 
+        document.getElementById("admin-mode").style.color = "red";
+	</script>
     <section>
 		<div class="outer" align="center">
             <div class="outer-wrap">
@@ -55,7 +62,7 @@
                 <form action="">
                     <table id="company-table">
                         <tr>
-                            <th colspan="4"><h5 style="margin-bottom: 30px";>필수입력</h5></th>
+                            <th colspan="4"><h5 style="margin-bottom: 10px;"><i class="fas fa-caret-square-right"></i> 필수입력</h5></th>
                         </tr>
                         <tr>
                             <th width="200">회사명</th>
@@ -76,10 +83,7 @@
                             <td><input type="text" class="form-control" placeholder="종목을 입력해주세요" required></td>
                         </tr>
                         <tr>
-                            <th colspan="4"><hr size="10px"></th>
-                        </tr>
-                        <tr>
-                            <th colspan="4"><h5 id="sub-title">선택입력</h5></th>
+                            <th colspan="4"><h5 id="sub-title"><i class="far fa-caret-square-right"></i> 선택입력</h5></th>
                         </tr>
                         <tr>
                             <th>회사전화</th>

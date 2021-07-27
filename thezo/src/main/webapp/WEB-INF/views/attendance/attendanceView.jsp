@@ -84,7 +84,7 @@
         font-size: 30px;
     }
     #sub-button{
-        margin-top: 48%;
+        margin-top: 46%;
         width: 100%;
         height : 15%;
     }
@@ -122,7 +122,7 @@
         margin-top: 5%;
     }
 
-    .content{height: 800px;}
+    .content{height: 800px; border:1px solid black;}
     .modal-lg{max-width: 400px !important; overflow: hidden;}
     .modal-body{max-height: calc(100vh - 200px); overflow-y: auto;}
 

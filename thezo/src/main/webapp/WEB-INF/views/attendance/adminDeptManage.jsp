@@ -20,7 +20,7 @@
         font-weight: bold;
         font-size: 30px;  
     }
-    .content{height: 1000px;}
+    .content{height: 800px;}
     /*기본적으로 적용해야할 스타일*/
     
     .form-check{margin-left: 0% !important; position: static !important; margin-top: 0% !important; padding-left: 0% !important;}
@@ -48,6 +48,14 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
+	<script>
+		$(function(){
+			var adminNav = document.getElementById("admin-header");
+			$("section").css("margin-top", (adminNav.style.display != 'none'?"115px":"70px"));
+		})
+		document.getElementById("admin-header").style.display ="block"; 
+        document.getElementById("admin-mode").style.color = "red";
+	</script>
     <section>
 		<div class="outer" align="center">
             <div class="outer-wrap">

@@ -35,7 +35,7 @@
         font-size: 30px;  
     }
     #sub-button{
-        margin-top: 48%;
+        margin-top: 46%;
         width: 100%;
         height : 15%;
     }
@@ -53,7 +53,7 @@
     #tab-1 {width: 30%; height: 100%;}
     #tab-2 {width: 40%; height: 100%;}
 
-    .content{height: 900px;}
+    .content{height: 800px;}
 
     #restEditTap{
         margin-top: 10%;
@@ -163,6 +163,14 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
+	<script>
+		$(function(){
+			var adminNav = document.getElementById("admin-header");
+			$("section").css("margin-top", (adminNav.style.display != 'none'?"115px":"70px"));
+		})
+		document.getElementById("admin-header").style.display ="block"; 
+        document.getElementById("admin-mode").style.color = "red";
+	</script>
     <script>
 
         function changetab1(){

@@ -28,8 +28,8 @@
           initialView: 'dayGridMonth',
                locale: 'ko', // 한국어 설정
           themeSystem: 'bootstrap', // 테마 설정 
-          	 navLinks: true,
           	 editable: true,
+          	eventDisplay: 'list-item',
            selectable: true,
            dayMaxEvents: true,
         headerToolbar: { // 헤더부 설정
@@ -660,7 +660,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="" style="color: rgb(26,188,156);">신청하기</a>&nbsp;
-                    <a href="" style="color: lightslategray;">취소하기</a>
+                    <a href="#" data-bs-dismiss="modal" aria-label="Close" style="color: lightslategray;">취소하기</a>
                 </div>
             </div>
         </div>

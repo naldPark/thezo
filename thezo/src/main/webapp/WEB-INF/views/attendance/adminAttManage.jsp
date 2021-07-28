@@ -380,7 +380,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <a href="" style="color: lightslategray;">닫기</a>
+                    <a href="#" data-dismiss="modal" style="color: lightslategray;">닫기</a>
                 </div>
             </div>
         </div>
@@ -427,7 +427,7 @@
                 </div>
                 <div class="modal-footer">
                     <a href="" style="color: rgb(26,188,156);">수정하기</a>&nbsp;
-                    <a href="" style="color: lightslategray;">취소하기</a>
+                    <a href="#" data-dismiss="modal" style="color: lightslategray;">취소하기</a>
                 </div>
             </div>
         </div>

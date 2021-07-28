@@ -83,8 +83,10 @@
                         </div>
 
                         <div class="form-row" id="content">
-                            <label for="birth">입사일</label>
+                            <label for="emrollDate">입사일</label>
                             <input type="date" class="form-control" id="enrollDate" name="enrollDate" value="2014-11-11" required><br>
+                            <label for="resignDate">퇴사일</label>
+                            <input type="date" class="form-control" id="resignDate" name="resignDate" value="2014-11-11" required><br>
                         </div>
 
                         <div id="department">

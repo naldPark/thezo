@@ -9,8 +9,8 @@ import com.kh.thezo.document.model.vo.Document;
 public interface DocumentService {
 	
 	// 1. 게시판 리스트 페이지 조회용 (페이징)
-	int selectListCount();
-	ArrayList<Document> selectDocumentList(PageInfo pi);
+	int selectListCount(String docCategory);
+	ArrayList<Document> selectDocumentList(PageInfo pi, String docCategory);
 	
 	// 2. 게시글 작성하기용
 	int insertDocument(Document d);
@@ -25,6 +25,6 @@ public interface DocumentService {
 	
 	// 5. 게시글 검색용
 	int searchListCount(HashMap map);
-	ArrayList<Document> searchList(HashMap map, PageInfo pi);
+	ArrayList<Document> searchDocumentList(HashMap map, PageInfo pi);
 	
 }

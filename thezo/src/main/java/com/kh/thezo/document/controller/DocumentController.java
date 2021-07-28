@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +41,19 @@ public class DocumentController {
 	 * @return 문서양식 리스트
 	 */
 	@RequestMapping("list.doc")
-	public String selectDocumentList(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
-		int listCount = dService.selectListCount();
+	public String selectDocumentList(Model model, 
+			@RequestParam(value="dCount", defaultValue="15") int dCount,
+			@RequestParam(value="currentPage", defaultValue="1") int currentPage,
+			@RequestParam(value="docCategory", defaultValue="공용") String docCategory) {
 		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
+		int listCount = dService.selectListCount(docCategory);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, dCount);
 		
-		ArrayList<Document> list = dService.selectDocumentList(pi);
+		ArrayList<Document> list = dService.selectDocumentList(pi, docCategory);
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
+		model.addAttribute("dCount", dCount);
 		
 		return "document/documentListView";
 	}
@@ -78,7 +84,6 @@ public class DocumentController {
 	
 	/**
 	 * 문서양식 삭제
-	 * @return 
 	 */
 	@ResponseBody
 	@RequestMapping("delete.doc")
@@ -92,23 +97,16 @@ public class DocumentController {
 	 * 글 조회하기
 	 */
 	@ResponseBody
-	@RequestMapping("select.doc")
-	public String selectDocument(@RequestParam(value="arr[]") int arr, ModelAndView mv, HttpSession session) {
+	@RequestMapping(value="select.doc" , produces="application/json; charset=UTF-8")
+	public String selectDocument(@RequestParam(value="arr[]") int arr, HttpServletResponse response) {
 		Document d = dService.selectDocument(arr);
-		
+		response.setCharacterEncoding("UTF-8");
 		return new Gson().toJson(d);
 	}
 	
 	/**
 	 * 문서양식 수정
 	 */
-	@RequestMapping("updateForm.doc")
-	public String updateForm(int dno, Model model) {
-		Document d = dService.selectDocument(dno);
-		model.addAttribute("d", d);
-		return "document/documentUpdateView";
-	}
-	
 	@RequestMapping("update.doc")
 	public String updateDocument(Document d, MultipartFile reupfile, HttpSession session) {
 		// 새로 넘어온 첨부파일이 있을 경우
@@ -132,6 +130,33 @@ public class DocumentController {
 			session.setAttribute("alertMsg", "수정을 실패했습니다. 다시 시도해주세요.");
 			return "redirect:list.doc";
 		}
+	}
+	
+	
+	/**
+	 *  문서 검색 기능
+	 */
+	@RequestMapping("search.doc")
+	public String searchDocument(@RequestParam(value="currentPage", defaultValue="1") int currentPage, 
+			String condition, String keyword, Model model, 
+			@RequestParam(value="dCount", defaultValue="15") int dCount,
+			@RequestParam(value="docCategory", defaultValue="공용") String docCategory) {
+		HashMap map = new HashMap();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		map.put("docCategory", docCategory);
+		int listCount = dService.searchListCount(map);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, dCount);
+		
+		ArrayList<Document> list = dService.searchDocumentList(map, pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
+		model.addAttribute("condition", condition);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("dCount", dCount);
+		
+		return "document/documentListView";
 	}
 	
 	

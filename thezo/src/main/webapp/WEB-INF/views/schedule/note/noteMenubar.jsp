@@ -16,6 +16,12 @@
 	.fa-reply:hover{color:rgb(243,156,18);}
 	.btn>b{font-size: 18px; margin: 10px;}
 	#note-list{color:rgb(243,156,18);}
+	hr {
+	    margin-top: 1rem;
+	    margin-bottom: 1rem;
+	    border: 0;
+	    border-top: 1px solid rgba(0,0,0,.1);
+	}
 </style>
 </head>
 <body>

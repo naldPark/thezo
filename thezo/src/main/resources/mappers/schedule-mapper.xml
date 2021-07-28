@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper>
+	<insert id="insertSchedule">
+		insert schedule
+		  into 
+		  (
+		    sc_no
+		  , sc_writer
+		  , sc_title
+		  , sc_content
+		  , sc_type
+		  , sc_start
+		  , sc_end
+		  , allday
+		  , status
+		  )
+		 values
+		 (
+		   #{scNo}
+		   #{scWriter}
+		   #{scTitle}
+		   #{scContent}
+		   #{scType}
+		   #{startDate}
+		   #{endDate}
+		   #{allday}
+		   #{status}
+		 )
+		  
+	</insert>
+</mapper>

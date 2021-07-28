@@ -22,13 +22,13 @@ public class DocumentServiceImpl implements DocumentService {
 	
 	
 	@Override
-	public int selectListCount() {
-		return dDao.selectListCount(sqlSession);
+	public int selectListCount(String docCategory) {
+		return dDao.selectListCount(sqlSession, docCategory);
 	}
 
 	@Override
-	public ArrayList<Document> selectDocumentList(PageInfo pi) {
-		return dDao.selectDocumentList(sqlSession, pi);
+	public ArrayList<Document> selectDocumentList(PageInfo pi, String docCategory) {
+		return dDao.selectDocumentList(sqlSession, pi, docCategory);
 	}
 
 	@Override
@@ -48,14 +48,12 @@ public class DocumentServiceImpl implements DocumentService {
 
 	@Override
 	public int searchListCount(HashMap map) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dDao.searchListCount(sqlSession, map);
 	}
 
 	@Override
-	public ArrayList<Document> searchList(HashMap map, PageInfo pi) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Document> searchDocumentList(HashMap map, PageInfo pi) {
+		return dDao.searchDocumentList(sqlSession, map, pi);
 	}
 
 	@Override

@@ -26,16 +26,49 @@
 
 		    <br>
 		    
-			<select style="float:right; margin:15px;" name="bCount">
+			<select style="float:right; margin:15px;" name="dCount" id="dCount" onchange="countChange();">
 				<option value="5">5개씩</option>
 				<option value="10">10개씩</option>
-				<option value="15" selected>15개씩</option>
+				<option value="15">15개씩</option>
 				<option value="20">20개씩</option>
 				<option value="30">30개씩</option>
 			</select>
 			
+			<script>
+				$(function(){
+					$('#dCount').val('${dCount}').prop("selected",true);
+				})
+				
+				function countChange(){
+					var para = document.location.href.split("?"); // 현재 파라미터 값 가져오기
+					//console.log(para);
+					$("#dCount>option").removeAttr("selected");
+					if(para.length>=2){ 
+						// 파라미터 값 까지 넘겨서 새로고침
+						if(para[1].indexOf("keyword") == -1){
+							// 검색어가 없다면 list.doc로 dCount 값만 전달
+							location.href = "list.doc?dCount=" + $("#dCount").val();
+						}else{
+							// 검색어가 있다면 search.doc로 검색어 + dCount 전달
+							if(para[1].indexOf("dCount") == -1){
+								location.href = "search.doc?" + para[1]
+												+ "&dCount=" + $("#dCount").val();
+							}else{ 
+								// 이미 dCount를 넘겨주었다면, 값을 지우고 다시 전달
+								var cut = para[1].split("&dCount");
+								location.href = "search.doc?" + cut[0]
+												+ "&dCount=" + $("#dCount").val();
+									
+							}
+						}
+					}else{
+						location.href = "list.doc?dCount=" + $("#dCount").val();
+					}
+				}
+			</script>
+			
 		    <div class="list-area" align="center">
-		        <table border="1" class="table table-bordered text-center" id="list-tb">
+		        <table border="1" class="table table-bordered table-sm text-center" id="list-tb">
 		            <thead>
 		                <tr>
 		                    <th width="60px">선택</th>
@@ -111,10 +144,11 @@
 		    			})
 		    			
 		    			function updateDoc(){
-							$.ajax({
+							$.ajax({ // 한글깨짐문제 해결하기
 								url : "select.doc",
 								type: "GET",
 								data: {arr:arr},
+								contentType : "application/text; charset:UTF-8",
 								success:function(d){
 									var doc = Object.values(JSON.parse(d));
 									console.log(doc);
@@ -287,38 +321,72 @@
 		        <div class="paging-area">
 		            <ul class="pagination justify-content-center">
 		            	<c:choose>
-		            		<c:when test="${ pi.currentPage != 1 }">
-			                	<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ pi.currentPage - 1 }">Previous</a></li>
-			                </c:when>
-			                <c:otherwise>
-			                	<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+		            		<c:when test="${ pi.currentPage eq 1 }">
+			            		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+			            	</c:when>
+			            	<c:otherwise>
+			            		<c:choose>
+			            			<c:when test="${ empty condition }">
+			                			<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ pi.currentPage - 1 }&dCount=${ dCount }">Previous</a></li>
+			                		</c:when>
+			                		<c:otherwise>
+			                			<li class="page-item"><a class="page-link" href="search.doc?currentPage=${ pi.currentPage - 1 }&keyword=${ keyword }&condition=${ condition }&dCount=${ dCount }">Previous</a></li>
+			                		</c:otherwise>
+			                	</c:choose>
 			                </c:otherwise>
 			            </c:choose>
-			                <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-		                		<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ p }">${ p }</a></li>
-			                </c:forEach>
+			            
+                		<c:choose>
+                			<c:when test="${ empty condition }">
+                				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                					<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ p }&dCount=${ dCount }">${ p }</a></li>
+                				</c:forEach>
+                			</c:when>
+                			<c:otherwise>
+                				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                					<li class="page-item"><a class="page-link" href="search.doc?currentPage=${ p }&keyword=${ keyword }&condition=${ condition }&dCount=${ dCount }">${ p }</a></li>
+                				</c:forEach>
+                			</c:otherwise>
+               			</c:choose>
+			                			
 			            <c:choose>
-			                <c:when test="${ pi.currentPage != pi.maxPage }">
-			                	<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ pi.currentPage + 1 }">Next</a></li>
-			                </c:when>
-			                <c:otherwise>
-			                	<li class="page-item disabled"><a class="page-link" href="${ pi.currentPage + 1 }">Next</a></li>
-			                </c:otherwise>
+			            	<c:when test="${ pi.currentPage eq pi.maxPage }">
+			            		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+			            	</c:when>
+			            	<c:otherwise>
+			            		<c:choose>
+				            		<c:when test="${ empty condition }">
+					                	<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ pi.currentPage + 1 }&dCount=${ dCount }">Next</a></li>
+				            		</c:when>
+				            		<c:otherwise>
+				            			<li class="page-item"><a class="page-link" href="search.doc?currentPage=${ pi.currentPage + 1 }&keyword=${ keyword }&condition=${ condition }&dCount=${ dCount }">Next</a></li>
+				            		</c:otherwise>
+			            		</c:choose>
+		            		</c:otherwise>
 		                </c:choose>
+		                
 		            </ul>
 		        </div>
 		        <%------------------------------------------------------------------------------ 페이징바 끝--%>
 
 				<%-- 검색바 ------%>
 				<div class="search-area">
-					<form class="form-inline justify-content-center" action="search.doc">
+					<form id="searchForm" class="form-inline justify-content-center" action="search.doc" method="Get">
 						<select class="form-control" name="condition" id="condition">
-							<option value="docWriter" selected>작성자</option>
-							<option value="docContent">내용</option>
+							<option value="writer">작성자</option>
+							<option value="content">내용</option>
 						</select>
-						<input type="search" class="form-control" placeholder="검색어를 입력하세요" id="search">
+						<input type="search" class="form-control" name="keyword" value="${ keyword }" placeholder="검색어를 입력하세요">
 						<button type="submit" class="btn btn-primary btn-search">검색</button>
 					</form>
+					
+					<c:if test="${ !empty condition }">
+			            <script>
+			            	$(function(){
+			            		$("#searchForm option[value=${ condition }]").attr("selected", true);
+			            	})
+			            </script>
+		            </c:if>
 				</div>
 			</div>
     	</div>

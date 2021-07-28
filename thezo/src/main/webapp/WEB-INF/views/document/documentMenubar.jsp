@@ -40,7 +40,7 @@
 			<!-- 홈페이지에서 생성하게 할 수 있을까?-->
 			<!-- 각각 a링크를 주지말고 category=""의 조건을 줘서 조회되게 -->
 			<ul>
-				<a href=""><li>재무팀</li></a>
+				<a href="list.doc?docCategory="><li>재무팀</li></a>
 				<a href=""><li>영업팀</li></a>
 				<a href=""><li>총무팀</li></a>
 			</ul>

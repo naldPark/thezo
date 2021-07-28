@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <title>예약하기-나의예약목록</title>
 <style>
-	body{padding-top:70px;}
 
     #myList{
         width: 950px;

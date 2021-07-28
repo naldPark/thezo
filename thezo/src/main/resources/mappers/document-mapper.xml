@@ -19,11 +19,29 @@
 			   count(*)
 		  from document
 		 where status = 'Y'
-		   and doc_category = '공용'
+		   and doc_category = #{docCategory}
 	</select>
 	
 	<select id="selectDocumentList" resultMap="documentResult">
 		select
+		       doc_no
+		     , department || ' ' || mem_name "DOC_WRITER"
+		     , doc_content
+		     , doc_category
+		     , d.create_date
+		     , d.origin_name
+		     , d.change_name
+		     , d.status
+		  from document d
+		  join member m on (d.doc_writer = m.mem_no)
+		 where d.status = 'Y'
+		   and d.doc_category = #{docCategory}
+		 order
+		    by d.create_date desc
+	</select>
+	
+	<select id="selectDocument" resultMap="documentResult">
+		select 
 			   doc_no
 			 , doc_writer
 			 , doc_content
@@ -32,11 +50,50 @@
 			 , origin_name
 			 , change_name
 			 , status
+		  from document 
+		 where doc_no = #{docNo}
+		   and status = 'Y'
+	</select>
+	
+	<select id="searchListCount" resultType="_int">
+		select
+			   count(*)
 		  from document
 		 where status = 'Y'
-		   and doc_category = '공용'
-		 order
-		    by create_date desc
+		   and doc_category = #{docCategory}
+		   and
+		 <if test="condition=='writer'">
+		 	doc_writer like '%' || #{keyword} || '%'
+		 </if>
+		 <if test="condition=='content'">
+		 	doc_content like '%' || #{keyword} || '%'
+		 </if>
+	</select>
+	
+	<select id="searchDocumentList" resultMap="documentResult">
+		select doc.*
+		  from (select
+		               doc_no
+		             , department || ' ' || mem_name "DOC_WRITER"
+		             , doc_content
+		             , doc_category
+		             , create_date
+		             , d.origin_name
+		             , d.change_name
+		             , d.status
+		          from document d 
+		          join member m on (d.doc_writer = m.mem_no)
+		         where d.status = 'Y'
+		           and doc_category = '공용'
+		         order
+		            by create_date desc) doc
+		 where
+		 <if test="condition=='writer'">
+		 	"DOC_WRITER" like '%' || #{keyword} || '%' 
+		 </if>
+		 <if test="condition=='content'">
+		 	doc_content like '%' || #{keyword} || '%'
+		 </if>
 	</select>
 	
 	<insert id="insertDocument">
@@ -76,21 +133,6 @@
 		   	   
 	</update>
 	
-	<select id="selectDocument" resultMap="documentResult">
-		select 
-			   doc_no
-			 , doc_writer
-			 , doc_content
-			 , doc_category
-			 , create_date
-			 , origin_name
-			 , change_name
-			 , status
-		  from document 
-		 where doc_no = #{docNo}
-		   and status = 'Y'
-	</select>
-	
 	<update id="updateDocument">
 		update document
 		   set 
@@ -102,5 +144,7 @@
 		 where status = 'Y'
 		   and doc_no = #{docNo}
 	</update>
+	
+	
 </mapper>
 

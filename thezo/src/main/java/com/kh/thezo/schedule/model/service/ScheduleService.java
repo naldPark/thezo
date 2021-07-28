@@ -9,10 +9,16 @@ public interface ScheduleService {
 	// 일정 조회
 	ArrayList<Schedule> selectScheduleList();
 	
-	// 일정 추가/수정/삭제
-	int insertSchedule(Schedule sc);
-	int updateSchedule(Schedule sc);
-	int deleteSchedule(int scNo);
+	// 일정 상세조회
+	Schedule selectSchedule(int scNo);
 	
+	// 일정 추가
+	int insertSchedule(Schedule sc);
+	
+	// 일정 수정
+	int updateSchedule(Schedule sc);
+	
+	// 일정 삭제
+	int deleteSchedule(int scNo);
 	
 }

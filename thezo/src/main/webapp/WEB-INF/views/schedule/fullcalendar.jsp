@@ -26,8 +26,7 @@
     	dateClick: function() { 
     		// 날짜셀 클릭했을 시 이벤트 설정하면됨! 
     		// => 일정추가 모달창 뜨게 설정
-    		$('div.modal').modal();
-    		
+    		$('#insertSc').modal();
     	},
     	
       	headerToolbar: { // 헤더설정
@@ -88,6 +87,7 @@
 </head>
 <body>
 	<div id="calendar"></div>
+	<!-- 일정추가 모달창 -->
 	<jsp:include page="scheduleInsertView.jsp"/>
 </body>
 </html>

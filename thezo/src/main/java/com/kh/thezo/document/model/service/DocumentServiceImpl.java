@@ -37,15 +37,13 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public int deleteDocument(int docNo) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteDocument(int[] arr) {
+		return dDao.deleteDocument(sqlSession, arr);
 	}
 
 	@Override
 	public int updateDocument(Document d) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dDao.updateDocument(sqlSession, d);
 	}
 
 	@Override
@@ -58,6 +56,11 @@ public class DocumentServiceImpl implements DocumentService {
 	public ArrayList<Document> searchList(HashMap map, PageInfo pi) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Document selectDocument(int docNo) {
+		return dDao.selectDocument(sqlSession, docNo);
 	}
 
 }

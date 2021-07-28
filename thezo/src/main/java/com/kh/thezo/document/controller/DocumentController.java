@@ -2,12 +2,10 @@ package com.kh.thezo.document.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.document.model.service.DocumentService;
@@ -41,7 +42,7 @@ public class DocumentController {
 	public String selectDocumentList(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
 		int listCount = dService.selectListCount();
 		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
 		
 		ArrayList<Document> list = dService.selectDocumentList(pi);
 		
@@ -65,7 +66,6 @@ public class DocumentController {
 		
 		int result = dService.insertDocument(d);
 		
-		
 		if(result > 0) {
 			session.setAttribute("alertMsg", "성공적으로 등록되었습니다.");
 			return "redirect:list.doc";
@@ -76,21 +76,63 @@ public class DocumentController {
 		
 	}
 	
+	/**
+	 * 문서양식 삭제
+	 * @return 
+	 */
+	@ResponseBody
 	@RequestMapping("delete.doc")
-	public String deleteDocument(Model model, int docNo, HttpSession session) {
-		int result = dService.deleteDocument(docNo);
-		
-		if(result > 0) {
-			session.setAttribute("alertMsg", "해당 문서가 삭제되었습니다.");
-			return ":redirect:list.doc";
-		} else {
-			session.setAttribute("alertMsg","오류가 발생했습니다.");
-			return ":redirect:list.doc";
-		}
-		
-		
+	public String deleteDocument(@RequestParam(value="arr[]") int[] arr, Model model) {
+		int result = dService.deleteDocument(arr);
+		return result > 0 ? "success" : "fail";
 	}
 	
+	
+	/**
+	 * 글 조회하기
+	 */
+	@ResponseBody
+	@RequestMapping("select.doc")
+	public String selectDocument(@RequestParam(value="arr[]") int arr, ModelAndView mv, HttpSession session) {
+		Document d = dService.selectDocument(arr);
+		
+		return new Gson().toJson(d);
+	}
+	
+	/**
+	 * 문서양식 수정
+	 */
+	@RequestMapping("updateForm.doc")
+	public String updateForm(int dno, Model model) {
+		Document d = dService.selectDocument(dno);
+		model.addAttribute("d", d);
+		return "document/documentUpdateView";
+	}
+	
+	@RequestMapping("update.doc")
+	public String updateDocument(Document d, MultipartFile reupfile, HttpSession session) {
+		// 새로 넘어온 첨부파일이 있을 경우
+		if(!reupfile.getOriginalFilename().equals("")) {
+			// 기존에 첨부파일이 있었을 경우 => 기존의 첨부파일 지우기
+			if(d.getOriginName() != null) {
+				new File(session.getServletContext().getRealPath(d.getChangeName())).delete();
+			}
+			// 새로 넘어온 첨부파일 서버에 업로드
+			String changeName = saveFile(session, reupfile);
+			d.setOriginName(reupfile.getOriginalFilename());
+			d.setChangeName("resources/uploadFiles/" + changeName);
+		}
+		
+		int result = dService.updateDocument(d);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "수정되었습니다.");
+			return "redirect:list.doc";
+		}else {
+			session.setAttribute("alertMsg", "수정을 실패했습니다. 다시 시도해주세요.");
+			return "redirect:list.doc";
+		}
+	}
 	
 	
 	

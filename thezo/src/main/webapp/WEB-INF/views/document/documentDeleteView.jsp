@@ -25,10 +25,13 @@
         
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <div class="button-area">
-                        <a href="delete.doc" class="btn btn-danger">삭제</a>
-                        <button class="btn btn-secondary"data-dismiss="modal">취소</button>
-                    </div>
+                	<form action="delete.doc">
+                		<!-- 글번호 -->
+	                    <div class="button-area">
+	                        <button type="submit" class="btn btn-danger">삭제</button>
+	                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	                    </div>
+                    </form>
                 </div>
         
             </div>

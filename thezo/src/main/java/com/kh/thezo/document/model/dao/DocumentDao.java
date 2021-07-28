@@ -26,6 +26,16 @@ public class DocumentDao {
 		return sqlSession.insert("documentMapper.insertDocument", d);
 	}
 	
+	public int deleteDocument(SqlSessionTemplate sqlSession, int[] arr) {
+		return sqlSession.update("documentMapper.deleteDocument", arr);
+	}
 	
+	public Document selectDocument(SqlSessionTemplate sqlSession, int docNo) {
+		return sqlSession.selectOne("documentMapper.selectDocument", docNo);
+	}
+	
+	public int updateDocument(SqlSessionTemplate sqlSession, Document d) {
+		return sqlSession.update("documentMapper.updateDocument", d);
+	}
 	
 }

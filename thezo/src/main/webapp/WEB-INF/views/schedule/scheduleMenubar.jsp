@@ -6,11 +6,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	#nav{width: 200px; height: 700px; margin: 0; float: left; background-color:rgb(236, 236, 236); box-sizing: border-box;}
+	#nav{width: 200px; height: 700px; margin: 0; float:left; background-color:rgb(236, 236, 236); box-sizing: border-box;}
 	#nav button{margin: 10px;}
 	#nav ul{list-style-type: none; padding-left: 20px;}
 	.subject{font-size: x-large;text-align: center;}
-	.slide_menu>a{margin: 20px;color:black}
+	.slide_menu>a{margin: 20px; color:black}
 	.slide_menu>a:hover{color: rgb(243,156,18);}
 	.btn>b{font-size: 18px; margin: 10px;}
 </style>

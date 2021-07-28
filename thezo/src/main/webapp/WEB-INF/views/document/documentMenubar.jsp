@@ -12,6 +12,12 @@
 	#nav ul{list-style-type: none; padding-left: 20px;}
 	.subject{font-size: x-large;text-align: center;}
 	.chMenu{color: rgb(243,156,18);}
+	hr {
+	    margin-top: 1rem;
+	    margin-bottom: 1rem;
+	    border: 0;
+	    border-top: 1px solid rgba(0,0,0,.1);
+	}
 </style>
 </head>
 <body>
@@ -20,7 +26,6 @@
 		<div class="subject">
 			<i class='fas fa-archive' style='font-size:20px'></i>
 			<b>문서양식</b> 
-			
 		</div>
 		
 		<hr>

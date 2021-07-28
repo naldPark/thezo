@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>노트관리</title>
 <style>
+	body{padding-top:70px;}
 	div{box-sizing: border-box;}
 	.list-area{width: 950px; float:left;}
 	.note-area{width: 100%; height:800px; margin:0 auto; margin-left:50px; text-align: center; border: 1px solid black; padding: 30px;}

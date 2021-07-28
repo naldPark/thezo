@@ -8,7 +8,6 @@
 <title>자원예약하기</title>
 </head>
 <body>
-
     <!-- The Modal -->
     <div class="modal" id="insert">
         <div class="modal-dialog">

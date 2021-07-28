@@ -64,5 +64,43 @@
 	 	   , 'Y'
 	 	   )
 	</insert>
+	
+	<update id="deleteDocument">
+		update document
+		   set 
+		       status = 'N'
+		 where
+		 <foreach collection="array" item="arr" separator="and" index="index">
+		 	 doc_no = #{arr}
+		 </foreach>
+		   	   
+	</update>
+	
+	<select id="selectDocument" resultMap="documentResult">
+		select 
+			   doc_no
+			 , doc_writer
+			 , doc_content
+			 , doc_category
+			 , create_date
+			 , origin_name
+			 , change_name
+			 , status
+		  from document 
+		 where doc_no = #{docNo}
+		   and status = 'Y'
+	</select>
+	
+	<update id="updateDocument">
+		update document
+		   set 
+		   	   doc_content = #{docContent}
+		   	 , doc_category = #{docCategory}
+		   	 , create_date = sysdate
+		   	 , origin_name = #{originName}
+		   	 , change_name = #{changeName}
+		 where status = 'Y'
+		   and doc_no = #{docNo}
+	</update>
 </mapper>
 

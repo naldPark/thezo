@@ -18,6 +18,12 @@
 	.rezMenu>a{color: black; margin-left: 20px;}
 	a>b{color:rgb(243,156,18);}
 	.btn>b{font-size: 18px; margin: 10px;}
+	hr {
+	    margin-top: 1rem;
+	    margin-bottom: 1rem;
+	    border: 0;
+	    border-top: 1px solid rgba(0,0,0,.1);
+	}
 </style>
 <body>
 	<!-- 예약관리 네비바 -->
@@ -36,7 +42,9 @@
 		<button class="btn btn-primary" style="width: 180px;" align="center" data-toggle="modal" data-target="#insert">
 			자원 예약
 		</button>
+		
 		<hr>
+		
 		<div class="rezMenu">
 			<a href="myList.rez"><b>나의 예약 목록</b></a> <br>
 			<a href="con.rez">회의실</a> <br>

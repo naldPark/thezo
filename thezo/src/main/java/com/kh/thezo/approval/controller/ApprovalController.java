@@ -18,11 +18,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.thezo.approval.model.service.ApprovalService;
 import com.kh.thezo.approval.model.vo.Approval;
+import com.kh.thezo.approval.model.vo.OrgChartList;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.mail.model.vo.Attachment;
-import com.kh.thezo.member.model.vo.TestMember;
-
 //@author YI
 
 
@@ -34,10 +33,9 @@ public class ApprovalController {
 	private ApprovalService aService;
 	
 
+	//전자결재 메인페이지로 관련있는 결재리스트 불러오기
 	@RequestMapping("main.appr")
 	public ModelAndView selectApprovalMain(ModelAndView mv, HttpSession session, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
-		
-		
 		
 		// 일단 member 객체 생성되고 login구현될떄까지 임시로 넣는 값
 //		int memNo = Integer.parseInt(((TestMember) session.getAttribute("loginUser")).getUserId());
@@ -58,21 +56,31 @@ public class ApprovalController {
 		return mv;
 	}
 	
+	
+	// 문서양식 리스트 불러오기
 	@RequestMapping("new.appr")
-	public String newApproval() {
-		return "approval/approvalNew";
+	public ModelAndView newApprList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		int listCount = aService.newApprListCount();
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		ArrayList<Approval> list = aService.newApprList(pi);
+		mv.addObject("list", list)
+		  .addObject("pi", pi)
+		  .setViewName("approval/approvalNew");
+		return mv;
 	}
 	
+	// 문서 작성하는 페이지 
 	@RequestMapping("enrollForm.appr")
-	public String enrollApproval() {
-		 return "approval/approvalEnrollForm";
+	public ModelAndView enrollApproval(ModelAndView mv, int ano) {
+		Approval a = aService.enrollApproval(ano);
+		ArrayList<OrgChartList> empList = aService.employeeList();
+		mv.addObject("empList", empList)
+			.addObject("a", a)
+			.setViewName("approval/approvalEnrollForm");
+		return mv;
 	}
 	
-	@RequestMapping("leaveEnrollForm.appr")
-	public String leaveEnrollApproval() {
-		return "approval/approvalLeaveForm";
-	}
-	
+	// 첨부파일 저장을 위한 메소드 모듈화
 	public String saveFile(HttpSession session, MultipartFile upfile) {
 		
 		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/mail/");
@@ -93,8 +101,8 @@ public class ApprovalController {
 	
 	@ResponseBody
 	@RequestMapping("insertDocu.appr")
-	public ModelAndView insertApprovalDocument(String summernote,HttpSession session,MultipartFile[] upfile, ModelAndView mv ) {
-		System.out.println(summernote);
+	public ModelAndView insertApprovalDocument(Approval a,HttpSession session, MultipartFile[] upfile, ModelAndView mv ) {
+//		System.out.println(summernote);
 		if (!upfile[0].getOriginalFilename().equals("")) {
 			ArrayList<Attachment> list = new ArrayList<>();
 
@@ -106,13 +114,19 @@ public class ApprovalController {
 				list.add(at);
 			}
 		}
-		String whatthe="asdasdㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇasdasdas<br><br>";
-		mv.addObject("whatthe", whatthe);
+		int result = aService.insertApprovalDocument(a);
 		
-		mv.addObject("summernote", summernote)
-		  .setViewName("approval/approvalTemp");
+//		  .setViewName("approval/approvalTemp");
 		return mv;
 	}
+	
+	
+	
+	@RequestMapping("leaveEnrollForm.appr")
+	public String leaveEnrollApproval() {
+		return "approval/approvalLeaveForm";
+	}
+	
 	
 	@RequestMapping("detailDocu.appr")
 	public String detailApproval() {

@@ -55,51 +55,44 @@
                 <br>
                 <!-- 안읽은 문서 건수 안내 끝 -->
                 <!-- 문서리스트 -->
-                <div class="d-flex mb-4 shadow newDocu">
-                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
-                    <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
-                    <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
-                </div>
-                <div class="d-flex mb-4 shadow newDocu">
-                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-couch docMenu"></i> 인사</b> <br>휴가신청서</div>
-                    <div class="p-4 flex-grow-1">휴가(연차/경조사) 신청 시 사용하는 문서입니다 </div>
-                    <div class="p-4"><button type="button"  onclick="location.href='leaveEnrollForm.appr'" class="btn btn-primary">작성</button></div>
-                </div>
-                <div class="d-flex mb-4 shadow newDocu">
-                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
-                    <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
-                    <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
-                </div>
-                <div class="d-flex mb-4 shadow newDocu">
-                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
-                    <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
-                    <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
-                </div>
-                 <div class="d-flex mb-4 shadow newDocu">
-                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
-                    <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
-                    <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
-                </div>
-                <div class="d-flex mb-4 shadow newDocu">
-                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
-                    <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
-                    <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
-                </div>
-                 <div class="d-flex mb-4 shadow newDocu">
-                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> 일반</b> <br>일반기안서</div>
-                    <div class="p-4 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
-                    <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr'" class="btn btn-primary">작성</button></div>
-                </div>
                 
+                 <c:forEach var="a" items="${ list }">
+	                  <div class="d-flex mb-4 shadow newDocu">
+	                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> ${ a.category }</b> <br>${ a.formName }</div>
+	                    <div class="p-4 flex-grow-1">${ a.formInfo } </div>
+	                    <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr?ano=${ a.formNo }'" class="btn btn-primary">작성</button></div>
+	                 </div>
+                 </c:forEach>
+            
 
                 <br><br>
-                <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">이전</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">다음</a></li>
-                  </ul>
+               <!--페이징 처리 시작-->
+                 <div id="pagingArea">
+					<ul class="pagination">
+						<c:choose>
+							<c:when test="${ pi.currentPage eq 1 }">
+								<li class="page-item disabled"><a class="page-link">이전</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link" href="approvalNew?currentPage=${ pi.currentPage-1 }">이전</a></li>
+							</c:otherwise>
+						</c:choose>
+
+						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+								<li class="page-item"><a class="page-link" href="approvalNew?currentPage=${ p }">${ p }</a></li>
+						</c:forEach>
+
+						<c:choose>
+							<c:when test="${ pi.currentPage eq pi.maxPage }">
+								<li class="page-item disabled"><a class="page-link">다음</a></li>
+							</c:when>
+							<c:otherwise>
+									<li class="page-item"><a class="page-link" href="approvalNew?currentPage=${ pi.currentPage+1 }">다음</a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+           		 </div>
+				<!--페이징 처리 끝-->
             </div>
     	</div>
     </section>

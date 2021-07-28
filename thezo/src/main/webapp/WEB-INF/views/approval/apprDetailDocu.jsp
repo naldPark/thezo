@@ -57,9 +57,11 @@
                     </div><br>
                     <hr>
                     <div class="row justify-content-center">
-                      <button type="button" id="submitBtn" class="btn btn-primary" data-toggle="modal" data-target="#accept">승인</button> &nbsp;
-                      <button type="button" onclick="location.href=''" class="btn btn-secondary">반려</button>
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cancel">회수</button> &nbsp;
+                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#accept">승인</button> &nbsp;
+                      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#denied">반려</button> &nbsp;
                     </div>
+
                   </form>
                 </div>
               </div>
@@ -114,31 +116,65 @@
               <!--오른쪽 결재선 끝-->
 
 
-              <!-- The Modal -->
+              <!-- 승인모달 -->
               <div class="modal fade" id="accept">
                 <div class="modal-dialog">
                   <div class="modal-content">
-                  
-                    <!-- Modal Header -->
                     <div class="modal-header">
                       <h4 class="modal-title">승인하기</h4>
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    
-                    <!-- Modal body -->
                     <div class="modal-body">
                       <textarea class="form-control" rows="5" name="comment" id="comment" style="resize:none; height: 100px" placeholder="의견이 있는 경우에 작성 해 주세요"></textarea>
                     </div>
-                    
-                    <!-- Modal footer -->
                     <div class="modal-footer">
                       <button type="button" class="btn btn-primary" data-dismiss="modal">승인</button>
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                     </div>
-                    
                   </div>
                 </div>
               </div>
+              <!--승인모달끝-->
+
+              <!-- 반려모달 -->
+              <div class="modal fade" id="denied">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">반려하기</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <textarea class="form-control" rows="5" name="comment" id="comment" style="resize:none; height: 100px" placeholder="의견을 작성 해 주세요" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">반려</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--반려모달끝-->
+
+               <!-- 회수모달 -->
+               <div class="modal fade" id="cancel">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">회수하기</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        회수하면 임시저장함으로 이동 됩니다
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">회수</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--회수모달끝-->
 
             </div>
     	</div>

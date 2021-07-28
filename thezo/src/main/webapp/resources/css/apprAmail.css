@@ -24,7 +24,7 @@
       z-index: 0; text-align: center; padding: 10px;  line-height: 30px; margin: auto; position: absolute !important; height: auto !important;}
     .pagination > .active>a{background:rgb(20,70,104)!important; color: white!important;}
     .pagination>li>a{color: rgb(20,70,104)!important;}
-
+	 #pagingArea{width:fit-content;margin:auto;}
     .pjtWN{background-color: rgb(20,70,104)!important; color: white!important;}
     .pjtNY{background-color: rgb(20,70,104)!important; color: rgb(241,196,15)!important}
     .pjtN{color:rgb(20,70,104)!important;}

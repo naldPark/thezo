@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>The Zo</title>
 <style>
-    #pagingArea{width:fit-content;margin:auto;}
+   
     /* *{border:1px solid green} */
    
 </style>
@@ -50,7 +50,6 @@
                 </div>
                 <br><br>
                 <!-- 안읽은 문서 건수 안내 끝 -->
-                
                 <c:forEach var="a" items="${ list }">
 	                <!-- 문서리스트 -->
 	                <div class="apprList shadow p-4 mb-3 bg-white w3-cell-row" onclick="location.href='detailDocu.appr?ano=${a.docNo}'">
@@ -91,31 +90,33 @@
                 
 
                 <br>
+				<!--페이징 처리 시작-->
                  <div id="pagingArea">
-                <ul class="pagination">
-                	<c:choose>
-                		<c:when test="${ pi.currentPage eq 1 }">
-	                    	<li class="page-item disabled"><a class="page-link">이전</a></li>
-	                    </c:when>
-	                    <c:otherwise>
-							<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ pi.currentPage-1 }">이전</a></li>
-                    	</c:otherwise>
-                    </c:choose>
+					<ul class="pagination">
+						<c:choose>
+							<c:when test="${ pi.currentPage eq 1 }">
+								<li class="page-item disabled"><a class="page-link">이전</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ pi.currentPage-1 }">이전</a></li>
+							</c:otherwise>
+						</c:choose>
 
-                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                   			<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ p }">${ p }</a></li>
-                    </c:forEach>
+						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+								<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ p }">${ p }</a></li>
+						</c:forEach>
 
-                    <c:choose>
-                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
-	                    	<li class="page-item disabled"><a class="page-link">Next</a></li>
-	                    </c:when>
-	                    <c:otherwise>
-	                    		<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ pi.currentPage+1 }">다음</a></li>
-	                    </c:otherwise>
-                    </c:choose>
-                </ul>
-            </div>
+						<c:choose>
+							<c:when test="${ pi.currentPage eq pi.maxPage }">
+								<li class="page-item disabled"><a class="page-link">다음</a></li>
+							</c:when>
+							<c:otherwise>
+									<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ pi.currentPage+1 }">다음</a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+           		 </div>
+				<!--페이징 처리 끝-->
                 <br>
             </div>
     	</div>

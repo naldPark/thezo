@@ -155,7 +155,7 @@
 
                         <%-- 메일함 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
                         <li><a href="main.mail">메일함</a></li>
-                        <li><a href="main.appr">전자결제</a></li>
+                        <li><a href="main.appr">전자결재</a></li>
                         <li><a href="main.sc">일정관리</a></li>
 
                         <c:if test="${loginUser.userId eq 'admin' }">

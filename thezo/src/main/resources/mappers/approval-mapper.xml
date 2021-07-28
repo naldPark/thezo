@@ -9,13 +9,24 @@
 		<result column="doc_name" property="docName"/>
 		<result column="category" property="category"/>
 		<result column="form_name" property="formName"/>
+		<result column="form_info" property="formInfo"/>
+		<result column="form_content" property="formContent"/>
 		<result column="DOC_CONTENT" property="content"/>
 		<result column="STATUS" property="status"/>
 		<result column="DOC_TYPE" property="docType"/>
 		<result column="DOC_DATE" property="docDate"/>
 		<result column="line" property="line"/>
 		<result column="SORT" property="sort"/>
-		
+	</resultMap>
+	
+	<resultMap id="orgChartListResult" type="OrgChartList">
+		<result column="mem_no" property="memNo"/>
+		<result column="mem_name" property="memName"/>
+		<result column="email" property="email"/>
+		<result column="dep_no" property="depNo"/>
+		<result column="department" property="department"/>
+		<result column="job" property="job"/>
+		<result column="rank" property="rank"/>
 	</resultMap>
 
 
@@ -25,8 +36,6 @@
 		  from approval
 		 where mem_no = #{memNo}
 		 and status like '%' || #{status} || '%'
-	 		
-		 
 	</select>
 
 
@@ -65,22 +74,58 @@
 			order by doc_date desc
 	</select>
 	
+	<select id="newApprListCount" resultType="_int">
+		select
+			 count(*)
+			from appr_form
+			where status='Y'
+	</select>
 	
 	
+	<select id="newApprList" resultMap="approvalResult">
+		select FORM_NO, CATEGORY, FORM_NAME, FORM_INFO
+			from appr_form
+			where status ='Y'
+	</select>
 	
-	<!-- 
-	<select id=" resultXXXX="">
-	
-	
+	<select id="enrollApproval" resultMap="approvalResult">
+		select form_no, category, form_name, form_content
+			from appr_form
+			where form_no =#{ano}
 	</select>
 
-	<insert>
-	</insert>
 
-	<update>
-	</update>	
+	<select id="employeeList" resultMap="orgChartListResult">
+		select mem_no, mem_name, EMAIL, dep_no, department, job, rank
+			from member
+			where status='Y'
+			and resign_date is null
+			order by DEP_NO
+            ,JOB NULLS LAST
+            ,decode(rank,'대표이사',1,'상무',2,'부장',3,'과장',4,'대리',5)
+            ,mem_name
+	</select>
+	
+	<!-- 
+	<select id = "" >
+		select rownum, b.*
+		    from (
+		        select rownum as temp_no, mem_no, mem_name, EMAIL, dep_no, department, job, rank
+		            from (
+		                select rownum as num, a.*
+	                        from (
+	                            select mem_no, mem_name, EMAIL, dep_no, department, job, rank
+	                            from member
+	                            where job is not null
+	                            and resign_date is null
+	                            and dep_no<=8
+	                            and (dep_no=8 or department like'%본부' or department like '%대표%')
+	                            order by (case when department='대표이사' then 2 else 1 end)
+	                                ,dep_no)a
+		               order by num desc)
+		        order by temp_no) b
+			WHERE ROWNUM BETWEEN 1 AND 3
+	</select>
+	 -->
 
-	<delete>
-	</delete>
- 	-->
 </mapper>

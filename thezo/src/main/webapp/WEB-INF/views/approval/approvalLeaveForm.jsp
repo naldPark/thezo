@@ -191,7 +191,7 @@
 </script>
 
 
-<!-- The Modal -->
+<!-- 결재선 모달 시작 -->
 <div class="modal" id="myModal">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
@@ -373,6 +373,7 @@
     </div>
   </div>
 </div>
+<!-- 결재선 모달 끝 -->
 
 <script>
   // 왼쪽 조직트리 클릭시 하위 조직 표시

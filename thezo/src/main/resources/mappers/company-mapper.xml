@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="companyMapper">
+	
+	<insert id="insertCompany">
+		insert
+		  into company
+		  	 (
+		  	   comp_no
+		  	 , comp_name
+		  	 , comp_ceo_name
+		  	 , comp_reg_no
+		  	 , comp_email
+		  	 , comp_buss_status
+		  	 , comp_buss_kind
+		  	 , comp_phone
+		  	 , comp_hp
+		  	 , comp_cor_no
+		  	 , comp_fax
+		  	 , comp_est_date
+		  	 , comp_address
+		  	 , comp_ceo_eng
+		  	 , comp_name_eng
+		  	 , comp_address_enf
+		  	 , comp_img
+		  	 )
+		values
+			 (
+			   1
+			 , #{ companyName }
+			 , #{ ceoName }
+			 , #{ regNo }
+			 , #{ email }
+			 , #{ bussStatus }
+			 , #{ bussKind }
+			 , #{ phone }
+			 , #{ homePage }
+			 , #{ corNo }
+			 , #{ fax }
+			 , #{ estDate }
+			 , #{ address }
+			 , #{ ceoEng }
+			 , #{ cNameEng }
+			 , #{ addressEng }
+			 , #{ originName }
+			 , #{ changeName }
+			 )
+	</insert>
+
+</mapper>

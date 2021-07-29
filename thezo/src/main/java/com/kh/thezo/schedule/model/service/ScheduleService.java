@@ -8,6 +8,7 @@ public interface ScheduleService {
 	
 	// 일정 조회
 	ArrayList<Schedule> selectScheduleList();
+	ArrayList<Schedule> selectScheduleData();
 	
 	// 일정 상세조회
 	Schedule selectSchedule(int scNo);

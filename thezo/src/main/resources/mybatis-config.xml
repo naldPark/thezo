@@ -18,6 +18,7 @@
 		<typeAlias type="com.kh.thezo.approval.model.vo.OrgChartList" alias="OrgChartList"/> 
 		<typeAlias type="com.kh.thezo.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.kh.thezo.market.model.vo.Market" alias="Market"/>
+		<typeAlias type="com.kh.thezo.schedule.model.vo.Schedule" alias="Schedule"/>
 	</typeAliases>
 	
 	<mappers>
@@ -32,7 +33,7 @@
 		<mapper resource="/mappers/mail-mapper.xml"/>
 		<mapper resource="/mappers/board-mapper.xml"/>	
 		<mapper resource="/mappers/market-mapper.xml"/>
-		
+		<mapper resource="/mappers/schedule-mapper.xml"/>
 	</mappers>
 
 </configuration>

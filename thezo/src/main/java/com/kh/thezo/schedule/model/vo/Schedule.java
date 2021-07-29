@@ -12,11 +12,11 @@ public class Schedule {
 	
 	private int scNo;
 	private String scWriter;
-	private String scTitle;
+	private String title;
 	private String scContent;
 	private String scType;
-	private String startDate;
-	private String endDate;
+	private String start;
+	private String end;
 	private String allday;
 	private String status;
 	

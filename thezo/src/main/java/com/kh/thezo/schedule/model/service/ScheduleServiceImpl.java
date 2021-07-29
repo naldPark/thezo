@@ -19,8 +19,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 	
 	@Override
 	public ArrayList<Schedule> selectScheduleList() {
-		// TODO Auto-generated method stub
-		return null;
+		return scDao.selectScheduleList(sqlSession);
 	}
 
 	@Override
@@ -44,6 +43,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public Schedule selectSchedule(int scNo) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public ArrayList<Schedule> selectScheduleData() {
+		return scDao.selectScheduleData(sqlSession);
 	}
 
 }

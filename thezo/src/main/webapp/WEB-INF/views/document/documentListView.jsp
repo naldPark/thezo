@@ -91,7 +91,7 @@
 									<tr>
 										<td><input type="checkbox" class="docCheck"></td>
 										<td>${ d.docNo }</td>
-										<td>${ d.docWriter }</td>
+										<td>${ d.department } ${ d.docWriter }</td>
 										<td>${ d.docContent }</td>
 										<td>
 											<a href="${ d.changeName }" download="${ d.originName }">
@@ -144,26 +144,27 @@
 		    			})
 		    			
 		    			function updateDoc(){
-							$.ajax({ // 한글깨짐문제 해결하기
+		    				//console.log(arr[0]);
+							$.ajax({
 								url : "select.doc",
-								type: "GET",
 								data: {arr:arr},
-								contentType : "application/text; charset:UTF-8",
+								type: "post",
 								success:function(d){
+									//console.log(d);
 									var doc = Object.values(JSON.parse(d));
-									console.log(doc);
+									//console.log(doc);
 									$("#docNo").val(doc[0]);
 									$("#docWriter").text(doc[1]);
 									$("#docWriter").val(doc[1]);
 									$("#docContent").val(doc[2]);
-									$("#docContent").val(doc[2]);
 									$("#docCategory").val(doc[3]);
 									
 									// 현재 업로드된 파일
-									$("a").attr("href", doc[6])
-									$("a").text(doc[5]);
-									$("a").attr("download", doc[6]);
+									$("#file1").attr("href", doc[6])
+									$("#file1").text(doc[5]);
+									$("#file1").attr("download", doc[6]);
 									$("#originName").val(doc[5]);
+									
 									$("#changeName").val(doc[6]);
 									$("#updateForm").modal('show');
 								},error: function(){
@@ -294,7 +295,7 @@
 					                        <td>
 					                            <input type="file" id="upfile" class="form-control-file border" name="reupfile">
 				                            	 <b>현재 업로드된 파일</b> <br>
-				                            	<a href="" download=""></a>
+				                            	<a href="" download="" id="file1"></a>
 				                            	<input type="hidden" name="originName" id="originName">
 				                            	<input type="hidden" name="changeName" id="changeName">
 					                        </td>
@@ -308,7 +309,7 @@
 								<!-- Modal footer -->
 								<div class="modal-footer center">
 									<div class="button-area">
-										<button class="btn btn-secondary" data-dismiss="modal">취소</button>
+										<button class="btn btn-secondary" data-dismiss="modal" id="cancel">취소</button>
 										<button class="btn btn-primary" type="submit">저장</button>
 									</div>
 								</div>

@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper>
+<mapper namespace="scheduleMapper">
+
+	<resultMap id="scheduleResult" type="Schedule">
+		<result column="sc_no" property="scNo"/>
+		<result column="sc_writer" property="scWriter"/>
+		<result column="sc_title" property="title"/>
+		<result column="sc_content" property="scContent"/>
+		<result column="sc_type" property="scType"/>
+		<result column="sc_start" property="start"/>
+		<result column="sc_end" property="end"/>
+		<result column="allday" property="allday"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	
+	<select id="selectScheduleList" resultMap="scheduleResult">
+		select
+			   sc_no
+		     , sc_writer
+		     , sc_title
+		     , sc_content
+		     , sc_type
+		     , sc_start
+		     , sc_end
+		     , allday
+		     , status
+		  from schedule
+		 where status = 'Y'
+	</select>
+	
+	<select id="selectScheduleData" resultMap="scheduleResult">
+		select
+		       sc_title
+		     , sc_start
+		     , sc_end
+		     , allday
+		  from schedule
+	</select>
+	
 	<insert id="insertSchedule">
-		insert schedule
-		  into 
+		insert 
+		  into schedule
 		  (
 		    sc_no
 		  , sc_writer
@@ -17,15 +54,15 @@
 		  )
 		 values
 		 (
-		   #{scNo}
-		   #{scWriter}
-		   #{scTitle}
-		   #{scContent}
-		   #{scType}
-		   #{startDate}
-		   #{endDate}
-		   #{allday}
-		   #{status}
+		   seq_scno.nextval
+		 , #{scWriter}
+		 , #{title}
+		 , #{scContent}
+		 , #{scType}
+		 , #{start}
+		 , #{end}
+		 , #{allday}
+		 , 'Y'
 		 )
 		  
 	</insert>

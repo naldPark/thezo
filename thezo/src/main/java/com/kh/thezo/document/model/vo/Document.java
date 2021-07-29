@@ -18,6 +18,7 @@ import lombok.ToString;
 public class Document {
 	private int docNo;
 	private String docWriter;
+	private String department;
 	private String docContent;
 	private String docCategory;
 	private Date createDate;

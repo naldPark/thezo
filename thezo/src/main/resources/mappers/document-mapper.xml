@@ -5,6 +5,7 @@
 	<resultMap id="documentResult" type="Document">
 		<result column="doc_no" property="docNo"/>
 		<result column="doc_writer" property="docWriter"/>
+		<result column="department" property="department"/>
 		<result column="doc_content" property="docContent"/>
 		<result column="doc_category" property="docCategory"/>
 		<result column="create_date" property="createDate"/>
@@ -25,7 +26,8 @@
 	<select id="selectDocumentList" resultMap="documentResult">
 		select
 		       doc_no
-		     , department || ' ' || mem_name "DOC_WRITER"
+		     , mem_name as "doc_writer"
+		     , department
 		     , doc_content
 		     , doc_category
 		     , d.create_date

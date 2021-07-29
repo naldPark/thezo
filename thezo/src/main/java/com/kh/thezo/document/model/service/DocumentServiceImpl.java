@@ -60,5 +60,11 @@ public class DocumentServiceImpl implements DocumentService {
 	public Document selectDocument(int docNo) {
 		return dDao.selectDocument(sqlSession, docNo);
 	}
+	
+	/*
+	public Department selectDepartMentList() {
+		
+	}
+	*/
 
 }

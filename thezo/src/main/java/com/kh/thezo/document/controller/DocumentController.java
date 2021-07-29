@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.thezo.common.model.vo.PageInfo;
@@ -50,6 +49,11 @@ public class DocumentController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, dCount);
 		
 		ArrayList<Document> list = dService.selectDocumentList(pi, docCategory);
+		
+		// 카테고리 불러오기(부서명)
+		//ArrayList<Department> depList = dService.selectDepartMentList();
+		
+		
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
@@ -95,13 +99,15 @@ public class DocumentController {
 	
 	/**
 	 * 글 조회하기
+	 * @throws IOException 
 	 */
 	@ResponseBody
-	@RequestMapping(value="select.doc" , produces="application/json; charset=UTF-8")
-	public String selectDocument(@RequestParam(value="arr[]") int arr, HttpServletResponse response) {
-		Document d = dService.selectDocument(arr);
-		response.setCharacterEncoding("UTF-8");
-		return new Gson().toJson(d);
+	@RequestMapping(value="select.doc")
+	public void selectDocument(@RequestParam(value="arr[]") int[] arr, HttpServletResponse response) throws IOException {
+		Document d = dService.selectDocument(arr[0]);
+		response.setContentType("text/html; charset=utf-8");
+		String result = new Gson().toJson(d);
+		response.getWriter().print(result);
 	}
 	
 	/**

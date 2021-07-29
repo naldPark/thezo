@@ -39,7 +39,6 @@
         margin-right: 100px;
     }
 </style>
-
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
@@ -59,79 +58,77 @@
                 </div>
             </div>
             <div class="content">
-                <form action="">
+                <form action="insert.co" enctype="multipart/form-data">
                     <table id="company-table">
                         <tr>
                             <th colspan="4"><h5 style="margin-bottom: 10px;"><i class="fas fa-caret-square-right"></i> 필수입력</h5></th>
                         </tr>
                         <tr>
                             <th width="200">회사명</th>
-                            <td width="400"><input type="text" class="form-control" placeholder="회사명을 입력해주세요" required></td>
+                            <td width="400"><input type="text" name="companyName" class="form-control" placeholder="회사명을 입력해주세요" required></td>
                             <th width="200">대표자명</th>
-                            <td><input type="text" class="form-control" placeholder="대표자명을 입력해주세요" required></td>
+                            <td><input type="text" name="ceoName" class="form-control" placeholder="대표자명을 입력해주세요" required></td>
                         </tr>
                         <tr>
                             <th>사업자등록번호</th>
-                            <td><input type="text" class="form-control" placeholder="사업자등록번호를 입력해주세요" required></td>
+                            <td><input type="text" name="regNo" class="form-control" placeholder="사업자등록번호를 입력해주세요" required></td>
                             <th>이메일</th>
-                            <td><input type="text" class="form-control" placeholder="이메일을 입력해주세요" required></td>
+                            <td><input type="text" name="email" class="form-control" placeholder="이메일을 입력해주세요" required></td>
                         </tr>
                         <tr>
                             <th>업태</th>
-                            <td><input type="text" class="form-control" placeholder="업태를 입력해주세요" required></td>
+                            <td><input type="text" name="bussStatus" class="form-control" placeholder="업태를 입력해주세요" required></td>
                             <th>종목</th>
-                            <td><input type="text" class="form-control" placeholder="종목을 입력해주세요" required></td>
+                            <td><input type="text" name="bussKidn" class="form-control" placeholder="종목을 입력해주세요" required></td>
                         </tr>
                         <tr>
                             <th colspan="4"><h5 id="sub-title"><i class="far fa-caret-square-right"></i> 선택입력</h5></th>
                         </tr>
                         <tr>
                             <th>회사전화</th>
-                            <td><input type="text" class="form-control" placeholder="번호를 입력해주세요"></td>
+                            <td><input type="text" name="phone" class="form-control" placeholder="번호를 입력해주세요"></td>
                             <th>홈페이지</th>
-                            <td><input type="url" class="form-control" placeholder="홈페이지를 입력해주세요"></td>
+                            <td><input type="url" name="homePage" class="form-control" placeholder="홈페이지를 입력해주세요"></td>
                         </tr>
                         <tr>
                             <th>법인등록번호</th>
-                            <td><input type="text" class="form-control" placeholder="법인등록번호를 입력해주세요"></td>
+                            <td><input type="text" name="corNo" class="form-control" placeholder="법인등록번호를 입력해주세요"></td>
                             <th>팩스</th>
-                            <td><input type="text" class="form-control" placeholder="번호를 입력해주세요"></td>
+                            <td><input type="text" name="fax" class="form-control" placeholder="번호를 입력해주세요"></td>
                         </tr>
                         <tr>
                             <th>설립일자</th>
-                            <td><input type="date"></td>
+                            <td><input type="date" name="estDate"></td>
                         </tr>
                         <tr>
                             <th>주소</th>
-                            <td><input type="text" class="form-control" placeholder="주소를 입력해주세요"></td>
+                            <td><input type="text" name="address" class="form-control" placeholder="주소를 입력해주세요"></td>
                             <th>대표자명(영문)</th>
-                            <td><input type="text" class="form-control" placeholder="대표자명(영문)을 입력해주세요"></td>
+                            <td><input type="text" name="ceoEng" class="form-control" placeholder="대표자명(영문)을 입력해주세요"></td>
                         </tr>
                         <tr>
                             <th>회사명(영문)</th>
-                            <td><input type="text" class="form-control" placeholder="회사명(영문)을 입력해주세요"></td>
+                            <td><input type="text" name="cNameEng" class="form-control" placeholder="회사명(영문)을 입력해주세요"></td>
                         </tr>
                         <tr>
                             <th>주소(영문)</th>
-                            <td colspan="2"><input type="text" class="form-control" placeholder="주소(영문)을 입력해주세요 "></td>
+                            <td colspan="2"><input type="text" name="addressEng" class="form-control" placeholder="주소(영문)을 입력해주세요 "></td>
                         </tr>
                         <tr>
                             <th>회사로고</th>
                             <td>            
                                 <div class="input-group mb-3" style="margin-bottom: 0% !important;">
-                                    <input type="file" class="form-control" id="inputGroupFile02">
+                                    <input type="file" name="upImg" class="form-control" id="inputGroupFile02">
                                     <label class="input-group-text" for="inputGroupFile02">Upload</label>
                                     <img src="" width="200px" height="150">
                                 </div>
                             </td>
                         </tr>
                     </table>
-                    <button id="company-btn" class="btn btn-dark">저장</button>
+                    <button type="submit" id="company-btn" class="btn btn-dark">저장</button>
                 </form>
             </div>
-
         </div>
-
     </section>
 </body>
 </html>

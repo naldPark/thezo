@@ -2,6 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="notificationMapper">
 	<!-- @author Jaewon.s -->
+	
+	<resultMap id="notificationResult" type="Notification">
+		<result column="nf_no" property="nfNo"/>
+		<result column="dept_name" property="nfDeptName"/>
+		<result column="start_date" property="nfStartDate"/>
+		<result column="end_date" property="nfEndDate"/>
+		<result column="nf_content" property="nfContent"/>
+		<result column="for_order_enroll_date" property="nfEnrollDate"/>
+		<result column="update_date" property="nfUpdateDate"/>
+		<result column="del_status" property="nfDelStatus"/>
+	</resultMap>
+	
+	
+	<!-- 알림 insert 시작  -->
+	
+	<!-- null값 비교로 기존에 동일한 알림이 있는지 체크용 sql문  -->
 	<select id="beforeInsertCheck" resultType="string">
 		select 
 				nf_no	
@@ -12,6 +28,7 @@
 		   and nf_content = #{ nfContent }
 	</select>
 	
+	<!-- 알림 테이블에 insert하는  sql문  -->	
 	<insert id="insertNotification">
 		insert 
 		  into notification
@@ -32,6 +49,7 @@
 	      	  )
 	</insert>
 
+	<!-- 동시 insert를 고려하여 unique한 알림번호를 뽑아오는 sql문   -->	
 	<select id="notificationMapper.selectRightNfNo" resultType="_int">
 		select
 				nf_no
@@ -42,6 +60,7 @@
 		   and nf_content = #{ nfContent }
 	</select>
 
+	<!-- 알림번호를 바탕으로 알림테이블에 insert성공시 nf_check테이블에도 값이 입력되는 (트리거 같은) sql문   -->	
 	<insert id="insertNfCheck">	
 		insert
 		  into nf_check 
@@ -55,5 +74,32 @@
 			 where department = '${ nfDeptName }'  			   
 		</if>
 	</insert>
+	<!-- 알림 insert 끝 -->
+	
+	<!-- 알림 전체 갯수 조회용 sql문 -->
+	<select id="selectListCount" resultType="_int">
+		select
+		       count(*)
+		  from notification
+		 where del_status = 'Y'      
+	</select>
+	
+	<!-- paging처리 값만큼 알림게시글 담아가는 sql문  -->	
+	<select id="SelectAndViewNotificationList" resultMap="notificationResult">
+		select
+		       nf_no
+		     , dept_name
+		     , to_char(start_date, 'YY-MM-DD') as start_date
+		     , to_char(end_date, 'YY-MM-DD') as end_date
+		     , nf_content
+		     , to_char(enroll_date, 'YY-MM-DD') as for_order_enroll_date
+		     , to_char(update_date, 'YY-MM-DD') as update_date
+		  from notification
+		 where del_status = 'Y'
+		 order
+		    by enroll_date desc  
+	</select>
+
+
 
 </mapper>

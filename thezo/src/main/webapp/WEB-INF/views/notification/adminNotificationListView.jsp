@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!-- @author Jaewon.s -->
 <!DOCTYPE html>
 <html>
@@ -17,7 +19,8 @@
 	/* 내가 만든 paging-area 재원 ~ */
 	.paging-area{text-align: center; margin: 10px 0px 0px 0px;} 
 	.paging-area button{width:28px; height:32px; color: rgb(127,127,127); font-size:16px; font-weight: bold; border: none; border-radius: 5px; background-color: rgb(244,244,244);}       
-    #dis-btn{color:white; background-color: rgb(52,152,219);}
+    #dis-btn{color:white; background-color: rgb(52,152,219);}						
+
 
 	/* 알림 기록쪽  */
 	.inner-content{display: flex; justify-content: space-between;}
@@ -29,8 +32,6 @@
 	.log-content>table{width: 100%; text-align: center; margin-bottom: 10px; border-top: 10px solid rgb(44, 62, 80); border-bottom: 1px solid lightgray; transform: translateX(2px);}
 	.log-content>table>thead{height: 42px; line-height: 30px; background-color: rgb(234,234,234);}
 	.log-content>table>tbody>tr:hover{cursor: pointer; font-weight: bold; background-color: rgba(254,246,234,0.6);}	
-
-	
 	.log-content>table>thead>tr>th{font-size: 14px; border-bottom: 1px solid gray;}
 	.log-content>table>tbody>tr>td>button{width: 40px; height: 25px; color: white; font-size: 12px; font-weight: bold; line-height: 25px; padding: 0px; border: none; border-radius: 3px;}
 	.blue-background{background-color: rgb(52,152,219);}
@@ -134,50 +135,84 @@
 								</tr>								
 							</thead>
 							<tbody>
-								<!-- 여기가 반복문으로 값을 동적으로 뿌리는곳-->
-								<tr onclick="ajaxNotificationDetail(1);">
-									<td>10</td>
-									<td>21-07-29</td>
-									<td>21-07-30</td>
-									<td>땡땡땡땡땡땡부서</td>
-									<td>21-07-29</td>
-									<td>21-08-03</td>
-									<td onclick="event.cancelBubble=true">
-										<!-- 행클릭시 조회는 모달 하나를 가지고 활용을 하자! -->
-										<button type="button" class="blue-background" onclick="ajaxNotificationModify(2);">수정</button>
-									</td>
-									<td onclick="event.cancelBubble=true">
-										<button type="button" class="red-background" onclick="ajaxNotificationDelete('알림번호');">삭제</button>
-									</td>
-								</tr>
-								<tr>
-								</tr>
-								<tr>
-								</tr>
-								<tr>
-								</tr>
-								<tr>
-								</tr>
-								<tr>
-								</tr>
-								<tr>
-								</tr>
-								<tr>
-								</tr>
-								<tr>
-								</tr>
-								<tr>
-								</tr>
+								<!-- 여기가 반복문으로 값을 동적으로 뿌리는곳  무조건 ! 10번 돌려 줘야한다. -->
+								<c:choose>
+									<c:when test="${fn:length(list) ne 10}">
+										<c:forEach var="nf" items="${list}" >
+											<tr onclick="ajaxNotificationDetail(${nf.nfNo});">
+												<td>${nf.nfNo}</td>
+												<td>${nf.nfEnrollDate}</td>
+												<td>${nf.nfUpdateDate}</td>
+												<td>${nf.nfDeptName}</td>
+												<td>${nf.nfStartDate}</td>
+												<td>${nf.nfEndDate}</td>
+												<td onclick="event.cancelBubble=true">
+													<!-- 행클릭시 조회는 모달 하나를 가지고 활용을 하자! -->
+													<button type="button" class="blue-background" onclick="ajaxNotificationModify(${nf.nfNo});">수정</button>
+												</td>
+												<td onclick="event.cancelBubble=true">
+													<button type="button" class="red-background" onclick="ajaxNotificationDelete(${nf.nfNo});">삭제</button>
+												</td>
+											</tr>
+										</c:forEach>
+										<c:forEach var="tenRows" items="${list}" begin="0" end="${10 - fn:length(list)}" >
+											<tr></tr>
+										</c:forEach>
+									</c:when>
+									<c:otherwise>
+										<c:forEach var="nf" items="${list}" >
+											<tr onclick="ajaxNotificationDetail(${nf.nfNo});">
+												<td>${nf.nfNo}</td>
+												<td>${nf.nfEnrollDate}</td>
+												<td>${nf.nfUpdateDate}</td>
+												<td>${nf.nfDeptName}</td>
+												<td>${nf.nfStartDate}</td>
+												<td>${nf.nfEndDate}</td>
+												<td onclick="event.cancelBubble=true">
+													<!-- 행클릭시 조회는 모달 하나를 가지고 활용을 하자! -->
+													<button type="button" class="blue-background" onclick="ajaxNotificationModify(${nf.nfNo});">수정</button>
+												</td>
+												<td onclick="event.cancelBubble=true">
+													<button type="button" class="red-background" onclick="ajaxNotificationDelete(${nf.nfNo});">삭제</button>
+												</td>
+											</tr>
+										</c:forEach>									
+									</c:otherwise>
+								</c:choose>
 							</tbody>
 						</table>
-						<!-- 페이징처리  나중에  jstl로다가! 조건문 반복문으로 처리해줘야해~  -->
+						
+						<!-- 나만의  l!! 페이징처리  !!!!   더심플함! -->												
 						<div align="center" class="paging-area second-pagingbar">
-							<button onclick="location.href='';">&lt;</button>
-							<button onclick="location.href='';">1</button>
-							<button id="dis-btn" disabled>2</button>
-							<button onclick="location.href='';">&gt;</button>
-						</div>		
+		                	<c:choose>
+		                		<c:when test="${ pi.currentPage eq 1 }">
+									<button type="button" style="background:darkgrey;" disabled>&lt;</button>
+		                		</c:when>
+								<c:otherwise>
+									<button onclick="location.href='list.adnf?currentPage=${ pi.currentPage -1 }';">&lt;</button>
+								</c:otherwise>
+		                	</c:choose>
+							<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+								<c:choose>
+									<c:when test="${ pi.currentPage eq p }">
+										<button id="dis-btn" disabled onclick="location.href='list.adnf?currentPage=${ p}';">${ p}</button>									
+									</c:when>
+									<c:otherwise>
+										<button onclick="location.href='list.adnf?currentPage=${ p}';">${ p}</button>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+		                    <c:choose>
+		                    	<c:when test="${pi.currentPage eq pi.maxPage}">
+									<button type="button" style="background:darkgrey;" disabled>&gt;</button>
+  			                    	</c:when>
+								<c:otherwise>
+									<button onclick="location.href='list.adnf?currentPage=${ pi.currentPage +1 }';">&gt;</button>
+								</c:otherwise>		
+		                    </c:choose>
+						</div>
 					</div>
+					
 
 					<!--오른쪽 박스 -->
 					<div class="enroll-content">
@@ -238,14 +273,14 @@
 
 		// 상세 모달
 		function ajaxNotificationDetail(tossedNo){
-			if(tossedNo == 1 ){
+			//if(tossedNo == 1 ){
 				for(var i=0; i<forView.length; i++){
 					forView[i].style.display="block"; 
 				}
 				for(var i=0; i<forModify.length; i++){
 					forModify[i].style.display="none"; 
 				}
-			}
+			//}
 			// 	$.ajax({
 			// 		url:"~~ .do",
 			// 		success:function(인자){
@@ -258,14 +293,14 @@
 		
 		// 수정모달 
 		function ajaxNotificationModify(tossedNo){
-			if(tossedNo == 2 ){
+			//if(tossedNo == 2 ){
 				for(var i=0; i<forModify.length; i++){
 					forModify[i].style.display="block"; 
 				}
 				for(var i=0; i<forView.length; i++){
 					forView[i].style.display="none"; 
 				}
-			}
+			//}
 			// 	$.ajax({
 			// 		url:"~~ .do",
 			// 		success:function(인자){

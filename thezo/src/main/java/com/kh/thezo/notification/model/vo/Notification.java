@@ -20,6 +20,7 @@ public class Notification {
 	private String nfEndDate;
 	private String nfContent;
 	private String nfEnrollDate;
+	private String nfUpdateDate;
 	private String nfDelStatus;
 	
 }

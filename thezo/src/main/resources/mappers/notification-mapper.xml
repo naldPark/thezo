@@ -1,7 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="notificationMapper">
-
 	<!-- @author Jaewon.s -->
+	<select id="beforeInsertCheck" resultType="string">
+		select 
+				nf_no	
+		  from notification
+		 where dept_name = #{ nfDeptName }
+		   and start_date = #{ nfStartDate }
+		   and end_date = #{ nfEndDate } 
+		   and nf_content = #{ nfContent }
+	</select>
+	
+	<insert id="insertNotification">
+		insert 
+		  into notification
+		      (
+	     		nf_no
+		      , dept_name
+		      , start_date
+		      , end_date
+		      , nf_content
+	      	  )
+     	values
+	      	  (
+	      	    seq_nfno.nextval
+	      	  , #{ nfDeptName } 
+	      	  , #{ nfStartDate } 
+	      	  , #{ nfEndDate } 
+	      	  , #{ nfContent } 
+	      	  )
+	</insert>
+
+	<select id="notificationMapper.selectRightNfNo" resultType="_int">
+		select
+				nf_no
+		  from notification
+		 where dept_name = #{ nfDeptName }
+		   and start_date = #{ nfStartDate }
+		   and end_date = #{ nfEndDate } 
+		   and nf_content = #{ nfContent }
+	</select>
+
+	<insert id="insertNfCheck">	
+		insert
+		  into nf_check 
+		      (
+		        nf_no
+		      , mem_no
+		      )		      
+	    select ${ nfNo }, mem_no 
+	      from member
+		<if test="#{ nfDeptName } != '전사원'">
+			 where department = '${ nfDeptName }'  			   
+		</if>
+	</insert>
 
 </mapper>

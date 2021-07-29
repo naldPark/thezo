@@ -183,14 +183,24 @@
 					<div class="enroll-content">
 						<p>※ 새로운 알림 작성하기</p>
 						<div id="notification-enrollForm">
-							<form action="" method="">
+							<form action="insert.adnf" method="POST">
 								<div>
 									<div><i class="fas fa-lightbulb"></i></div>
-									<select name="" id="">
-										<option value="">ssss</option>
-										<option value=""></option>
-										<option value=""></option>
-										<option value=""></option>
+									<select name="nfDeptName" id="post" required>
+										<option value="전사원">전사원</option>
+										<option value="대표이사">대표이사</option>
+										<option value="경영관리본부">경영관리본부</option>
+										<option value="인사팀">인사팀</option>
+										<option value="총무팀">총무팀</option>
+										<option value="회계팀">회계팀</option>
+										<option value="개발본부">개발본부</option>
+										<option value="개발 1팀">개발 1팀</option>
+										<option value="개발2팀">개발2팀</option>
+										<option value="인프라팀">인프라팀</option>
+										<option value="운영본부">운영본부</option>
+										<option value="운영팀">운영팀</option>
+										<option value="영업팀">영업팀</option>
+										<option value="구매팀">구매팀</option>
 									</select>
 									<span>알림</span>
 								</div>
@@ -198,14 +208,14 @@
 								<table>
 									<tr>
 										<th>시작일</th>
-										<td><input type="date" required></td>
+										<td><input type="date" name="nfStartDate" required></td>
 									</tr>
 									<tr>
 										<th>종료일</th>
-										<td><input type="date" required></td>
+										<td><input type="date" name="nfEndDate" required></td>
 									</tr>
 								</table>
-								<textarea name="" class="notification-content" placeholder="알림을 작성해주세요." required></textarea>
+								<textarea name="nfContent" id="nf-insert-content" class="notification-content" placeholder="알림 등록은 최대 200자 까지입니다.         알림을 작성해주세요." required></textarea>
 								<button type="submit">등록하기</button>
 							</form>
 						</div>
@@ -270,6 +280,16 @@
 			console.log(tossedNo);
 			$("#nfDeleteModal").modal();
 		}
+		
+		// 글자수 제한 
+        $(document).ready(function() {
+            $('#nf-insert-content').on('keyup', function() {         
+                if($(this).val().length > 200) {
+                    $(this).val($(this).val().substring(0, 200));
+                }
+            });
+        });
+        		
 	</script>
 <%-------------------------------------------- 스크립트 영역 끝 ----------------------------------------------%>
 <%------------------------------------------------------알림 조회 및 수정 모달 시작 -------------------------------------------------------%>
@@ -287,17 +307,28 @@
 			<!-- Modal body -->			
 			<div class="modal-body view-modify-content">
 				<div id="notification-modifyForm">
-					<form action="" method="post">
+					<form action="insert.nf" method="post">
 						<div>
 							<div><i class="fas fa-lightbulb"></i></div>
 							<select name=""  class="for-view" disabled>
 								<option value=""></option>
 							</select>
-							<select name=""  class="for-modify">
-								<option value="">ssss</option>
-								<option value=""></option>
-								<option value=""></option>
-								<option value=""></option>
+							<select name="nfDeptName"  class="for-modify" required>
+								<option value="전사원">전사원</option>
+								<option value="대표이사">대표이사</option>
+								<option value="경영관리본부">경영관리본부</option>
+								<option value="인사팀">인사팀</option>
+								<option value="총무팀">총무팀</option>
+								<option value="회계팀">회계팀</option>
+								<option value="개발본부">개발본부</option>
+								<option value="개발 1팀">개발 1팀</option>
+								<option value="개발2팀">개발2팀</option>
+								<option value="인프라팀">인프라팀</option>
+								<option value="운영본부">운영본부</option>
+								<option value="운영팀">운영팀</option>
+								<option value="영업팀">영업팀</option>
+								<option value="구매팀">구매팀</option>
+								
 							</select>
 							<span>알림</span>
 						</div>

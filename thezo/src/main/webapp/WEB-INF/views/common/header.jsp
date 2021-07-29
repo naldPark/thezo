@@ -105,8 +105,7 @@
 <body>
 	<c:if test="${!empty alertMsg }">
 		<script>	
-			alertify.alert("${alertMsg}");
-			// 스크립트내에 !! EL 쓸수있는데 문자열인경우 따음표 잘써줘야한다! 
+			alert("${alertMsg}");
 		</script>
         <!-- 뭔가가 담겨있는 경우 -->	
 		<c:remove var="alertMsg" scope="session"/>	
@@ -177,7 +176,7 @@
                     <!-- ★ 바뀐 부분으로 여기가 내가 작업 해야할 영역이다!!  -->
                     <div id="messenger-area" onclick="showMessengerArea();">
                         <!-- ※ 알림 영역 읽지 않은 알림이 있을시 ! -->
-                        <c:if test="${!empty notification}">
+                        <c:if test="${!empty unreadNotification}">
                             <div class="notification-outer">
                                 <div class="notification-innerline">
                                     <jsp:include page="../notification/unreadNotification.jsp"/>
@@ -230,6 +229,7 @@
                                     <jsp:include page="../notification/userNotificationMain.jsp"/>
                                 </div>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div><%-- header-outer 영역 끝 --%>

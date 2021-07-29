@@ -6,6 +6,29 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+   .innerOuter{
+        width: 1000px;
+        margin:auto;
+        padding:5% 5%;
+        background:white;
+    }
+
+    #content1{
+        width:80%;
+        margin:auto;
+    }
+    #content , #address-area, #department{width:50%;}
+
+    #department>table{width: 100%;}
+
+
+    body{position:relative;}
+	.container{position:absolute; top:30%; left:20%;}
+	table tbody{cursor:pointer;}
+	#sPhoto{border-radius:50%; object-fit:cover;}
+    
+</style>
 </head>
 <body>
 
@@ -36,11 +59,12 @@
                             <input type="hidden" name="originName" value="origin">
                             <!-- if( 사원정보 != null ){ 처리 }-->
                             <input id="reUpfile" type="file" name="reUpfile" onchange="loadImg(this);">
-                            <img id="sPhoto" width="200" height="200" src="">
+                            <img id="sPhoto" width="200" height="200" src="resources/images/userProfile.png">
+
                         </div>
                         <div id="content" class="form-row">
                             <label for="memNo" align="left">사원번호</label>
-                            <input type="text" class="form-control" id="memNo" name="memNo" value="101" readonly><br>
+                            <input type="text" class="form-control" id="memNo" name="memNo" value="1" readonly><br>
 
                             <label for="memId">아이디</label>
                             <input type="text" class="form-control" id="memId" name="memId" value="user01" readonly><br>

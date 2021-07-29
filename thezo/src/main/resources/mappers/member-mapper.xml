@@ -7,8 +7,21 @@
 		<result column="mem_no" property="memNo"/>
 		<result column="mem_name" property="memName"/>
 		<result column="mem_id" property="memId"/>
+		<result column="gender" property="gender"/>
+		<result column="phone" property="phone"/>
+		<result column="email" property="email"/>
+		<result column="birth" property="birth"/>
+		<result column="zip_code" property="zipCode"/>
+		<result column="address" property="address"/>
+		<result column="enroll_date" property="enrollDate"/>
+		<result column="gender" property="gender"/>
+		<result column="resign_date" property="resignDate"/>
 		<result column="department" property="department"/>
-		<result column="rank" property="rank"/> 
+		<result column="job" property="job"/>
+		<result column="rank" property="rank"/>
+		<result column="extension_no" property="extensionNo"/>
+		<result column="origin_name" property="originName"/>
+		<result column="path" property="path"/> 
 	</resultMap>
 
 
@@ -37,8 +50,30 @@
 		    by mem_no desc 	   
 	</select>
 
-
-
+	<!-- 3) 회원 정보 상세 조회-->
+	<select id="selectMember" resultMap="memberResult">
+		select
+		       mem_no
+		     , mem_id
+		     , mem_name
+		     , gender
+		     , phone
+		     , email
+		     , birth
+		     , zip_code
+		     , address
+		     , enroll_date
+		     , resign_date
+		     , department
+		     , job
+		     , rank
+		     , extension_no
+		     , origin_name
+		     , path
+		  from member
+		 where mem_no = #{memNo}       
+	</select>
+	
 
 
 </mapper>

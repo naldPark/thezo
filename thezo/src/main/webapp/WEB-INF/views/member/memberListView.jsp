@@ -110,7 +110,7 @@ table tbody {
 				<tbody>
 					<c:forEach var="m" items="${ list }">
                     <tr>
-                        <td>${ m.memNo }</td>
+                        <td class="mno">${ m.memNo }</td>
                         <td>${ m.memName }</td>
                         <td>${ m.memId }</td>
                         <td>${ m.department }</td>
@@ -120,6 +120,17 @@ table tbody {
 				</tbody>
 
 			</table>
+			
+			<script>
+            	$(function(){
+            		$("#boardList>tbody>tr").click(function(){
+            			location.href="adMemDetail.me?mno=" + $(this).children(".mno").text();
+            		})
+            	})
+            </script>
+			
+			
+			
 
 			<br> <br>
 			<div id="pagingArea">

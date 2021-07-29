@@ -11,5 +11,6 @@ public interface MemberService {
 	int selectListCount();
 	ArrayList<Member> selectList(PageInfo pi);
 	
-	
+	// 2. 관리자 : 회원 정보 상세 조회용
+	Member selectMember(int memNo);
 }

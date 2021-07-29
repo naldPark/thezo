@@ -25,4 +25,9 @@ public class MemberDao {
 		
 		return (ArrayList)sqlSession.selectList("memberMapper.selectList", null , rowBounds );
 	}
+	
+	// 3) 회원 정보 상세 조회
+	public Member selectMember(SqlSessionTemplate sqlSession, int memNo) {
+		return sqlSession.selectOne("memberMapper.selectMember", memNo);
+	}
 }

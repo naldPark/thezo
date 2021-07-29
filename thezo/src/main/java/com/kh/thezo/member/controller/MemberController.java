@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
@@ -42,6 +43,15 @@ public class MemberController {
 		model.addAttribute("list", list);
 		
 		return "member/memberListView";
+	}
+	
+	// 회원정보관리(사원등록,수정):관리자 -이성경
+	// 회원정보 상세조회 
+	@RequestMapping("adMemDetail.me")
+	public String adMemDetail(int mno) {
+		Member m = mService.selectMember(mno);
+		// 일단 수정하기 !!!!!!
+		return "member/adminMemberUpdate";
 	}
 	
 	

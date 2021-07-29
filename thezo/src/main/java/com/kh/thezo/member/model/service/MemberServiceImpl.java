@@ -32,4 +32,10 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.selectList(sqlSession, pi);
 	}
 
+	// 3) 회원정보 상세조회
+	@Override
+	public Member selectMember(int memNo) {
+		return mDao.selectMember(sqlSession, memNo);
+	}
+
 }

@@ -100,7 +100,6 @@ table tbody {
 			<table id="boardList" class="table table-hover" align="center">
 				<thead>
 					<tr>
-						<th>No</th>
 						<th>사원번호</th>
 						<th>이름</th>
 						<th>아이디</th>
@@ -109,64 +108,45 @@ table tbody {
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>5</td>
-						<td>100</td>
-						<td>김개똥</td>
-						<td>user04</td>
-						<td>영업1팀</td>
-						<td>대리</td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>100</td>
-						<td>김개똥</td>
-						<td>user04</td>
-						<td>영업1팀</td>
-						<td>대리</td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>100</td>
-						<td>김개똥</td>
-						<td>user04</td>
-						<td>영업1팀</td>
-						<td>대리</td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>100</td>
-						<td>김개똥</td>
-						<td>user04</td>
-						<td>영업1팀</td>
-						<td>대리</td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>100</td>
-						<td>김개똥</td>
-						<td>user04</td>
-						<td>영업1팀</td>
-						<td>대리</td>
-					</tr>
+					<c:forEach var="m" items="${ list }">
+                    <tr>
+                        <td>${ m.memNo }</td>
+                        <td>${ m.memName }</td>
+                        <td>${ m.memId }</td>
+                        <td>${ m.department }</td>
+                        <td>${ m.rank }</td>
+                    </tr>
+                    </c:forEach>
 				</tbody>
 
 			</table>
 
 			<br> <br>
 			<div id="pagingArea">
-				<ul class="pagination">
-					<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-					<li class="page-item"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><a class="page-link" href="#">4</a></li>
-					<li class="page-item"><a class="page-link" href="#">5</a></li>
-					<li class="page-item"><a class="page-link" href="#">Next</a></li>
-				</ul>
-			</div>
-
-
+                <ul class="pagination">
+                	<c:choose>
+                		<c:when test="${ pi.currentPage eq 1 }">
+	                   		<li class="page-item disabled"><a class="page-link">Previous</a></li>
+	                    </c:when>
+	                    <c:otherwise>
+	                    	<li class="page-item"><a class="page-link" href="memberInfo.me?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+                    	</c:otherwise>
+                    </c:choose>
+                    
+                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                 	   <li class="page-item"><a class="page-link" href="memberInfo.me?currentPage=${ p }">${ p }</a></li>
+                    </c:forEach>
+                    
+                    <c:choose>
+                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+		                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+		                </c:when>
+		                <c:otherwise>    
+		                    <li class="page-item"><a class="page-link" href="memberInfo.me?currentPage=${ pi.currentPage+1 }">Next</a></li>
+		                </c:otherwise>    
+		            </c:choose>        
+                </ul>
+            </div>
 		</div>
 
 	</div>

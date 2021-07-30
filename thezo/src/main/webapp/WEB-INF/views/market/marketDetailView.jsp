@@ -18,9 +18,17 @@
 <body>
 
 	<jsp:include page="../common/header.jsp"/>
+	<c:if test="${loginUser.userId eq 'admin' }">
+		<script>	
+			document.getElementById("admin-header").style.display = "block";
+			document.getElementById("admin-mode").style.color = "red";
+		</script>
+		<br><br><br><br>
+	</c:if>
+	
+	
 	<section>
 	
-
     <div class="outer">
         <div class="innerOuter">
             <h2><b>더조마켓</b></h2>
@@ -155,7 +163,6 @@
                            </div>
                           
                       </div>   
-
 
         </div>
 

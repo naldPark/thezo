@@ -46,6 +46,14 @@
 	<!--  .innerOuter 넣어서 크기 조절하기  -->
 	<!-- 찜하기, 판매내역 수정하기 -->
 	<jsp:include page="../common/header.jsp"/>
+	<c:if test="${loginUser.userId eq 'admin' }">
+		<script>	
+			document.getElementById("admin-header").style.display = "block";
+			document.getElementById("admin-mode").style.color = "red";
+		</script>
+		<br><br><br><br>
+	</c:if>
+	
 	<section>
 	
     <div class="outer">

@@ -30,15 +30,21 @@ table {
 <body>
 
 	<jsp:include page="../common/header.jsp" />
-	<div class="outer">
+	
+	<c:if test="${loginUser.userId eq 'admin' }">
+		<script>	
+			document.getElementById("admin-header").style.display = "block";
+			document.getElementById("admin-mode").style.color = "red";
+		</script>
+		<br><br><br><br>
+	</c:if>
+	
 	<section>
+	<div class="outer">
 			<div class="innerOuter">
-				<h2>
-					<b>사내게시판</b>
-				</h2>
+				<h2><b>사내게시판</b></h2>
 				<br>
-	
-	
+				
 				<div align="right">
 					<a href="" data-toggle="modal" data-target="#reportForm">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<!--게시글 작성자만 보이도록-->
@@ -82,7 +88,6 @@ table {
 	
 				<hr>
 				<br>
-	
 	
 				<table id="replyArea" class="table-borderless" align="center">
 					<thead>
@@ -173,7 +178,8 @@ table {
 	
 				</div>
 			</div>
-			</div>
+		</div>
+			
 	</section>
 </body>
 </html>

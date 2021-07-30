@@ -23,8 +23,6 @@ public class NotificationController {
 	@Autowired
 	private NotificationService nfService;
 
-
-
 	// ※ 관리자단 ! ------------------------------------------------------------------------------------------------------------------------------
 	//	일단은 나중에 생각해서 ModelAndView로 세팅 지금은 넘기기만 하자! 
 	// url 신경써서!!! 여기서는 currentPage 기본 값을 1로 설정하여 진행한다. 
@@ -40,9 +38,7 @@ public class NotificationController {
 		int listCount = nfService.selectListCount();		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<Notification> list = nfService.SelectAndViewNotificationList(pi);
-	
 		mv.addObject("subPage", "2").addObject("pi",pi).addObject("list",list).setViewName("notification/adminNotificationListView");
-
 		return mv;
 	}
 		
@@ -62,32 +58,13 @@ public class NotificationController {
 		}else {
 			mv.addObject("errorMsg", "알림등록 실패 <br> 기존에 동일한 부서, 시작일, 종료일, 알림내용의 <br> 알림이 존재 할 수 있습니다. <br> 확인해주세요").setViewName("common/errorPage");
 		}
-
 		return mv;
 	}
 	
-	
-	//-----------------------사용자단 관련 !! ----------------------------------------
-	//★ ↓ AJAX 처리다!! 
-	/*
-	@ResponseBody
-	@RequestMapping(value="confirm.nf", produces="application/json; charset=utf-8")
-	public String ajaxConfirmNotification(HttpSession session) {
-	*/
-
-		//int result = 어떤 메소드 실행해서 !!! 알림 읽음으로 update처리하고 
-		//session에서 !!! 알림쪽! 만료 시켜줘야한다!!! 
-		//if(result>0) {
-		//	session.removeAttribute("notification");
-		//}
-
-		//if(result>0) {//알림 읽음으로 update성공시 
-		//	return "1";
-		//}else {//실패시 
-		//	retunr "0";
-		//}
-	//}
-	
+	/** 하나의 알림 정보만을 가져오는 AJAX 
+	 * @param nfNo
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value="ajaxSelectOne.adnf", produces="application/json; charset=utf-8")
 	public String selectNotification(int nfNo) {
@@ -103,7 +80,6 @@ public class NotificationController {
 	 */
 	@RequestMapping("delete.adnf")
 	public ModelAndView deleteNotification(int nfNo, HttpSession session, ModelAndView mv) {		
-		
 		int result = nfService.deleteNotification(nfNo);
 		if(result>0) {
 			session.setAttribute("alertMsg", "성공적으로 알림을 삭제하였습니다");
@@ -114,7 +90,6 @@ public class NotificationController {
 		return mv;
 	}
 	
-
 	/** 사용자의 선택 사항에 따라서 달라지는 서비스로 기존 알림을 업데이트 할떄의 Controller
 	 * @param nf (새로이 담긴 알림 내용 (nfNo는 무조건 동일)
 	 * @param originNdDeptName (서비스단으로 넘기는 값으로 새로 수정된 알림과 기존의 알림의 부서가 다를경우 조건검사용)
@@ -137,8 +112,27 @@ public class NotificationController {
 		return mv;
 	}
 
-	
-	
+	//-----------------------사용자단 관련 !! ----------------------------------------
+	//★ ↓ AJAX 처리다!! 
+	/*
+	@ResponseBody
+	@RequestMapping(value="confirm.nf", produces="application/json; charset=utf-8")
+	public String ajaxConfirmNotification(HttpSession session) {
+	*/
+
+		//int result = 어떤 메소드 실행해서 !!! 알림 읽음으로 update처리하고 
+		//session에서 !!! 알림쪽! 만료 시켜줘야한다!!! 
+		//if(result>0) {
+		//	session.removeAttribute("notification");
+		//}
+
+		//if(result>0) {//알림 읽음으로 update성공시 
+		//	return "1";
+		//}else {//실패시 
+		//	retunr "0";
+		//}
+	//}
+
 	
 
 }

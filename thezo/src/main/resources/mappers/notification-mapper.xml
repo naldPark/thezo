@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="notificationMapper">
 	<!-- @author Jaewon.s -->
-	
+
 	<resultMap id="notificationResult" type="Notification">
 		<result column="nf_no" property="nfNo"/>
 		<result column="dept_name" property="nfDeptName"/>
@@ -14,9 +14,6 @@
 		<result column="update_date" property="nfUpdateDate"/>
 		<result column="del_status" property="nfDelStatus"/>
 	</resultMap>
-	
-	
-	<!-- 알림 insert 시작  -->
 	
 	<!-- null값 비교로 기존에 동일한 알림이 있는지 체크용 sql문  -->
 	<select id="beforeInsertCheck" resultType="string">
@@ -51,7 +48,7 @@
 	</insert>
 
 	<!-- 동시 insert를 고려하여 unique한 알림번호를 뽑아오는 sql문   -->	
-	<select id="notificationMapper.selectRightNfNo" resultType="_int">
+	<select id="selectRightNfNo" resultType="_int">
 		select
 				nf_no
 		  from notification
@@ -69,13 +66,13 @@
 		        nf_no
 		      , mem_no
 		      )		      
-	    select ${ nfNo }, mem_no 
-	      from member
-		<if test="#{ nfDeptName } != '전사원'">
-			 where department = '${ nfDeptName }'  			   
-		</if>
+	    select ${ nfNo } , m.mem_no 	    
+	      from member m
+         where status = 'Y'
+	      	<if test="nfDeptName != '전사원'">
+     			 and department like '%' || #{ nfDeptName } || '%'	  			   	      	
+	      	</if>
 	</insert>
-	<!-- 알림 insert 끝 -->
 	
 	<!-- 알림 전체 갯수 조회용 sql문 -->
 	<select id="selectListCount" resultType="_int">
@@ -114,11 +111,48 @@
 		   and nf_no = #{ nfNO }
 	</select>
 
+	<!-- 상태로 알림 삭제 처리하는 sql문 -->
 	<update id="deleteNotification">
 		update
 		       notification
 		   set del_status = 'N'
 		 where nf_no = #{ nfNo }       
 	</update>
+
+	<!--  아래는 ! 사용자의 입력 상황에 따른 다르게 실행될 수정 sql문들이다.   -->	
+	<!-- 첫번째 케이스로 단순하게 기존것을 부서명은 동일 하고 재알림이없어 수정만 하는 sql문 -->
+	<update id="updateNotificationCase1">
+		update notification
+		   set dept_name = #{ nfDeptName }
+		     , start_date = #{ nfStartDate }
+		     , end_date = #{ nfEndDate }
+		     , nf_content = #{ nfContent }
+		     , update_date = sysdate
+	     where nf_no = #{ nfNo }
+	</update>
+
+	<!-- 두번째 케이스로 부서가 다른! 경우이며 재알림 설정이 없는 경우 sql문 -->
+	<delete id="deleteOriginNfCheck">
+		delete nf_check
+		 where nf_no = ${ nfNo }
+		   and mem_no in (select 
+		                        mem_no 
+		                   from member 
+	   			          where status = 'Y'
+				      	<if test="nfDeptName != '전사원'">
+			     			and department like '%' || #{ nfDeptName } || '%'	  			   	      	
+				      	</if>
+		                 )      
+	</delete>
+	<!-- 나머지 2번째 케이스는 기존에 있던 sql문 재사용 해주면 된다!  -->
+
+	<!-- nf_check 테이블에서 사용자들이 읽음 처리한것을 읽지않음 처리하는 sql문  -->
+	<update id="updateNfCheckUnRead">
+		update
+		       nf_check
+		   set read_status = 'Y'
+		 where nf_no = #{ nfNo }       	
+	</update>
+
 
 </mapper>

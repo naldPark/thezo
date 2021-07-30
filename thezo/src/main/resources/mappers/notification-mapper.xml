@@ -9,6 +9,7 @@
 		<result column="start_date" property="nfStartDate"/>
 		<result column="end_date" property="nfEndDate"/>
 		<result column="nf_content" property="nfContent"/>
+		<result column="enroll_date" property="nfEnrollDate"/>
 		<result column="for_order_enroll_date" property="nfEnrollDate"/>
 		<result column="update_date" property="nfUpdateDate"/>
 		<result column="del_status" property="nfDelStatus"/>
@@ -100,6 +101,24 @@
 		    by enroll_date desc  
 	</select>
 
+	<!-- 해당 알림 번호를 가지고 알림 하나를 선택하는 sql문 -->
+	<select id="selectNotification" resultMap="notificationResult">
+		select
+		       nf_no
+		     , dept_name
+		     , to_char(start_date, 'YYYY-MM-DD') as start_date
+		     , to_char(end_date, 'YYYY-MM-DD') as end_date
+		     , nf_content
+		  from notification
+		 where del_status = 'Y'
+		   and nf_no = #{ nfNO }
+	</select>
 
+	<update id="deleteNotification">
+		update
+		       notification
+		   set del_status = 'N'
+		 where nf_no = #{ nfNo }       
+	</update>
 
 </mapper>

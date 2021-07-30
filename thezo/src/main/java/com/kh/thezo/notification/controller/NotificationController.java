@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.notification.model.service.NotificationService;
@@ -85,5 +87,58 @@ public class NotificationController {
 		//	retunr "0";
 		//}
 	//}
+	
+	@ResponseBody
+	@RequestMapping(value="ajaxSelectOne.adnf", produces="application/json; charset=utf-8")
+	public String selectNotification(int nfNo) {
+		Notification nf = nfService.selectNotification(nfNo);
+		return new Gson().toJson(nf);
+	}
+
+	/** 선택한 알림을 삭제처리 (del_status 변경형식) Controller
+	 * @param nfNo  (del_status를 바뀌기 위한 인자값)
+	 * @param session
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping("delete.adnf")
+	public ModelAndView deleteNotification(int nfNo, HttpSession session, ModelAndView mv) {		
+		
+		int result = nfService.deleteNotification(nfNo);
+		if(result>0) {
+			session.setAttribute("alertMsg", "성공적으로 알림을 삭제하였습니다");
+			mv.setViewName("redirect:list.adnf");
+		}else {
+			mv.addObject("errorMsg", "알림삭제에 실패하였습니다.").setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+
+	/** 사용자의 선택 사항에 따라서 달라지는 서비스로 기존 알림을 업데이트 할떄의 Controller
+	 * @param nf (새로이 담긴 알림 내용 (nfNo는 무조건 동일)
+	 * @param originNdDeptName (서비스단으로 넘기는 값으로 새로 수정된 알림과 기존의 알림의 부서가 다를경우 조건검사용)
+	 * @param reNotify (서비스단으로 넘기는 값으로 다시 해당알림 nf_check테이블에서 읽음 표시 업데이트처리용  )
+	 * @param session
+	 * @param mv
+	 * @return
+	 */
+	@RequestMapping("update.adnf")
+	public ModelAndView updateNotification(Notification nf, String originNdDeptName, String reNotify, HttpSession session, ModelAndView mv) {		
+		// controller에서는 오직 사용자(브라우저에) 어떤걸 띄워줄지에 대해서만 집중을 해보자 
+		// 비즈니스 로직 처리는 service단에서 처리를 하도록! 		
+		int result = nfService.updateNotification(nf, originNdDeptName, reNotify);
+		if(result>0) {
+			session.setAttribute("alertMsg", "성공적으로 알림을 수정하였습니다");
+			mv.setViewName("redirect:list.adnf");
+		}else {
+			mv.addObject("errorMsg", "알림수정 실패 <br> 에러원인은 사용자의 달라진 요청으로 인한 <br> 로직처리중 발생할 가능성이 높음").setViewName("common/errorPage");
+		}
+		return mv;
+	}
+
+	
+	
+	
 
 }

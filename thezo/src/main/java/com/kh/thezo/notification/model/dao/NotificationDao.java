@@ -64,6 +64,25 @@ public class NotificationDao {
 		return (ArrayList)sqlSession.selectList("notificationMapper.SelectAndViewNotificationList",null, rowBounds);
 	}
 
+
 	//----------------------- 아래는 ~~~ 메소드들 ---------------------------------------------
 	
+	/**  알림 번호를 가지고 하나의 알림을 선택해서 일부 정보를 가져오는 메소드 
+	 * @param sqlSession
+	 * @param nfNo
+	 * @return
+	 */
+	public Notification selectNotification(SqlSessionTemplate sqlSession, int nfNo) {
+		return sqlSession.selectOne("notificationMapper.selectNotification",nfNo);
+	}
+
+	
+	/** 선택한 알림 삭제처리 (update문으로 del_status변경)하는 서비스 
+	 * @param sqlSession
+	 * @param nfNo
+	 * @return
+	 */
+	public int deleteNotification(SqlSessionTemplate sqlSession, int nfNo) {
+		return sqlSession.update("notificationMapper.deleteNotification", nfNo);
+	}
 }

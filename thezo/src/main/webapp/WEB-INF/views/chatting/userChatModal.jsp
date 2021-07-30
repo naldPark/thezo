@@ -115,7 +115,6 @@
                         <button type="button" data-dismiss="modal">취소</button>
                         <button type="button" onclick="addColleageuAndMakeRoom();">추가하기</button>
                     </div>
-                </form>
                 
             </div>
         </div>
@@ -202,7 +201,6 @@
                     <div class="modal-footer">
                         <button type="button" onclick="">다운로드</button>
                     </div>
-                </form>
                 
             </div>
         </div>
@@ -411,7 +409,6 @@
                         <button type="button" class="add-group-btn" style="display: none;" onclick="createAndMoveToGroupChat();">인원 추가</button>
                         <button type="button" class="change-room-name" style="display: none;" onclick=";">방이름 바꾸기</button>
                     </div>
-                </form>
                 
             </div>
         </div>

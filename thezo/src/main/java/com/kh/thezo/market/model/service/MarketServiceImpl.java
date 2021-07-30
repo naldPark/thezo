@@ -32,16 +32,16 @@ public class MarketServiceImpl implements MarketService {
 		return mkDao.selectMarketList(sqlSession, pi);
 	}
 
+	// 사용자 : 벼룩시장 검색바 글 갯수 조회
 	@Override
 	public int marketSearchListCount(HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return 0;
+		return mkDao.marketSearchListCount(sqlSession, map);
 	}
 
+	// 사용자 : 벼룩시장 검색바 리스트 조회
 	@Override
 	public ArrayList<Market> marketSearchList(PageInfo pi, HashMap<String, String> map) {
-		// TODO Auto-generated method stub
-		return null;
+		return mkDao.marketSearchList(sqlSession, pi, map);
 	}
 
 }

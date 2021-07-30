@@ -43,8 +43,6 @@
                     <tr>
                         <td >
                             <p style="height:400px; font-size:17px;" >
-                                <!--만약 이미지 파일이 있을 때 첨부파일이 보이도록-->
-                                <img src="" width="200" height="200"><br>
                                	${ b.boardContent }
                             </p>
                         </td>

@@ -51,18 +51,17 @@
     <div class="outer">
         <br>
         <h1><b>더조마켓</b></h1>
-        <!-- a태그 넣어야하는데...? 어라랏-->
         <br>
 
         <div id="search-area" align="center">
         	<!-- 여기 부분 수정 (디자인적으로 별로...)   -->
             <a href="">찜하기</a>
             <a href="">판매내역</a>
-            <form id="searchForm" action="" method="Get">
+            <form id="searchForm" action="marketSearch.bo" method="Get">
                 <div class="select">
                     <select class="custom-select" name="condition">
-                        <option value="writer">품명</option>
-                        <option value="title">작성자</option>
+                        <option value="title">품명</option>
+                        <option value="writer">작성자</option>
                     </select>
                 </div>
                 <div class="text">
@@ -70,6 +69,14 @@
                 </div>
                 <button type="submit" class="searchBtn btn btn-secondary">검색</button>
             </form>
+            
+            <script>
+	        	$(function(){
+	            	if("${condition}" != ""){
+	            		$("option[value=${condition}]").attr("selected", true);
+	            	}
+	            })
+	        </script>
         </div>
 
         <br><br><br>
@@ -102,16 +109,53 @@
             <br>
             <a class="btn btn-secondary"  href="marketEnrollForm.bo">글쓰기</a>&nbsp;&nbsp;
         </div>
-            <br><br>
-            <div id="pagingArea">
+        <br><br>
+        		
+			<div id="pagingArea">
                 <ul class="pagination">
-                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                	<c:choose>
+	                		<c:when test="${ pi.currentPage eq 1 }">
+		                   		<li class="page-item disabled"><a class="page-link">Previous</a></li>
+		                    </c:when>
+		                    <c:otherwise>
+		                    	<c:choose>
+		                    		<c:when test="${ empty condition }">
+		                    			<li class="page-item"><a class="page-link" href="marketList.bo?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+		                    		</c:when>
+		                    		<c:otherwise>
+		                    			<li class="page-item"><a class="page-link" href="marketSearch.bo?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
+		                    		</c:otherwise>
+		                    	</c:choose>		
+	                    	</c:otherwise>
+	                    
+                    </c:choose>
+                    
+                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                    	<c:choose>
+                    		<c:when test="${ empty condition }">
+                    			<li class="page-item"><a class="page-link" href="marketList.bo?currentPage=${ p }">${ p }</a></li>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<li class="page-item"><a class="page-link" href="marketSearch.bo?currentPage=${ p }&condition=${condition}&keyword=${keyword}">${ p }</a></li>
+                    		</c:otherwise>
+                    	</c:choose>
+                    </c:forEach>
+                    
+                    <c:choose>
+                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+		                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+		                </c:when>
+		                <c:otherwise>
+		                    <c:choose>
+		                   		<c:when test="${ empty condition }">
+		                    		<li class="page-item"><a class="page-link" href="marketList.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="marketSearch.bo?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
+		                    	</c:otherwise>
+		                    </c:choose>		
+		                </c:otherwise>    
+		            </c:choose>        
                 </ul>
             </div>
            

@@ -42,4 +42,47 @@
 		 order 
 		    by market_no desc      
 	</select>
+	
+	<!-- 사용자 : 벼룩시장 리스트 검색바  -->
+	<select id="marketSearchListCount" resultType="_int">
+		select count(*)
+		  from market
+		 where status = 'Y' 
+		<choose>
+			<when test="condition == 'title'">
+				and market_title
+			</when>
+			<otherwise>
+				and market_writer
+			</otherwise>
+		</choose>
+				like '%' || #{keyword} || '%' 
+	</select>
+
+	<!-- 사용자 : 벼룩시장 리스트 검색바 -->
+	<select id="marketSearchList" resultMap="marketResult">
+		select 
+				market_no
+			  , market_title
+			  , market_writer
+			  , to_char(market_date, 'YYYY-MM-DD') as market_date
+	          , market_section
+	          , price
+	          , p_img as productImg
+	          , p_like
+	          , count
+	       from market
+	      where status = 'Y'         
+			<choose>
+				<when test="condition == 'title'">
+			   		and market_title
+			    </when>
+				<otherwise>
+					and market_writer
+				</otherwise>
+			</choose>
+					like '%' || #{keyword} || '%'
+			  order
+			     by market_no desc 
+	</select>
 </mapper>

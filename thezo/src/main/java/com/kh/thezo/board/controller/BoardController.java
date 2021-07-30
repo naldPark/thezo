@@ -69,7 +69,6 @@ public class BoardController {
 		
 		if(result>0) { 
 			Board b = bService.selectNotice(bno); 
-			System.out.println(b);
 			mv.addObject("b", b).setViewName("board/noticeDetailView");
 			
 		}else {

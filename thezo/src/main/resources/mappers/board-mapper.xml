@@ -107,7 +107,7 @@
 		     , origin_name
 			 , change_name
  		  from board b
-          join board_file on(board_no = ref_bno)
+          left outer join board_file on(board_no = ref_bno)
 		 where board_no = #{boardNo}
 		   and board_type = 1
            and b.status = 'Y'   

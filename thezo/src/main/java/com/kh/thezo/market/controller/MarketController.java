@@ -1,12 +1,15 @@
 package com.kh.thezo.market.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
 
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
@@ -27,12 +30,37 @@ public class MarketController {
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 6);
 		ArrayList<Market> list = mkService.selectMarketList(pi);
-		System.out.println(list);
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
 		
 		return "market/marketListView";
+		
+	}
+	
+	
+	// 벼룩시장 리스트페이지 검색바 (사용자)
+	@RequestMapping("marketSearch.bo")
+	public ModelAndView marketSearchList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+										 String condition, String keyword) {
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		
+		int listCount = mkService.marketSearchListCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 6);
+		ArrayList<Market> list = mkService.marketSearchList(pi, map);
+		
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("condition", condition)
+		  .addObject("keyword", keyword)
+		  .setViewName("market/marketListView");
+		
+		return mv;
 		
 	}
 	

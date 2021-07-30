@@ -30,14 +30,14 @@
                 <table id="contentArea" align="center" class="table">
                     <tr>
                         <th style="font-size:20px;">
-                           	 공지사항입니다.
+                           	 ${ b.boardTitle }
                         </th>
                     </tr>
                     <tr align="left" style="font-size:13px;">
                         <td>
-			                            작성자&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;user01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			                            작성일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;2021-08-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			                            조회수&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;10
+			                            작성자&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;${ b.boardWriter }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                            작성일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;${ b.boardDate }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                            조회수&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;${ b.count }
                         </td>
                     </tr>
                     <tr>
@@ -45,7 +45,7 @@
                             <p style="height:400px; font-size:17px;" >
                                 <!--만약 이미지 파일이 있을 때 첨부파일이 보이도록-->
                                 <img src="" width="200" height="200"><br>
-                                공지사항입니다. 
+                               	${ b.boardContent }
                             </p>
                         </td>
                     </tr>

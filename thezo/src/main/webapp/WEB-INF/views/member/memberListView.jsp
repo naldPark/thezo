@@ -109,13 +109,13 @@ table tbody {
 				</thead>
 				<tbody>
 					<c:forEach var="m" items="${ list }">
-                    <tr>
-                        <td class="mno">${ m.memNo }</td>
-                        <td>${ m.memName }</td>
-                        <td>${ m.memId }</td>
-                        <td>${ m.department }</td>
-                        <td>${ m.rank }</td>
-                    </tr>
+	                    <tr>
+	                        <td class="mno">${ m.memNo }</td>
+	                        <td>${ m.memName }</td>
+	                        <td>${ m.memId }</td>
+	                        <td>${ m.department }</td>
+	                        <td>${ m.rank }</td>
+	                    </tr>
                     </c:forEach>
 				</tbody>
 

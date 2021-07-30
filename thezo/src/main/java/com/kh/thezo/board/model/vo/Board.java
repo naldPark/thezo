@@ -25,4 +25,7 @@ public class Board {
 	private int count;
 	private String status;
 	
+	private String originName;
+	private String changeName;
+	
 }

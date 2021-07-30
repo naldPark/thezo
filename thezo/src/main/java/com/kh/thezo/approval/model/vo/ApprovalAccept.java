@@ -14,10 +14,17 @@ import lombok.ToString;
 @ToString
 public class ApprovalAccept {
 	
-	private int lineNo;  //결재선번호
+	private int lineNo;  // 결재선번호(pk)
 	private int docNo;   //문서번호
+//	private int sender; //기안자 사번
 	private int memNo;  	//승인자사번
+	private String memName;  	//승인자이름
+	private int deptNo;	//부서번호
+	private String department;	// 부서
 	private int apprLevel;	//결재순번
+	private String job;
+	private String rank;
+	private String email;	//이메일
 	private String type;	//유형(결재/합의)
 	private String status;	//결재상태(대기/승인/반려)
 	private String comment;	//결재의견

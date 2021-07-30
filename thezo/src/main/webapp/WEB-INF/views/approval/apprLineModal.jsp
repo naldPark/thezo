@@ -24,11 +24,11 @@
         }
 
         ul,
-        #myUL {
+        #apprOrgTree {
           list-style-type: none;
         }
 
-        #myUL {
+        #apprOrgTree {
           margin: 0;
           padding: 0;
           line-height: 2em;
@@ -75,14 +75,7 @@
           display: block;
         }
 
-        .drop-zone {
-          margin-left: 80px;
-          width: 100%;
-          height: 110px;
-          border: 1px solid lightgray;
-          overflow: auto;
-
-        }
+       
 
         label {
           margin-bottom: 0rem !important;
@@ -125,7 +118,7 @@
                 <h5>조직도</h5>
                 <div class="p-3" style="border:1px solid lightgrey; width:400px; min-height: 500px;">
 
-                  <ul id="myUL">
+                  <ul id="apprOrgTree">
                     <li class="eachPerson" id="ceoCheck"></li></span>
                     <ul>
                       <li class="departmentLevel">
@@ -269,7 +262,7 @@
 
         // 조직트리 내 직원 리스트
         $(function () {
-            $("#myUL").find(".box").each(function (index, el) {
+            $("#apprOrgTree").find(".box").each(function (index, el) {
               <c:forEach var="p" items="${ empList }" varStatus="status">
                 if("대표이사"=="${p.department}"){
                   var ceoInfo="<label><input type='checkbox' style='display:none' value='${p.memNo}' class='apprLineCheck' /> ${p.memName} 대표이사</label>";
@@ -291,7 +284,7 @@
 
         // 추가버튼 클릭시 오른쪽 적용대상으로 이동 됨
         $("#addAppr").click(function () {
-
+          
           if ($("#ceoCheck").find(":checkbox").prop("checked")) {
             var tempLine = "<tr><td class='text-left pl-5'>" + $("#ceoCheck").children().html()
               + "</td><td>대표이사</td><td><select class='selectBoxCustom'><option>결재</option>"
@@ -376,38 +369,42 @@
 
       // 결재선 설정후 등록 클릭시 지정한 결재선 표기 
       $(function(){
-          
-          $("#enrollApprLineBtn").click(function(){
-            var confirmedLine=[];
-            $("#currentLine").children().each(function (index, el) {
-              var tempLine=[];
-              tempLine.push($(this).children().eq(0).text());  // 0 이름 및 직급
-              tempLine.push($(this).children().eq(0).children().val()); //1 사번
-              tempLine.push($(this).children().eq(1).text()); //2 부서
-              tempLine.push($(this).children().eq(2).children().val()); // 3 합의결재
-              confirmedLine.push(tempLine);
+       
+          $("#enrollApprLineBtn").click(function () {
+            if ($("#currentLine div").length == 0) {
+              alert("결재자를 최소 1명이상 지정해야합니다");
+            } else {
+                var confirmedLine = [];
+                $("#currentLine").children().each(function (index, el) {
+                  var tempLine = [];
+                  tempLine.push($(this).children().eq(0).text());  // 0 이름 및 직급
+                  tempLine.push($(this).children().eq(0).children().val()); //1 사번
+                  tempLine.push($(this).children().eq(1).text()); //2 부서
+                  tempLine.push($(this).children().eq(2).children().val()); // 3 합의결재
+                  confirmedLine.push(tempLine);
+                })
+
+                for( var i =0 ; i< confirmedLine.length;i++){
+                  var addLine= '<div class="mb-2 p-2 shadow-sm">'
+                        +'<div class="d-flex">'
+                              +'<div class="p-2 text-primary"><b>'+confirmedLine[i][0]+'</b></div>'
+                        +'</div>'
+                        +'<div class="d-flex flex-row mb-3">'
+                              +'<div class="pl-2" style="width:75%">'+confirmedLine[i][2]+'</div>'
+                              +'<div><span class="btn-sm btn-secondary">'+confirmedLine[i][3]+'</span></div>'
+                        +'</div>'
+                        +'<input type="hidden" name="Approval.apAccept['+i+'].memNo" value="'+confirmedLine[i][1]+'">'
+                        +'<input type="hidden" name="Approval.apAccept['+i+'].type" value="'+confirmedLine[i][3]+'">'
+                  +'</div>'
+                  $("#selectedLine div").remove();
+                  $("#selectedLine").append(addLine);
+              }
+            
+              alert("결재선이 등록되었습니다");
+              $("#claseApprLineModal").click();
+        
+            }
           })
-
-            for( var i =0 ; i< confirmedLine.length;i++){
-              var addLine= '<div class="mb-2 p-2 shadow-sm">'
-                    +'<div class="d-flex">'
-                          +'<div class="p-2 text-primary"><b>'+confirmedLine[i][0]+'</b></div>'
-                    +'</div>'
-                    +'<div class="d-flex flex-row mb-3">'
-                          +'<div class="pl-2" style="width:75%">'+confirmedLine[i][2]+'</div>'
-                          +'<div><span class="btn-sm btn-secondary">'+confirmedLine[i][3]+'</span></div>'
-                    +'</div>'
-                    +'<input type="hidden" name="Approval.apAccept['+i+'].memNo" value="'+confirmedLine[i][1]+'">'
-                    +'<input type="hidden" name="Approval.apAccept['+i+'].type" value="'+confirmedLine[i][3]+'">'
-              +'</div>'
-              $("#selectedLine").append(addLine);
-          }
-        
-          alert("결재선이 등록되었습니다");
-          $("#claseApprLineModal").click();
-        
-
-        })
       })
       // 결재선 설정후 등록 클릭시 지정한 결재선 표기 끝
       </script>

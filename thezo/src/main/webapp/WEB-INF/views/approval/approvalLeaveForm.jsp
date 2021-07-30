@@ -8,56 +8,24 @@
 <title>The Zo</title>
 
 <style>
-     .drop-zone{margin-left:80px; width: 100%; height: 110px; border: 1px solid lightgray; overflow: auto;
-    }
-    ul, #myUL {
-      list-style-type: none;
-    }
-    
-    #myUL {
-      margin: 0;
-      padding: 0;
-      line-height:2em;
-    }
-    
-    .box {
-        cursor: pointer;
-        -webkit-user-select: none; /* Safari 3.1+ */
-        -moz-user-select: none; /* Firefox 2+ */
-        -ms-user-select: none; /* IE 10+ */
-        user-select: none;
+
+    .referSpan{padding:10px; margin-right: 2px;}
+    .w3-dropdown-content{min-width: 714px !important;}
+    .drop-zone {
+      margin-left: 80px;
+      width: 100%;
+      height: 110px;
+      border: 1px solid lightgray;
+      overflow: auto;
+
     }
 
-    .box::before {
-        content: "\25B6";
-        color: rgb(121, 121, 121);
-        display: inline-block;
-        margin-right: 6px;
+    .refer-zone {
+      margin-left: 80px;
+      width: 100%;
+      text-align: left!important;
     }
 
-    .line::before {
-        content: "\268A";
-        color: lightgray;
-        display: inline-block;
-        margin-right: 6px;
-    }
-
-    .check-box::before {
-        -ms-transform: rotate(90deg); /* IE 9 */
-        -webkit-transform: rotate(90deg); /* Safari */
-        transform: rotate(90deg);  
-    }
-
-    .nested {
-        display: none;
-    }
-
-    .active {
-        display: block;
-    }
-    label{margin-bottom: 0rem !important;}
-
-/* *{border:1px solid red} */
 
 </style>
 
@@ -65,330 +33,336 @@
 <body>
 	<jsp:include page="../common/header.jsp"/>
     <section>
-        <div class="outer">    
-          <p class="pageTitle">  leaveForm <b> 휴가신청서</b></p>
-            <jsp:include page="apprSidebar.jsp"/>
+        <div class="outer">
+          <p class="pageTitle"> leaveForm <b> 연차신청서</b></p>
+          <jsp:include page="apprSidebar.jsp" />
+          <form action="insertDocu.appr" method="post" enctype="Multipart/form-data" id="form">
             <div class="sideOuter row ">
               <div class="card border-0" style=" width:80%">
                 <div class="card-body">
-                  <form action="insertDocu.appr" method="post" enctype="Multipart/form-data" id="form">
-                    <h3 style="margin-bottom: 25px;">휴가신청서</h3>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white border-0">제목</span>
-                      </div>
-                      <input type="text" placeholder="제목을 입력해주세요" class="form-control">
-                    </div>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white border-0">수신참조</span>
-                      </div>
-                      <input type="text" class="form-control" value="">
-                    </div>
-  
-                    <div class="input-group mb-3" style="width:30%">
-                      
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" style="background-color: white; border:0px;">휴가분류</span>
-                      </div>
-                      <select class="form-control" id="sel1">
-                        <option>연차</option>
-                        <option>경조사</option>
-                      </select>
-                    </div>
-                    
-                   
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" style="background-color: white; border:0px;">시작일자</span>
-                      </div>
-                      <input type="date" class="form-control" style="border:1px solid lightgray;">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" style="background-color: white; border:0px;">종료일자</span>
-                      </div>
-                      <input type="date" class="form-control" style="border:1px solid lightgray;">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" style="margin-left:5px; width:130px; background-color: rgba(241, 196, 15, 0.274);">차감연차: 0개</span>
-                      </div>
-                    </div>
-                    <br>
-                    <textarea class="form-control" maxlength="70" rows="5" autocomplete="off" placeholder="휴가 사유를 입력해주세요"></textarea>
-                    <br>
-                    <input type="file" class="form-control-file border"><br>
-                    <div class="row justify-content-center">
-                      <button type="button" id="submitBtn" class="btn btn-primary">기안하기</button>&nbsp;
-                      <button type="button" onclick="location.href=''" class="btn btn-secondary">취소</button>
-                    </div>
-
-                  </form>
-                </div>
-              </div>
-
-              <div class="card row  border-0" style="margin-bottom: 5rem; width:21%">
-                <div class="card-body">
-                  <h5>결재선 등록</h5>
+                  <input type="hidden" name="formNo" value="${a.formNo }">
+                  <h3 style="margin-bottom: 25px;">${ a.formName } </h3>
                   <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="검색어">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="submit" data-toggle="modal" data-target="#myModal">추가</button>
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-white border-0">제목</span>
+                    </div>
+                    <input type="text" placeholder="제목을 입력해주세요" id="docName" name="docName" class="form-control" required>
+                  </div>
+        
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-white border-0">수신참조</span>
+                    </div>
+                    <div class="w3-dropdown-click" style="width:700px">
+                      <div class="w3-dropdown-content w3-bar-block w3-light-grey" id="referListDiv">
+                        <input type="text" class="form-control" placeholder="(선택사항)이름을 입력하세요" id="referListInput"
+                          onkeyup="filterFunction()">
+                      </div>
+                    </div>
+                    <div id="referListSpan" class="refer-zone" style="text-align: center; font-size: 15pt;">
                     </div>
                   </div>
-                  <div class="mb-2 p-2 shadow-sm">
-                    <div class="d-flex justify-content-around">
-                      <div class="p-2 text-primary"><b>이성경</b></div>
-                      <div class="p-2"> </div>
-                      <div class="p-2"><span class="btn-sm btn-secondary">결재</span></div>
+        
+        
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-white border-0">파일첨부</span>
                     </div>
-                    <div class="d-flex flex-row mb-3">
-                      <span class="pl-3">인사팀 팀장</span>
-                    </div>
-                  </div>
-                  <div class="mb-2 p-2 shadow-sm">
-                    <div class="d-flex justify-content-around">
-                      <div class="p-2 text-primary"><b>이성경</b></div>
-                      <div class="p-2"> </div>
-                      <div class="p-2"><span class="btn-sm btn-secondary">결재</span></div>
-                    </div>
-                    <div class="d-flex flex-row mb-3">
-                      <span class="pl-3">인사팀 팀장</span>
+                    <input type="file" id="file" name="upfile" multiple>
+                    <div class="drop-zone" style="text-align: center; font-size: 15pt;">
+                      <br>
+                      <i class="far fa-clone"></i>
+                      파일을 여기로 드래그하세요.
                     </div>
                   </div>
-                  <div class="mb-2 p-2 shadow-sm">
-                    <div class="d-flex justify-content-around">
-                      <div class="p-2 text-primary"><b>이성경</b></div>
-                      <div class="p-2"> </div>
-                      <div class="p-2"><span class="btn-sm btn-secondary">결재</span></div>
+        
+                  <div class="input-group mb-3" style="width:30%">
+        
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" style="background-color: white; border:0px;">휴가분류</span>
                     </div>
-                    <div class="d-flex flex-row mb-3">
-                      <span class="pl-3">인사팀 팀장</span>
+                    <select class="form-control" id="leaveType" name="leaveCategory">
+                      <option>연차</option>
+                      <option>경조사</option>
+                    </select>
+                  </div>
+        
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" style="background-color: white; border:0px;">시작일자</span>
+                    </div>
+                    <input type="date" class="form-control" name="startDate" id="startDate" style="border:1px solid lightgray;">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" style="background-color: white; border:0px;">종료일자</span>
+                    </div>
+                    <input type="date" class="form-control" name="endDate" id="endDate"  max="2021-08-03" style="border:1px solid lightgray;">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" style="margin-left:5px; width:130px;">
+                        차감연차: &nbsp;
+                        <b class="text-primary" id="countLeave"> 0</b>
+                        <input type="hidden" name="leaveCount" id="leaveCount" value="0">
+                        개
+                      </span>
                     </div>
                   </div>
-                  <div class="mb-2 p-2 shadow-sm">
-                    <div class="d-flex justify-content-around">
-                      <div class="p-2 text-primary"><b>이성경</b></div>
-                      <div class="p-2"> </div>
-                      <div class="p-2"><span class="btn-sm btn-secondary">결재</span></div>
+        
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" style="background-color: white; border:0px;">휴가사유</span>
                     </div>
-                    <div class="d-flex flex-row mb-3">
-                      <span class="pl-3">인사팀 팀장</span>
-                    </div>
+                    <textarea class="form-control" maxlength="50" rows="4" name="content" id="content" placeholder="휴가 사유를 입력해주세요"
+                      style="resize:none; height: 60px"></textarea>
+                  </div>
+                  <br>
+                  <div class="row justify-content-center">
+                    <button type="submit" id="submitBtn" class="btn btn-primary">기안하기</button>&nbsp;
+                    <button type="button" onclick="location.href='main.appr'" class="btn btn-secondary">취소</button>
                   </div>
                 </div>
               </div>
-
+        
+              <!--오른쪽 결재선 시작-->
+              <div class="card row  border-0" style="margin-bottom: 5rem; width:21%">
+                <div class="card-body" id="selectedLine">
+                  <h5 style="float:left; width: 70%">결재선</h5>
+                  <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#apprLineModal">변경</button>
+                  <hr>
+        
+                  <c:forEach var="c" items="${ cLine }">
+                    <div class="mb-2 p-2 shadow-sm">
+                      <div class="d-flex">
+                        <div class="p-2 text-primary"><b>${c.memName} ${c.job}</b></div>
+                      </div>
+                      <div class="d-flex flex-row mb-3">
+                        <div class="pl-2" style="width:75%">${c.department} </div>
+                        <div>
+                          <span class="btn-sm btn-secondary">
+                            ${c.type}
+                          </span>
+                        </div>
+                      </div>
+                      <input type="hidden" name="apAccept[${c.apprLevel-1}].memNo" value="${c.memNo}">
+                      <input type="hidden" name="apAccept[${c.apprLevel-1}].type" value="${c.type}">
+                      <input type="hidden" name="apAccept[${c.apprLevel-1}].apprLevel" value="${c.apprLevel}">
+                    </div>
+                  </c:forEach>
+        
+        
+                </div>
+              </div>
+              <!--오른쪽 결재선 끝-->
+        
             </div>
-    	</div>
-    </section>
+          </form>
+        </div>
+      </section>
 
+      <script>
 
-<script>
-     $(document).on('click','#submitBtn',function(){
-          if(confirm("정말로 제출하시겠습니까?\n기안 후엔 수정이 불가능합니다.")){
-            $("#form").submit();
-          }					
+      $(function () {
+
+        $("input[type=date],#leaveType").change(function(){
+          var startDate = new Date($("#startDate").val());
+          var endDate = new Date($("#endDate").val());
+          var count = 0;
+
+          var checkWhile = true;
+          if ($("#startDate").val() == "" || $("#endDate").val() == "" || $("#leaveType").val()=="경조사") {
+            checkWhile = false;
+          }
+
+          while (checkWhile) {
+            var temp_date = startDate;
+            if (temp_date.getTime() > endDate.getTime()) {
+              break;
+            } else {
+              var tmp = temp_date.getDay();
+              if (tmp != 0 && tmp != 6) {
+                count++;
+              }
+              temp_date.setDate(startDate.getDate() + 1);
+            }
+          }
+
+          $("#countLeave").text(count);
+          $("#leaveCount").val(count);
+        
+        })
+      })
+
+      </script>
+        
+      <script>
+
+        $(function () {
+
+          var $file = document.getElementById("file")
+          var dropZone = document.querySelector(".drop-zone")
+
+          var toggleClass = function (className) {
+            var list = ["dragenter", "dragleave", "dragover", "drop"]
+
+            for (var i = 0; i < list.length; i++) {
+              if (className === list[i]) {
+                dropZone.classList.add("drop-zone-" + list[i])
+              } else {
+                dropZone.classList.remove("drop-zone-" + list[i])
+              }
+            }
+          }
+
+          var showFiles = function (files) {
+            dropZone.innerHTML = ""
+            for (var i = 0, len = files.length; i < len; i++) {
+              dropZone.innerHTML += "<p>" + files[i].name + "</p>"
+            }
+          }
+
+          var selectFile = function (files) {
+            // input file 영역에 드랍된 파일들로 대체
+            $file.files = files
+            showFiles($file.files)
+
+          }
+
+          $file.addEventListener("change", function (e) {
+            showFiles(e.target.files)
+          })
+
+          // 드래그한 파일이 최초로 진입했을 때
+          dropZone.addEventListener("dragenter", function (e) {
+            e.stopPropagation()
+            e.preventDefault()
+
+            toggleClass("dragenter")
+
+          })
+
+          // 드래그한 파일이 dropZone 영역을 벗어났을 때
+          dropZone.addEventListener("dragleave", function (e) {
+            e.stopPropagation()
+            e.preventDefault()
+            $(this).css("background-color", "#FFF");
+            toggleClass("dragleave")
+
+          })
+
+          // 드래그한 파일이 dropZone 영역에 머물러 있을 때
+          dropZone.addEventListener("dragover", function (e) {
+            e.stopPropagation()
+            e.preventDefault()
+            $(this).css("background-color", "rgb(248, 241, 214)");
+            toggleClass("dragover")
+
+          })
+
+          // 드래그한 파일이 드랍되었을 때
+          dropZone.addEventListener("drop", function (e) {
+            e.preventDefault()
+            $(this).css("background-color", "#FFF");
+            $(this).css("font-size", "11pt");
+            $(this).css("text-align", "left");
+
+            toggleClass("drop")
+
+            var files = e.dataTransfer && e.dataTransfer.files
+
+            if (files != null) {
+              if (files.length < 1) {
+                alert("폴더 업로드 불가")
+                return
+              }
+              selectFile(files)
+            } else {
+              alert("ERROR")
+            }
+
+          })
+
+        });
+      </script>
+
+      <script>
+        $(document).on('click', '#submitBtn', function () {
+          if($("#docName").val()=="") {
+            alert("제목은 반드시 입력하셔야합니다");
+            return false;
+          } else if($("#startDate").val() == "" || $("#endDate").val() == "" ) {
+            alert("시작날짜 및 종료날짜는 필수사항입니다");
+            return false;
+          } else if($("#content").val() == "") {
+            alert("휴가사유는 필수사항입니다");
+            return false;
+          } else {
+            if (confirm("정말로 제출하시겠습니까?\n기안 후엔 수정이 불가능합니다.")) {
+              $("#form").submit();
+            }
+          }
         });
 
-</script>
+      </script>
 
+      <script>
+        $(function(){
 
-<!-- 결재선 모달 시작 -->
-<div class="modal" id="myModal">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
+          // 참조inputList
+          $("#referListDiv").on("click", "a", function(){
+            // console.log($(this));
+            var strArray=$(this).text().split(" ");
+            $("<span class='btn-sm btn-light referSpan disabled'><input type='hidden' name='refMemNoAry' value='"+$(this).next().val()+"'>"
+              +strArray[0]+" "+strArray[1]+" <button type='button' class='deleteRefer badge badge-light'> &times;</button></span>").appendTo("#referListSpan");
+            $("#referListInput").nextAll().css("display","none");
+            $("#referListInput").val("");
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">결재선 지정</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
+            // console.log($(".referSpan").val()+"왜지");
+          })
 
-      <!-- Modal body -->
-      <div class="modal-body row pl-3 justify-content-center">
+          // 수신참조 세팅
+          $(function(){
+            <c:forEach var="p" items="${ empList }" varStatus="status">
+              $("<a class='w3-bar-item w3-button'>${p.memName} ${p.rank} "
+                +"<c:if test='${!empty p.job }'>(${p.job}) </c:if>/ ${p.department} / ${p.email}</a><input type='hidden' value='${p.memNo}'>").appendTo("#referListDiv");
+            </c:forEach>
+          
+            var x = document.getElementById("referListDiv");
 
-          <div>
-              <h5>조직도</h5>
-              <div class="p-3" style="border:1px solid lightgrey; width:400px;">
-                  
-                  <ul id="myUL">
-                      <li> 대표이사</span>
-                          <ul>
-                              <li>
-                                  <span class="box">경영관리본부</span>
-                                  <ul class="nested">
-                                    <li>
-                                        <span class="box">인사팀</span>
-                                        <ul class="nested">
-                                            <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                            <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                            <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                            <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span class="box">총무팀</span>
-                                        <ul class="nested">
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span class="box">회계팀</span>
-                                        <ul class="nested">
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                      </ul>
-                                    </li>
-                                </ul>
-                              </li>
-                              <li>
-                                <li>
-                                  <span class="box">개발본부</span>
-                                  <ul class="nested">
-                                    <li>
-                                        <span class="box">개발1팀</span>
-                                        <ul class="nested">
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span class="box">개발2팀</span>
-                                        <ul class="nested">
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span class="box">인프라팀</span>
-                                        <ul class="nested">
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                              </li>
-                              <li>
-                                <li>
-                                  <span class="box">운영본부</span>
-                                  <ul class="nested">
-                                    <li>
-                                        <span class="box">운영팀</span>
-                                        <ul class="nested">
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span class="box">영업팀</span>
-                                        <ul class="nested">
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <span class="box">구매팀</span>
-                                        <ul class="nested">
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                          <li><label><input type="checkbox"/> 김말똥 과장</label></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                              </li>
-                              <li>
-                          </ul>
-                      </li>
-                  </ul>
-              </div>
-          </div>
-        <div class="p-2 align-self-center">
-          <button type="button" class="btn btn-sm btn-outline-secondary">추가</button><br>
-          <button type="button" class="btn btn-sm mt-2 btn-outline-secondary">삭제</button>
-        </div>
-        <div>
-          <h5>적용대상 <b class="text-primary">4</b>명</h5>
-          <div class="p-3" style="border:1px solid lightgrey; width:400px;">
-            
-             <table class="table table-sm table-borderless">
-              <tr>
-                  <th>1</th>
-                  <td>인사팀 팀장</td>
-                  <th>이성경 부장</th>
-                  <th>
-                    <select class="selectBoxCustom">
-                      <option>결재</option>
-                      <option>합의</option>
-                    </select>
-                  </th>
-              </tr>
-              <tr>
-                  <th>2</th>
-                  <td>인사팀</td>
-                  <th>이선영 과장</th>
-                  <th>
-                    <select class="selectBoxCustom">
-                      <option>결재</option>
-                      <option>합의</option>
-                    </select>
-                  </th>
-              </tr>
-              <tr>
-                  <th>3</th>
-                  <td>경영지원본부 본부장</td>
-                  <th>신재원 상무</th>
-                  <th>
-                    <select class="selectBoxCustom">
-                      <option>결재</option>
-                      <option>합의</option>
-                    </select>
-                  </th>
-              </tr>
-             </table>
-           
-          </div>
-       </div>
-      </div>
+            $("#referListInput").nextAll().css("display","none");
 
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" >등록</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-      </div>
+            if (x.className.indexOf("w3-show") == -1) {
+              x.className += " w3-show";
+            } else {
+              x.className = x.className.replace(" w3-show", "");
+            }
+          })
 
-    </div>
-  </div>
-</div>
-<!-- 결재선 모달 끝 -->
+          // 참조 삭제
+          $("#referListSpan").on("click", "span button", function(){  
+            $(this).parent().remove();
+          })
+        })
+        
+        function filterFunction() {
+          if($("#referListInput").val().length >= 1){
+              var input, filter, ul, li, a, i;
+              input = document.getElementById("referListInput");
+              filter = input.value.toUpperCase();
+              div = document.getElementById("referListDiv");
+              a = div.getElementsByTagName("a");
+              for (i = 0; i < a.length; i++) {
+                txtValue = a[i].textContent || a[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  a[i].style.display = "";
+                } else {
+                  a[i].style.display = "none";
+                }
+              }
+            }else{
+              $("#referListInput").nextAll().css("display","none");
+            }
+        }
+        </script>
 
-<script>
-  // 왼쪽 조직트리 클릭시 하위 조직 표시
-  var toggler = document.getElementsByClassName("box");
-  var i;
-  for (i = 0; i < toggler.length; i++) {
-    toggler[i].addEventListener("click", function() {
-        this.parentElement.querySelector(".nested").classList.toggle("active");
-        this.classList.toggle("check-box");
-    });
-  }
+      <jsp:include page="apprLineModal.jsp" />
+    </body>
 
-  
-</script>
-
-
-</body>
-</html>
+    </html>

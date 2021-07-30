@@ -6,6 +6,7 @@
 		<result column="doc_no" property="docNo"/>
 		<result column="mem_no" property="memNo"/>
 		<result column="form_no" property="formNo"/>
+		<result column="dep_no" property="deptNo"/>
 		<result column="doc_name" property="docName"/>
 		<result column="category" property="category"/>
 		<result column="form_name" property="formName"/>
@@ -13,23 +14,41 @@
 		<result column="form_content" property="formContent"/>
 		<result column="DOC_CONTENT" property="content"/>
 		<result column="STATUS" property="status"/>
-		<result column="DOC_TYPE" property="docType"/>
 		<result column="DOC_DATE" property="docDate"/>
 		<result column="line" property="line"/>
+		<result column="ref_mem_no" property="refMemNo"/>
 		<result column="SORT" property="sort"/>
 	</resultMap>
 	
-	<resultMap id="orgChartListResult" type="OrgChartList">
+	<resultMap id="apprAcceptResult" type="ApprovalAccept">
+		<result column="line_no" property="lineNo"/>
+		<result column="doc_no" property="docNo"/>
 		<result column="mem_no" property="memNo"/>
 		<result column="mem_name" property="memName"/>
+		<result column="dep_no" property="deptNo"/>
+		<result column="department" property="department"/>
+		<result column="line_level" property="apprLevel"/>
+		<result column="job" property="job"/>
+		<result column="rank" property="rank"/>
 		<result column="email" property="email"/>
-		<result column="dep_no" property="depNo"/>
+		<result column="type" property="type"/>
+		<result column="status" property="status"/>
+		<result column="comment" property="comment"/>
+		<result column="read" property="read"/>
+		<result column="apprDate" property="apprDate"/>
+	</resultMap>
+	
+	<resultMap id="memberResult" type="Member">
+		<result column="mem_no" property="memNo"/>
+		<result column="mem_name" property="memName"/>
+		<result column="mem_id" property="memId"/>
+		<result column="email" property="email"/>
+		<result column="gender" property="gender"/>
 		<result column="department" property="department"/>
 		<result column="job" property="job"/>
 		<result column="rank" property="rank"/>
 	</resultMap>
-
-
+	
 	<select id="selectListCount" resultType="_int">
 		select
 		       count(*)
@@ -38,7 +57,7 @@
 		 and status like '%' || #{status} || '%'
 	</select>
 
-
+	<!-- 본인이 기안한 문저 리스트 조회 -->
 	<select id ="selectApprovalMain" resultMap="approvalResult">
 
 			select 
@@ -74,6 +93,7 @@
 			order by doc_date desc
 	</select>
 	
+	<!-- 신규작성을 위한 문서 양식 리스트 갯수 조회  -->
 	<select id="newApprListCount" resultType="_int">
 		select
 			 count(*)
@@ -81,51 +101,222 @@
 			where status='Y'
 	</select>
 	
-	
+	<!-- 신규작성을 위한 문서 양식 리스트 조회  -->
 	<select id="newApprList" resultMap="approvalResult">
 		select FORM_NO, CATEGORY, FORM_NAME, FORM_INFO
 			from appr_form
 			where status ='Y'
 	</select>
 	
+	<!-- 신규작성 페이지  -->
 	<select id="enrollApproval" resultMap="approvalResult">
 		select form_no, category, form_name, form_content
 			from appr_form
-			where form_no =#{ano}
+			where form_no =#{formNo}
 	</select>
 
-
-	<select id="employeeList" resultMap="orgChartListResult">
+	<!-- 결재라인 조회를 위한 전사원 리스트  -->
+	<select id="employeeList" resultMap="memberResult">
 		select mem_no, mem_name, EMAIL, dep_no, department, job, rank
 			from member
 			where status='Y'
-			and resign_date is null
+				and resign_date is null
 			order by DEP_NO
-            ,JOB NULLS LAST
-            ,decode(rank,'대표이사',1,'상무',2,'부장',3,'과장',4,'대리',5)
-            ,mem_name
+	            ,JOB NULLS LAST
+	            ,decode(rank,'대표이사',1,'상무',2,'부장',3,'과장',4,'대리',5)
+	            ,mem_name
 	</select>
 	
-	<!-- 
-	<select id = "" >
-		select rownum, b.*
+	<!-- 특정유저의 특정양식 결재선 커스텀이 없는경우 default값 조회  -->
+	<select id="defaultLine" resultMap="apprAcceptResult">
+		select rownum line_level, b.*
 		    from (
-		        select rownum as temp_no, mem_no, mem_name, EMAIL, dep_no, department, job, rank
+		        select rownum as temp_no, mem_no, mem_name, EMAIL, dep_no, department, job, rank, '결재' "type"
 		            from (
 		                select rownum as num, a.*
 	                        from (
 	                            select mem_no, mem_name, EMAIL, dep_no, department, job, rank
 	                            from member
 	                            where job is not null
-	                            and resign_date is null
-	                            and dep_no<=8
-	                            and (dep_no=8 or department like'%본부' or department like '%대표%')
+		                            and resign_date is null
+		                            and dep_no<![CDATA[<]]>=#{deptNo}
+		                            and (dep_no=#{deptNo} or department like'%본부' or department like '%대표%')
 	                            order by (case when department='대표이사' then 2 else 1 end)
 	                                ,dep_no)a
 		               order by num desc)
 		        order by temp_no) b
 			WHERE ROWNUM BETWEEN 1 AND 3
+			order by decode(job,'팀장',1,'본부장',2,'대표이사',3)
 	</select>
-	 -->
+	
+	<!-- 특정유저의 특정양식 결재선 커스텀 조회 -->
+	<select id="customLine" resultMap="apprAcceptResult">
+		select 
+			  form_no docNo
+			, mem_no2 mem_no
+			, mem_name
+			, line_level
+			, type
+			, EMAIL
+			, dep_no
+			, department
+			, job
+			, rank
+		from appr_line al
+          join member m on( al.mem_no2=m.mem_no)
+		where al.mem_no =#{memNo}
+		 and form_no=#{formNo}
+          order by line_level
+	</select>
+	
+	<!-- 기안한 양식 insert -->
+	<insert id="insertApproval">
+		INSERT
+			  INTO approval
+			  (
+			    DOC_NO
+			  , MEM_NO  
+			  , FORM_NO
+			  , DOC_NAME
+			  , DOC_CONTENT
+			  )
+			  VALUES
+			  (
+			    SEQ_APNO.NEXTVAL
+			  , #{memNo}
+			  , #{formNo}
+			  , #{docName}
+			  , #{content}
+			  )
+	</insert>
+
+	<!-- 새롭게 저장된 특정양식의 특정유저의 결재선 초기화 -->
+	<delete id="deleteExsitedCustomLine">
+	
+		DELETE FROM appr_line
+			WHERE mem_no = #{memNo}
+			and form_no=#{formNo}
+	
+	</delete>
+
+	<!-- 새롭게 저장된 특정양식의 특정유저의 결재선-->
+	<update id="insertNewCustomLine" parameterType="java.util.List">
+		<foreach collection="apAccept" item="a" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" "> 
+			INTO appr_line
+		      (
+		        FORM_NO
+		      , MEM_NO  
+		      , MEM_NO2
+		      , LINE_LEVEL
+		      , TYPE
+		      )
+			VALUES 
+				(
+				#{formNo}
+		      , #{memNo}
+		      , #{a.memNo}
+		      , #{a.apprLevel}
+		      , #{a.type}
+			  ) 
+			</foreach> 
+	</update>
+
+	<!-- 기안한 문서의 결재선 -->
+	<update id="insertSpecificDocuLine" parameterType="java.util.List">
+		INSERT into appr_accept
+			      (
+			          LINE_NO
+			        , DOC_NO
+			        , MEM_NO
+			        , APPR_LEVEL
+			        , TYPE
+			      )
+    	SELECT SEQ_LINO.NEXTVAL, SEQ_APNO.CURRVAL, A.* 
+    	FROM(
+		<foreach collection="apAccept" item="a" separator="UNION ALL"> 
+			       select 
+			       #{a.memNo}  as memNo
+			      , #{a.apprLevel} as apprLevel
+			      , #{a.type} as type
+			      FROM DUAL
+		</foreach> ) A
+	</update>
+	
+	<!-- 기안한 문서의 첨부파일 -->
+	<update id="insertDocuAttachment" parameterType="java.util.List">
+		INSERT
+		      INTO ma_attach
+			      (
+		          FILE_NO
+		        , DOC_NO
+		        , FILE_TYPE
+		        , ORIGIN_NAME
+		        , FILE_URL
+		        , FILE_LEVEL
+		      	)
+    	SELECT 
+    			SEQ_AANO.NEXTVAL
+		      , SEQ_APNO.CURRVAL
+		      , A.* 
+    	FROM(
+		<foreach collection="at" item="at" separator="UNION ALL"> 
+			       select 
+			       '전자결재' as fileType
+			      , #{at.originName} as originName
+			      , #{at.fileUrl} as fileUrl
+			      , #{at.fileLevel} as fileLevel
+			      FROM DUAL
+		</foreach> ) A
+	</update>
+	
+	
+	<!-- 기안한 문서의 참조자 -->
+	<update id="reference" >
+		INSERT
+		      INTO reference
+		      (
+		        REF_NO
+				, DOC_NO
+				, REF_MEM_NO
+		      )
+    	SELECT 
+    			SEQ_ARNO.NEXTVAL
+		      , SEQ_APNO.CURRVAL
+		      , A.* 
+    	FROM(
+		<foreach collection="refMemNoAry" item="item" separator="UNION ALL" > 
+			       select 
+			       #{item} as memNo
+			      FROM DUAL
+		</foreach> ) A
+	</update> 
+	
+	
+	
+	
+	<!-- 기안한 문서가 연차신청서인 경우의 입력 -->
+	<insert id="insertLeaveDocu">
+		INSERT
+		      INTO leave
+		      (
+		         DOC_NO
+		        ,MEM_NO
+		        ,START_DATE
+		        ,END_DATE
+		        ,LEAVE_COUNT
+		        ,LEAVE_CATE
+		        ,LEAVE_CONTENT
+		      )
+		      VALUES
+		      (
+		        SEQ_APNO.CURRVAL
+		      , #{memNo}
+		      , #{startDate}
+		      , #{endDate}
+		      , #{leaveCount}
+		      , #{leaveCategory}
+		      , #{content}
+		      )
+		</insert>
 
 </mapper>

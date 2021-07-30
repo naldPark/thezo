@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,11 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.thezo.approval.model.service.ApprovalService;
 import com.kh.thezo.approval.model.vo.Approval;
-import com.kh.thezo.approval.model.vo.OrgChartList;
+import com.kh.thezo.approval.model.vo.ApprovalAccept;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.mail.model.vo.Attachment;
 //@author YI
+import com.kh.thezo.member.model.vo.Member;
 
 
 @Controller
@@ -72,18 +74,32 @@ public class ApprovalController {
 	// 문서 작성하는 페이지 
 	@RequestMapping("enrollForm.appr")
 	public ModelAndView enrollApproval(ModelAndView mv, int ano) {
-		Approval a = aService.enrollApproval(ano);
-		ArrayList<OrgChartList> empList = aService.employeeList();
-		mv.addObject("empList", empList)
-			.addObject("a", a)
-			.setViewName("approval/approvalEnrollForm");
+		Approval aTemp = new Approval();
+		aTemp.setMemNo(1); aTemp.setDeptNo(3);	aTemp.setFormNo(ano);
+		// 사용자 session 셋팅될떄까지의 임시값
+		
+		Approval a = aService.enrollApproval(aTemp);
+		ArrayList<Member> empList = aService.employeeList();
+		ArrayList<ApprovalAccept> cLine = aService.selectformLineList(aTemp);
+		
+		mv.addObject("a", a) // 문서 포맷
+			.addObject("empList", empList) // 전사원 리스트 
+			.addObject("cLine", cLine);  // 해당 양식의 결재선
+		
+		//연차신청인 경우 다른 페이지로 이동
+		if(a.getFormNo()==5) {
+			mv.setViewName("approval/approvalLeaveForm");
+		} else {
+			mv.setViewName("approval/approvalEnrollForm");
+		}
+		
 		return mv;
 	}
 	
 	// 첨부파일 저장을 위한 메소드 모듈화
 	public String saveFile(HttpSession session, MultipartFile upfile) {
 		
-		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/mail/");
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/approval/");
 		String originName = upfile.getOriginalFilename();
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		int ranNum = (int)(Math.random() * 90000 + 10000);
@@ -101,22 +117,30 @@ public class ApprovalController {
 	
 	@ResponseBody
 	@RequestMapping("insertDocu.appr")
-	public ModelAndView insertApprovalDocument(Approval a,HttpSession session, MultipartFile[] upfile, ModelAndView mv ) {
-//		System.out.println(summernote);
+	public ModelAndView insertApprovalDocument(Approval a,HttpSession session, MultipartFile[] upfile, ModelAndView mv) {
+		a.setMemNo(1);
+
 		if (!upfile[0].getOriginalFilename().equals("")) {
 			ArrayList<Attachment> list = new ArrayList<>();
 
 			for (int i = 0; i < upfile.length; i++) {
 				Attachment at = new Attachment();
-				String changeName = saveFile(session, upfile[i]); // "2021070217013023152.jpg"
+				String changeName = saveFile(session, upfile[i]); 
 				at.setOriginName(upfile[i].getOriginalFilename());
-				at.setChangeName("resources/uploadFiles/mail/" + changeName);
+				at.setFileUrl("resources/uploadFiles/approval/" + changeName);
+				at.setFileLevel(i+1);
 				list.add(at);
 			}
+			a.setAt(list);
 		}
 		int result = aService.insertApprovalDocument(a);
-		
-//		  .setViewName("approval/approvalTemp");
+		if(result > 0) { // 성공
+			session.setAttribute("alertMsg", "성공적으로 등록 되었습니다.");
+			mv.setViewName("redirect:main.appr");
+		}else {
+			mv.addObject("errorMsg", "기안에 실패했습니다");
+			mv.setViewName("common/errorPage");
+		}
 		return mv;
 	}
 	

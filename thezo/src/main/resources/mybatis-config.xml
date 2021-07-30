@@ -15,7 +15,7 @@
 		<typeAlias type="com.kh.thezo.document.model.vo.Document" alias="Document"/>
 		<typeAlias type="com.kh.thezo.approval.model.vo.Approval" alias="Approval"/>
 		<typeAlias type="com.kh.thezo.mail.model.vo.Mail" alias="Mail"/>
-		<typeAlias type="com.kh.thezo.approval.model.vo.OrgChartList" alias="OrgChartList"/> 
+		<typeAlias type="com.kh.thezo.approval.model.vo.ApprovalAccept" alias="ApprovalAccept"/> 
 		<typeAlias type="com.kh.thezo.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.kh.thezo.market.model.vo.Market" alias="Market"/>
 		<typeAlias type="com.kh.thezo.schedule.model.vo.Schedule" alias="Schedule"/>

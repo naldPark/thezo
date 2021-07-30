@@ -48,10 +48,15 @@ public class MemberController {
 	// 회원정보관리(사원등록,수정):관리자 -이성경
 	// 회원정보 상세조회 
 	@RequestMapping("adMemDetail.me")
-	public String adMemDetail(int mno) {
+	public ModelAndView adMemDetail(int mno, ModelAndView mv) {
 		Member m = mService.selectMember(mno);
 		// 일단 수정하기 !!!!!!
-		return "member/adminMemberUpdate";
+		if( m != null) {
+			mv.addObject("m", m).setViewName("member/adminMemberUpdate");
+		}else {
+			mv.addObject("errorMsg", "상세조회 실패");
+		}
+		return mv;
 	}
 	
 	

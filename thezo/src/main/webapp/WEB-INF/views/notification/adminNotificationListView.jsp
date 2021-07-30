@@ -151,11 +151,11 @@
 													<button type="button" class="blue-background" onclick="ajaxNotificationModify(${nf.nfNo});">수정</button>
 												</td>
 												<td onclick="event.cancelBubble=true">
-													<button type="button" class="red-background" onclick="ajaxNotificationDelete(${nf.nfNo});">삭제</button>
+													<button type="button" class="red-background" onclick="openNotificationDeleteModal(${nf.nfNo});">삭제</button>
 												</td>
 											</tr>
 										</c:forEach>
-										<c:forEach var="tenRows" items="${list}" begin="0" end="${10 - fn:length(list)}" >
+										<c:forEach var="tenRows" items="${list}" begin="1" end="${10 - fn:length(list)}" >
 											<tr></tr>
 										</c:forEach>
 									</c:when>
@@ -173,7 +173,7 @@
 													<button type="button" class="blue-background" onclick="ajaxNotificationModify(${nf.nfNo});">수정</button>
 												</td>
 												<td onclick="event.cancelBubble=true">
-													<button type="button" class="red-background" onclick="ajaxNotificationDelete(${nf.nfNo});">삭제</button>
+													<button type="button" class="red-background" onclick="openNotificationDeleteModal(${nf.nfNo});">삭제</button>
 												</td>
 											</tr>
 										</c:forEach>									
@@ -229,7 +229,7 @@
 										<option value="총무팀">총무팀</option>
 										<option value="회계팀">회계팀</option>
 										<option value="개발본부">개발본부</option>
-										<option value="개발 1팀">개발 1팀</option>
+										<option value="개발1팀">개발1팀</option>
 										<option value="개발2팀">개발2팀</option>
 										<option value="인프라팀">인프라팀</option>
 										<option value="운영본부">운영본부</option>
@@ -243,14 +243,14 @@
 								<table>
 									<tr>
 										<th>시작일</th>
-										<td><input type="date" name="nfStartDate" required></td>
+										<td><input type="date" name="nfStartDate" max="9999-12-31" required></td>
 									</tr>
 									<tr>
 										<th>종료일</th>
-										<td><input type="date" name="nfEndDate" required></td>
+										<td><input type="date" name="nfEndDate" max="9999-12-31"  required></td>
 									</tr>
 								</table>
-								<textarea name="nfContent" id="nf-insert-content" class="notification-content" placeholder="알림 등록은 최대 200자 까지입니다.         알림을 작성해주세요." required></textarea>
+								<textarea name="nfContent" id="nf-insert-content" class="notification-content" placeholder="알림 등록은 최대 200자까지 입니다.         알림을 작성해주세요." required></textarea>
 								<button type="submit">등록하기</button>
 							</form>
 						</div>
@@ -260,73 +260,6 @@
 		</div>
 	</section>
 
-<%-------------------------------------------- 스크립트 영역 시작 ----------------------------------------------%>
-	<script>
-		// 행클릭시 modal 열리는 방식으로 1번은 detail페이지 2번은 수정페이지이다. 
-		//(단 !! AJAX로 값을 가져올때에!!! model객체에!! 또한번 내가 지정한 값을 넘겨서 현재 jsp에서 jstl로다가 조건검사식으로 
-		// 화면이 만들어지게 해줘야한다.) 
-
-		// 전역변수로 세팅
-		var forView = document.getElementsByClassName("for-view");
-		var forModify = document.getElementsByClassName("for-modify");
-
-
-		// 상세 모달
-		function ajaxNotificationDetail(tossedNo){
-			//if(tossedNo == 1 ){
-				for(var i=0; i<forView.length; i++){
-					forView[i].style.display="block"; 
-				}
-				for(var i=0; i<forModify.length; i++){
-					forModify[i].style.display="none"; 
-				}
-			//}
-			// 	$.ajax({
-			// 		url:"~~ .do",
-			// 		success:function(인자){
-			// 		},error:function(){
-			// 			console.log("ajax통신 실패");
-			// 		}				
-			// 	})
-			$("#nfModal").modal();
-		}
-		
-		// 수정모달 
-		function ajaxNotificationModify(tossedNo){
-			//if(tossedNo == 2 ){
-				for(var i=0; i<forModify.length; i++){
-					forModify[i].style.display="block"; 
-				}
-				for(var i=0; i<forView.length; i++){
-					forView[i].style.display="none"; 
-				}
-			//}
-			// 	$.ajax({
-			// 		url:"~~ .do",
-			// 		success:function(인자){
-			// 		},error:function(){
-			// 			console.log("ajax통신 실패");
-			// 		}				
-			// 	})
-			$("#nfModal").modal();
-		}
-
-		function ajaxNotificationDelete(tossedNo){
-			console.log(tossedNo);
-			$("#nfDeleteModal").modal();
-		}
-		
-		// 글자수 제한 
-        $(document).ready(function() {
-            $('#nf-insert-content').on('keyup', function() {         
-                if($(this).val().length > 200) {
-                    $(this).val($(this).val().substring(0, 200));
-                }
-            });
-        });
-        		
-	</script>
-<%-------------------------------------------- 스크립트 영역 끝 ----------------------------------------------%>
 <%------------------------------------------------------알림 조회 및 수정 모달 시작 -------------------------------------------------------%>
 <%-- 알림 조회 수정 모달 --%>
 <div class="modal fade" id="nfModal">
@@ -342,11 +275,26 @@
 			<!-- Modal body -->			
 			<div class="modal-body view-modify-content">
 				<div id="notification-modifyForm">
-					<form action="insert.nf" method="post">
+					<form action="update.adnf" method="post">
 						<div>
 							<div><i class="fas fa-lightbulb"></i></div>
-							<select name=""  class="for-view" disabled>
-								<option value=""></option>
+							<input id="orginNfNo" type="hidden" name="nfNo" value="">							
+							<input id="checkNfDeptName" type="hidden" name="originNdDeptName" value="">
+							<select name="nfDeptName"  class="for-view" disabled>
+								<option value="전사원">전사원</option>
+								<option value="대표이사">대표이사</option>
+								<option value="경영관리본부">경영관리본부</option>
+								<option value="인사팀">인사팀</option>
+								<option value="총무팀">총무팀</option>
+								<option value="회계팀">회계팀</option>
+								<option value="개발본부">개발본부</option>
+								<option value="개발1팀">개발1팀</option>
+								<option value="개발2팀">개발2팀</option>
+								<option value="인프라팀">인프라팀</option>
+								<option value="운영본부">운영본부</option>
+								<option value="운영팀">운영팀</option>
+								<option value="영업팀">영업팀</option>
+								<option value="구매팀">구매팀</option>
 							</select>
 							<select name="nfDeptName"  class="for-modify" required>
 								<option value="전사원">전사원</option>
@@ -356,14 +304,13 @@
 								<option value="총무팀">총무팀</option>
 								<option value="회계팀">회계팀</option>
 								<option value="개발본부">개발본부</option>
-								<option value="개발 1팀">개발 1팀</option>
+								<option value="개발1팀">개발1팀</option>
 								<option value="개발2팀">개발2팀</option>
 								<option value="인프라팀">인프라팀</option>
 								<option value="운영본부">운영본부</option>
 								<option value="운영팀">운영팀</option>
 								<option value="영업팀">영업팀</option>
 								<option value="구매팀">구매팀</option>
-								
 							</select>
 							<span>알림</span>
 						</div>
@@ -371,24 +318,24 @@
 						<table>
 							<tr>
 								<th>시작일</th>
-								<td><input type="date" class="for-view" disabled></td>
-								<td><input type="date" name="" class="for-modify" required></td>
+								<td><input type="date" id="viewNfStartDate" max="9999-12-31"  class="for-view" disabled></td>
+								<td><input type="date" id="modifyNfStartDate" max="9999-12-31" name="nfStartDate" class="for-modify" required></td>
 							</tr>
 							<tr>
 								<th>종료일</th>
-								<td><input type="date" class="for-view" disabled></td>
-								<td><input type="date" name="" class="for-modify" required></td>
+								<td><input type="date" id="viewNfEndDate" max="9999-12-31"  class="for-view" disabled></td>
+								<td><input type="date" id="modifyNfEndDate" max="9999-12-31"  name="nfEndDate" class="for-modify" required></td>
 							</tr>
 						</table>
 						<!-- 조건문 처리해야한다. -->
 						
-						<textarea name="" class="notification-content for-view" placeholder="알림을 작성해주세요." disabled></textarea>
-						<textarea name="" class="notification-view-content for-modify" placeholder="알림을 작성해주세요." required></textarea>						
+						<textarea class="notification-content for-view" placeholder="알림을 작성해주세요." disabled></textarea>
+						<textarea name="nfContent" class="notification-view-content for-modify" placeholder="알림 등록은 최대 200자까지 입니다.         알림을 작성해주세요." required></textarea>						
 						<div class="re-notification for-modify">
 							<i class="fas fa-lightbulb"></i> &nbsp;다시 알림을 하고 싶을 시 선택해 주세요  
-							<input type="checkbox" name="" value="">
+							<input type="checkbox" name="reNotify" value="true">
 						</div>
-						<button type="submit" class="for-modify" data-dismiss="modal">등록하기</button>
+						<button type="submit" class="for-modify">등록하기</button>
 						<button class="close-back-button for-view" type="button" data-dismiss="modal" style="background-color: gray;">뒤로가기</button>
 					</form>
 				</div>
@@ -409,7 +356,7 @@
 				</div>
 				<!-- Modal body -->
 				<div class="modal-body">
-					<p>해당 알림을 삭제하시겠습니까?</p>
+					<p><span id="nfDelNo"></span>번 알림을 삭제하시겠습니까?</p>
 					<p>한번 삭제된 알림은 되돌릴 수 없습니다.</p>
 				</div>
 				<!--url에 안찍히게 해야한다. -->
@@ -418,12 +365,123 @@
 					<div class="modal-footer">
 						<!-- Modal footer -->
 						<button type="button" class="" data-dismiss="modal">취소하기</button>
-						<button type="submit" class="" data-dismiss="modal" onclick="">삭제하기</button>
+						<button type="button" class="" data-dismiss="modal" onclick="notificationDelete()">삭제하기</button>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
 <%------------------------------------------------------알림 삭제 모달 끝-------------------------------------------------------%>
+<%-------------------------------------------- 스크립트 영역 시작 ----------------------------------------------%>
+	<script>
+		// 전역변수로 세팅
+		var forView = document.getElementsByClassName("for-view");
+		var forModify = document.getElementsByClassName("for-modify");
+
+		// 상세 모달
+		function ajaxNotificationDetail(tossedNo){
+			// tossedNo 애는 알림 번호가 넘어온다. 				
+			 	$.ajax({
+			 		url:"ajaxSelectOne.adnf",
+					data:{nfNo:tossedNo},
+			 		success:function(nfResult){
+			 			// 제대로 값을 가져왔더다 뿌려주자! 
+			 			$("#notification-modifyForm select").val(nfResult.nfDeptName);
+			 			$("#viewNfStartDate").val(nfResult.nfStartDate);
+			 			$("#modifyNfStartDate").val(nfResult.nfStartDate);
+			 			$("#viewNfEndDate").val(nfResult.nfEndDate);
+			 			$("#modifyNfEndDate").val(nfResult.nfEndDate);
+			 			$(".notification-content").html(nfResult.nfContent);
+			 			$(".notification-view-content").val(nfResult.nfContent);			 			
+			 		},error:function(){
+			 			console.log("ajax통신 실패");
+			 		}				
+			 	})
+			 	
+				for(var i=0; i<forView.length; i++){
+					forView[i].style.display="block"; 
+				}
+				for(var i=0; i<forModify.length; i++){
+					forModify[i].style.display="none"; 
+				}
+
+			 	
+			$("#nfModal").modal();
+		}
+		
+		// 수정모달 
+		function ajaxNotificationModify(tossedNo){
+			 	$.ajax({
+			 		url:"ajaxSelectOne.adnf",
+					data:{nfNo:tossedNo},
+			 		success:function(nfResult){
+			 			// 제대로 값을 가져왔더다 뿌려주자! 
+			 			$("#orginNfNo").val(nfResult.nfNo);
+			 			$("#notification-modifyForm select").val(nfResult.nfDeptName);
+			 			$("#checkNfDeptName").val(nfResult.nfDeptName);
+			 			$("#viewNfStartDate").val(nfResult.nfStartDate);
+			 			$("#modifyNfStartDate").val(nfResult.nfStartDate);
+			 			$("#viewNfEndDate").val(nfResult.nfEndDate);
+			 			$("#modifyNfEndDate").val(nfResult.nfEndDate);
+			 			$(".notification-content").html(nfResult.nfContent);
+			 			$(".notification-view-content").val(nfResult.nfContent);			 			
+			 		},error:function(){
+			 			console.log("ajax통신 실패");
+			 		}				
+			 	})
+			
+				for(var i=0; i<forModify.length; i++){
+					forModify[i].style.display="block"; 
+				}
+				for(var i=0; i<forView.length; i++){
+					forView[i].style.display="none"; 
+				}
+			$("#nfModal").modal();
+		}
+		
+		// 삭제모달 열기 
+		function openNotificationDeleteModal(tossedNo){
+			$("#nfDelNo").html(tossedNo);
+			$("#nfDeleteModal").modal();		
+		}
+
+		// 삭제 할수있는 폼 만들어서 넘기기 (보안강화)
+		function notificationDelete(){			
+			//보안을 위해서 폼객체를 동적으로 만들어서 넘기는 방식! 		
+			var createform = document.createElement("form");
+			createform.setAttribute("charset", "UTF-8");
+			createform.setAttribute("method", "Post");  //Post 방식
+			createform.setAttribute("action", "delete.adnf"); //요청 보낼 주소
+			
+			// input 요소 생성 
+			var hiddenInput = document.createElement("input");
+			hiddenInput.setAttribute("type", "hidden");
+			hiddenInput.setAttribute("name", "nfNo");
+			hiddenInput.setAttribute("value", $("#nfDelNo").html());
+			createform.appendChild(hiddenInput); // form 안에 심기 
+						
+			document.body.appendChild(createform);
+			createform.submit();
+			
+		}
+		
+		// 글자수 제한 
+        $(document).ready(function() {
+            $('#nf-insert-content').on('keyup', function() {         
+                if($(this).val().length > 200) {
+                    $(this).val($(this).val().substring(0, 200));
+                }
+            });
+
+            $('.notification-view-content').on('keyup', function() {         
+                if($(this).val().length > 200) {
+                    $(this).val($(this).val().substring(0, 200));
+                }
+            });            
+        });
+        		
+	</script>
+<%-------------------------------------------- 스크립트 영역 끝 ----------------------------------------------%>
+
 </body>
 </html>

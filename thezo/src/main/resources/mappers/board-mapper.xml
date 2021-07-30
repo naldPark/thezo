@@ -1,4 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="boardMapper">
+
+	<resultMap id="boardResult" type="Board">
+		<result column="board_no" property="boardNo"/>
+		<result column="board_title" property="boardTitle"/>
+		<result column="board_writer" property="boardWriter"/>
+		<result column="board_content" property="boardContent"/>
+		<result column="board_date" property="boardDate"/> 
+		<result column="count" property="count"/>
+		<result column="origin_name" property="originName"/>
+		<result column="change_name" property="changeName"/>
+	</resultMap>
+	
+
+	<!-- 사용자 : 공지사항 글 총 갯수  -->
+	<select id="noticeListCount" resultType="_int">
+		select 
+		       count(*)
+		  from board
+		 where status = 'Y'
+		   and board_type = 1    
+	</select>
+
+	<!-- 사용자 : 공지사항 리스트 조회 -->
+	<select id="selectNoticeList" resultMap="boardResult">
+		select
+		       board_no
+		     , board_title
+		     , board_writer
+		     , to_char(board_date, 'YYYY-MM-DD') as board_date
+             , count
+		  from board
+		 where status = 'Y'
+           and board_type = 1
+		 order 
+		    by board_no desc       
+	</select>
+
+	<!-- 사용자 : 공지사항 리스트 검색바  -->
+	<select id="noticeSearchListCount" resultType="_int">
+		select count(*)
+		  from board
+		 where status = 'Y' 
+		    and board_type = 1
+		<choose>
+			<when test="condition == 'title'">
+				and board_title
+			</when>
+			<when test="condition == 'content'">
+				and board_content 
+			</when>
+			<otherwise>
+				and board_writer
+			</otherwise>
+		</choose>
+				like '%' || #{keyword} || '%' 
+	</select>
+
+	<!-- 사용자 : 공지사항 리스트 검색바 -->
+	<select id="noticeSearchList" resultMap="boardResult">
+	select 
+		   board_no
+		 , board_title
+		 , board_writer
+		 , to_char(board_date, 'YYYY-MM-DD') as board_date
+         , count
+      from board
+     where status = 'Y' 
+       and board_type = 1
+		<choose>
+			<when test="condition == 'title'">
+		   		and board_title
+		    </when>
+			<when test="condition == 'content'">
+				and board_content
+			</when>
+			<otherwise>
+				and board_writer
+			</otherwise>
+		</choose>
+				like '%' || #{keyword} || '%'
+		  order
+		     by board_no desc 
+	</select>
+
+	<!-- 사용자 : 공지사항 조회수 증가 -->
+	<update id="increaseNoticeCount">
+		update
+		       board
+		   set count = count+1
+		 where board_no = #{boardNo}
+		   and status = 'Y'
+		   and board_type = 1       
+	</update>
+
+	<!-- 사용자 : 공지사항 상세 조회 -->
+	<select id="selectNotice" resultMap="boardResult">
+		select
+			   board_no
+		     , board_title
+		     , board_writer
+		     , board_content
+		     , to_char(board_date, 'YYYY-MM-DD') as board_date
+		     , count
+		     , origin_name
+			 , change_name
+ 		  from board b
+          join board_file on(board_no = ref_bno)
+		 where board_no = #{boardNo}
+		   and board_type = 1
+           and b.status = 'Y'   
+	</select>
+
+
 </mapper>

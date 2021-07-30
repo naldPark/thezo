@@ -61,6 +61,7 @@
       
     window.onload = function(){
         $("#tab-1").click();
+        printTime();
     }
 </script>
 
@@ -309,13 +310,20 @@
 
                         $(this).addClass("focus");
                     })
+                    
+                    function printTime(){
+                    	var clock = document.getElementById("sub-curtime");
+                    	var now = new Date();
+                    	var nowTime = now.getFullYear() + "년 " + (now.getMonth()+1) + "월 " + now. getDate() + "일"
+                    				  + "<br>" + now.getHours() + " : " + now.getMinutes() + " : " + now.getSeconds();
+                 		clock.innerHTML = nowTime;
+                 		setTimeout("printTime()",1000);
+                    }
                 </script>
 
                 <div class="sub-time">    
                     <div id="sub-curtime">
-                        2021년 7월 13일 화요일
-                        <br>
-                    05:06:07
+                    	
                     </div>
                     <div id="time-image">
                         <img src="https://img.icons8.com/ios/50/000000/alarm-clock--v1.png"/>

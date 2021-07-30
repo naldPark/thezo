@@ -64,13 +64,13 @@
                         </div>
                         <div id="content" class="form-row">
                             <label for="memNo" align="left">사원번호</label>
-                            <input type="text" class="form-control" id="memNo" name="memNo" value="1" readonly><br>
+                            <input type="text" class="form-control" id="memNo" name="memNo" value="${ m.memNo }" readonly><br>
 
                             <label for="memId">아이디</label>
-                            <input type="text" class="form-control" id="memId" name="memId" value="user01" readonly><br>
+                            <input type="text" class="form-control" id="memId" name="memId" value="${ m.memId }" readonly><br>
 
                             <label for="memName">이름</label>
-                            <input type="text" class="form-control" id="memName" name="memName" value="김춘식"><br>
+                            <input type="text" class="form-control" id="memName" name="memName" value="${ m.memName }"><br>
 
                             <label for="gender">성별</label>&nbsp;&nbsp;&nbsp;&nbsp;
                             <div class="form-check-inline">
@@ -85,32 +85,32 @@
                             </div>
 
                             <label for="phone">전화번호</label>
-                            <input type="text" class="form-control" id="phone" name="phone" value="010-1111-2222" required><br>
+                            <input type="text" class="form-control" id="phone" name="phone" value="${ m.phone }" required><br>
 
                             <label for="email">이메일</label>
-                            <input type="text" class="form-control" id="email" name="email"  value="user02@thezo.com" required><br>
+                            <input type="text" class="form-control" id="email" name="email"  value="${ m.email }" required><br>
                             
-                            <label for="birth">생년월일</label>
-                            <input type="date" class="form-control" id="birth" name="birth" value="1980-11-11" required><br>
+                            <label for="birth">생년월일</label> 
+                            <input type="text" class="form-control" id="birth" name="birth" value="${ m.birth }" required><br>
                         </div>    
 
                         <div id="address-area">
                             <label for="address"  class="form-row" align="left">&nbsp;주소</label>
                             <div id="zip_code" class="form-inline">
-                                <input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" name="zipCode"  value="01342" required style="width: 100px;">
+                                <input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" name="zipCode"  value="${ m.zipCode }" required style="width: 100px;">
                                 <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="btn-address"  class="btn btn-primary mb-2"><br>
                             </div>
                             <div style="width:130px; display:inline-block;"></div>
-                            <input type="text"  class="form-control" id="sample6_address" name="addressS" value="서울시 강남" required>
+                            <input type="text"  class="form-control" id="sample6_address" name="addressS" value="${ m.address }" required>
                             <div id="div-name"></div>
-                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" value="kh"required>
+                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" value=""required>
                         </div>
 
                         <div class="form-row" id="content">
                             <label for="emrollDate">입사일</label>
-                            <input type="date" class="form-control" id="enrollDate" name="enrollDate" value="2014-11-11" required><br>
+                            <input type="date" class="form-control" id="enrollDate" name="enrollDate" value="${ m.enrollDate }" required><br>
                             <label for="resignDate">퇴사일</label>
-                            <input type="date" class="form-control" id="resignDate" name="resignDate" value="2014-11-11" required><br>
+                            <input type="date" class="form-control" id="resignDate" name="resignDate" value="${ m.resignDate }"><br>
                         </div>
 
                         <div id="department">
@@ -162,7 +162,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <label for="extensionNo">내선번호</label>
-                                        <input type="text" class="form-control" id="extensionNo" name="extensionNo"><br>
+                                        <input type="text" class="form-control" id="extensionNo" name="extensionNo" value="${ m.extensionNo }"><br>
                                     </td>
                                 </tr>
                             </table>

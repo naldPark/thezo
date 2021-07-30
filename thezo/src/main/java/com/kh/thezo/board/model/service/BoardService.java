@@ -1,0 +1,22 @@
+package com.kh.thezo.board.model.service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import com.kh.thezo.board.model.vo.Board;
+import com.kh.thezo.common.model.vo.PageInfo;
+
+public interface BoardService {
+
+		// 1. 사용자 : 공지사항 리스트 페이지 조회용
+		int noticeListCount();
+		ArrayList<Board> selectNoticeList(PageInfo pi);
+		
+		// 2. 사용자 : 공지사항 검색바 리스트 페이지 조회용
+		public int noticeSearchListCount(HashMap<String, String> map);
+		public ArrayList<Board> noticeSearchList(PageInfo pi, HashMap<String, String> map);
+		
+		// 3. 사용자 : 공지사항 상세조회용
+		int increaseNoticeCount(int boardNo);
+		Board selectNotice(int boardNo);
+}

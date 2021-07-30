@@ -47,14 +47,22 @@ table tbody {
 </head>
 <body>
 	<jsp:include page="../common/header.jsp" />
+	<c:if test="${loginUser.userId eq 'admin' }">
+		<script>	
+			document.getElementById("admin-header").style.display = "block";
+			document.getElementById("admin-mode").style.color = "red";
+		</script>
+		<br><br><br><br>
+	</c:if>
+	
+	
+	
 	<section>
 	
 	<div class="outer">
 
 		<div class="innerOuter">
-			<h2>
-				<b>공지사항</b>
-			</h2>
+			<h2><b>공지사항</b></h2>
 			<div id="search-area" align="right">
 				<form id="searchForm" action="noticeSearch.bo" method="Get">
 					<div class="select">

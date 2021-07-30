@@ -49,4 +49,36 @@ public class BoardDao {
 	public Board selectNotice(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.selectOne("boardMapper.selectNotice", boardNo);
 	}
+	
+	
+	// ------------------------  사내게시판 영역  ----------------------------
+	
+	// 사용자 : 사내게시판 글 총 갯수 
+	public int boardListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("boardMapper.boardListCount");
+	}
+	
+	// 사용자 : 사내게시판 리스트 조회
+	public ArrayList<Board> selectBoardList(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset =(pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectBoardList", null , rowBounds );
+	}
+	
+	// 사용자 : 사내게시판 리스트 검색바 
+	public int boardSearchListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("boardMapper.boardSearchListCount", map);
+	}
+	
+	// 사용자 : 사내게시판 리스트 검색바 
+	public ArrayList<Board> boardSearchList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.boardSearchList", map, rowBounds);
+	}
+	
+	
+	
 }

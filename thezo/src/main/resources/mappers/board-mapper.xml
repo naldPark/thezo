@@ -112,6 +112,83 @@
 		   and board_type = 1
            and b.status = 'Y'   
 	</select>
+	
+	
+	
+	<!--  사내게시판 영역  -->
+	
+	
+	<!-- 사용자 : 사내게시판 글 총 갯수  -->
+	<select id="boardListCount" resultType="_int">
+		select 
+		       count(*)
+		  from board
+		 where status = 'Y'
+		   and board_type = 2    
+	</select>
+
+	<!-- 사용자 : 사내게시판 리스트 조회 -->
+	<select id="selectBoardList" resultMap="boardResult">
+		select
+		       board_no
+		     , board_title
+		     , board_writer
+		     , to_char(board_date, 'YYYY-MM-DD') as board_date
+             , count
+		  from board
+		 where status = 'Y'
+           and board_type = 2
+		 order 
+		    by board_no desc       
+	</select>
+	
+	
+	<!-- 사용자 : 사내게시판 리스트 검색바  -->
+	<select id="boardSearchListCount" resultType="_int">
+		select count(*)
+		  from board
+		 where status = 'Y' 
+		    and board_type = 2
+		<choose>
+			<when test="condition == 'title'">
+				and board_title
+			</when>
+			<when test="condition == 'content'">
+				and board_content 
+			</when>
+			<otherwise>
+				and board_writer
+			</otherwise>
+		</choose>
+				like '%' || #{keyword} || '%' 
+	</select>
+
+	<!-- 사용자 : 사내게시판 리스트 검색바 -->
+	<select id="boardSearchList" resultMap="boardResult">
+	select 
+		   board_no
+		 , board_title
+		 , board_writer
+		 , to_char(board_date, 'YYYY-MM-DD') as board_date
+         , count
+      from board
+     where status = 'Y' 
+       and board_type = 2
+		<choose>
+			<when test="condition == 'title'">
+		   		and board_title
+		    </when>
+			<when test="condition == 'content'">
+				and board_content
+			</when>
+			<otherwise>
+				and board_writer
+			</otherwise>
+		</choose>
+				like '%' || #{keyword} || '%'
+		  order
+		     by board_no desc 
+	</select>
 
 
 </mapper>

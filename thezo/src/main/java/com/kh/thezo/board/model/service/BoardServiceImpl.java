@@ -55,6 +55,32 @@ public class BoardServiceImpl implements BoardService{
 	public Board selectNotice(int boardNo) {
 		return bDao.selectNotice(sqlSession, boardNo);
 	}
+	
+	// --------------- 사내게시판 영역 --------------------
+	
+	// 사용자 : 사내게시판 글 갯수 조회
+	@Override
+	public int boardListCount() {
+		return bDao.boardListCount(sqlSession);
+	}
+
+	// 사용자 : 사내게시판 리스트 조회
+	@Override
+	public ArrayList<Board> selectBoardList(PageInfo pi) {
+		return bDao.selectBoardList(sqlSession, pi);
+	}
+
+	// 사용자 : 사내게시판  리스트 검색바 
+	@Override
+	public int boardSearchListCount(HashMap<String, String> map) {
+		return bDao.boardSearchListCount(sqlSession, map);
+	}
+
+	// 사용자 : 사내게시판  리스트 검색바 
+	@Override
+	public ArrayList<Board> boardSearchList(PageInfo pi, HashMap<String, String> map) {
+		return bDao.boardSearchList(sqlSession, pi, map);
+	}
 
 	
 }

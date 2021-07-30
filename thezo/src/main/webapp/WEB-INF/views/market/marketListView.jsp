@@ -75,98 +75,25 @@
         <br><br><br>
             
         <div class="list-area">
-	            <div class="thumbnail" align="center">
-	            	<input type="hidden" value="${ b.boardNo }">
-                    <br>
-	                <img src="${ b.titleImg }" width="200" height="150">
-	                <p>
-	                    <b>머그컵</b><br>
-                        15000 원<br>
-                        판매중<br>
+			<c:forEach var="m" items="${ list }">
+				<div class="thumbnail" align="center">
+		        	<input type="hidden" value="${ m.marketNo }">
+	                <br>
+		            <img src="${ m.productImg }" width="200" height="150">
+		            <p>
+		            	<b>${ m.marketTitle }</b><br>
+	                       ${ m.price } 원<br>
+	                       ${ m.marketSection }<br>
+		            </p>
+	                <p align="left">
+	                	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${ m.marketWriter }<br>
+	                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${ m.marketDate }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	                    <img src="resources/images/countView.png" width="20" height="20">
+	                    ${ m.count }
 	                </p>
-                    <p align="left">
-                        &nbsp;user01<br>
-                        &nbsp;2021-08-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <img src="https://image.flaticon.com/icons/png/128/709/709612.png alt="">
-                        5&nbsp;&nbsp;
-                    </p>
-	            </div>
-                <div class="thumbnail" align="center">
-	            	<input type="hidden" value="${ b.boardNo }">
-                    <br>
-	                <img src="${ b.titleImg }" width="200" height="150">
-	                <p>
-	                    <b>머그컵</b><br>
-                        15000 원<br>
-                        판매중<br>
-	                </p>
-                    <p align="left">
-                        user01<br>
-                        2021-08-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        조회수 5
-                    </p>
-	            </div>
-                <div class="thumbnail" align="center">
-	            	<input type="hidden" value="${ b.boardNo }">
-                    <br>
-	                <img src="${ b.titleImg }" width="200" height="150">
-	                <p>
-	                    <b>머그컵</b><br>
-                        15000 원<br>
-                        판매중<br>
-	                </p>
-                    <p align="left">
-                        user01<br>
-                        2021-08-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        조회수 5
-                    </p>
-	            </div>
-                <br>
-                <div class="thumbnail" align="center">
-	            	<input type="hidden" value="${ b.boardNo }">
-                    <br>
-	                <img src="${ b.titleImg }" width="200" height="150">
-	                <p>
-	                    <b>머그컵</b><br>
-                        15000 원<br>
-                        판매중<br>
-	                </p>
-                    <p align="left">
-                        user01<br>
-                        2021-08-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        조회수 5
-                    </p>
-	            </div>
-                <div class="thumbnail" align="center">
-	            	<input type="hidden" value="${ b.boardNo }">
-                    <br>
-	                <img src="${ b.titleImg }" width="200" height="150">
-	                <p>
-	                    <b>머그컵</b><br>
-                        15000 원<br>
-                        판매중<br>
-	                </p>
-                    <p align="left">
-                        user01<br>
-                        2021-08-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        조회수 5
-                    </p>
-	            </div>
-                <div class="thumbnail" align="center">
-	            	<input type="hidden" value="${ b.boardNo }">
-                    <br>
-	                <img src="${ b.titleImg }" width="200" height="150">
-	                <p>
-	                    <b>머그컵</b><br>
-                        15000 원<br>
-                        판매중<br>
-	                </p>
-                    <p align="left">
-                        user01<br>
-                        2021-08-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        조회수 5
-                    </p>
-	            </div>
+	            </div>                
+            </c:forEach>
+            <br>
         </div>
         
         

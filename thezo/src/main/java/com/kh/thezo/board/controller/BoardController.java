@@ -39,7 +39,7 @@ public class BoardController {
 	
 	// 공지사항 리스트페이지 검색바 (사용자)
 	@RequestMapping("noticeSearch.bo")
-	public ModelAndView selectSearchList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+	public ModelAndView noticeSearchList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage,
 										 String condition, String keyword) {
 		
 		HashMap<String, String> map = new HashMap<>();
@@ -87,13 +87,51 @@ public class BoardController {
 		return "board/noticeEnrollForm";
 	}
 	
+	
+	// -------------------- 사내게시판 영역 --------------------------
 	// 사내게시판 리스트 페이지(사용자)
 	@RequestMapping("boardList.bo")
-	public String selectBoardList() {
+	public String selectBoardList(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		
+		int listCount = bService.boardListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Board> list = bService.selectBoardList(pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
+		
 		return "board/boardListView";
 	}
 	
-	// 공지사항 작성하기 페이지(사용자)
+	
+	// 사내게시판 리스트페이지 검색바 (사용자)
+	@RequestMapping("boardSearch.bo")
+	public ModelAndView boardSearchList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+										 String condition, String keyword) {
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		
+		int listCount = bService.boardSearchListCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Board> list = bService.boardSearchList(pi, map);
+		
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("condition", condition)
+		  .addObject("keyword", keyword)
+		  .setViewName("board/boardListView");
+		
+		return mv;
+		
+	}
+	
+	
+	// 사내게시판 작성하기 페이지(사용자)
 	@RequestMapping("boardEnrollForm.bo")
 	public String boardEnrollForm() {
 		return "board/boardEnrollForm";

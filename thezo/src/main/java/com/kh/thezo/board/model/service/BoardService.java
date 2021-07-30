@@ -19,4 +19,16 @@ public interface BoardService {
 		// 3. 사용자 : 공지사항 상세조회용
 		int increaseNoticeCount(int boardNo);
 		Board selectNotice(int boardNo);
+		
+		
+		// --------------- 사내게시판 영역 --------------------
+
+		// 1. 사용자 : 사내게시판 리스트 페이지 조회용
+		int boardListCount();
+		ArrayList<Board> selectBoardList(PageInfo pi);
+		
+		// 2. 사용자 : 사내게시판 검색바 리스트 페이지 조회용
+		public int boardSearchListCount(HashMap<String, String> map);
+		public ArrayList<Board> boardSearchList(PageInfo pi, HashMap<String, String> map);
+		
 }

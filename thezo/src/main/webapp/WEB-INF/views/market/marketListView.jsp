@@ -104,6 +104,14 @@
             <br>
         </div>
         
+        <script>
+        	$(function(){
+        		$(".thumbnail").click(function(){
+        			location.href="marketDetail.bo?mkno=" + $(this).children().eq(0).val();
+        		})
+        	})
+        </script>
+        
         
         <div  align="center"> 
             <br>

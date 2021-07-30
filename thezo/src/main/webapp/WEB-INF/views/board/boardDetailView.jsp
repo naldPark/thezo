@@ -47,25 +47,36 @@ table {
 				<br>
 				<table id="contentArea" align="center" class="table">
 					<tr>
-						<th style="font-size: 20px;">회사가 너무 좋다</th>
+						<th style="font-size: 20px;">${ b.boardTitle }</th>
 					</tr>
 					<tr align="left" style="font-size: 13px;">
 						<td>
-							작성자&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;user01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							작성일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;2021-08-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							조회수&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;10</td>
+							작성자&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;${ b.boardWriter }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							작성일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;${ b.boardDate }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							조회수&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;${ b.count }</td>
 					</tr>
 					<tr>
 						<td>
 							<p style="height: 400px; font-size: 17px;">
-								<!--만약 이미지 파일이 있을 때 첨부파일이 보이도록-->
-								<img src="" width="200" height="200"><br> 주 7일제
-								찬성입니다~~~~
+								${ b.boardContent }
 							</p>
 						</td>
 					</tr>
 					<tr>
-						<td>첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="" download="">파일명.jpg</a></td>
+						<c:choose>
+                    		<c:when test="${ empty b.originName }">
+                    			<td>
+                    				<img src="resources/images/clip.png" width="20" height="20">
+                    				첨부파일이 없습니다.
+                    			</td>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<td>
+                    				<img src="resources/images/cilp.png" width="20" height="20">
+                    				첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="${ b.changeName }" download="${ b.originName }">${ b.originName }</a>
+                    			</td>
+                    		</c:otherwise>	
+                    	</c:choose>
 					</tr>
 				</table>
 	

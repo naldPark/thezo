@@ -31,4 +31,9 @@ public interface BoardService {
 		public int boardSearchListCount(HashMap<String, String> map);
 		public ArrayList<Board> boardSearchList(PageInfo pi, HashMap<String, String> map);
 		
+		// 3. 사용자 : 사내게시판 상세조회용
+		int increaseBoardCount(int boardNo);
+		Board selectBoard(int boardNo);
+				
+		
 }

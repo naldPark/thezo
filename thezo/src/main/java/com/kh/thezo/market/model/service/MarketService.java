@@ -16,5 +16,7 @@ public interface MarketService {
 	public int marketSearchListCount(HashMap<String, String> map);
 	public ArrayList<Market> marketSearchList(PageInfo pi, HashMap<String, String> map);
 			
-
+	// 3. 사용자 : 벼룩시장 상세조회용
+	int increaseMarketCount(int marketNo);
+	Market selectMarket(int marketNo);
 }

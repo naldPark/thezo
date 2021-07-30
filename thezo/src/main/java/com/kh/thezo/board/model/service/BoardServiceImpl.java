@@ -82,5 +82,17 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.boardSearchList(sqlSession, pi, map);
 	}
 
+	// 사용자 : 사내게시판 상세 조회용(조회수)
+	@Override
+	public int increaseBoardCount(int boardNo) {
+		return bDao.increaseBoardCount(sqlSession, boardNo);
+	}
+
+	// 사용자 : 사내게시판 상세 조회
+	@Override
+	public Board selectBoard(int boardNo) {
+		return bDao.selectBoard(sqlSession, boardNo);
+	}
+
 	
 }

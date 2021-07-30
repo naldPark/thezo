@@ -94,6 +94,16 @@
                     </c:forEach>
 	           </tbody>
 	      </table>
+	      
+	      <script>
+            	$(function(){
+            		$("#boardList>tbody>tr").click(function(){
+            			location.href="boardDetail.bo?bno=" + $(this).children(".bno").text();
+            		})
+            	})
+           </script>
+	      
+	      
 	      <br><br>
 	      <!-- 권한자만 볼 수 있게 -->
 	      <a class="btn btn-secondary" style="float:right" href="boardEnrollForm.bo">글쓰기</a>&nbsp;&nbsp;

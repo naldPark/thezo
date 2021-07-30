@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.market.model.service.MarketService;
@@ -63,6 +62,25 @@ public class MarketController {
 		return mv;
 		
 	}
+	
+	// 벼룩시장 상세조회(사용자)
+	@RequestMapping("marketDetail.bo")
+	public ModelAndView marketDetail(int mkno, ModelAndView mv) {
+		int result = mkService.increaseMarketCount(mkno);
+			
+		if(result>0) { 
+			Market mk = mkService.selectMarket(mkno); 
+			mv.addObject("mk", mk).setViewName("market/marketDetailView");
+				
+		}else {
+			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
+		}
+			
+		return mv;
+	}
+	
+	
+	
 	
 	// 벼룩시장 등록하기
 	@RequestMapping("marketEnrollForm.bo")

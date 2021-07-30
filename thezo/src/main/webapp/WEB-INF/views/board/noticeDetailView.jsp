@@ -48,8 +48,20 @@
                         </td>
                     </tr>
                     <tr>
-                        <!-- 위 방법처럼할지 고민해보기-->
-                        <td>첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="" download="">파일명.jpg</a></td>
+                    	<c:choose>
+                    		<c:when test="${ empty b.originName }">
+                    			<td>
+                    				<img src="resources/images/clip.png" width="20" height="20">
+                    				첨부파일이 없습니다.
+                    			</td>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<td>
+                    				<img src="resources/images/cilp.png" width="20" height="20">
+                    				첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="${ b.changeName }" download="${ b.originName }">${ b.originName }</a>
+                    			</td>
+                    		</c:otherwise>	
+                    	</c:choose>
                     </tr>
                 </table>
                 <br>

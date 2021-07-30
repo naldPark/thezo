@@ -79,6 +79,15 @@ public class BoardDao {
 		return (ArrayList)sqlSession.selectList("boardMapper.boardSearchList", map, rowBounds);
 	}
 	
+	// 사용자 : 사내게시판 상세 조회용(조회수)
+	public int increaseBoardCount(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("boardMapper.increaseBoardCount", boardNo);
+	}
+		
+	// 사용자 : 사내게시판 상세 조회
+	public Board selectBoard(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.selectOne("boardMapper.selectBoard", boardNo);
+	}
 	
 	
 }

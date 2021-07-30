@@ -14,6 +14,9 @@
 		<result column="productImg" property="productImg"/>
 		<result column="p_like" property="productLike"/>
 		<result column="count" property="count"/>
+		<result column="origin_name" property="originName"/>
+		<result column="change_name" property="changeName"/>
+		
 	</resultMap>
 
 
@@ -85,4 +88,37 @@
 			  order
 			     by market_no desc 
 	</select>
+	
+	
+		
+	<!-- 사용자 : 벼룩시장 게시글 조회수 증가 -->
+	<update id="increaseMarketCount">
+		update
+		       market
+		   set count = count+1
+		 where market_no = #{marketNo}
+		   and status = 'Y'     
+	</update>
+
+	<!-- 사용자 : 벼룩시장 상세 조회 -->
+	<select id="selectMarket" resultMap="marketResult">
+		select
+			   market_no
+		     , market_title
+		     , market_writer
+		     , market_content
+		     , to_char(market_date, 'YYYY-MM-DD') as market_date
+		     , market_section
+             , price
+             , p_img as productImg
+             , p_like
+             , count
+		     , origin_name
+			 , change_name
+ 		  from market mk
+          left outer join board_file on(market_no = ref_bno)
+		 where market_no = #{marketNo}
+           and mk.status = 'Y'
+	</select>
+	
 </mapper>

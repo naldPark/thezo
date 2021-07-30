@@ -43,5 +43,18 @@ public class MarketServiceImpl implements MarketService {
 	public ArrayList<Market> marketSearchList(PageInfo pi, HashMap<String, String> map) {
 		return mkDao.marketSearchList(sqlSession, pi, map);
 	}
+	
+	// 사용자 : 벼룩시장 상세 조회용(조회수)
+	@Override
+	public int increaseMarketCount(int marketNo) {
+		return mkDao.increaseMarketCount(sqlSession, marketNo);
+	}
+
+	// 사용자 : 벼룩시장 상세 조회
+	@Override
+	public Market selectMarket(int marketNo) {
+		return mkDao.selectMarket(sqlSession, marketNo);
+	}
+	
 
 }

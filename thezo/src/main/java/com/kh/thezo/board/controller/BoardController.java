@@ -129,6 +129,22 @@ public class BoardController {
 		
 	}
 	
+	// 사내게시판 상세조회(사용자)
+	@RequestMapping("boardDetail.bo")
+	public ModelAndView boardDetail(int bno, ModelAndView mv) {
+		int result = bService.increaseBoardCount(bno);
+		
+		if(result>0) { 
+			Board b = bService.selectBoard(bno); 
+			mv.addObject("b", b).setViewName("board/boardDetailView");
+			
+		}else {
+			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
+	
 	
 	// 사내게시판 작성하기 페이지(사용자)
 	@RequestMapping("boardEnrollForm.bo")

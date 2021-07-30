@@ -79,11 +79,12 @@
 				<div class="thumbnail" align="center">
 		        	<input type="hidden" value="${ m.marketNo }">
 	                <br>
-		            <img src="${ m.productImg }" width="200" height="150">
+		            <img src="${ m.productImg }" width="200" height="180">
+		            <br><br>
 		            <p>
 		            	<b>${ m.marketTitle }</b><br>
 	                       ${ m.price } 원<br>
-	                       ${ m.marketSection }<br>
+	                       <label style="color: #0091FF;">${ m.marketSection }</label><br>
 		            </p>
 	                <p align="left">
 	                	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${ m.marketWriter }<br>

@@ -27,11 +27,13 @@ public class MarketController {
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 6);
 		ArrayList<Market> list = mkService.selectMarketList(pi);
+		System.out.println(list);
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
 		
 		return "market/marketListView";
+		
 	}
 	
 	// 벼룩시장 등록하기

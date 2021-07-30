@@ -4,13 +4,15 @@
 
 	<resultMap id="marketResult" type="Market">
 		<result column="market_no" property="marketNo"/>
-		<result column="market_title" property="marketTitle"/>
+		<result column="market_no" property="memNo"/>
 		<result column="market_writer" property="marketWriter"/>
+		<result column="market_title" property="marketTitle"/>
+		<result column="market_content" property="marketContent"/>
 		<result column="market_date" property="marketDate"/> 
 		<result column="market_section" property="marketSection"/>
 		<result column="price" property="price"/>
 		<result column="productImg" property="productImg"/>
-		<result column="p_like" property="productImg"/>
+		<result column="p_like" property="productLike"/>
 		<result column="count" property="count"/>
 	</resultMap>
 

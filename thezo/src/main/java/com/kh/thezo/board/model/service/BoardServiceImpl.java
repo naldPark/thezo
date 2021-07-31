@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.thezo.board.model.dao.BoardDao;
 import com.kh.thezo.board.model.vo.Board;
+import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 
 @Service
@@ -56,6 +57,13 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.selectNotice(sqlSession, boardNo);
 	}
 	
+	// 사용자 : 공지사항 등록 
+	@Override
+	public int insertNotice(Board b) {
+		return bDao.insertNotice(sqlSession, b);
+	}
+
+	
 	// --------------- 사내게시판 영역 --------------------
 	
 	// 사용자 : 사내게시판 글 갯수 조회
@@ -92,6 +100,21 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public Board selectBoard(int boardNo) {
 		return bDao.selectBoard(sqlSession, boardNo);
+	}
+	
+	
+	// ----------------------- 관리자 영역 ---------------------------
+	
+	// 신고관리 : 신고글 갯수 조회
+	@Override
+	public int reportListCount() {
+		return bDao.reportListCount(sqlSession);
+	}
+
+	// 신고관리  : 신고글 리스트 조회 
+	@Override
+	public ArrayList<Report> selectReportList(PageInfo pi) {
+		return bDao.selectReportList(sqlSession, pi);
 	}
 
 	

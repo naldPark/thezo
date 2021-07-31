@@ -97,56 +97,45 @@ table tbody {
 					</tr>
 				</thead>
 				<tbody>
-					<tr data-toggle="collapse" data-target="#detail">
-						<td scope="row"><input type="checkbox" name="check"></td>
-						<td class="c">5</td>
-						<td class="c">사내게시판</td>
-						<td class="c">게시글</td>
-						<td class="c">욕설/비방</td>
-						<td class="c">user03</td>
-						<td class="c">2020-08-10</td>
-						<td class="c">대기</td>
-					</tr>
-					<tr data-toggle="collapse" data-target="#detail">
-						<td scope="row"><input type="checkbox" name="check"></td>
-						<td>4</td>
-						<td>벼룩시장</td>
-						<td>댓글</td>
-						<td>욕설/비방</td>
-						<td>user03</td>
-						<td>2020-08-10</td>
-						<td>대기</td>
-					</tr>
-					<tr data-toggle="collapse" data-target="#detail">
-						<td scope="row"><input type="checkbox" name="check"></td>
-						<td>3</td>
-						<td>사내게시판</td>
-						<td>게시글</td>
-						<td>욕설/비방</td>
-						<td>user03</td>
-						<td>2020-08-10</td>
-						<td>완료</td>
-					</tr>
-					<tr data-toggle="collapse" data-target="#detail">
-						<td scope="row"><input type="checkbox" name="check"></td>
-						<td>2</td>
-						<td>사내게시판</td>
-						<td>게시글</td>
-						<td>욕설/비방</td>
-						<td>user03</td>
-						<td>2020-08-10</td>
-						<td>반려</td>
-					</tr>
-					<tr data-toggle="collapse" data-target="#detail">
-						<td scope="row"><input type="checkbox" name="check"></td>
-						<td>1</td>
-						<td>사내게시판</td>
-						<td>게시글</td>
-						<td>욕설/비방</td>
-						<td>user03</td>
-						<td>2020-08-10</td>
-						<td>완료</td>
-					</tr>
+					<c:forEach var="rp" items="${ list }">
+						<tr>
+		                   <td scope="row"><input type="checkbox" name="check"></td>
+							<td class="c">${ rp.rpCode }</td>
+							<td class="c">
+								<c:choose>
+									<c:when test="${ rp.boardType eq 1}">
+										사내게시판
+									</c:when>
+									<c:otherwise>
+										벼룩시장
+									</c:otherwise>
+								</c:choose>
+							</td>
+							<td class="c">
+								<c:choose>
+										<c:when test="${ rp.rpType eq 1}">
+											게시글
+										</c:when>
+										<c:otherwise>
+											댓글
+									</c:otherwise>
+								</c:choose>	
+							</td>
+							<td class="c">${ rp.rpSection }</td>
+							<td class="c">${ rp.rpId }</td>
+							<td class="c">${ rp.rpDate }</td>
+							<td class="c">
+								<c:choose>
+										<c:when test="${ rp.status eq 'Y'}">
+											완료
+										</c:when>
+										<c:otherwise>
+											대기
+									</c:otherwise>
+								</c:choose>	
+							</td>
+						</tr>	
+                    </c:forEach>
 				</tbody>
 			</table>
 			<br> <br>

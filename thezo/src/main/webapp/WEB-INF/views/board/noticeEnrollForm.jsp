@@ -46,8 +46,8 @@
           		  // 추가한 글꼴
           		fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋음체','바탕체'],
           		 // 추가한 폰트사이즈
-          		fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72']
-          	
+          		fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
+          		
             });
           });
   })( jQuery );
@@ -74,7 +74,7 @@
 			</h2>
 			<br> <br>
 
-			<form id="enrollForm" method="post" action="" enctype="">
+			<form id="enrollForm" method="post" action="noticeInsert.bo" enctype="multipart/form-data">
 				<table align="center">
 					<tr>
 						<th><label for="title">제목</label></th>
@@ -84,13 +84,15 @@
 					<tr>
 						<!--에디터 api 적용하자-->
 						<th><label for="content">내용</label></th>
-						<th><textarea class="form-control" name="summernote"
-								id="summernote"></textarea></th>
+						<th>
+							<textarea class="form-control" name="summernote" id="summernote"></textarea><br>
+						</th>
 					</tr>
 					<tr>
 						<th><label for="upfile">첨부파일</label></th>
-						<td><input type="file" id="upfile"
-							class="form-control-file border" name=""></td>
+						<td>
+							<input type="file" id="upfile" class="form-control-file border" name="upfile">
+						</td>
 					</tr>
 				</table>
 			

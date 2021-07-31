@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.thezo.board.model.vo.Board;
+import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 
 public interface BoardService {
@@ -20,6 +21,8 @@ public interface BoardService {
 		int increaseNoticeCount(int boardNo);
 		Board selectNotice(int boardNo);
 		
+		// 4. 사용자 : 공지사항 등록용
+		int insertNotice(Board b);
 		
 		// --------------- 사내게시판 영역 --------------------
 
@@ -35,5 +38,12 @@ public interface BoardService {
 		int increaseBoardCount(int boardNo);
 		Board selectBoard(int boardNo);
 				
+		
+		
+		// -------------------------관리자영역 ------------------------------
+
+		// 1. 신고관리 : 신고관리 리스트 페이지 조회용
+		int reportListCount();
+		ArrayList<Report> selectReportList(PageInfo pi);
 		
 }

@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.thezo.board.model.vo.Board;
+import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 
 @Repository
@@ -50,6 +51,12 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectNotice", boardNo);
 	}
 	
+	// 사용자 : 공지사항 등록 
+	public int insertNotice(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.insert("boardMapper.insertNotice", b);
+	}
+	
+	
 	
 	// ------------------------  사내게시판 영역  ----------------------------
 	
@@ -87,6 +94,23 @@ public class BoardDao {
 	// 사용자 : 사내게시판 상세 조회
 	public Board selectBoard(SqlSessionTemplate sqlSession, int boardNo) {
 		return sqlSession.selectOne("boardMapper.selectBoard", boardNo);
+	}
+	
+	
+	
+	// ----------------------- 관리자 영역 ---------------------------
+	
+	// 신고관리 : 신고글 갯수 조회
+	public int reportListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("boardMapper.reportListCount");
+	}
+	
+	// 신고관리  : 신고글 리스트 조회 
+	public ArrayList<Report> selectReportList(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset =(pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.selectReportList", null , rowBounds );
 	}
 	
 	

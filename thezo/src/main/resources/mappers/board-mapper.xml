@@ -13,6 +13,16 @@
 		<result column="change_name" property="changeName"/>
 	</resultMap>
 	
+	<resultMap id="reportResult" type="Report">
+		<result column="rp_code" property="rpCode"/>
+		<result column="rp_id" property="rpId"/>
+		<result column="rp_date" property="rpDate"/>
+		<result column="board_type" property="boardType"/>
+		<result column="rp_type" property="rpType"/> 
+		<result column="rp_section" property="rpSection"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	
 
 	<!-- 사용자 : 공지사항 글 총 갯수  -->
 	<select id="noticeListCount" resultType="_int">
@@ -112,6 +122,12 @@
 		   and board_type = 1
            and b.status = 'Y'   
 	</select>
+	
+	<!-- 사용자 : 공지사항 등록 -->
+	<insert id="insertNotice">
+	
+	</insert>
+	
 	
 	
 	
@@ -219,5 +235,32 @@
 	</select>
 	
 
+
+	<!-- 관리자 영역 -->
+		
+	
+	<!-- 사용자 : 사내게시판 글 총 갯수  -->
+	<select id="reportListCount" resultType="_int">
+		select 
+		       count(*)
+		  from report 
+	</select>
+
+	<!-- 사용자 : 사내게시판 리스트 조회 -->
+	<select id="selectReportList" resultMap="reportResult">
+		select
+		       rp_code
+		     , rp_id
+             , to_char(rp_date, 'YYYY-MM-DD') as rp_date
+             , board_type
+             , rp_type
+             , rp_section
+             , status
+		  from report
+		 order 
+		    by rp_code desc      
+	</select>
+	
+	
 
 </mapper>

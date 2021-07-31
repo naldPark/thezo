@@ -122,7 +122,7 @@
 		                    			<li class="page-item"><a class="page-link" href="boardList.bo?currentPage=${ pi.currentPage-1 }">Previous</a></li>
 		                    		</c:when>
 		                    		<c:otherwise>
-		                    			<li class="page-item"><a class="page-link" href="noticeSearch.bo?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
+		                    			<li class="page-item"><a class="page-link" href="boardSearch.bo?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
 		                    		</c:otherwise>
 		                    	</c:choose>		
 	                    	</c:otherwise>
@@ -135,7 +135,7 @@
                     			<li class="page-item"><a class="page-link" href="boardList.bo?currentPage=${ p }">${ p }</a></li>
                     		</c:when>
                     		<c:otherwise>
-                    			<li class="page-item"><a class="page-link" href="noticeSearch.bo?currentPage=${ p }&condition=${condition}&keyword=${keyword}">${ p }</a></li>
+                    			<li class="page-item"><a class="page-link" href="boardSearch.bo?currentPage=${ p }&condition=${condition}&keyword=${keyword}">${ p }</a></li>
                     		</c:otherwise>
                     	</c:choose>
                     </c:forEach>
@@ -150,7 +150,7 @@
 		                    		<li class="page-item"><a class="page-link" href="boardList.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
 		                    	</c:when>
 		                    	<c:otherwise>
-		                    		<li class="page-item"><a class="page-link" href="noticeSearch.bo?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
+		                    		<li class="page-item"><a class="page-link" href="boardSearch.bo?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
 		                    	</c:otherwise>
 		                    </c:choose>		
 		                </c:otherwise>    

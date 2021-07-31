@@ -18,6 +18,7 @@
 		<typeAlias type="com.kh.thezo.approval.model.vo.ApprovalAccept" alias="ApprovalAccept"/> 
 		<typeAlias type="com.kh.thezo.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.kh.thezo.market.model.vo.Market" alias="Market"/>
+		<typeAlias type="com.kh.thezo.board.model.vo.Report" alias="Report"/>
 		<typeAlias type="com.kh.thezo.schedule.model.vo.Schedule" alias="Schedule"/>
 	</typeAliases>
 	

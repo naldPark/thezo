@@ -56,7 +56,7 @@
                     </div><br>
                     <hr>
                     <div class="row justify-content-center">
-                      <c:if test="${a.memNo eq loginUser.memNo }">
+                      <c:if test="${a.memNo eq loginUser.memNo and a.status eq '대기'}">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cancel">회수</button> &nbsp;
                       </c:if>
                       <c:if test="${a.sort eq loginUser.memNo }">

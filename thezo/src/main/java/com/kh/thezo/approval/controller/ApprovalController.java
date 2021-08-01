@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,24 +33,22 @@ public class ApprovalController {
 	@Autowired
 	private ApprovalService aService;
 	
+	
 
 	//전자결재 메인페이지로 관련있는 결재리스트 불러오기
 	@RequestMapping("main.appr")
 	public ModelAndView selectApprovalMain(ModelAndView mv, HttpSession session, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
-		
-		// 일단 member 객체 생성되고 login구현될떄까지 임시로 넣는 값
-//		int memNo = Integer.parseInt(((TestMember) session.getAttribute("loginUser")).getUserId());
-		int memNo = 1;
+
+		Member m = (Member) session.getAttribute("loginUser");
 		
 		// 페이징 확인
 		Approval a = new Approval();
 		a.setStatus("");
-		a.setMemNo(memNo);
+		a.setMemNo(m.getMemNo());
 		int listCount = aService.selectListCount(a);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		ArrayList<Approval> list = aService.selectApprovalMain(memNo, pi);
-//		System.out.println(list);
+		ArrayList<Approval> list = aService.selectApprovalMain(m.getMemNo(), pi);
 		mv.addObject("list", list)
 		  .addObject("pi", pi)
 		  .setViewName("approval/approvalMain");
@@ -73,14 +70,17 @@ public class ApprovalController {
 	
 	// 문서 작성하는 페이지 
 	@RequestMapping("enrollForm.appr")
-	public ModelAndView enrollApproval(ModelAndView mv, int ano) {
+	public ModelAndView enrollApproval(ModelAndView mv, HttpSession session, int ano) {
 		Approval aTemp = new Approval();
-		aTemp.setMemNo(1); aTemp.setDeptNo(3);	aTemp.setFormNo(ano);
-		// 사용자 session 셋팅될떄까지의 임시값
-		
+		Member m = (Member) session.getAttribute("loginUser");
+		aTemp.setMemNo(m.getMemNo()); 
+		aTemp.setDeptNo(m.getDepNo()); 
+		aTemp.setFormNo(ano);
+		System.out.println(aTemp);
 		Approval a = aService.enrollApproval(aTemp);
 		ArrayList<Member> empList = aService.employeeList();
 		ArrayList<ApprovalAccept> cLine = aService.selectformLineList(aTemp);
+		System.out.println(cLine);
 		Member leaveCount = aService.selectLeave(aTemp.getMemNo());
 		
 		mv.addObject("a", a) // 문서 포맷
@@ -120,7 +120,8 @@ public class ApprovalController {
 	@ResponseBody
 	@RequestMapping("insertDocu.appr")
 	public ModelAndView insertApprovalDocument(Approval a,HttpSession session, MultipartFile[] upfile, ModelAndView mv) {
-		a.setMemNo(1);
+		Member m = (Member) session.getAttribute("loginUser");
+		a.setMemNo(m.getMemNo());
 
 		if (!upfile[0].getOriginalFilename().equals("")) {
 			ArrayList<Attachment> list = new ArrayList<>();

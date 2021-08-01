@@ -132,24 +132,27 @@
 	
 	<!-- 특정유저의 특정양식 결재선 커스텀이 없는경우 default값 조회  -->
 	<select id="defaultLine" resultMap="apprAcceptResult">
-		select rownum line_level, b.*
-		    from (
-		        select rownum as temp_no, mem_no, mem_name, EMAIL, dep_no, department, job, rank, '결재' "type"
-		            from (
-		                select rownum as num, a.*
-	                        from (
-	                            select mem_no, mem_name, EMAIL, dep_no, department, job, rank
-	                            from member
-	                            where job is not null
-		                            and resign_date is null
-		                            and dep_no<![CDATA[<]]>=#{deptNo}
-		                            and (dep_no=#{deptNo} or department like'%본부' or department like '%대표%')
-	                            order by (case when department='대표이사' then 2 else 1 end)
-	                                ,dep_no)a
-		               order by num desc)
-		        order by temp_no) b
-			WHERE ROWNUM BETWEEN 1 AND 3
-			order by decode(job,'팀장',1,'본부장',2,'대표이사',3)
+	
+        select rownum as line_level, mem_no, mem_name, EMAIL, dep_no, department, job, rank, '결재' "type"
+         	from (
+       		                select rownum as num, a.*
+                    from (
+                            select mem_no, mem_name, EMAIL, dep_no, department, job, rank,par_dep_class
+                                from member
+                                     join department using(dep_no)
+                                     where dep_no = (select par_dep_class
+                                                     from department
+                                                     where dep_class=#{deptNo})
+                                   or dep_no =  (select par_dep_class
+                                     from department
+                                     where dep_class=(select par_dep_class
+                                                       from department
+                                                        where dep_class=#{deptNo}))
+                                   or dep_no=#{deptNo}
+                                   and job is not null
+                                   order by  decode(rank,'대표이사',1,'상무',2,'부장',3,'과장',4,'대리',5))a
+                   order by num desc)
+        order by line_level
 	</select>
 	
 	<!-- 특정유저의 특정양식 결재선 커스텀 조회 -->

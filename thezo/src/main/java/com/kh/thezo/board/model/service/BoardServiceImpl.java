@@ -116,6 +116,18 @@ public class BoardServiceImpl implements BoardService{
 	public ArrayList<Report> selectReportList(PageInfo pi) {
 		return bDao.selectReportList(sqlSession, pi);
 	}
+	
+	// 신고관리 : 신고글 리스트 검색바 
+	@Override
+	public int reportSearchListCount(HashMap<String, String> map) {
+		return bDao.reportSearchListCount(sqlSession, map);
+	}
+
+	// 신고관리 : 신고글 리스트 검색바
+	@Override
+	public ArrayList<Report> reportSearchList(PageInfo pi, HashMap<String, String> map) {
+		return bDao.reportSearchList(sqlSession, pi, map);
+	}
 
 	
 }

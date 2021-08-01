@@ -46,4 +46,8 @@ public interface BoardService {
 		int reportListCount();
 		ArrayList<Report> selectReportList(PageInfo pi);
 		
+		// 2. 신고관리 : 신고관리 검색바 리스트 페이지 조회용
+		public int reportSearchListCount(HashMap<String, String> map);
+		public ArrayList<Report> reportSearchList(PageInfo pi, HashMap<String, String> map);
+		
 }

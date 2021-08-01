@@ -72,12 +72,29 @@ table tbody {
 					<form id="searchForm" action="" method="Get">
 						<div class="select">
 							<select class="custom-select" name="condition">
-								<option value="writer">대기</option>
-								<option value="title">반려</option>
-								<option value="content">완료</option>
+								<option value="wait">대기</option>
+								<option value="complete">완료</option>
 							</select>
 						</div>
 					</form>
+					
+					<!-- 검색 결과 나오게 하기 ㅜㅜ
+					<!-- sql문도 수정하기  -->
+					<script>
+		            	$(function(){
+		            		if("${condition}" != ""){
+		            			$("option[value=${condition}]").attr("selected", true);
+		            		}
+		            	})
+	            	</script>
+	            	
+	            	<script>
+		            	$(function(){
+		            		$("option[value=${condition}]").click(function(){
+		            			location.href="reportSearch.bo";
+		            		})
+		            	})
+		            </script>
 				</div>
 
 			</div>
@@ -141,16 +158,52 @@ table tbody {
 			<br> <br>
 
 			<div id="pagingArea">
-				<ul class="pagination">
-					<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-					<li class="page-item"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><a class="page-link" href="#">4</a></li>
-					<li class="page-item"><a class="page-link" href="#">5</a></li>
-					<li class="page-item"><a class="page-link" href="#">Next</a></li>
-				</ul>
-			</div>
+                <ul class="pagination">
+                	<c:choose>
+	                		<c:when test="${ pi.currentPage eq 1 }">
+		                   		<li class="page-item disabled"><a class="page-link">Previous</a></li>
+		                    </c:when>
+		                    <c:otherwise>
+		                    	<c:choose>
+		                    		<c:when test="${ empty condition }">
+		                    			<li class="page-item"><a class="page-link" href="boardReport.bo?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+		                    		</c:when>
+		                    		<c:otherwise>
+		                    			<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ pi.currentPage-1 }&condition=${condition}">Previous</a></li>
+		                    		</c:otherwise>
+		                    	</c:choose>		
+	                    	</c:otherwise>
+	                    
+                    </c:choose>
+                    
+                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                    	<c:choose>
+                    		<c:when test="${ empty condition }">
+                    			<li class="page-item"><a class="page-link" href="boardReport.bo?currentPage=${ p }">${ p }</a></li>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ p }&condition=${condition}">${ p }</a></li>
+                    		</c:otherwise>
+                    	</c:choose>
+                    </c:forEach>
+                    
+                    <c:choose>
+                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+		                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+		                </c:when>
+		                <c:otherwise>
+		                    <c:choose>
+		                   		<c:when test="${ empty condition }">
+		                    		<li class="page-item"><a class="page-link" href="boardReport.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ pi.currentPage+1 }&condition=${condition}">Next</a></li>
+		                    	</c:otherwise>
+		                    </c:choose>		
+		                </c:otherwise>    
+		            </c:choose>        
+                </ul>
+            </div>
 
 
 			<div class="collapse multi-collapse m-0 p-0" id="detail"

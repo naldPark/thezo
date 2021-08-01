@@ -113,5 +113,19 @@ public class BoardDao {
 		return (ArrayList)sqlSession.selectList("boardMapper.selectReportList", null , rowBounds );
 	}
 	
+	// 신고관리 : 신고글 리스트 검색바 
+	public int reportSearchListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("boardMapper.reportSearchListCount", map);
+	}
+	
+	// 신고관리 : 신고글 리스트 검색바 
+	public ArrayList<Report> reportSearchList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("boardMapper.reportSearchList", map, rowBounds);
+	}	
+	
+	
 	
 }

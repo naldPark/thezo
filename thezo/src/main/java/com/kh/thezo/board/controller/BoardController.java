@@ -87,7 +87,6 @@ public class BoardController {
 	}
 	
 	
-	
 	// 공지사항 작성하기 페이지 포워딩(사용자)
 	@RequestMapping("noticeEnrollForm.bo")
 	public String noticeEnrollForm() {
@@ -112,38 +111,34 @@ public class BoardController {
 			if(result > 0) { // 성공 => 게시글 리스트 페이지(첫번째 페이지) 
 				session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
 				return "redirect:noticeList.bo";
-			}else { // 실패 => 에러페이지
-				model.addAttribute("errorMsg", "공지사항 등록 실패");
-				return "common/errorPage";
-			}
-			
-			
+		}else { // 실패 => 에러페이지
+			model.addAttribute("errorMsg", "공지사항 등록 실패");
+			return "common/errorPage";
 		}
+					
+	}
 		
-		// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
-		public String saveFile(HttpSession session, MultipartFile upfile) {
-			// 경로
-			String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
+	public String saveFile(HttpSession session, MultipartFile upfile) {
+		// 경로
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
 						
-			// 파일명 수정 : 202107202170130(년월일시분초) + 23152(랜덤값) + .jpg(원본파일확장자) 
-			String originName = upfile.getOriginalFilename();
-			String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // Date : java.util import
-			int ranNum = (int)(Math.random() * 90000 + 10000);
-			String ext = originName.substring(originName.lastIndexOf("."));
+		// 파일명 수정 : 202107202170130(년월일시분초) + 23152(랜덤값) + .jpg(원본파일확장자) 
+		String originName = upfile.getOriginalFilename();
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // Date : java.util import
+		int ranNum = (int)(Math.random() * 90000 + 10000);
+		String ext = originName.substring(originName.lastIndexOf("."));
 						
-			String changeName = currentTime + ranNum + ext;
+		String changeName = currentTime + ranNum + ext;
 						
-			try {
-				upfile.transferTo(new File(savePath + changeName));   // File : java.io import
-			} catch (IllegalStateException | IOException e) {
-				e.printStackTrace();
-			}
-			
-			return changeName;
+		try {
+			upfile.transferTo(new File(savePath + changeName));   // File : java.io import
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
 		}
-		
-		
-		
+			
+		return changeName;
+	}
 		
 	
 	// -------------------- 사내게시판 영역 --------------------------
@@ -229,6 +224,29 @@ public class BoardController {
 		model.addAttribute("list", list);
 		
 		return "board/boardReport";
+	}
+	
+	// 신고관리 리스트페이지 검색바 (관리자)
+	@RequestMapping("reportSearch.bo")
+	public ModelAndView reportSearchList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+										 String condition, String keyword) {
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		
+		int listCount = bService.reportSearchListCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Report> list = bService.reportSearchList(pi, map);
+		
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("condition", condition)
+		  .setViewName("board/boardListView");
+		
+		return mv;
+		
 	}
 	
 }

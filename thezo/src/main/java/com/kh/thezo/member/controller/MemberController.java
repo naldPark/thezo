@@ -34,7 +34,6 @@ public class MemberController {
 	// 담당자가 없는거같아서 제가 그냥 작성했어요(영익)
 	@RequestMapping("login.me")
 	public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
-		System.out.println("m"+m);
 		
 		Member loginUser = mService.loginMember(m);
 		String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());

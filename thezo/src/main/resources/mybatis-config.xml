@@ -20,6 +20,7 @@
 		<typeAlias type="com.kh.thezo.market.model.vo.Market" alias="Market"/>
 		<typeAlias type="com.kh.thezo.board.model.vo.Report" alias="Report"/>
 		<typeAlias type="com.kh.thezo.schedule.model.vo.Schedule" alias="Schedule"/>
+		<typeAlias type="com.kh.thezo.note.model.vo.Note" alias="Note"/>
 	</typeAliases>
 	
 	<mappers>
@@ -35,6 +36,7 @@
 		<mapper resource="/mappers/board-mapper.xml"/>	
 		<mapper resource="/mappers/market-mapper.xml"/>
 		<mapper resource="/mappers/schedule-mapper.xml"/>
+		<mapper resource="/mappers/note-mapper.xml"/>
 	</mappers>
 
 </configuration>

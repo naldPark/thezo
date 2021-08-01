@@ -5,19 +5,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>일정 추가</title>
+<title>업무 보고 등록</title>
 </head>
 <body>
-	<form action="insert.sc" method="post">
+	<form action="insert.bizRep" method="post">
 		<!-- The Modal -->
 		<input type="hidden" name="scWriter" value="${ loginUser.userId }"> <!-- 현재 로그인한 유저 아이디 전달 -->
-		<div class="modal" id="insertSc">
+		<div class="modal" id="insertBizRep">
 		  <div class="modal-dialog modal-lg">
 		    <div class="modal-content">
 		
 		      <!-- Modal Header -->
 		      <div class="modal-header">
-		        <h4 class="modal-title">일정 추가</h4>
+		        <h4 class="modal-title">업무 보고 하기</h4>
 		        <button type="button" class="close" data-dismiss="modal">&times;</button>
 		      </div>
 		
@@ -25,9 +25,9 @@
 		      <div class="modal-body">
 			    <table align="center">
 			        <tr>
-			            <th width="120px">일정 제목</th>
+			            <th width="120px">제목</th>
 			            <td colspan="2">
-			            	<input type="text" name="title" style="width: 350px;" placeholder="일정 제목을 입력해주세요">
+			            	<input type="text" name="reportTitle" style="width: 350px;" placeholder="제목을 입력해주세요">
 			            	<select name="scType" id="scType">
 			                    <option value="개인">개인</option>
 			                    <option value="부서">부서</option>

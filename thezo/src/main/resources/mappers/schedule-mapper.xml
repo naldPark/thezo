@@ -12,11 +12,17 @@
 		<result column="sc_end" property="end"/>
 		<result column="allday" property="allday"/>
 		<result column="status" property="status"/>
+		<result column="report_title" property="reportTitle"/>
+		<result column="report_writer" property="reportWriter"/>
+		<result column="report_content" property="reportContent"/>
+		<result column="origin_name" property="originName"/>
+		<result column="change_name" property="changeName"/>
+		<result column="create_date" property="createDate"/>
 	</resultMap>
 	
 	<select id="selectScheduleList" resultMap="scheduleResult">
-		select
-			   sc_no
+		select 
+		       sc_no
 		     , sc_writer
 		     , sc_title
 		     , sc_content
@@ -24,9 +30,16 @@
 		     , sc_start
 		     , sc_end
 		     , allday
-		     , status
-		  from schedule
-		 where status = 'Y'
+		     , s.status
+		     , report_title
+		     , report_writer
+		     , report_content
+		     , origin_name
+		     , change_name
+		     , create_date
+		  from schedule s
+		  left join biz_report using (sc_no)
+		 where s.status = 'Y'
 	</select>
 	
 	<select id="selectScheduleData" resultMap="scheduleResult">
@@ -64,6 +77,5 @@
 		 , #{allday}
 		 , 'Y'
 		 )
-		  
 	</insert>
 </mapper>

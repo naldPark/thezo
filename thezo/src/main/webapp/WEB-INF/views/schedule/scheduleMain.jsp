@@ -16,7 +16,6 @@
     <section>
     
 	    <div class="outer">
-	    	<button data-toggle="modal" data-target="#detailSc">상세정보</button>
 			<%-- -- 일정관리 네비바 ------------------------------%>
             <jsp:include page="scheduleMenubar.jsp"/>			
 	    	

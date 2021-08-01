@@ -24,24 +24,24 @@
               <div class="card border-0" style=" width:80%">
                 <div class="card-body">
                   <form action="insertDocu.appr" method="post" enctype="Multipart/form-data" id="form">
-                    <h3 style="margin-bottom: 25px;">시말서</h3>
+                    <h3 style="margin-bottom: 25px;">${a.formName}</h3>
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text bg-white border-0">제목</span>
                       </div>
-                      <span class="input-group-text bg-white border-0">제목입니다</span>
+                      <span class="input-group-text bg-white border-0">${a.docName}</span>
                     </div>
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text bg-white border-0">참조자</span>
                       </div>
-                      <span class="input-group-text bg-white border-0">참조자입니다</span>
+                      <span class="input-group-text bg-white border-0">${a.refMemNo}</span>
                     </div>
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text bg-white border-0">파일첨부</span>
                       </div>
-                      <span class="input-group-text bg-white border-0">첨부파일</span>
+                      <span class="input-group-text bg-white border-0">${a.at}</span>
                       <div class="drop-zone" style="text-align: center; font-size: 15pt;">
                         <br>
                         
@@ -51,66 +51,43 @@
                     <div class="form-group">
                         <hr>
                         <div style="min-height:500px; padding:20px">
-                          <p class="a" align="center" style="text-align: center; word-break: keep-all;"><span style="font-weight: bolder;"><span style="font-size: 20pt; line-height: 32.8px; font-family: &quot;맑은 고딕&quot;;">시<span lang="EN-US">&nbsp;&nbsp;&nbsp;</span>말<span lang="EN-US">&nbsp;&nbsp;&nbsp;</span>서</span></span><span style="font-weight: bolder;"><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;"><o:p></o:p></span></span></p><p class="a"><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">&nbsp;</span></p><p class="a"><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">&nbsp;&nbsp;</span><span style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">위 본인은 직원으로서 제 사규를 준수하고 맡은바 책임과 의무를 다하여 성실히 복무하여야 함에도 불구하고 아래와 같이 회사의 관련 규정을 위반하였는바 이에 시말서를 제출하고 그에 따른 처벌을 감수하며 차후 본건을 계기로 과오의 재발이 없을 것임을 서약합니다<span lang="EN-US">.<o:p></o:p></span></span></p><p class="a"><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">&nbsp;</span></p><p class="a"><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">&nbsp;</span></p><p class="a"><span style="font-weight: bolder;"><u><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">&nbsp;</span></u></span><span style="font-weight: bolder;"><u><span style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">내 용&nbsp;</span></u></span><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">(</span><span style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">상세히 기술요함<span lang="EN-US">)<o:p></o:p></span></span></p><p class="a"><br></p><p class="a"><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">&nbsp;</span></p><p class="a"><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">&nbsp;</span></p><p class="a"><span lang="EN-US" style="font-size: 1pt; line-height: 12.3px; font-family: &quot;맑은 고딕&quot;;">&nbsp;</span></p><p class="a"><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">&nbsp;</span><span style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">상기 기록사실에 허위가 없습니다<span lang="EN-US">.<o:p></o:p></span></span></p><p class="a"><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">&nbsp;</span></p><p class="a" align="center" style="text-align: center; word-break: keep-all;"><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">&nbsp; 20OO&nbsp;</span><span style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">년<span lang="EN-US">&nbsp;&nbsp; O&nbsp;</span>월<span lang="EN-US">&nbsp;&nbsp; O&nbsp;</span>일<span lang="EN-US"><o:p></o:p></span></span></p><p class="a"><span lang="EN-US" style="font-size: 11pt; line-height: 18.04px; font-family: &quot;맑은 고딕&quot;;">&nbsp; &nbsp; &nbsp;&nbsp;</span></p><p class="a" align="center" style="text-align: center; word-break: keep-all;"></p><p class="a" align="center" style="text-align: center; word-break: keep-all;"><span style="font-weight: bolder;"><span style="font-size: 13pt; line-height: 21.32px; font-family: &quot;맑은 고딕&quot;;">주식회사<span lang="EN-US">&nbsp;더조&nbsp;</span></span></span><span style="font-weight: bolder;"><span style="font-size: 13pt; line-height: 21.32px; font-family: 맑은 고딕;">대표이사 귀하</span></span></p>
-                        
+                          ${a.content}
                         </div>
                     </div><br>
                     <hr>
                     <div class="row justify-content-center">
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cancel">회수</button> &nbsp;
-                      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#accept">승인</button> &nbsp;
-                      <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#denied">반려</button> &nbsp;
+                      <c:if test="${a.memNo eq loginUser.memNo }">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#cancel">회수</button> &nbsp;
+                      </c:if>
+                      <c:if test="${a.sort eq loginUser.memNo }">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#accept">승인</button> &nbsp;
+                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#denied">반려</button> &nbsp;
+                      </c:if>
                     </div>
 
                   </form>
                 </div>
               </div>
               <!--오른쪽 결재선 시작-->
-              <div class="card row  border-1" style="margin-bottom: 5rem; width:21%">
-                <div class="card-body">
-                  <div class="container p-3 my-3 bg-dark text-white">
-                    결재선
-                  </div>
-                  <div class="mb-2 p-2 shadow-sm">
-                    <div class="d-flex justify-content-around">
-                      <div class="p-2 text-primary"><b>이성경</b></div>
-                      <div class="p-2"> </div>
-                      <div class="p-2"><span class="btn-sm btn-secondary">결재완료</span></div>
+              <div class="card row  border-0" style="margin-bottom: 5rem; width:21%">
+                <h5 style="float:left;">결재선</h5>
+                <div class="card-body" id="selectedLine">
+                  
+                  <c:forEach var="c" items="${ aLine }">
+                    <div class="mb-2 p-2 shadow-sm">
+                      <div class="d-flex">
+                        <div class="p-2 text-primary"><b>${c.memName} ${c.job}</b></div>
+                      </div>
+                      <div class="d-flex flex-row mb-3">
+                        <div class="pl-2" style="width:60%">${c.department} </div>
+                        <div>
+                          <span class="btn-sm btn-secondary">
+                            ${c.status} 
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div class="d-flex flex-row mb-3">
-                      <span class="pl-3">인사팀 팀장</span>
-                    </div>
-                  </div>
-                  <div class="mb-2 p-2 shadow-sm">
-                    <div class="d-flex justify-content-around">
-                      <div class="p-2 text-primary"><b>이성경</b></div>
-                      <div class="p-2"> </div>
-                      <div class="p-2"><span class="btn-sm btn-secondary">결재대기</span></div>
-                    </div>
-                    <div class="d-flex flex-row mb-3">
-                      <span class="pl-3">인사팀 팀장</span>
-                    </div>
-                  </div>
-                  <div class="mb-2 p-2 shadow-sm">
-                    <div class="d-flex justify-content-around">
-                      <div class="p-2 text-primary"><b>이성경</b></div>
-                      <div class="p-2"> </div>
-                      <div class="p-2"><span class="btn-sm btn-secondary">합의대기</span></div>
-                    </div>
-                    <div class="d-flex flex-row mb-3">
-                      <span class="pl-3">인사팀 팀장</span>
-                    </div>
-                  </div>
-                  <div class="mb-2 p-2 shadow-sm">
-                    <div class="d-flex justify-content-around">
-                      <div class="p-2 text-primary"><b>이성경</b></div>
-                      <div class="p-2"> </div>
-                      <div class="p-2"><span class="btn-sm btn-secondary">합의대기</span></div>
-                    </div>
-                    <div class="d-flex flex-row mb-3">
-                      <span class="pl-3">인사팀 팀장</span>
-                    </div>
-                  </div>
+                  </c:forEach>
                 </div>
               </div>
               <!--오른쪽 결재선 끝-->

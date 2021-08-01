@@ -32,5 +32,14 @@ public interface ApprovalService {
 
 	// 문서 작성하는 페이지의 결재선 불러오기
 	ArrayList<ApprovalAccept> selectformLineList(Approval aTemp);
+	
+	// 연차신청시 잔여연차 조회
+	Member selectLeave(int memNo);
+	
+	// 문서상세페이지 
+	Approval detailApproval(int docNo);
+	
+	// 문서상세페이지 결재선
+	ArrayList<ApprovalAccept> detailApprovalLine(int docNo);
 
 }

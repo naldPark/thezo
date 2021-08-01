@@ -27,7 +27,7 @@ public class ApprovalAccept {
 	private String email;	//이메일
 	private String type;	//유형(결재/합의)
 	private String status;	//결재상태(대기/승인/반려)
-	private String comment;	//결재의견
+	private String memo;	//결재의견
 	private String read;	//읽음여부
 	private Date apprDate;	//결재일
 }

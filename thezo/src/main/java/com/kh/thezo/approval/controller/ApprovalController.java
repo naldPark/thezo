@@ -81,6 +81,7 @@ public class ApprovalController {
 		Approval a = aService.enrollApproval(aTemp);
 		ArrayList<Member> empList = aService.employeeList();
 		ArrayList<ApprovalAccept> cLine = aService.selectformLineList(aTemp);
+		Member leaveCount = aService.selectLeave(aTemp.getMemNo());
 		
 		mv.addObject("a", a) // 문서 포맷
 			.addObject("empList", empList) // 전사원 리스트 
@@ -88,7 +89,8 @@ public class ApprovalController {
 		
 		//연차신청인 경우 다른 페이지로 이동
 		if(a.getFormNo()==5) {
-			mv.setViewName("approval/approvalLeaveForm");
+			mv.addObject("leaveCount", leaveCount) // 연차 잔여갯수 
+			.setViewName("approval/approvalLeaveForm");
 		} else {
 			mv.setViewName("approval/approvalEnrollForm");
 		}
@@ -145,16 +147,14 @@ public class ApprovalController {
 	}
 	
 	
-	
-	@RequestMapping("leaveEnrollForm.appr")
-	public String leaveEnrollApproval() {
-		return "approval/approvalLeaveForm";
-	}
-	
-	
 	@RequestMapping("detailDocu.appr")
-	public String detailApproval() {
-		return "approval/apprDetailDocu";
+	public ModelAndView detailApproval(int docNo, ModelAndView mv) {
+		Approval a = aService.detailApproval(docNo);
+		ArrayList<ApprovalAccept> aLine = aService.detailApprovalLine(docNo);
+		mv.addObject("a", a) // 연차 잔여갯수 
+		.addObject("aLine", aLine) // 연차 잔여갯수 
+		.setViewName("approval/apprDetailDocu");
+		return mv;
 	}
 	
 	

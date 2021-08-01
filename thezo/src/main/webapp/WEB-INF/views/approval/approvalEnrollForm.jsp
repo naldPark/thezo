@@ -91,6 +91,7 @@
                       </div>
                     </div>
                     <div id="referListSpan" class="refer-zone" style="text-align: center; font-size: 15pt;">
+                      <span><input type="hidden" value="-1"></span>
                     </div>
                   </div>
               
@@ -265,18 +266,32 @@
       </script>
       
       <script>
-        $(function(){
-      
-          // 참조inputList
-          $("#referListDiv").on("click", "a", function(){
-            // console.log($(this));
-            var strArray=$(this).text().split(" ");
-            $("<span class='btn-sm btn-light referSpan disabled'><input type='hidden' name='refMemNoAry' value='"+$(this).next().val()+"'>"
-              +strArray[0]+" "+strArray[1]+" <button type='button' class='deleteRefer badge badge-light'> &times;</button></span>").appendTo("#referListSpan");
-            $("#referListInput").nextAll().css("display","none");
-            $("#referListInput").val("");
-      
-            // console.log($(".referSpan").val()+"왜지");
+          $(function(){
+            // 참조inputList
+            $("#referListDiv").on("click", "a", function(){
+                var memNo= $(this).next().val();
+                var strArray=$(this).text().split(" ");
+                var addCheck=0;
+
+                $("#referListSpan input").each(function(index, el){
+                  var match =$("#referListSpan input").eq(index).val();
+                  
+                if(match==memNo&&$("#referListSpan input").length!=2){
+                      addCheck++;
+                }
+                $("#referListInput").nextAll().css("display","none");
+                $("#referListInput").val("");
+                })
+
+                if(addCheck==0){
+                      $("<span class='btn-sm btn-light referSpan disabled'><input type='hidden' name='refMemNoAry' value='"+memNo+"'>"
+                      +strArray[0]+" "+strArray[1]+" <button type='button' class='deleteRefer badge badge-light'> &times;</button></span>").appendTo("#referListSpan");
+                      $("#referListInput").nextAll().css("display","none");
+                      $("#referListInput").val("");
+                      // return false;  
+
+                }
+              
           })
       
           // 수신참조 세팅

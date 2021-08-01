@@ -63,6 +63,21 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return aDao.employeeList(sqlSession);
 	}
 
+	@Override
+	public Member selectLeave(int memNo) {
+		return aDao.selectLeave(sqlSession, memNo);
+	}
+
+	@Override
+	public Approval detailApproval(int docNo) {
+		return aDao.detailApproval(sqlSession, docNo);
+	}
+
+	@Override
+	public ArrayList<ApprovalAccept> detailApprovalLine(int docNo) {
+		return aDao.detailApprovalLine(sqlSession, docNo);
+	}
+
 	
 
 

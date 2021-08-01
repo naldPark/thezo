@@ -11,6 +11,11 @@ import com.kh.thezo.member.model.vo.Member;
 
 @Repository
 public class MemberDao {
+	
+	
+	public Member loginMember(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.loginMember", m);
+	}
 
 	// 회원정보관리(사원등록,수정):관리자 -이성경
 	// 1) 회원 수 조회

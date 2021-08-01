@@ -7,6 +7,7 @@
 		<result column="mem_no" property="memNo"/>
 		<result column="mem_name" property="memName"/>
 		<result column="mem_id" property="memId"/>
+		<result column="mem_Pwd" property="memPwd"/>
 		<result column="gender" property="gender"/>
 		<result column="phone" property="phone"/>
 		<result column="email" property="email"/>
@@ -24,6 +25,38 @@
 		<result column="path" property="path"/> 
 	</resultMap>
 
+
+	<select id="loginMember" resultMap="memberResult">
+
+		select
+		    MEM_NO
+			, MEM_ID
+			, MEM_PWD
+			, MEM_NAME
+			, GENDER
+			, PHONE
+			, EMAIL
+			, BIRTH
+			, ZIP_CODE
+			, ADDRESS
+			, DEP_NO
+			, DEPARTMENT
+			, JOB
+			, RANK
+			, EXTENSION_NO
+			, ENROLL_DATE
+			, RESIGN_DATE
+			, ORIGIN_NAME
+			, PATH
+			, MEM_VAC_DATE
+			, MEM_USED_DATE
+			, MEM_TOTAL_DATE
+			, MESSAGE_FUNC
+			, NOTICE_AUTH
+		  from member
+	 		where status IN ('Y', 'A')
+		   	and mem_id = #{memId}  
+	</select>
 
 	<!--
 		회원정보관리(사원등록,수정):관리자 -이성경

@@ -52,7 +52,7 @@
                 <!-- 안읽은 문서 건수 안내 끝 -->
                 <c:forEach var="a" items="${ list }">
 	                <!-- 문서리스트 -->
-	                <div class="apprList shadow p-4 mb-3 bg-white w3-cell-row" onclick="location.href='detailDocu.appr?ano=${a.docNo}'">
+	                <div class="apprList shadow p-4 mb-3 bg-white w3-cell-row" onclick="location.href='detailDocu.appr?docNo=${a.docNo}'">
 	                    <div class="w3-cell" style="width:10%">
 	                        <h3 class="w3-cell"><i class="fas fa-coins docMenu"></i></h3>
 	                        <span>${ a.category } </span>

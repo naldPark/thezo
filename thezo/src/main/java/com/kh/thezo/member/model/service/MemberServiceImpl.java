@@ -19,6 +19,12 @@ public class MemberServiceImpl implements MemberService {
 	private SqlSessionTemplate sqlSession;
 	
 	
+	// 담당자가 없는거같아서 제가 그냥 작성했어요(영익)
+	@Override
+	public Member loginMember(Member m) {
+		return mDao.loginMember(sqlSession, m);
+	}
+	
 	// 회원정보관리(사원등록,수정):관리자 -이성경
 	// 1) 회원 수 조회
 	@Override

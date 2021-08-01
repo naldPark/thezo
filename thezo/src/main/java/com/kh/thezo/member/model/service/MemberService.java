@@ -7,6 +7,10 @@ import com.kh.thezo.member.model.vo.Member;
 
 public interface MemberService {
 
+
+	// 로그인용 서비스
+	Member loginMember(Member m);
+	
 	// 1. 관리자 : 회원 정보 관리 리스트 페이지 조회용
 	int selectListCount();
 	ArrayList<Member> selectList(PageInfo pi);

@@ -74,9 +74,24 @@ public class ApprovalDao {
 		}
 		if(a.getFormNo()==5) {
 			result = result*sqlSession.insert("approvalMapper.insertLeaveDocu",a);
+			result = result*sqlSession.update("approvalMapper.updateLeaveDocu",a);
 		}
 		return result;
 	}
+	
+	public Member selectLeave(SqlSessionTemplate sqlSession, int memNo) {
+		return sqlSession.selectOne("approvalMapper.selectLeave",memNo);
+	}
+	
+	public Approval detailApproval(SqlSessionTemplate sqlSession, int docNo) {
+		return sqlSession.selectOne("approvalMapper.detailApproval",docNo);
+	}
+	
+
+	public ArrayList<ApprovalAccept> detailApprovalLine(SqlSessionTemplate sqlSession, int docNo) {
+		return (ArrayList)sqlSession.selectList("approvalMapper.detailApprovalLine",docNo);
+	}
+	
 	
 }
 

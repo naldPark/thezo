@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +23,35 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService mService;
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 
 	@RequestMapping("logout.me")
 	public String logoutMember(HttpSession session){
 		session.invalidate();
 		return "redirect:/"; // 메인페이지로 재요청
 	}
+	// 담당자가 없는거같아서 제가 그냥 작성했어요(영익)
+	@RequestMapping("login.me")
+	public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
+		System.out.println("m"+m);
+		
+		Member loginUser = mService.loginMember(m);
+		String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
+		
+		if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) { // 로그인 성공
+			loginUser.setUserId(loginUser.getMemId()); //userId임시로 넣은 jsp오류방지용
+			session.setAttribute("loginUser", loginUser);
+			mv.setViewName("redirect:/");
+		}else {// 로그인 실패
+			mv.addObject("errorMsg", "로그인 실패!");
+			mv.setViewName("common/errorPage");
+		}
+		
+		return mv;		
+		
+	}
+	
 	
 	// 회원정보관리(사원등록,수정):관리자 -이성경
 	// 리스트 조회 페이지

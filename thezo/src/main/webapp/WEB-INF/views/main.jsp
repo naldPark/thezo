@@ -39,7 +39,7 @@
                             <img src="resources/images/person.png" style="height: 70px;">
                         </div>
                         <div class="col-sm-8"  style="height: 45%;">
-                            <h5>강개똥 대리</h5> <h5>인프라보안팀</h5>
+                            <h5>${loginUser.memName} ${loginUser.rank}</h5> <h5>${loginUser.department}</h5>
                             <button type="button" class="btn btn-sm btn-secondary">정보수정</button>
                             <button type="button" class="btn btn-sm btn-secondary">로그아웃</button>                            
                         </div>

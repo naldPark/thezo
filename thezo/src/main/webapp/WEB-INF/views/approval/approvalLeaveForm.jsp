@@ -60,6 +60,7 @@
                       </div>
                     </div>
                     <div id="referListSpan" class="refer-zone" style="text-align: center; font-size: 15pt;">
+                      <span><input type="hidden" value="-1"></span>
                     </div>
                   </div>
         
@@ -76,7 +77,7 @@
                     </div>
                   </div>
         
-                  <div class="input-group mb-3" style="width:30%">
+                  <div class="input-group mb-3">
         
                     <div class="input-group-prepend">
                       <span class="input-group-text" style="background-color: white; border:0px;">휴가분류</span>
@@ -85,6 +86,19 @@
                       <option>연차</option>
                       <option>경조사</option>
                     </select>
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" style="background-color: white; border:0px;">부여연차</span>
+                    </div>
+                    <span class="input-group-text" style="margin-left:5px; width:80px;background-color: white">
+                      <b class="text-primary">${leaveCount.memVacDate}</b>개
+                    </span>        
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" style="background-color: white; border:0px;">잔여연차</span>
+                    </div>
+                    <span class="input-group-text" style="margin-left:5px; width:80px;background-color: white">
+                      <b class="text-primary"> ${leaveCount.memTotalDate}  </b>개
+                      <input type="hidden" value="0">
+                    </span>        
                   </div>
         
                   <div class="input-group mb-3">
@@ -95,7 +109,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" style="background-color: white; border:0px;">종료일자</span>
                     </div>
-                    <input type="date" class="form-control" name="endDate" id="endDate"  max="2021-08-03" style="border:1px solid lightgray;">
+                    <input type="date" class="form-control" name="endDate" id="endDate" style="border:1px solid lightgray;">
                     <div class="input-group-prepend">
                       <span class="input-group-text" style="margin-left:5px; width:130px;">
                         차감연차: &nbsp;
@@ -160,11 +174,22 @@
       <script>
 
       $(function () {
+        //날짜 관련 
+
+//$( 'startDate' ).attr( 'max', '2017-12-25' );
+
+
 
         $("input[type=date],#leaveType").change(function(){
+
           var startDate = new Date($("#startDate").val());
           var endDate = new Date($("#endDate").val());
           var count = 0;
+
+          $('#startDate').attr('max',$("#endDate").val());
+          $('#endDate' ).attr('min',$('#startDate').val());
+          
+
 
           var checkWhile = true;
           if ($("#startDate").val() == "" || $("#endDate").val() == "" || $("#leaveType").val()=="경조사") {
@@ -184,8 +209,18 @@
             }
           }
 
-          $("#countLeave").text(count);
-          $("#leaveCount").val(count);
+          if(count >  ${leaveCount.memTotalDate} ){
+            alert("잔여 연차가 부족합니다");
+            $("#startDate").val("");
+            $("#endDate").val("");
+            $("#countLeave").text(0);
+          } else{
+            $("#countLeave").text(count);
+            $("#leaveCount").val(count);
+
+          }
+
+          
         
         })
       })
@@ -304,17 +339,31 @@
 
       <script>
         $(function(){
-
           // 참조inputList
           $("#referListDiv").on("click", "a", function(){
-            // console.log($(this));
-            var strArray=$(this).text().split(" ");
-            $("<span class='btn-sm btn-light referSpan disabled'><input type='hidden' name='refMemNoAry' value='"+$(this).next().val()+"'>"
-              +strArray[0]+" "+strArray[1]+" <button type='button' class='deleteRefer badge badge-light'> &times;</button></span>").appendTo("#referListSpan");
-            $("#referListInput").nextAll().css("display","none");
-            $("#referListInput").val("");
+              var memNo= $(this).next().val();
+              var strArray=$(this).text().split(" ");
+              var addCheck=0;
 
-            // console.log($(".referSpan").val()+"왜지");
+              $("#referListSpan input").each(function(index, el){
+                var match =$("#referListSpan input").eq(index).val();
+                
+              if(match==memNo&&$("#referListSpan input").length!=1){
+                    addCheck++;
+              }
+              $("#referListInput").nextAll().css("display","none");
+              $("#referListInput").val("");
+              })
+
+              if(addCheck==0){
+                    $("<span class='btn-sm btn-light referSpan disabled'><input type='hidden' name='refMemNoAry' value='"+memNo+"'>"
+                    +strArray[0]+" "+strArray[1]+" <button type='button' class='deleteRefer badge badge-light'> &times;</button></span>").appendTo("#referListSpan");
+                    $("#referListInput").nextAll().css("display","none");
+                    $("#referListInput").val("");
+                    // return false;  
+
+              }
+              
           })
 
           // 수신참조 세팅

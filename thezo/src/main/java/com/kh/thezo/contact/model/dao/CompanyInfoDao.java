@@ -9,7 +9,10 @@ import com.kh.thezo.contact.model.vo.CompanyInfo;
 public class CompanyInfoDao {
 
 	public int insertCompanyInfo(SqlSessionTemplate sqlSession, CompanyInfo ci) {
-		return sqlSession.insert("companyMapper.insertCompany", ci);
+		return sqlSession.update("companyMapper.updateCompany", ci);
 	}
 
+	public CompanyInfo companyInfo(SqlSessionTemplate sqlSession, CompanyInfo ci) {
+		return sqlSession.selectOne("companyMapper.companyInfo", ci);
+	}
 }

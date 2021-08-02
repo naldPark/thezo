@@ -72,12 +72,29 @@ table tbody {
 					<form id="searchForm" action="" method="Get">
 						<div class="select">
 							<select class="custom-select" name="condition">
-								<option value="writer">대기</option>
-								<option value="title">반려</option>
-								<option value="content">완료</option>
+								<option value="wait">대기</option>
+								<option value="complete">완료</option>
 							</select>
 						</div>
 					</form>
+					
+					<!-- 검색 결과 나오게 하기 ㅜㅜ
+					<!-- sql문도 수정하기  -->
+					<script>
+		            	$(function(){
+		            		if("${condition}" != ""){
+		            			$("option[value=${condition}]").attr("selected", true);
+		            		}
+		            	})
+	            	</script>
+	            	
+	            	<script>
+		            	$(function(){
+		            		$("option[value=${condition}]").click(function(){
+		            			location.href="reportSearch.bo";
+		            		})
+		            	})
+		            </script>
 				</div>
 
 			</div>
@@ -97,71 +114,96 @@ table tbody {
 					</tr>
 				</thead>
 				<tbody>
-					<tr data-toggle="collapse" data-target="#detail">
-						<td scope="row"><input type="checkbox" name="check"></td>
-						<td class="c">5</td>
-						<td class="c">사내게시판</td>
-						<td class="c">게시글</td>
-						<td class="c">욕설/비방</td>
-						<td class="c">user03</td>
-						<td class="c">2020-08-10</td>
-						<td class="c">대기</td>
-					</tr>
-					<tr data-toggle="collapse" data-target="#detail">
-						<td scope="row"><input type="checkbox" name="check"></td>
-						<td>4</td>
-						<td>벼룩시장</td>
-						<td>댓글</td>
-						<td>욕설/비방</td>
-						<td>user03</td>
-						<td>2020-08-10</td>
-						<td>대기</td>
-					</tr>
-					<tr data-toggle="collapse" data-target="#detail">
-						<td scope="row"><input type="checkbox" name="check"></td>
-						<td>3</td>
-						<td>사내게시판</td>
-						<td>게시글</td>
-						<td>욕설/비방</td>
-						<td>user03</td>
-						<td>2020-08-10</td>
-						<td>완료</td>
-					</tr>
-					<tr data-toggle="collapse" data-target="#detail">
-						<td scope="row"><input type="checkbox" name="check"></td>
-						<td>2</td>
-						<td>사내게시판</td>
-						<td>게시글</td>
-						<td>욕설/비방</td>
-						<td>user03</td>
-						<td>2020-08-10</td>
-						<td>반려</td>
-					</tr>
-					<tr data-toggle="collapse" data-target="#detail">
-						<td scope="row"><input type="checkbox" name="check"></td>
-						<td>1</td>
-						<td>사내게시판</td>
-						<td>게시글</td>
-						<td>욕설/비방</td>
-						<td>user03</td>
-						<td>2020-08-10</td>
-						<td>완료</td>
-					</tr>
+					<c:forEach var="rp" items="${ list }">
+						<tr>
+		                   <td scope="row"><input type="checkbox" name="check"></td>
+							<td class="c">${ rp.rpCode }</td>
+							<td class="c">
+								<c:choose>
+									<c:when test="${ rp.boardType eq 1}">
+										사내게시판
+									</c:when>
+									<c:otherwise>
+										벼룩시장
+									</c:otherwise>
+								</c:choose>
+							</td>
+							<td class="c">
+								<c:choose>
+										<c:when test="${ rp.rpType eq 1}">
+											게시글
+										</c:when>
+										<c:otherwise>
+											댓글
+									</c:otherwise>
+								</c:choose>	
+							</td>
+							<td class="c">${ rp.rpSection }</td>
+							<td class="c">${ rp.rpId }</td>
+							<td class="c">${ rp.rpDate }</td>
+							<td class="c">
+								<c:choose>
+										<c:when test="${ rp.status eq 'Y'}">
+											완료
+										</c:when>
+										<c:otherwise>
+											대기
+									</c:otherwise>
+								</c:choose>	
+							</td>
+						</tr>	
+                    </c:forEach>
 				</tbody>
 			</table>
 			<br> <br>
 
 			<div id="pagingArea">
-				<ul class="pagination">
-					<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-					<li class="page-item"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><a class="page-link" href="#">4</a></li>
-					<li class="page-item"><a class="page-link" href="#">5</a></li>
-					<li class="page-item"><a class="page-link" href="#">Next</a></li>
-				</ul>
-			</div>
+                <ul class="pagination">
+                	<c:choose>
+	                		<c:when test="${ pi.currentPage eq 1 }">
+		                   		<li class="page-item disabled"><a class="page-link">Previous</a></li>
+		                    </c:when>
+		                    <c:otherwise>
+		                    	<c:choose>
+		                    		<c:when test="${ empty condition }">
+		                    			<li class="page-item"><a class="page-link" href="boardReport.bo?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+		                    		</c:when>
+		                    		<c:otherwise>
+		                    			<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ pi.currentPage-1 }&condition=${condition}">Previous</a></li>
+		                    		</c:otherwise>
+		                    	</c:choose>		
+	                    	</c:otherwise>
+	                    
+                    </c:choose>
+                    
+                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                    	<c:choose>
+                    		<c:when test="${ empty condition }">
+                    			<li class="page-item"><a class="page-link" href="boardReport.bo?currentPage=${ p }">${ p }</a></li>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ p }&condition=${condition}">${ p }</a></li>
+                    		</c:otherwise>
+                    	</c:choose>
+                    </c:forEach>
+                    
+                    <c:choose>
+                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+		                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+		                </c:when>
+		                <c:otherwise>
+		                    <c:choose>
+		                   		<c:when test="${ empty condition }">
+		                    		<li class="page-item"><a class="page-link" href="boardReport.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ pi.currentPage+1 }&condition=${condition}">Next</a></li>
+		                    	</c:otherwise>
+		                    </c:choose>		
+		                </c:otherwise>    
+		            </c:choose>        
+                </ul>
+            </div>
 
 
 			<div class="collapse multi-collapse m-0 p-0" id="detail"

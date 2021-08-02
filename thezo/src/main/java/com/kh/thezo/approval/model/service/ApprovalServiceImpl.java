@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.kh.thezo.approval.model.dao.ApprovalDao;
 import com.kh.thezo.approval.model.vo.Approval;
-import com.kh.thezo.approval.model.vo.OrgChartList;
+import com.kh.thezo.approval.model.vo.ApprovalAccept;
 import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.member.model.vo.Member;
 
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
@@ -30,8 +31,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return aDao.selectApprovalMain(memNo, sqlSession, pi);
 	}
 
-	
-	
 	@Override
 	public int newApprListCount() {
 		return aDao.newApprListCount(sqlSession);
@@ -44,18 +43,39 @@ public class ApprovalServiceImpl implements ApprovalService {
 
 
 	@Override
-	public Approval enrollApproval(int ano) {
-		return aDao.enrollApproval(sqlSession, ano);
+	public Approval enrollApproval(Approval aTemp) {
+		return aDao.enrollApproval(sqlSession, aTemp);
+	}
+	
+	@Override
+	public ArrayList<ApprovalAccept> selectformLineList(Approval aTemp) {
+		return aDao.selectformLineList(sqlSession, aTemp);
 	}
 
 	@Override
 	public int insertApprovalDocument(Approval a) {
-		return 0;
+		
+		return aDao.insertApprovalDocument(sqlSession, a);
 	}
 
 	@Override
-	public ArrayList<OrgChartList> employeeList() {
+	public ArrayList<Member> employeeList() {
 		return aDao.employeeList(sqlSession);
+	}
+
+	@Override
+	public Member selectLeave(int memNo) {
+		return aDao.selectLeave(sqlSession, memNo);
+	}
+
+	@Override
+	public Approval detailApproval(int docNo) {
+		return aDao.detailApproval(sqlSession, docNo);
+	}
+
+	@Override
+	public ArrayList<ApprovalAccept> detailApprovalLine(int docNo) {
+		return aDao.detailApprovalLine(sqlSession, docNo);
 	}
 
 	

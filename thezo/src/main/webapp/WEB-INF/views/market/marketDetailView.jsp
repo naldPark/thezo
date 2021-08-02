@@ -18,9 +18,17 @@
 <body>
 
 	<jsp:include page="../common/header.jsp"/>
+	<c:if test="${loginUser.userId eq 'admin' }">
+		<script>	
+			document.getElementById("admin-header").style.display = "block";
+			document.getElementById("admin-mode").style.color = "red";
+		</script>
+		<br><br><br><br>
+	</c:if>
+	
+	
 	<section>
 	
-
     <div class="outer">
         <div class="innerOuter">
             <h2><b>더조마켓</b></h2>
@@ -32,41 +40,49 @@
             </div>
             <br>
             <div id="thumbnail"align="center">
-                <p style="color: green;">판매중</p><br>
-                <img src="${ b.titleImg }" width="200" height="200"><br>
-                머그컵<br>
-                <p style="color: rebeccapurple;">15000원</p>
-                <div>
-                    <table width="200">
-                        <tr>
-                            <td rowspan="2" align="center"><img src="${ m.titleImg }" width="50" height="50"></td>
-                            <td>user01</td>
-                        </tr>
-                        <tr>
-                            <td>영업팀 김하하 대리</td>
-                        </tr>
-                    </table>
-                    <br>
-                    <p style="font-size: small;">
-                        작성일 : 2021-08-21&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        조회수 : 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        찜 : 1 <!-- 찜: 하트이미지 바꾸기-->
-                    </p>
-                </div>
-                <hr width="700">
+                <p style="color:  #0091FF; font-size:17px;"><b>${ mk.marketSection }</b></p><br>
+                <img src="${ mk.productImg }" width="200" height="200"><br>
+                <p style="font-size:20px;"><b>${ mk.marketTitle }</b></p><br>
+                <p style="color: rebeccapurple;">${ mk.price }원</p>
+              
+	            <div>
+		                      작성자 : ${ mk.marketWriter }<br>
+		                      작성일 : 2021-08-21
+		            <p style="font-size: small;">
+			        	<img src="resources/images/countView.png" width="20" height="20">${ mk.count }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			            <img src="resources/images/heart.png" width="20" height="20">${ mk.productLike}<!-- 찜: 하트이미지 바꾸기-->
+		            </p>
+	            </div>
+            	<hr width="700">
             </div>
             <div class="content" align="center">
-                <p >좀 깨졌지만 쓸만해용</p>
+                <p>${ mk.marketContent }</p>
             </div>
-            <div align="center"><a class="btn btn-primary" href="">거래하기</a></div>
+            
+            <br><br><br><br>
+            <!-- 메세지로 연결해야하는데...? -->
+            <div align="center">
+            	<a class="btn btn-primary" href="">거래하기</a>
+            </div>
+            
             <br>
-           <div class="imgs" align="center">
-            <img src="${ b.titleImg }" width="200" height="200">
-            <img src="${ b.titleImg }" width="200" height="200">
-            <img src="${ b.titleImg }" width="200" height="200">
-            <hr width="700">
-           </div>
+            
+            <div class="imgs" align="center">
+            	<c:choose>
+                	<c:when test="${ empty mk.originName }">
+                    	<img src="resources/images/clip.png" width="20" height="20">
+                    	첨부파일이 없습니다.
+                    </c:when>
+                   	<c:otherwise>
+                    	<img src="${ b.titleImg }" width="200" height="200">
+			            <img src="${ b.titleImg }" width="200" height="200">
+			            <img src="${ b.titleImg }" width="200" height="200">
+			            <hr width="700">
+                    </c:otherwise>	
+                </c:choose>
+            </div>
            <br>
+           
            <!-- 댓글 신고하기 넣기  -->
            <table id="replyArea" class="table-borderless" align="center">
                 <thead>
@@ -147,7 +163,6 @@
                            </div>
                           
                       </div>   
-
 
         </div>
 

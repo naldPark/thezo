@@ -6,17 +6,24 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous"> 
 </head>
+<style>
+	#ErrorMessageArea{color: rgb(78, 78, 78); padding: 10px; border:1px solid lightgray; width: 70%}
+</style>
 <body>
-	<!-- 나중에 include는 지울 예정입니다. 단지 오류페이지로 넘어왔을떄 페이지 이동을 편하게 하고자 넣었습니다. -->
-    <jsp:include page="header.jsp"/>
-
+<br>
 	<section>
-		<div class="outer">
-		    <div align="center">	
-		        <img src="https://cdn2.iconfinder.com/data/icons/oops-404-error/64/208_balloon-bubble-chat-conversation-sorry-speech-512.png" width="300">
+		<div class="outer" align="center" >
+		    <div id="ErrorMessageArea">	
+				<br><br>
+		        <span style="font-size:80pt; "> <i class="fas fa-exclamation-triangle"> </i> Error</span>
 		        <br><br>
-		        <h1 style="font-weight:bold">${ errorMsg }</h1>
+		        <h2 style="font-weight:bold">${ errorMsg }</h2><br>
+				<span>지속적인 에러가 발생하는 경우 관리자에게 문의 해 주시기 바랍니다</span>
+				<br><br><br>
+				<a class="btn btn-warning" href="main">메인으로 가기</a>
+				<br><br><br>
 		    </div>
 		</div>
 	</section>

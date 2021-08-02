@@ -1,7 +1,6 @@
 package com.kh.thezo.schedule.controller;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -28,22 +28,22 @@ public class ScheduleController {
 		return "schedule/scheduleMain";
 	}
 	
-	/*
 	@ResponseBody
 	@RequestMapping("list.sc")
 	public void selectScheduleList(HttpServletResponse response) throws IOException {
 		ArrayList<Schedule> list = scService.selectScheduleList();
+		//System.out.println(list);
 		response.setContentType("text/html; charset=utf-8");
 		String result = new Gson().toJson(list);
 		//System.out.println(result);
 		response.getWriter().print(result);
 	}
-	*/
 	
 	/**
 	 *  풀캘린더-DB 일정 조회 (화면 출력용)
 	 * @throws IOException
 	 */
+	/*
 	@ResponseBody
 	@RequestMapping("scList.sc")
 	public void selectScheduleList(HttpServletResponse response) throws IOException {
@@ -53,6 +53,7 @@ public class ScheduleController {
 		//System.out.println(result);
 		response.getWriter().print(result);
 	}
+	*/
 	
 	/**
 	 *  일정 추가
@@ -87,40 +88,13 @@ public class ScheduleController {
 		
 	}
 	
+	/**
+	 *  일정 상세 조회
+	 */
 	@RequestMapping("detail.sc")
-	public String selectScheduleDetail() {
+	public String selectScheduleDetail(Model model) {
 		return "schedule/scheduleDetailView";
 	}
-	
-	
-	
-	
-	// 노트관리 기능
-	@RequestMapping("list.note")
-	public String noteList() {
-		return "schedule/note/noteListView";
-	}
-	
-	@RequestMapping("insertForm.note")
-	public String noteInsertForm() {
-		return "schedule/note/noteInsertView";
-	}
-	
-	@RequestMapping("insert.note")
-	public String insertNote() {
-		return "";
-	}
-	
-	@RequestMapping("detail.note")
-	public String selectNoteDetail() {
-		return "schedule/note/noteDetailView";
-	}
-	
-	@RequestMapping("update.note")
-	public String updateNote() {
-		return ":redirect:noteDetailView";
-	}
-	
 	
 	
 	// 자원예약 기능

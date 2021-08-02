@@ -1,6 +1,7 @@
 package com.kh.thezo.member.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -11,6 +12,11 @@ import com.kh.thezo.member.model.vo.Member;
 
 @Repository
 public class MemberDao {
+	
+	
+	public Member loginMember(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.loginMember", m);
+	}
 
 	// 회원정보관리(사원등록,수정):관리자 -이성경
 	// 1) 회원 수 조회
@@ -26,8 +32,49 @@ public class MemberDao {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectList", null , rowBounds );
 	}
 	
-	// 3) 회원 정보 상세 조회
+	// 3_1) 회원 관리 리스트 검색 조회(갯수)
+	public int memSearchListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("memberMapper.memSearchListCount", map);
+	}
+	
+	// 3_2) 회원 관리 리스트 검색 조회
+	public ArrayList<Member> memSearchList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.memSearchList", map, rowBounds);
+	}
+	
+	
+	// 4) 회원 정보 상세 조회
 	public Member selectMember(SqlSessionTemplate sqlSession, int memNo) {
 		return sqlSession.selectOne("memberMapper.selectMember", memNo);
+	}
+	
+	// 회원 삭제 : 관리자 - 이성경
+	// 1) 회원 삭제 리스트 갯수 조회(탈퇴 회원수 조회)
+	public int memDeleteListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("memberMapper.memDeleteListCount");
+	}
+	
+	// 2) 회원 삭제 리스트 조회
+	public ArrayList<Member> memDeleteList(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset =(pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.memDeleteList", null , rowBounds );
+	}
+	
+	// 3_1) 회원 삭제 리스트 검색 조회(갯수)
+	public int memDeleteSearchListCount(SqlSessionTemplate sqlSession, HashMap<String, String> map) {
+		return sqlSession.selectOne("memberMapper.memDeleteSearchListCount", map);
+	}
+	
+	// 3_2) 회원 삭제 리스트 검색 조회
+	public ArrayList<Member> deleteSearchList(SqlSessionTemplate sqlSession, PageInfo pi, HashMap<String, String> map){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("memberMapper.deleteSearchList", map, rowBounds);
 	}
 }

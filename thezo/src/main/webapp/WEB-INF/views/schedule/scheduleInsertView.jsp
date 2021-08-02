@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>일정 추가</title>
 </head>
 <body>
 	<form action="insert.sc" method="post">
@@ -29,9 +29,9 @@
 			            <td colspan="2">
 			            	<input type="text" name="title" style="width: 350px;" placeholder="일정 제목을 입력해주세요">
 			            	<select name="scType" id="scType">
-			                    <option value="personal">개인</option>
-			                    <option value="dep">부서</option>
-			                    <option value="com">회사</option>
+			                    <option value="개인">개인</option>
+			                    <option value="부서">부서</option>
+			                    <option value="회사">회사</option>
 			                </select>
 			            </td>
 			            <td>

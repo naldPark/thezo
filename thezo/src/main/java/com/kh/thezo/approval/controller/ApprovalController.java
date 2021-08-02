@@ -18,11 +18,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.thezo.approval.model.service.ApprovalService;
 import com.kh.thezo.approval.model.vo.Approval;
-import com.kh.thezo.approval.model.vo.OrgChartList;
+import com.kh.thezo.approval.model.vo.ApprovalAccept;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.mail.model.vo.Attachment;
 //@author YI
+import com.kh.thezo.member.model.vo.Member;
 
 
 @Controller
@@ -32,24 +33,22 @@ public class ApprovalController {
 	@Autowired
 	private ApprovalService aService;
 	
+	
 
 	//전자결재 메인페이지로 관련있는 결재리스트 불러오기
 	@RequestMapping("main.appr")
 	public ModelAndView selectApprovalMain(ModelAndView mv, HttpSession session, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
-		
-		// 일단 member 객체 생성되고 login구현될떄까지 임시로 넣는 값
-//		int memNo = Integer.parseInt(((TestMember) session.getAttribute("loginUser")).getUserId());
-		int memNo = 1;
+
+		Member m = (Member) session.getAttribute("loginUser");
 		
 		// 페이징 확인
 		Approval a = new Approval();
 		a.setStatus("");
-		a.setMemNo(memNo);
+		a.setMemNo(m.getMemNo());
 		int listCount = aService.selectListCount(a);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		ArrayList<Approval> list = aService.selectApprovalMain(memNo, pi);
-//		System.out.println(list);
+		ArrayList<Approval> list = aService.selectApprovalMain(m.getMemNo(), pi);
 		mv.addObject("list", list)
 		  .addObject("pi", pi)
 		  .setViewName("approval/approvalMain");
@@ -71,19 +70,38 @@ public class ApprovalController {
 	
 	// 문서 작성하는 페이지 
 	@RequestMapping("enrollForm.appr")
-	public ModelAndView enrollApproval(ModelAndView mv, int ano) {
-		Approval a = aService.enrollApproval(ano);
-		ArrayList<OrgChartList> empList = aService.employeeList();
-		mv.addObject("empList", empList)
-			.addObject("a", a)
-			.setViewName("approval/approvalEnrollForm");
+	public ModelAndView enrollApproval(ModelAndView mv, HttpSession session, int ano) {
+		Approval aTemp = new Approval();
+		Member m = (Member) session.getAttribute("loginUser");
+		aTemp.setMemNo(m.getMemNo()); 
+		aTemp.setDeptNo(m.getDepNo()); 
+		aTemp.setFormNo(ano);
+		System.out.println(aTemp);
+		Approval a = aService.enrollApproval(aTemp);
+		ArrayList<Member> empList = aService.employeeList();
+		ArrayList<ApprovalAccept> cLine = aService.selectformLineList(aTemp);
+		System.out.println(cLine);
+		Member leaveCount = aService.selectLeave(aTemp.getMemNo());
+		
+		mv.addObject("a", a) // 문서 포맷
+			.addObject("empList", empList) // 전사원 리스트 
+			.addObject("cLine", cLine);  // 해당 양식의 결재선
+		
+		//연차신청인 경우 다른 페이지로 이동
+		if(a.getFormNo()==5) {
+			mv.addObject("leaveCount", leaveCount) // 연차 잔여갯수 
+			.setViewName("approval/approvalLeaveForm");
+		} else {
+			mv.setViewName("approval/approvalEnrollForm");
+		}
+		
 		return mv;
 	}
 	
 	// 첨부파일 저장을 위한 메소드 모듈화
 	public String saveFile(HttpSession session, MultipartFile upfile) {
 		
-		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/mail/");
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/approval/");
 		String originName = upfile.getOriginalFilename();
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		int ranNum = (int)(Math.random() * 90000 + 10000);
@@ -101,36 +119,43 @@ public class ApprovalController {
 	
 	@ResponseBody
 	@RequestMapping("insertDocu.appr")
-	public ModelAndView insertApprovalDocument(Approval a,HttpSession session, MultipartFile[] upfile, ModelAndView mv ) {
-//		System.out.println(summernote);
+	public ModelAndView insertApprovalDocument(Approval a,HttpSession session, MultipartFile[] upfile, ModelAndView mv) {
+		Member m = (Member) session.getAttribute("loginUser");
+		a.setMemNo(m.getMemNo());
+
 		if (!upfile[0].getOriginalFilename().equals("")) {
 			ArrayList<Attachment> list = new ArrayList<>();
 
 			for (int i = 0; i < upfile.length; i++) {
 				Attachment at = new Attachment();
-				String changeName = saveFile(session, upfile[i]); // "2021070217013023152.jpg"
+				String changeName = saveFile(session, upfile[i]); 
 				at.setOriginName(upfile[i].getOriginalFilename());
-				at.setChangeName("resources/uploadFiles/mail/" + changeName);
+				at.setFileUrl("resources/uploadFiles/approval/" + changeName);
+				at.setFileLevel(i+1);
 				list.add(at);
 			}
+			a.setAt(list);
 		}
 		int result = aService.insertApprovalDocument(a);
-		
-//		  .setViewName("approval/approvalTemp");
+		if(result > 0) { // 성공
+			session.setAttribute("alertMsg", "성공적으로 등록 되었습니다.");
+			mv.setViewName("redirect:main.appr");
+		}else {
+			mv.addObject("errorMsg", "기안에 실패했습니다");
+			mv.setViewName("common/errorPage");
+		}
 		return mv;
 	}
 	
 	
-	
-	@RequestMapping("leaveEnrollForm.appr")
-	public String leaveEnrollApproval() {
-		return "approval/approvalLeaveForm";
-	}
-	
-	
 	@RequestMapping("detailDocu.appr")
-	public String detailApproval() {
-		return "approval/apprDetailDocu";
+	public ModelAndView detailApproval(int docNo, ModelAndView mv) {
+		Approval a = aService.detailApproval(docNo);
+		ArrayList<ApprovalAccept> aLine = aService.detailApprovalLine(docNo);
+		mv.addObject("a", a) // 연차 잔여갯수 
+		.addObject("aLine", aLine) // 연차 잔여갯수 
+		.setViewName("approval/apprDetailDocu");
+		return mv;
 	}
 	
 	

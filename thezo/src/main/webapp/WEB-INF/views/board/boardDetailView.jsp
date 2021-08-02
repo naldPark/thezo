@@ -30,15 +30,21 @@ table {
 <body>
 
 	<jsp:include page="../common/header.jsp" />
-	<div class="outer">
+	
+	<c:if test="${loginUser.userId eq 'admin' }">
+		<script>	
+			document.getElementById("admin-header").style.display = "block";
+			document.getElementById("admin-mode").style.color = "red";
+		</script>
+		<br><br><br><br>
+	</c:if>
+	
 	<section>
+	<div class="outer">
 			<div class="innerOuter">
-				<h2>
-					<b>사내게시판</b>
-				</h2>
+				<h2><b>사내게시판</b></h2>
 				<br>
-	
-	
+				
 				<div align="right">
 					<a href="" data-toggle="modal" data-target="#reportForm">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<!--게시글 작성자만 보이도록-->
@@ -47,31 +53,41 @@ table {
 				<br>
 				<table id="contentArea" align="center" class="table">
 					<tr>
-						<th style="font-size: 20px;">회사가 너무 좋다</th>
+						<th style="font-size: 20px;">${ b.boardTitle }</th>
 					</tr>
 					<tr align="left" style="font-size: 13px;">
 						<td>
-							작성자&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;user01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							작성일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;2021-08-01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							조회수&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;10</td>
+							작성자&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;${ b.boardWriter }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							작성일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;${ b.boardDate }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							조회수&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;${ b.count }</td>
 					</tr>
 					<tr>
 						<td>
 							<p style="height: 400px; font-size: 17px;">
-								<!--만약 이미지 파일이 있을 때 첨부파일이 보이도록-->
-								<img src="" width="200" height="200"><br> 주 7일제
-								찬성입니다~~~~
+								${ b.boardContent }
 							</p>
 						</td>
 					</tr>
 					<tr>
-						<td>첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="" download="">파일명.jpg</a></td>
+						<c:choose>
+                    		<c:when test="${ empty b.originName }">
+                    			<td>
+                    				<img src="resources/images/clip.png" width="20" height="20">
+                    				첨부파일이 없습니다.
+                    			</td>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<td>
+                    				<img src="resources/images/cilp.png" width="20" height="20">
+                    				첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="${ b.changeName }" download="${ b.originName }">${ b.originName }</a>
+                    			</td>
+                    		</c:otherwise>	
+                    	</c:choose>
 					</tr>
 				</table>
 	
 				<hr>
 				<br>
-	
 	
 				<table id="replyArea" class="table-borderless" align="center">
 					<thead>
@@ -162,7 +178,8 @@ table {
 	
 				</div>
 			</div>
-			</div>
+		</div>
+			
 	</section>
 </body>
 </html>

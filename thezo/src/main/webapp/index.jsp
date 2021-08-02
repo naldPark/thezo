@@ -21,7 +21,7 @@
 		<c:when test="${!empty sessionScope.pageType and sessionScope.pageType eq 'UserPage'}">
 			<jsp:forward page="WEB-INF/views/main.jsp"/>
 		</c:when>
-		<c:when test="${!empty sessionScope.loginUser and sessionScope.loginUser.userId eq 'admin'}">
+		<c:when test="${!empty sessionScope.loginUser and sessionScope.loginUser.memId eq 'admin'}">
 			<jsp:forward page="WEB-INF/views/common/adminMain.jsp"/>						
 		</c:when>		
 		<c:otherwise>

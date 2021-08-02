@@ -2,4 +2,123 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="marketMapper">
 
+	<resultMap id="marketResult" type="Market">
+		<result column="market_no" property="marketNo"/>
+		<result column="market_no" property="memNo"/>
+		<result column="market_writer" property="marketWriter"/>
+		<result column="market_title" property="marketTitle"/>
+		<result column="market_content" property="marketContent"/>
+		<result column="market_date" property="marketDate"/> 
+		<result column="market_section" property="marketSection"/>
+		<result column="price" property="price"/>
+		<result column="productImg" property="productImg"/>
+		<result column="p_like" property="productLike"/>
+		<result column="count" property="count"/>
+		<result column="origin_name" property="originName"/>
+		<result column="change_name" property="changeName"/>
+		
+	</resultMap>
+
+
+	<!-- 사용자 : 벼룩시장 글 총 갯수  -->
+	<select id="marketListCount" resultType="_int">
+		select 
+		       count(*)
+		  from market
+		 where status = 'Y' 
+	</select>
+
+	<!-- 사용자 : 공지사항 리스트 조회 -->
+	<select id="selectMarketList" resultMap="marketResult">
+		select
+			   market_no
+		     , market_title
+		     , market_writer
+		     , to_char(market_date, 'YYYY-MM-DD') as market_date
+             , market_section
+             , price
+             , p_img as productImg
+             , p_like
+             , count
+		  from market
+		 where status = 'Y'
+		 order 
+		    by market_no desc      
+	</select>
+	
+	<!-- 사용자 : 벼룩시장 리스트 검색바  -->
+	<select id="marketSearchListCount" resultType="_int">
+		select count(*)
+		  from market
+		 where status = 'Y' 
+		<choose>
+			<when test="condition == 'title'">
+				and market_title
+			</when>
+			<otherwise>
+				and market_writer
+			</otherwise>
+		</choose>
+				like '%' || #{keyword} || '%' 
+	</select>
+
+	<!-- 사용자 : 벼룩시장 리스트 검색바 -->
+	<select id="marketSearchList" resultMap="marketResult">
+		select 
+				market_no
+			  , market_title
+			  , market_writer
+			  , to_char(market_date, 'YYYY-MM-DD') as market_date
+	          , market_section
+	          , price
+	          , p_img as productImg
+	          , p_like
+	          , count
+	       from market
+	      where status = 'Y'         
+			<choose>
+				<when test="condition == 'title'">
+			   		and market_title
+			    </when>
+				<otherwise>
+					and market_writer
+				</otherwise>
+			</choose>
+					like '%' || #{keyword} || '%'
+			  order
+			     by market_no desc 
+	</select>
+	
+	
+		
+	<!-- 사용자 : 벼룩시장 게시글 조회수 증가 -->
+	<update id="increaseMarketCount">
+		update
+		       market
+		   set count = count+1
+		 where market_no = #{marketNo}
+		   and status = 'Y'     
+	</update>
+
+	<!-- 사용자 : 벼룩시장 상세 조회 -->
+	<select id="selectMarket" resultMap="marketResult">
+		select
+			   market_no
+		     , market_title
+		     , market_writer
+		     , market_content
+		     , to_char(market_date, 'YYYY-MM-DD') as market_date
+		     , market_section
+             , price
+             , p_img as productImg
+             , p_like
+             , count
+		     , origin_name
+			 , change_name
+ 		  from market mk
+          left outer join board_file on(market_no = ref_bno)
+		 where market_no = #{marketNo}
+           and mk.status = 'Y'
+	</select>
+	
 </mapper>

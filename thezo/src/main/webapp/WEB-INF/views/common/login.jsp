@@ -42,14 +42,14 @@
             <span><img src="resources/images/smallLogo.png"></span>
         </div>
         
-        <form action="test.me" method="POST">
+        <form action="login.me" method="POST">
             <div id="form-area">
                 <table>
                     <tr>
                         <td>
                             <div>
                                 <span><img src="resources/images/loginIcon1.png"></span>
-                                <input type="text" name="userId" value="admin">
+                                <input type="text" name="memId" value="">
                             </div>
                         </td>
                     </tr>
@@ -57,7 +57,7 @@
                         <td>
                             <div>
                                 <span><img src="resources/images/loginIcon2.png"></span>
-                                <input type="password" name="userPwd" value="1234zxcv">
+                                <input type="password" name="memPwd" value="">
                             </div>
                         </td>
                     </tr>
@@ -65,13 +65,13 @@
                 <button type="submit">로그인</button>
             </div>
         </form>
-        
         <span style="color: blue; font-weight: bold;">
-            바로 로그인 버튼 누르시면 session에 <br> id : admin , pwd : 1234zxcv 가 담기면서 <br> main페이지로 넘어갑니다.  
+            	DB.XLSX에 세팅된 모든 비번은 'pass01'입니다!!!!!            
         </span>
-        <br>
-        <span style="color: red; font-weight: bold;">해당페이지는 main페이지를 가지 전  조건 <br>  검사를 위해서 임시로 만든 페이지입니다. <br> 담당하시는분이 편하게 화면 다시 만드셔도 됩니다!! ^^ 메인페이지에서 작업을 <br> 해야하기에 ! 임시 백단을 만든상태입니다.
+          <span style="color: blue; font-weight: bold;">
+            	관리자는 status a로 되어있는 admin입니다          
         </span>
+
     </div>
 
 </body>

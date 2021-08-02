@@ -17,6 +17,7 @@ public class Member {
 
 	private int memNo;
 	private String memId;
+	private String userId; //header쪽 수정 후 삭제 해주세용
 	private String memPwd;
 	private String memName;
 	private String gender;

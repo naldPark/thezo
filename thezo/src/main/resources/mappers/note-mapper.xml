@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="noteMapper">
+
+	<resultMap id="noteResult" type="Note">
+		<result column="note_no" property="noteNo" />
+		<result column="note_sc" property="noteSc" />
+		<result column="note_writer" property="noteWriter" />
+		<result column="note_title" property="noteTitle" />
+		<result column="note_content" property="noteContent" />
+		<result column="create_date" property="createDate" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<select id="selectListCount" resultType="_int">
+		select count(*)
+		  from note
+		 where status = 'Y'
+	</select>
+	
+	<select id="selectNoteList" resultMap="noteResult">
+		select 
+			   note_no
+			 , note_sc
+			 , note_writer
+			 , note_title
+			 , note_content
+			 , create_date
+			 , status
+		  from note
+		 where status = 'Y'	
+		 order
+		    by create_date desc  
+	</select>
+</mapper>

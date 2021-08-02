@@ -1,6 +1,7 @@
 package com.kh.thezo.member.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 //@author Jaewon.s
 import javax.servlet.http.HttpSession;
@@ -53,7 +54,7 @@ public class MemberController {
 	
 	
 	// 회원정보관리(사원등록,수정):관리자 -이성경
-	// 리스트 조회 페이지
+	// 1) 리스트 조회 페이지
 	@RequestMapping("memberInfo.me")
 	public String memberInfoList(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) { 
 		
@@ -67,6 +68,33 @@ public class MemberController {
 		
 		return "member/memberListView";
 	}
+	
+	// 회원정보관리(사원등록,수정):관리자 -이성경
+	// 2) 검색바
+	@RequestMapping("admemberSearch.me")
+	public ModelAndView memberSearchList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+										 String condition, String keyword) {
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		
+		int listCount = mService.memSearchListCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Member> list = mService.memSearchList(pi, map);
+		
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("condition", condition)
+		  .addObject("keyword", keyword)
+		  .setViewName("member/memberListView");
+		
+		return mv;
+		
+	}
+	
 	
 	// 회원정보관리(사원등록,수정):관리자 -이성경
 	// 회원정보 상세조회 
@@ -83,11 +111,48 @@ public class MemberController {
 	}
 	
 	
+	
 	// 회원 삭제(사원삭제) : 관리자 - 이성경
+	// 1) 리스트 페이지 조회
 	@RequestMapping("memberDelete.me")
-	public String memberDelete() {
+	public String memberDelete(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		int listCount = mService.memDeleteListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Member> list = mService.memDeleteList(pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
+		
 		return "member/memberDelete";
 	}
+	
+	// 회원 삭제(사원삭제) : 관리자 - 이성경
+	// 2) 검색바
+	@RequestMapping("deleteSearch.me")
+	public ModelAndView deleteSearchList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage,
+										 String condition, String keyword) {
+		
+		HashMap<String, String> map = new HashMap<>();
+		map.put("condition", condition);
+		map.put("keyword", keyword);
+		
+		int listCount = mService.memDeleteSearchListCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Member> list = mService.deleteSearchList(pi, map);
+		
+		
+		mv.addObject("pi", pi)
+		  .addObject("list", list)
+		  .addObject("condition", condition)
+		  .addObject("keyword", keyword)
+		  .setViewName("member/memberDelete");
+		
+		return mv;
+		
+	}
+	
 	
 	// 사용자 내 정보 수정 페이지 응답 - 이성경
 	@RequestMapping("myPage.me")

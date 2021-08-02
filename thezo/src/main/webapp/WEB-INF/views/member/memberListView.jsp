@@ -78,7 +78,7 @@ table tbody {
 
 				<div class="header2">
 					<div id="search-area" align="right">
-						<form id="searchForm" action="" method="Get">
+						<form id="searchForm" action="admemberSearch.me" method="Get">
 							<div class="select">
 								<select class="custom-select" name="condition">
 									<option value="memName">이름</option>
@@ -91,6 +91,14 @@ table tbody {
 							</div>
 							<button type="submit" class="searchBtn btn btn-secondary">검색</button>
 						</form>
+						
+						<script>
+			            	$(function(){
+			            		if("${condition}" != ""){
+			            			$("option[value=${condition}]").attr("selected", true);
+			            		}
+			            	})
+			            </script>
 					</div>
 				</div>
 				<br>
@@ -133,27 +141,50 @@ table tbody {
 			
 
 			<br> <br>
+				  			
 			<div id="pagingArea">
                 <ul class="pagination">
                 	<c:choose>
-                		<c:when test="${ pi.currentPage eq 1 }">
-	                   		<li class="page-item disabled"><a class="page-link">Previous</a></li>
-	                    </c:when>
-	                    <c:otherwise>
-	                    	<li class="page-item"><a class="page-link" href="memberInfo.me?currentPage=${ pi.currentPage-1 }">Previous</a></li>
-                    	</c:otherwise>
+	                		<c:when test="${ pi.currentPage eq 1 }">
+		                   		<li class="page-item disabled"><a class="page-link">Previous</a></li>
+		                    </c:when>
+		                    <c:otherwise>
+		                    	<c:choose>
+		                    		<c:when test="${ empty condition }">
+		                    			<li class="page-item"><a class="page-link" href="memberInfo.me?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+		                    		</c:when>
+		                    		<c:otherwise>
+		                    			<li class="page-item"><a class="page-link" href="admemberSearch.me?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
+		                    		</c:otherwise>
+		                    	</c:choose>		
+	                    	</c:otherwise>
+	                    
                     </c:choose>
                     
                     <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                 	   <li class="page-item"><a class="page-link" href="memberInfo.me?currentPage=${ p }">${ p }</a></li>
+                    	<c:choose>
+                    		<c:when test="${ empty condition }">
+                    			<li class="page-item"><a class="page-link" href="memberInfo.me?currentPage=${ p }">${ p }</a></li>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<li class="page-item"><a class="page-link" href="admemberSearch.me?currentPage=${ p }&condition=${condition}&keyword=${keyword}">${ p }</a></li>
+                    		</c:otherwise>
+                    	</c:choose>
                     </c:forEach>
                     
                     <c:choose>
                     	<c:when test="${ pi.currentPage eq pi.maxPage }">
 		                    <li class="page-item disabled"><a class="page-link">Next</a></li>
 		                </c:when>
-		                <c:otherwise>    
-		                    <li class="page-item"><a class="page-link" href="memberInfo.me?currentPage=${ pi.currentPage+1 }">Next</a></li>
+		                <c:otherwise>
+		                    <c:choose>
+		                   		<c:when test="${ empty condition }">
+		                    		<li class="page-item"><a class="page-link" href="memberInfo.me?currentPage=${ pi.currentPage+1 }">Next</a></li>
+		                    	</c:when>
+		                    	<c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="admemberSearch.me?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
+		                    	</c:otherwise>
+		                    </c:choose>		
 		                </c:otherwise>    
 		            </c:choose>        
                 </ul>

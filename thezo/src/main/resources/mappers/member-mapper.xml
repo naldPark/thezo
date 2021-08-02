@@ -82,8 +82,58 @@
 		 order 
 		    by mem_no desc 	   
 	</select>
+	
+	<!--  3_1) 회원 관리 리스트 검색 조회(갯수) -->
+	<select id="memSearchListCount" resultType="_int">
+			select count(*)
+			  from member
+			 where status = 'Y' 
+			<choose>
+				<when test="condition == 'memName'">
+					and mem_name
+				</when>
+				<when test="condition == 'memId'">
+					and mem_id 
+				</when>
+				<otherwise>
+					and department
+				</otherwise>
+			</choose>
+					like '%' || #{keyword} || '%' 
+	</select>
 
-	<!-- 3) 회원 정보 상세 조회-->
+
+	<!--  3_2) 회원 삭제 리스트 검색 조회 -->
+	<select id="memSearchList" resultMap="memberResult">
+		select 
+				   mem_no
+				 , mem_name
+				 , mem_id
+				 , department
+				 , rank
+				 , to_char(resign_date, 'YYYY-MM-DD') as resign_date
+	          from member
+             where status = 'Y' 
+			<choose>
+					<when test="condition == 'memName'">
+						and mem_name
+					</when>
+					<when test="condition == 'memId'">
+						and mem_id 
+					</when>
+					<otherwise>
+						and department
+					</otherwise>
+				</choose>
+						like '%' || #{keyword} || '%'
+			  order
+			     by mem_no desc 
+	</select>
+	
+	
+	
+
+	<!-- 4) 회원 정보 상세 조회-->
 	<select id="selectMember" resultMap="memberResult">
 		select
 		       mem_no
@@ -107,6 +157,74 @@
 		 where mem_no = #{memNo}       
 	</select>
 	
+	<!-- 회원 삭제 : 관리자(이성경) -->
+	<!-- 1) 탈퇴 회원 수 조회 -->
+	<select id="memDeleteListCount" resultType="_int">
+		select 
+		       count(*)
+		  from member
+		 where status = 'N'      
+	</select>
+	
+	<!-- 2) 회원 삭제 리스트 조회  -->
+	<select id="memDeleteList" resultMap="memberResult">
+		select 
+			   mem_no
+			 , mem_name
+			 , mem_id
+			 , department
+			 , rank
+			 , to_char(resign_date, 'YYYY-MM-DD') as resign_date
+		  from member
+		 where status = 'N'
+		 order 
+		    by mem_no desc 	   
+	</select>
+	
+	<!--  3_1) 회원 삭제 리스트 검색 조회(갯수) -->
+	<select id="memDeleteSearchListCount" resultType="_int">
+			select count(*)
+			  from member
+			 where status = 'N' 
+			<choose>
+				<when test="condition == 'memName'">
+					and mem_name
+				</when>
+				<when test="condition == 'memId'">
+					and mem_id 
+				</when>
+				<otherwise>
+					and department
+				</otherwise>
+			</choose>
+					like '%' || #{keyword} || '%' 
+	</select>
 
 
+	<!--  3_2) 회원 삭제 리스트 검색 조회 -->
+	<select id="deleteSearchList" resultMap="memberResult">
+		select 
+				   mem_no
+				 , mem_name
+				 , mem_id
+				 , department
+				 , rank
+				 , to_char(resign_date, 'YYYY-MM-DD') as resign_date
+	          from member
+             where status = 'N' 
+			<choose>
+					<when test="condition == 'memName'">
+						and mem_name
+					</when>
+					<when test="condition == 'memId'">
+						and mem_id 
+					</when>
+					<otherwise>
+						and department
+					</otherwise>
+				</choose>
+						like '%' || #{keyword} || '%'
+			  order
+			     by mem_no desc 
+	</select>
 </mapper>

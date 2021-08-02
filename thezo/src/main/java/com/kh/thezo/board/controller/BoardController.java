@@ -93,9 +93,10 @@ public class BoardController {
 		return "board/noticeEnrollForm";
 	}
 	
+	/*
 	// 공지사항 등록하기(사용자)
 	@RequestMapping("noticeInsert.bo")
-	public String insertboard(Board b, MultipartFile upfile, HttpSession session, Model model) {
+	public String insertboard(Board b, BoardFile bf, MultipartFile upfile, HttpSession session, Model model) {
 	
 		// 전달된 파일이 있을경우 => 파일명 수정 작업 후 서버 업로드 => 원본명, 서버 업로드 된 경로 b에 담기
 		if(!upfile.getOriginalFilename().equals("")) {
@@ -139,6 +140,7 @@ public class BoardController {
 			
 		return changeName;
 	}
+	*/
 		
 	
 	// -------------------- 사내게시판 영역 --------------------------

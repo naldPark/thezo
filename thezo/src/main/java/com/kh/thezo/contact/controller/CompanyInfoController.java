@@ -22,7 +22,18 @@ public class CompanyInfoController {
 	private CompanyInfoService cService;
 
 	@RequestMapping("insert.co")
-	public String insertCompayInfo(CompanyInfo ci, HttpSession session) {
+	public String insertCompayInfo(CompanyInfo ci, MultipartFile upImg, HttpSession session) {
+		
+		if(!upImg.getOriginalFilename().equals("")) {
+			if(ci.getOriginName() != null) {
+				new File(session.getServletContext().getRealPath(ci.getChangeName())).delete();
+			}
+			
+			String changeName = saveFile(session, upImg);
+			
+			ci.setOriginName(upImg.getOriginalFilename());
+			ci.setChangeName("resources/uploadFiles/" + changeName);
+		}
 		
 		int result = cService.insertCompanyInfo(ci);
 
@@ -30,7 +41,7 @@ public class CompanyInfoController {
 			session.setAttribute("alertMsg", "성공적으로 등록되었습니다.");
 			return "redirect:company.info";
 		}else {
-			session.setAttribute("alertMsg", "등록 실패");
+			session.setAttribute("errorMsg", "등록 실패");
 			return "redirect:adminCompanyInfo.st";
 		}
 

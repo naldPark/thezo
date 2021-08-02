@@ -34,7 +34,7 @@
 			 , comp_hp
 			 , comp_cor_no
 			 , comp_fax
-			 , comp_est_date
+			 , to_char(comp_est_date, 'YYYY-MM-DD') as comp_est_date
 			 , comp_address
 			 , comp_ceo_eng
 			 , comp_name_eng
@@ -62,7 +62,7 @@
 		  	 , comp_est_date = #{ estDate }
 		  	 , comp_address = #{ address }
 		  	 , comp_ceo_eng = #{ ceoEng }
-		  	 , comp_name_eng = #{ cNameEng }
+		  	 , comp_name_eng = #{ cnameEng }
 		  	 , comp_address_eng = #{ addressEng }
 		  	 , origin_name = #{ originName }
 		  	 , change_name = #{ changeName }

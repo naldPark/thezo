@@ -26,7 +26,7 @@ public class CompanyInfo {
 	private String estDate;
 	private String address;
 	private String ceoEng;
-	private String cNameEng;
+	private String cnameEng;
 	private String addressEng;
 	private String originName;
 	private String changeName;

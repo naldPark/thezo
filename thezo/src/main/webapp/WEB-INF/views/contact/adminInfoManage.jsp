@@ -99,34 +99,56 @@
                         </tr>
                         <tr>
                             <th>설립일자</th>
-                            <td><input type="date" name="estDate"></td>
+                            <td><input type="date" name="estDate" value="${ cInfo.estDate }"></td>
                         </tr>
                         <tr>
                             <th>주소</th>
-                            <td><input type="text" name="address" class="form-control" placeholder="주소를 입력해주세요" value="${ cInfo.estDate }"></td>
+                            <td><input type="text" name="address" class="form-control" placeholder="주소를 입력해주세요" value="${ cInfo.address }"></td>
                             <th>대표자명(영문)</th>
-                            <td><input type="text" name="ceoEng" class="form-control" placeholder="대표자명(영문)을 입력해주세요" value="${ cInfo.address }"></td>
+                            <td><input type="text" name="ceoEng" class="form-control" placeholder="대표자명(영문)을 입력해주세요" value="${ cInfo.ceoEng }"></td>
                         </tr>
                         <tr>
                             <th>회사명(영문)</th>
-                            <td><input type="text" name="cNameEng" class="form-control" placeholder="회사명(영문)을 입력해주세요" value="${ cInfo.ceoEng }"></td>
+                            <td><input type="text" name="cNameEng" class="form-control" placeholder="회사명(영문)을 입력해주세요" value="${ cInfo.cnameEng }"></td>
                         </tr>
                         <tr>
                             <th>주소(영문)</th>
-                            <td colspan="2"><input type="text" name="addressEng" class="form-control" placeholder="주소(영문)을 입력해주세요 " value="${ cInfo.cNameEng }"></td>
+                            <td colspan="2"><input type="text" name="addressEng" class="form-control" placeholder="주소(영문)을 입력해주세요 " value="${ cInfo.addressEng }"></td>
                         </tr>
                         <tr>
                             <th>회사로고</th>
                             <td>            
                                 <div class="input-group mb-3" style="margin-bottom: 0% !important;">
-                                    <input type="file" name="upImg" class="form-control" id="inputGroupFile02">
+                                    <input type="file" name="upImg" onchange="loadImg(this);" class="form-control" id="inputGroupFile02" required>
                                     <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                                    <img src="" width="200px" height="150">
+                                    <img src="${ cInfo.changeName }" id="companyImg" width="100px" height="100px">
+                                    <script>
+				                    	$(function(){
+				                    		$("#companyImg").click(function(){
+				                    			$("#inputGroupFile02").click();
+				                    		})
+				                    	})
+				                    	
+				                    	function loadImg(inputFile){
+				                    		if(inputFile.files.length == 1){
+				                    			var reader = new FileReader();
+				                    			
+				                    			reader.readAsDataURL(inputFile.files[0]);
+				                    			
+				                    			reader.onload = function(e){
+				                    				 $("#companyImg").attr("src", e.target.result);
+				                    				}
+				                    			}else{
+				                    				$("#companyImg").attr("src", null);
+				                    			}
+				                    		}
+                    				</script>
                                 </div>
                             </td>
                         </tr>
                     </table>
                     <button type="submit" id="company-btn" class="btn btn-dark">저장</button>
+                    
                 </form>
             </div>
         </div>

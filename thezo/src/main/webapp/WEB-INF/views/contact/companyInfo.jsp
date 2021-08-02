@@ -58,58 +58,58 @@
                         </tr>
                         <tr>
                             <th width="200">회사명</th>
-                            <td width="400">Thekang</td>
+                            <td width="400">${ cInfo.companyName }</td>
                             <th width="200">대표자명</th>
-                            <td>강보람</td>
+                            <td>${ cInfo.ceoName }</td>
                         </tr>
                         <tr>
                             <th>사업자등록번호</th>
-                            <td>123-81-99233</td>
+                            <td>${ cInfo.regNo }</td>
                             <th>이메일</th>
-                            <td>thekangpjt@gmail.com</td>
+                            <td>${ cInfo.email }</td>
                         </tr>
                         <tr>
                             <th>업태</th>
-                            <td>제조업</td>
+                            <td>${ cInfo.bussStatus }</td>
                             <th>종목</th>
-                            <td>금속</td>
+                            <td>${ cInfo.bussKind }</td>
                         </tr>
                         <tr>
                             <th colspan="4"><h5 id="sub-title"></h5></th>
                         </tr>
                         <tr>
                             <th>회사전화</th>
-                            <td>02-123-4567</td>
+                            <td>${ cInfo.phone }</td>
                             <th>홈페이지</th>
-                            <td>http://www.thekang.co.kr</td>
+                            <td>${ cInfo.homePage }</td>
                         </tr>
                         <tr>
                             <th>법인등록번호</th>
-                            <td></td>
+                            <td>${ cInfo.corNo }</td>
                             <th>팩스</th>
-                            <td>02-123-4569</td>
+                            <td>${ cInfo.fax }</td>
                         </tr>
                         <tr>
                             <th>설립일자</th>
-                            <td>2021-08-23</td>
+                            <td>${ cInfo.estDate }</td>
                         </tr>
                         <tr>
                             <th>주소</th>
-                            <td>서울특별시 강남구 테헤란로 14길 6 남도빌딩 2~6F</td>
+                            <td>${ cInfo.address }</td>
                             <th>대표자명(영문)</th>
-                            <td>Boram, Kang</td>
+                            <td>${ cInfo.ceoEng }</td>
                         </tr>
                         <tr>
                             <th>회사명(영문)</th>
-                            <td>Thekang</td>
+                            <td>${ cInfo.cnameEng }</td>
                         </tr>
                         <tr>
                             <th>주소(영문)</th>
-                            <td colspan="2">2~6F, 6, Teheran-ro 14-gil, Gangnam-gu, Seoul, Republic of Korea</td>
+                            <td colspan="2">${ cInfo.addressEng }</td>
                         </tr>
                         <tr>
                             <th>회사로고</th>
-                            <td><img src="" width="200px" height="150"></td>
+                            <td><img src="${ cInfo.changeName }" width="100px" height="100px"></td>
                         </tr>
                     </table>
                 </form>

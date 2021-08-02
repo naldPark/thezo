@@ -16,7 +16,7 @@
 		<result column = "comp_est_date" property="estDate"/>
 		<result column = "comp_address" property="address"/>
 		<result column = "comp_ceo_eng" property="ceoEng"/>
-		<result column = "comp_name_eng" property="cNameEng"/>
+		<result column = "comp_name_eng" property="cnameEng"/>
 		<result column = "comp_address_eng" property="addressEng"/>
 		<result column = "origin_name" property="originName"/>
 		<result column = "change_name" property="changeName"/>

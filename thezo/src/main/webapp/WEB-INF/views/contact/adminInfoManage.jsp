@@ -109,7 +109,7 @@
                         </tr>
                         <tr>
                             <th>회사명(영문)</th>
-                            <td><input type="text" name="cNameEng" class="form-control" placeholder="회사명(영문)을 입력해주세요" value="${ cInfo.cnameEng }"></td>
+                            <td><input type="text" name="cnameEng" class="form-control" placeholder="회사명(영문)을 입력해주세요" value="${ cInfo.cnameEng }"></td>
                         </tr>
                         <tr>
                             <th>주소(영문)</th>
@@ -119,7 +119,7 @@
                             <th>회사로고</th>
                             <td>            
                                 <div class="input-group mb-3" style="margin-bottom: 0% !important;">
-                                    <input type="file" name="upImg" onchange="loadImg(this);" class="form-control" id="inputGroupFile02" required>
+                                    <input type="file" name="upImg" onchange="loadImg(this);" class="form-control" id="inputGroupFile02">
                                     <label class="input-group-text" for="inputGroupFile02">Upload</label>
                                     <img src="${ cInfo.changeName }" id="companyImg" width="100px" height="100px">
                                     <script>

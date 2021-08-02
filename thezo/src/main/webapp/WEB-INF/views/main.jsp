@@ -48,8 +48,11 @@
                         출근시간: 오전 9시 35분<br>
                         퇴근시간: <br>
                     </div>
-                    <button type="button" id="start" onclick="start_click();" class="btn btn-primary">출근</button>
-                    <button type="button" id="finish" onclick="finish_click();"class="btn btn-primary">퇴근</button><br>
+                    <form action="">
+                    	<input type="hidden" id="timevalue">
+	                    <button type="submit" id="start" onclick="start_click();" class="btn btn-primary">출근</button>
+	                    <button type="submit" id="finish" onclick="finish_click();"class="btn btn-primary">퇴근</button><br>
+                    </form>
                 </div>
                 <div class="wrap">
                     <div class="boxTitle">메세지</div>
@@ -263,7 +266,15 @@
     buildCalendar();
     
     function start_click(){
-    	document.getElementById('start').disabled = true;
+    	alert("오늘도 화이팅!!");
+    	document.getElementById("start").disabled = true;
+    	location.href="start.att";
+    }
+    
+    function finish_click(){
+    	alert("오늘도 수고하셨습니다!!");
+    	document.getElementById("finish").disabled = true;
+    	location.href="finish.att";
     }
     </script>
  	

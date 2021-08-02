@@ -22,18 +22,8 @@ public class CompanyInfoController {
 	private CompanyInfoService cService;
 
 	@RequestMapping("insert.co")
-	public String insertCompayInfo(CompanyInfo ci, MultipartFile upImg, HttpSession session) {
-		if(!upImg.getOriginalFilename().equals("")) {
-			if(ci.getOriginName() != null) {
-				new File(session.getServletContext().getRealPath(ci.getChangeName())).delete();
-				}
-			}
-
-		String changeName = saveFile(session, upImg);
-
-		ci.setOriginName(upImg.getOriginalFilename());
-		ci.setChangeName("reources/uploadFiles/" + changeName);
-
+	public String insertCompayInfo(CompanyInfo ci, HttpSession session) {
+		
 		int result = cService.insertCompanyInfo(ci);
 
 		if(result > 0) {
@@ -48,12 +38,20 @@ public class CompanyInfoController {
 	}
 
 	@RequestMapping("company.info")
-	public String companyInfo() {
+	public String companyInfo(CompanyInfo ci, HttpSession session) {
+		CompanyInfo cInfo = cService.companyInfo(ci);
+		
+		session.setAttribute("cInfo", cInfo);
+		System.out.println(cInfo);
 		return "contact/companyInfo";
 	}
 	
 	@RequestMapping("adminCompanyInfo.st")
-	public String companyInfoManage() {
+	public String companyInfoManage(CompanyInfo ci, HttpSession session) {
+		CompanyInfo cInfo = cService.companyInfo(ci);
+		
+		session.setAttribute("cInfo", cInfo);
+		System.out.println(cInfo);
 		return "contact/adminInfoManage";
 	}
 

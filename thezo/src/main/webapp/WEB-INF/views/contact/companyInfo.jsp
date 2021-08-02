@@ -108,8 +108,8 @@
                             <td colspan="2">${ cInfo.addressEng }</td>
                         </tr>
                         <tr>
-                            <th>회사로고</th>
-                            <td><img src="${ cInfo.changeName }" width="100px" height="100px"></td>
+                            <th>회사도장</th>
+                            <td><img src="${ cInfo.changeName }" width="45px" height="45px"></td>
                         </tr>
                     </table>
                 </form>

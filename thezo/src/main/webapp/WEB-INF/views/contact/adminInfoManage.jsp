@@ -116,12 +116,12 @@
                             <td colspan="2"><input type="text" name="addressEng" class="form-control" placeholder="주소(영문)을 입력해주세요 " value="${ cInfo.addressEng }"></td>
                         </tr>
                         <tr>
-                            <th>회사로고</th>
+                            <th>회사도장</th>
                             <td>            
                                 <div class="input-group mb-3" style="margin-bottom: 0% !important;">
                                     <input type="file" name="upImg" onchange="loadImg(this);" class="form-control" id="inputGroupFile02">
                                     <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                                    <img src="${ cInfo.changeName }" id="companyImg" width="100px" height="100px">
+                                    <img src="${ cInfo.changeName }" id="companyImg" width="45px" height="45px" style="margin-top:10px">
                                     <script>
 				                    	$(function(){
 				                    		$("#companyImg").click(function(){

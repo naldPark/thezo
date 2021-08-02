@@ -1,6 +1,7 @@
 package com.kh.thezo.notification.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
+import com.kh.thezo.member.model.vo.Member;
 import com.kh.thezo.notification.model.service.NotificationService;
 import com.kh.thezo.notification.model.vo.Notification;
 
@@ -22,7 +24,6 @@ public class NotificationController {
 	
 	@Autowired
 	private NotificationService nfService;
-
 	// ※ 관리자단 ! ------------------------------------------------------------------------------------------------------------------------------
 	//	일단은 나중에 생각해서 ModelAndView로 세팅 지금은 넘기기만 하자! 
 	// url 신경써서!!! 여기서는 currentPage 기본 값을 1로 설정하여 진행한다. 
@@ -113,26 +114,78 @@ public class NotificationController {
 	}
 
 	//-----------------------사용자단 관련 !! ----------------------------------------
-	//★ ↓ AJAX 처리다!! 
-	/*
+	/** 자신의 memNo에 해당하는 모든 (읽은, 읽지 않은 알림 조회해오는) Controller 
+	 * @param memNo
+	 * @return
+	 */
 	@ResponseBody
-	@RequestMapping(value="confirm.nf", produces="application/json; charset=utf-8")
-	public String ajaxConfirmNotification(HttpSession session) {
-	*/
+	@RequestMapping(value="selectList.adnf", produces="application/json; charset=utf-8")
+	public String ajaxSelectListNf(int memNo) {
+		ArrayList<Notification> list = nfService.ajaxSelectListNf(memNo);		
+		return new Gson().toJson(list);
+	}
 
-		//int result = 어떤 메소드 실행해서 !!! 알림 읽음으로 update처리하고 
-		//session에서 !!! 알림쪽! 만료 시켜줘야한다!!! 
-		//if(result>0) {
-		//	session.removeAttribute("notification");
-		//}
+	/** 단순히 읽지 않은 알림 갯수 조회해오는 ajax Controller (나중에 사라질수 있는 Controller)
+	 * 
+	   *  ★★ ★ ★ ★ ★ ★ ★ ★ ★ ★  중요하다 나중에 성경님이 로그인쪽 작업 해주시면 그때는 ajax의 개념이 아니라!!! 단순하게 서비스 호출이다!! 이를 인지하고 그때가서 바꿔주자!  
+	 * @param memNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="check.nf", produces="application/json; charset=utf-8")
+	public String ajaxCountUnreadedNf(int memNo, HttpSession session) {
+		int count = nfService.ajaxCountUnreadedNf(memNo);		
+		if(count != 0) {
+			session.setAttribute("unreadNotification", count);
+		}
+		return new Gson().toJson(count);
+	}
 
-		//if(result>0) {//알림 읽음으로 update성공시 
-		//	return "1";
-		//}else {//실패시 
-		//	retunr "0";
-		//}
-	//}
+	/** 읽지 않는 알림을 가져오는 ajax Controller
+	 * @param memNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="unreadNf.nf", produces="application/json; charset=utf-8")
+	public String ajaxSelectUnreadedNf(int memNo) {
+		ArrayList<Notification> list = nfService.ajaxSelectUnreadedNf(memNo);		
+		if(list != null) {
+			return new Gson().toJson(list);
+		}
+		return new Gson().toJson("읽지않은 알림 조회결과 없음");
+	}
+
+	/** 단순히 알림확인을 나중에 하기 위해서 session에서 해당 알림 갯수를 날려버리는 Controller 
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="skipUnreadNf.nf", produces="application/json; charset=utf-8")
+	public String ajaxskipUnreadNf(HttpSession session) {
+		session.removeAttribute("unreadNotification");
+		return new Gson().toJson("해당 notification 세션 만료 시킴 ");
+	}
+	
+	/** 받은 알림을 읽음 처리하는 Controller  
+	 * HashMap에 담아보자!  
+	 * @param nfNoList
+	 * @param memNo
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="updateStatus.nf", produces="application/json; charset=utf-8")
+	public String ajaxUpdateUserNf(int[] nfNoList, int memNo) {
+		HashMap<Object, Object> hm = new HashMap();
+		hm.put("memNo",  memNo);
+		hm.put("nfNoList", nfNoList);
+		int result = nfService.ajaxUpdateUserNf(hm);
+		if(result > 0) {
+			return new Gson().toJson("알림을 확인하였습니다. \n확인한 알림은 메신저의 알림텝에서 다시 확인 가능합니다.");			
+		}else {
+			return new Gson().toJson("알림을 확인에 실패하였습니다. 개발자에게 문의해주세요");						
+		}
+	}
 
 	
-
 }

@@ -18,6 +18,7 @@ import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.member.model.service.MemberService;
 import com.kh.thezo.member.model.vo.Member;
+import com.kh.thezo.notification.model.service.NotificationService;
 
 @Controller
 public class MemberController {
@@ -26,6 +27,8 @@ public class MemberController {
 	private MemberService mService;
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	@Autowired
+	private NotificationService nfService;
 
 	@RequestMapping("logout.me")
 	public String logoutMember(HttpSession session){
@@ -47,6 +50,12 @@ public class MemberController {
 			mv.addObject("errorMsg", "로그인에 실패했습니다");
 			mv.setViewName("common/errorPage");
 		}
+		
+		int count = nfService.ajaxCountUnreadedNf(loginUser.getMemNo());		
+		if(count != 0) {
+			session.setAttribute("unreadNotification", count);
+		}
+
 		
 		return mv;		
 		

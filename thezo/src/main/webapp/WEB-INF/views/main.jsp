@@ -25,6 +25,12 @@
     }
     .board > tbody  > tr {cursor: pointer;}
 
+	.text-left>span:hover{
+		cursor:pointer;
+		color: rgb(0,121,251); 
+		font-weight:bold;
+	}
+
 </style>
 </head>
 <body>
@@ -67,7 +73,9 @@
                                 <i class="fa fa-bell fa-lg" aria-hidden="true"></i>
                             </div>
                             <div class="col text-left">
-                                <span> 알림</span>
+                                <span onclick="mainOpenUnreadNf();"> 알림 
+                                <i id="notifyNewNf" class="fas fa-exclamation-circle" style="color:red"></i>
+                                </span>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -76,7 +84,9 @@
 
                             </div>
                             <div class="col text-left">
-                                <span>대화하기</span>
+                                <span onclick="mainOpenUnreadChat">대화하기 
+                                <i id="notifyNewChat" class="fas fa-exclamation-circle" style="color:red"></i>
+                                </span>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -84,7 +94,9 @@
                                 <i class="fas fa-sticky-note fa-lg"></i>
                             </div>
                             <div class="col text-left">
-                                <span>쪽지</span>
+                                <span onclick="mainOpenUnreadMsg">쪽지
+                                <i id="notifyNewMsg" class="fas fa-exclamation-circle" style="color:red"></i>
+                                </span>
                             </div>
                         </div>
 
@@ -265,6 +277,37 @@
     function start_click(){
     	document.getElementById('start').disabled = true;
     }
+    
+    // @Author: Jaewon.S
+    // 알림쪽 보이게 하거나 안보이게 하기! 
+ 	$(function(){
+    	if(${!empty unreadNotification}){
+	    	$("#notifyNewNf").show();    		
+    	}else{    		
+	    	$("#notifyNewNf").hide();    		
+    	}
+ 	})
+    
+    function mainOpenUnreadNf(){
+    	if(${!empty unreadNotification}){
+	    	$("#messenger-outer").hide();    		
+			$(".notification-outer").css("display","block");
+    	}else{    		
+    		showMessengerArea();
+    		moveToNotification(); 
+   		}
+    }
+
+    // @Author: Jaewon.S
+    function mainOpenUnreadChat(){
+    	
+    }
+    
+    // @Author: Jaewon.S
+    function mainOpenUnreadMsg(){
+    	
+    }
+    
     </script>
  	
 </body>

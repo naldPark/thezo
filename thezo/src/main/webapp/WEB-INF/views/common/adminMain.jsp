@@ -84,6 +84,11 @@
 
 		document.getElementById("admin-header").style.display ="block"; 
         document.getElementById("admin-mode").style.color = "red";
+        
+        $(function(){
+        	$(".notification-innerline").show();
+        })
+
 	</script>
 	
 	<section>

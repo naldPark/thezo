@@ -1,7 +1,6 @@
 package com.kh.thezo.contact.model.vo;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,10 +23,10 @@ public class CompanyInfo {
 	private String homePage;
 	private String corNo;
 	private String fax;
-	private Date estDate;
+	private String estDate;
 	private String address;
 	private String ceoEng;
-	private String cNameEng;
+	private String cnameEng;
 	private String addressEng;
 	private String originName;
 	private String changeName;

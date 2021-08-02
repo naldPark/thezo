@@ -1,6 +1,7 @@
 package com.kh.thezo.notification.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +89,32 @@ public class NotificationServiceImpl implements NotificationService{
 	}
 	
 	//------------------------------※ 사용자단 알림 로직들 -------------------------------------------------------
+	/** ajax로 나의 memNo를 기준으로 알림 목록 가져오는 서비스 
+	 */
+	@Override
+	public ArrayList<Notification> ajaxSelectListNf(int memNo) {
+		return nfDao.ajaxSelectListNf(sqlSession, memNo) ;
+	}
 
+	/** 단순히 읽지 않은 알림 갯수 조회해오는 ajax 서비스
+	 */
+	@Override
+	public int ajaxCountUnreadedNf(int memNo) {
+		return nfDao.ajaxCountUnreadedNf(sqlSession, memNo);
+	}
+
+	/** 읽지않은 알림 리스트 가져오는 ajax 서비스 
+	 */
+	@Override
+	public ArrayList<Notification> ajaxSelectUnreadedNf(int memNo) {
+		return nfDao.ajaxSelectUnreadedNf(sqlSession, memNo);
+	}
+
+	/**받은 알림을 읽음 처리하는 서비스
+	 */
+	@Override
+	public int ajaxUpdateUserNf(HashMap<Object, Object> nfNoList) {
+		return nfDao.ajaxUpdateUserNf(sqlSession, nfNoList);
+	}
 
 }

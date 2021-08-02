@@ -1,6 +1,7 @@
 package com.kh.thezo.notification.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.notification.model.vo.Notification;
@@ -28,5 +29,16 @@ public interface NotificationService {
 	int updateNotification(Notification nf, String originNdDeptName, String reNotify); 
 	
 	// 사용자단  service Interface들 ------------------------------------------------------
-
+	//  자신의 memNo에 해당하는 모든 (읽은, 읽지 않은 알림 조회해오는) 서비스 
+	ArrayList<Notification> ajaxSelectListNf(int memNo);
+	
+	//단순히 읽지 않은 알림 갯수 조회해오는 ajax 서비스
+	int ajaxCountUnreadedNf(int memNo);
+	
+	// 읽지않은 알림 리스트 가져오는 ajax 서비스 
+	ArrayList<Notification> ajaxSelectUnreadedNf(int memNo);
+	
+	// 받은 알림을 읽음 처리하는 서비스
+	int ajaxUpdateUserNf(HashMap<Object, Object> nfNoList);
+	
 }

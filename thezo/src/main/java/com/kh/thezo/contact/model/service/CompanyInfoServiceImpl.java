@@ -20,4 +20,9 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 		return cDao.insertCompanyInfo(sqlSession, ci);
 	}
 
+	@Override
+	public CompanyInfo companyInfo(CompanyInfo ci) {
+		return cDao.companyInfo(sqlSession, ci);
+	}
+
 }

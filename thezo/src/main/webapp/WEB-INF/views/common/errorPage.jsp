@@ -12,7 +12,6 @@
 	#ErrorMessageArea{color: rgb(78, 78, 78); padding: 10px; border:1px solid lightgray; width: 70%}
 </style>
 <body>
-<jsp:include page="header.jsp"/>
 <br>
 	<section>
 		<div class="outer" align="center" >

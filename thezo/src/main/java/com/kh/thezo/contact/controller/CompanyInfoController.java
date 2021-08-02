@@ -23,24 +23,25 @@ public class CompanyInfoController {
 
 	@RequestMapping("insert.co")
 	public String insertCompayInfo(CompanyInfo ci, MultipartFile upImg, HttpSession session) {
+		
 		if(!upImg.getOriginalFilename().equals("")) {
 			if(ci.getOriginName() != null) {
 				new File(session.getServletContext().getRealPath(ci.getChangeName())).delete();
-				}
 			}
-
-		String changeName = saveFile(session, upImg);
-
-		ci.setOriginName(upImg.getOriginalFilename());
-		ci.setChangeName("reources/uploadFiles/" + changeName);
-
+			
+			String changeName = saveFile(session, upImg);
+			
+			ci.setOriginName(upImg.getOriginalFilename());
+			ci.setChangeName("resources/uploadFiles/" + changeName);
+		}
+		
 		int result = cService.insertCompanyInfo(ci);
 
 		if(result > 0) {
 			session.setAttribute("alertMsg", "성공적으로 등록되었습니다.");
 			return "redirect:company.info";
 		}else {
-			session.setAttribute("alertMsg", "등록 실패");
+			session.setAttribute("errorMsg", "등록 실패");
 			return "redirect:adminCompanyInfo.st";
 		}
 
@@ -48,12 +49,20 @@ public class CompanyInfoController {
 	}
 
 	@RequestMapping("company.info")
-	public String companyInfo() {
+	public String companyInfo(CompanyInfo ci, HttpSession session) {
+		CompanyInfo cInfo = cService.companyInfo(ci);
+		
+		session.setAttribute("cInfo", cInfo);
+		System.out.println(cInfo);
 		return "contact/companyInfo";
 	}
 	
 	@RequestMapping("adminCompanyInfo.st")
-	public String companyInfoManage() {
+	public String companyInfoManage(CompanyInfo ci, HttpSession session) {
+		CompanyInfo cInfo = cService.companyInfo(ci);
+		
+		session.setAttribute("cInfo", cInfo);
+		System.out.println(cInfo);
 		return "contact/adminInfoManage";
 	}
 

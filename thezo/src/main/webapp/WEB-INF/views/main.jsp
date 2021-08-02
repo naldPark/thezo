@@ -25,6 +25,12 @@
     }
     .board > tbody  > tr {cursor: pointer;}
 
+	.text-left>span:hover{
+		cursor:pointer;
+		color: rgb(0,121,251); 
+		font-weight:bold;
+	}
+
 </style>
 </head>
 <body>
@@ -48,8 +54,11 @@
                         출근시간: 오전 9시 35분<br>
                         퇴근시간: <br>
                     </div>
-                    <button type="button" id="start" onclick="start_click();" class="btn btn-primary">출근</button>
-                    <button type="button" id="finish" onclick="finish_click();"class="btn btn-primary">퇴근</button><br>
+                    <form action="">
+                    	<input type="hidden" id="timevalue">
+	                    <button type="submit" id="start" onclick="start_click();" class="btn btn-primary">출근</button>
+	                    <button type="submit" id="finish" onclick="finish_click();"class="btn btn-primary">퇴근</button><br>
+                    </form>
                 </div>
                 <div class="wrap">
                     <div class="boxTitle">메세지</div>
@@ -67,7 +76,9 @@
                                 <i class="fa fa-bell fa-lg" aria-hidden="true"></i>
                             </div>
                             <div class="col text-left">
-                                <span> 알림</span>
+                                <span onclick="mainOpenUnreadNf();"> 알림 
+                                <i id="notifyNewNf" class="fas fa-exclamation-circle" style="color:red"></i>
+                                </span>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -76,7 +87,9 @@
 
                             </div>
                             <div class="col text-left">
-                                <span>대화하기</span>
+                                <span onclick="mainOpenUnreadChat">대화하기 
+                                <i id="notifyNewChat" class="fas fa-exclamation-circle" style="color:red"></i>
+                                </span>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -84,7 +97,9 @@
                                 <i class="fas fa-sticky-note fa-lg"></i>
                             </div>
                             <div class="col text-left">
-                                <span>쪽지</span>
+                                <span onclick="mainOpenUnreadMsg">쪽지
+                                <i id="notifyNewMsg" class="fas fa-exclamation-circle" style="color:red"></i>
+                                </span>
                             </div>
                         </div>
 
@@ -263,8 +278,47 @@
     buildCalendar();
     
     function start_click(){
-    	document.getElementById('start').disabled = true;
+    	alert("오늘도 화이팅!!");
+    	document.getElementById("start").disabled = true;
+    	location.href="start.att";
     }
+    
+    function finish_click(){
+    	alert("오늘도 수고하셨습니다!!");
+    	document.getElementById("finish").disabled = true;
+    	location.href="finish.att";
+    }
+    
+    // @Author: Jaewon.S
+    // 알림쪽 보이게 하거나 안보이게 하기! 
+ 	$(function(){
+    	if(${!empty unreadNotification}){
+	    	$("#notifyNewNf").show();    		
+    	}else{    		
+	    	$("#notifyNewNf").hide();    		
+    	}
+ 	})
+    
+    function mainOpenUnreadNf(){
+    	if(${!empty unreadNotification}){
+	    	$("#messenger-outer").hide();    		
+			$(".notification-outer").css("display","block");
+    	}else{    		
+    		showMessengerArea();
+    		moveToNotification(); 
+   		}
+    }
+
+    // @Author: Jaewon.S
+    function mainOpenUnreadChat(){
+    	
+    }
+    
+    // @Author: Jaewon.S
+    function mainOpenUnreadMsg(){
+    	
+    }
+    
     </script>
  	
 </body>

@@ -1,6 +1,7 @@
 package com.kh.thezo.notification.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -123,8 +124,45 @@ public class NotificationDao {
 		}
 	}
 
+
 	//------------------------------※ 사용자단 알림  Date Object Access들  -------------------------------------------------------
 
+	/** ajax로 나의 memNo를 기준으로 알림 목록 가져오는 dao 
+	 * @param sqlSession
+	 * @param memNo
+	 * @return
+	 */
+	public ArrayList<Notification> ajaxSelectListNf(SqlSessionTemplate sqlSession, int memNo) {
+		return (ArrayList)sqlSession.selectList("notificationMapper.ajaxSelectListNf", memNo);
+	}
+	
+	/** 단순히 읽지 않은 알림 갯수 조회해오는 ajax dao
+	 * @param sqlSession
+	 * @param memNo
+	 * @return
+	 */
+	public int ajaxCountUnreadedNf(SqlSessionTemplate sqlSession, int memNo) {
+		return sqlSession.selectOne("notificationMapper.ajaxCountUnreadedNf", memNo);
+	}
+
+	/** 읽지않은 알림 리스트 가져오는 ajax dao
+	 * @param sqlSession
+	 * @param memNo
+	 * @return
+	 */
+	public ArrayList<Notification> ajaxSelectUnreadedNf(SqlSessionTemplate sqlSession, int memNo) {
+		return (ArrayList)sqlSession.selectList("notificationMapper.ajaxSelectUnreadedNf", memNo);
+	}
+
+	
+	/** 받은 알림을 읽음 처리하는 dao
+	 * @param sqlSession
+	 * @param nfNoList
+	 * @return
+	 */
+	public int ajaxUpdateUserNf(SqlSessionTemplate sqlSession, HashMap<Object, Object> nfNoList) {
+		return sqlSession.update("notificationMapper.ajaxUpdateUserNf", nfNoList);
+	}
 
 
 	

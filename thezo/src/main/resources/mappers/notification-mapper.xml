@@ -69,6 +69,7 @@
 	    select ${ nfNo } , m.mem_no 	    
 	      from member m
          where status = 'Y'
+            or status = 'A'
 	      	<if test="nfDeptName != '전사원'">
      			 and department like '%' || #{ nfDeptName } || '%'	  			   	      	
 	      	</if>
@@ -153,6 +154,68 @@
 		   set read_status = 'Y'
 		 where nf_no = #{ nfNo }       	
 	</update>
+
+	<!-- ajax로 나의 memNo를 기준으로 알림 목록 가져오는 sql문  -->
+	<select id="ajaxSelectListNf" resultMap="notificationResult">
+		select
+		       nf_no
+		     , dept_name
+		     , to_char(start_date, 'YYYY-MM-DD') as start_date
+		     , to_char(end_date, 'YYYY-MM-DD') as end_date
+		     , nf_content
+		     , to_char(enroll_date, 'YY-MM-DD') as for_order_enroll_date
+		     , to_char(update_date, 'YY-MM-DD') as update_date
+		  from notification
+          join nf_check using(nf_no)
+		 where del_status = 'Y'
+           and mem_no = #{ memNo }
+		 order
+		    by enroll_date desc  		
+	</select>
+	
+	<!-- 단순히 읽지 않은 알림 갯수 조회해오는 ajax sql문 -->
+	<select id="ajaxCountUnreadedNf" resultType="_int">
+		select
+    	       count(*)
+		  from notification
+          join nf_check using(nf_no)
+		 where del_status = 'Y'
+           and mem_no = #{ memNo }
+           and read_status = 'Y'
+	</select>
+	
+	<!-- 읽지않은 알림 리스트 가져오는 ajax sql문 -->
+	<select id="ajaxSelectUnreadedNf" resultMap="notificationResult">
+		select
+		       nf_no
+		     , dept_name
+		     , to_char(start_date, 'YYYY-MM-DD') as start_date
+		     , to_char(end_date, 'YYYY-MM-DD') as end_date
+		     , nf_content
+		     , to_char(enroll_date, 'YY-MM-DD') as for_order_enroll_date
+		     , to_char(update_date, 'YY-MM-DD') as update_date
+		  from notification
+          join nf_check using(nf_no)
+		 where del_status = 'Y'
+           and mem_no = #{ memNo }
+           and read_status = 'Y'
+         order
+		    by start_date desc  		
+	</select>
+	 
+	<!-- 받은 알림을 읽음 처리하는 sql문 -->
+	<update id="ajaxUpdateUserNf" parameterType="hashMap">
+		update
+		       nf_check
+		   set read_status = 'N'
+		 where mem_no = ${memNo}
+		   and nf_no in ( 
+			<foreach item="nfNo" index="index" collection="nfNoList" separator=",">
+				${nfNo}
+			</foreach>
+			)		 	
+	</update>
+
 
 
 </mapper>

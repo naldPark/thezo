@@ -21,4 +21,5 @@ public class AttendanceController{
 		return "attendance/adminAttManage";
 	}
 	
+	
 }

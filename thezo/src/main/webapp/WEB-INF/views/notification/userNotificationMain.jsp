@@ -15,7 +15,6 @@
     #notification-list-outer::-webkit-scrollbar {width: 10px;}
     #notification-list-outer::-webkit-scrollbar-thumb {border: 2px solid transparent; border-radius: 5px; background-clip: padding-box; background-color: rgb(241,197,7);}
     #notification-list-outer::-webkit-scrollbar-track {border-radius: 5px; box-shadow: inset 0px 0px 5px white; background-color: lightgrey;}
-
     .notification-item{width: 100%;}
     .notification-item:hover{cursor: pointer;}
     .notification-item:hover>.notification-item-header{background-color: rgb(238, 172, 113);}
@@ -24,113 +23,51 @@
     .notification-item-header>div{width: 66%; padding-left: 5px;}
     .notification-item-header>div>span{font-size: 17px; font-weight: bold; line-height: 28px;}
     .notification-item>p{margin: 0px; padding-top: 10px; background-color: white;}
-    .schedule{padding-left: 15px;}
+    .nf-schedule{padding-left: 15px;}
     .pre-outer{width: 100%; background-color: white;}
-    .nf-con{width: 280px; font-size: 15px; margin: 0px; padding: 10px; background-color: white;
+    .nf-con{width: 280px; font-size: 15px; margin: 0px; padding: 10px; background-color: white; font-family:'Noto Sans KR', sans-serif;
 		white-space:pre-wrap; 
 		word-break:keep-all;
 		text-overflow:clip;
-        line-height: 12px;
+        line-height: 20px;
     }
 </style>
 </head>
 <body>
-    <div id="notification-list-outer">
-            <!-- 동적 생성할때 ! 해당 ! 알림 번호를 넘겨야한다! -->
-            <div class="notification-item" onclick="toggleContent(1);">
-                <div class="notification-item-header" id="nf-item1">
-                    <i class="fas fa-lightbulb"></i>
-                    <div>
-                        <span>전사원</span>
-                        <span>알림</span>
-                    </div>
-                </div>
-                <p class="schedule">
-                    일정 : <span></span>~<span></span>
-                </p>
-                <div class="pre-outer">
-                    <pre id="nf-con1" class="nf-con" style="display: none;">
-                        sdfadsfjkhjkadhfkj
-                    </pre>
-                </div>
-            </div>
+	<script>
+		function ajaxShowMyNotification(){
+		 	$.ajax({
+		 		url:"selectList.adnf",
+				data:{memNo: "${sessionScope.loginUser.memNo}"},
+		 		success:function(myNfList){
+		 			//console.log(myNfList);
+		 			var value ="";
+		 			for(var i in myNfList){
+		 				value += '<div class="notification-item" onclick="toggleContent(' + myNfList[i].nfNo + ');">'
+		 				       + '<div class="notification-item-header">'
+		 				       + '<i class="fas fa-lightbulb"></i>' + '<div>'
+		 				       + '<span>'
+		 				       + myNfList[i].nfDeptName
+		 				       + '</span><span>알림</span></div></div>'
+		 				       + '<p class="nf-schedule">  일정 : <span>'
+		 				       + myNfList[i].nfStartDate
+		 				       + '</span> ~ <span>'
+		 				       + myNfList[i].nfEndDate
+		 				       + '</span></p>'
+		 				       + '<div class="pre-outer">'
+		 				       + '<pre id="nf-con'
+		 				       + myNfList[i].nfNo
+		 				       + '" class="nf-con" style="display: none;">' + myNfList[i].nfContent + '</pre></div></div>'
+		 			}
+					$("#notification-list-outer").html(value);
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})
+		}
+	</script>
 
-            <div class="notification-item" onclick="toggleContent(2);">
-                <div class="notification-item-header" id="nf-item2">
-                    <i class="fas fa-lightbulb"></i>
-                    <div>
-                        <span>전사원</span>
-                        <span>알림</span>
-                    </div>
-                </div>
-                <p class="schedule">
-                    일정 : <span></span>~<span></span>
-                </p>
-                <div class="pre-outer">
-                    <pre id="nf-con2" class="nf-con" style="display: none;">
-                        sdfadsfjkhjkadhfkj
-                        폰트사이즈
-                        sdfadsfjkhjkadhfkjsd
-                    </pre>
-                </div>
-            </div>
-            <div class="notification-item" onclick="toggleContent(3);">
-                <div class="notification-item-header" id="nf-item3">
-                    <i class="fas fa-lightbulb"></i>
-                    <div>
-                        <span>전사원</span>
-                        <span>알림</span>
-                    </div>
-                </div>
-                <p class="schedule">
-                    일정 : <span></span>~<span></span>
-                </p>
-                <div class="pre-outer">
-                    <pre id="nf-con3" class="nf-con" style="display: none;">
-                        sdfadsfjkhjkadhfkj
-                        폰트사이즈
-                        sdfadsfjkhjkadhfkjsd
-                    </pre>
-                </div>
-            </div>
-            <div class="notification-item" onclick="toggleContent(4);">
-                <div class="notification-item-header" id="nf-item4">
-                    <i class="fas fa-lightbulb"></i>
-                    <div>
-                        <span>전사원</span>
-                        <span>알림</span>
-                    </div>
-                </div>
-                <p class="schedule">
-                    일정 : <span></span>~<span></span>
-                </p>
-                <div class="pre-outer">
-                    <pre id="nf-con4" class="nf-con" style="display: none;">
-                        sdfadsfjkhjkadhfkj
-                        폰트사이즈
-                        sdfadsfjkhjkadhfkjsd
-                    </pre>
-                </div>
-            </div>
-            <div class="notification-item" onclick="toggleContent(5);">
-                <div class="notification-item-header" id="nf-item5">
-                    <i class="fas fa-lightbulb"></i>
-                    <div>
-                        <span>전사원</span>
-                        <span>알림</span>
-                    </div>
-                </div>
-                <p class="schedule">
-                    일정 : <span></span>~<span></span>
-                </p>
-                <div class="pre-outer">
-                    <pre id="nf-con5" class="nf-con" style="display: none;">
-                        sdfadsfjkhjkadhfkj
-                        폰트사이즈
-                        sdfadsfjkhjkadhfkjsd
-                    </pre>
-                </div>
-            </div>
+    <div id="notification-list-outer">
     </div>
 
     <script>

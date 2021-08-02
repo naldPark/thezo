@@ -157,13 +157,13 @@
                         <li><a href="main.appr">전자결재</a></li>
                         <li><a href="main.sc">일정관리</a></li>
 
-                        <c:if test="${loginUser.userId eq 'admin' }">
+                        <c:if test="${loginUser.memId eq 'admin' }">
                             <li><a href="javascript:showAdminNav()" style="font-size: 17px; color: gray;" id="admin-mode">관리자모드</a></li>
                         </c:if> 
         
 
                         <%-- 연락처 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
-                        <li id="user-basic-info"><a href="">${loginUser.userId}</a>님 반가워요 &nbsp;
+                        <li id="user-basic-info"><a href="">${loginUser.memName}</a>님 반가워요 &nbsp;
                             <ul style="z-index: 10000;">
                                 <li><a href="myPage.me">내 정보 수정</a></li>
                                 <li><a href="attendance.ma">근태관리</a></li>
@@ -176,9 +176,22 @@
                     <!-- ★ 바뀐 부분으로 여기가 내가 작업 해야할 영역이다!!  -->
                     <div id="messenger-area" onclick="showMessengerArea();">
                         <!-- ※ 알림 영역 읽지 않은 알림이 있을시 ! -->
+                        
+                        <!-- 성경님이 로그인쪽 만들어주면 그쪽에서 service호출을 해주면 되는것으로 후에 완성해주시면 그떄 다시 재작업 하자!  -->
+                        <!--  <script>
+               				$.ajax({
+               					url:"check.nf",
+               					data:{memNo: "${sessionScope.loginUser.memNo}"},
+               					success:function(count){
+               						console.log("읽지않은 알림 조회 성공 / 읽지않은 알림 갯수 " + count);
+               					},error:function(){
+               						console.log("ajax통신 실패");
+               					}
+               				})	               				
+                        </script> -->
                         <c:if test="${!empty unreadNotification}">
                             <div class="notification-outer">
-                                <div class="notification-innerline">
+                                <div class="notification-innerline" onclick="event.cancelBubble=true">
                                     <jsp:include page="../notification/unreadNotification.jsp"/>
                                 </div>
                             </div>               
@@ -237,7 +250,7 @@
 <%------------------------------------------------------------------------------------------------------------------------ --%>
 <%--↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓관리자 메뉴 영역 (urlMapping값 달아주세요)↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ --%>
         <!-- Admin header영역  개발자 도구에서 볼수없게 jstl 처리함 -->
-        <c:if test="${loginUser.userId eq 'admin' }">
+        <c:if test="${loginUser.memId eq 'admin' }">
             <div id="admin-header" class="w3-animate-opacity">
                 <div id="admin-nav">
                     <span>관리자메뉴</span>
@@ -287,7 +300,7 @@
         <script>
 			$(function(){
 				//var adMode = $("#admin-mode");
-				if(${loginUser.userId != 'admin'}){				
+				if(${loginUser.memId != 'admin'}){				
 	            	$("section").css("margin-top","70px");					
 				}else{
 					var forExceptionCont = document.getElementById("admin-mode").style.color;
@@ -322,14 +335,12 @@
                     showdiv.style.top =(adminNav.style.display != 'none'?"114px":"70px");                       
                 }
 
-                if(${loginUser.userId == 'admin'}){				
+                if(${loginUser.memId == 'admin'}){				
                     var forExceptionCont = document.getElementById("admin-mode").style.color;
                     if(forExceptionCont == 'gray'){
                         showdiv.style.top = "70px";
                     }
-                }
-
-                
+                }                
             };
 
             // messenger 세부메뉴영역 
@@ -372,6 +383,8 @@
                 $(".chat-menu>div").css("color","orangered").css("background","white");
                 $("#chatting-outer").show();
                 $("#open-chat-Room").hide();
+                
+                ajaxShowMyNotification();
             }
         </script>
     </div>    

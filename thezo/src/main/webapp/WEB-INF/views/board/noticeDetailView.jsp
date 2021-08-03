@@ -19,7 +19,7 @@
 
 	<jsp:include page="../common/header.jsp"/>
 	
-	<c:if test="${loginUser.userId eq 'admin' }">
+	<c:if test="${loginUser.memId eq 'admin' }">
 		<script>	
 			document.getElementById("admin-header").style.display = "block";
 			document.getElementById("admin-mode").style.color = "red";
@@ -33,10 +33,14 @@
         <div class="innerOuter">
             <h2><b>공지사항</b></h2>
             <br>
-    
-            <a  style="float:right" href="">삭제</a>
-                <br><br>
-                <table id="contentArea" align="center" class="table">
+    		
+    		<c:if test="${ loginUser.memId eq b.boardWriter}">
+            	<a style="float:right; cursor: pointer; color: #0091FF;" onclick="postFormSubmit(2);">삭제</a>
+            </c:if>
+            
+            <br><br>
+            
+            <table id="contentArea" align="center" class="table">
                     <tr>
                         <th style="font-size:20px;">
                            	 ${ b.boardTitle }
@@ -75,9 +79,27 @@
     
                 <div align="center">
                     <!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
-                    <a class="btn btn-secondary" href="">목록</a>
-                    <a class="btn btn-secondary" href="">수정</a>
+                    <a class="btn btn-secondary" href="noticeList.bo">목록</a>
+                    
+                    <c:if test="${ loginUser.memId eq b.boardWriter}">
+                    	<a class="btn btn-secondary" onclick="postFormSubmit(1);">수정</a>
+                    </c:if>
                 </div><br><br>
+                
+                 <form id="postForm" action="" method="post">
+	            	<input type="hidden" name="bno" value="${ b.boardNo }">
+	            	<input type="hidden" name="filePath" value="${ bf.changeName }">
+	             </form>
+	             
+	             <script>
+	            	function postFormSubmit(num){
+	            		if(num == 1){ // 수정하기 클릭시
+	            			$("#postForm").attr("action", "noticeUpdate.bo").submit();
+	            		}else{ // 삭제하기 클릭시
+	            			$("#postForm").attr("action", "noticeDelete.bo").submit();
+	            		}
+	            	}
+	            </script>
     
     
            

@@ -123,8 +123,6 @@
 		     , board_content
 		     , to_char(board_date, 'YYYY-MM-DD') as board_date
 		     , count
-		     , origin_name
-			 , change_name
  		  from board b
           left outer join board_file on(board_no = ref_bno)
 		 where board_no = #{boardNo}
@@ -272,14 +270,57 @@
 		     , board_content
 		     , to_char(board_date, 'YYYY-MM-DD') as board_date
 		     , count
-		     , origin_name
-			 , change_name
  		  from board b
           left outer join board_file on(board_no = ref_bno)
 		 where board_no = #{boardNo}
 		   and board_type = 2
            and b.status = 'Y'   
 	</select>
+	
+	<!-- 사용자 : 공지사항 첨부파일 상세 조회 -->
+	<select id="selectBoardFile" resultMap="boardFileResult">
+		select 
+		       origin_name
+		     , change_name
+		  from board_file
+		 where ref_bno = #{refBno}
+		   and status = 'Y'      
+	</select>
+	
+		
+	<!-- 사용자 : 사내게시판 글 등록 -->
+	<insert id="insertBoard">
+		insert 
+		  into board
+		values(
+		            seq_nbno.nextval
+		          , #{ memNo}  
+		          , #{ boardWriter }
+		          , 2
+				  , #{ boardTitle }
+				  , #{ boardContent }
+		          , sysdate
+		          , 0
+		          , default
+				)
+	</insert>
+	
+	<!-- 사용자 : 사내게시판 등록 첨부파일  -->
+	<insert id="insertBoardFile">
+		insert 
+		   into board_file
+		   values(
+		           seq_bfno.nextval
+		         , '사내'
+		         , seq_nbno.currval
+		         , #{ originName }
+		         , #{ changeName }
+		         , 'resources/uploadFiles/'
+		         , sysdate
+		         , default
+		         )
+	</insert>
+	
 	
 
 

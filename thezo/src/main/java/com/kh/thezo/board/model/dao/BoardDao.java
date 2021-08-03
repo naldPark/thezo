@@ -106,6 +106,22 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectBoard", boardNo);
 	}
 	
+	// 사용자 : 공지사항 상세조회(첨부파일)
+	public BoardFile selectBoardFile(SqlSessionTemplate sqlSession, int refBno) {
+		return sqlSession.selectOne("boardMapper.selectBoardFile", refBno);
+	}
+		
+	
+	// 사용자 : 사내게시판 등록 
+	public int insertBoard(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.insert("boardMapper.insertBoard", b);
+	}
+	
+	// 사용자 : 사내게시판 첨부파일 등록
+	public int insertBoardFile(SqlSessionTemplate sqlSession, BoardFile bf) {
+		return sqlSession.insert("boardMapper.insertBoardFile", bf);
+	}
+	
 	
 	
 	// ----------------------- 관리자 영역 ---------------------------

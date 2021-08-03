@@ -64,8 +64,6 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.selectNoticeFile(sqlSession, refBno);
 	}
 
-	
-	
 	// 사용자 : 공지사항 등록 (board)
 	@Override
 	public int insertNotice(Board b) {
@@ -117,6 +115,25 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.selectBoard(sqlSession, boardNo);
 	}
 	
+	// 사용자 : 사내게시판 상세조회(첨부파일)
+	@Override
+	public BoardFile selectBoardFile(int refBno) {
+		return bDao.selectBoardFile(sqlSession, refBno);
+	}
+
+	// 사용자 : 사내게시판 글 등록 (board)
+	@Override
+	public int insertBoard(Board b) {
+		return bDao.insertBoard(sqlSession, b);
+	}
+
+	// 사용자 : 사내게시판  첨부파일 등록 (boardFile)
+	@Override
+	public int insertBoardFile(BoardFile bf) {
+		return bDao.insertBoardFile(sqlSession, bf);
+	}
+
+	
 	
 	// ----------------------- 관리자 영역 ---------------------------
 	
@@ -144,6 +161,7 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.reportSearchList(sqlSession, pi, map);
 	}
 
+	
 
 
 	

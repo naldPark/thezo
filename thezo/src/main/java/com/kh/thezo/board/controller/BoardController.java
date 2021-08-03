@@ -99,7 +99,7 @@ public class BoardController {
 	
 	// 공지사항 등록하기(사용자)
 	@RequestMapping("noticeInsert.bo")
-	public String insertboard(int memNo, Board b, BoardFile bf, MultipartFile upfile, HttpSession session, Model model) {
+	public String insertNotice(int memNo, Board b, BoardFile bf, MultipartFile upfile, HttpSession session, Model model) {
 	
 		if(!upfile.getOriginalFilename().equals("")) {
 			
@@ -111,9 +111,11 @@ public class BoardController {
 		int result = bService.insertNotice(b);
 		
 		if(result > 0 ) {
+			if(bf.getOriginName() != null) {
 				bService.insertNoticeFile(bf);
-				session.setAttribute("alertMsg", "성공적으로 공지사항이 등록되었습니다.");
-				return "redirect:noticeList.bo";
+			}
+			session.setAttribute("alertMsg", "성공적으로 공지사항이 등록되었습니다.");
+			return "redirect:noticeList.bo";
 		}else { 
 			model.addAttribute("errorMsg", "공지사항 등록 실패");
 			return "common/errorPage";
@@ -121,26 +123,43 @@ public class BoardController {
 					
 	}
 	
-	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
-	public String saveFile(HttpSession session, MultipartFile upfile) {
-		// 경로
-		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
-						
-		String originName = upfile.getOriginalFilename();
-		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // Date : java.util import
-		int ranNum = (int)(Math.random() * 90000 + 10000);
-		String ext = originName.substring(originName.lastIndexOf("."));
-						
-		String changeName = currentTime + ranNum + ext;
-						
-		try {
-			upfile.transferTo(new File(savePath + changeName));   // File : java.io import
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
+	/*
+	// 공지사항 삭제하기 (사용자)
+	@RequestMapping("noticeDelete.bo")
+	public String deleteBoard(int bno, String filePath, Model model, HttpSession session) {
+		int result = bService.deleteNotice(bno);
+		
+		if(result > 0) { // 성공 => 리스트 페이지
 			
-		return changeName;
+			if(!filePath.equals("")) { // 첨부파일이 있었을 경우 => 파일 삭제
+				String removeFilePath = session.getServletContext().getRealPath(filePath);
+				new File(removeFilePath).delete();
+			}
+			
+			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
+			return "redirect:list.bo";
+			
+		}else { // 실패
+			model.addAttribute("errorPage", "게시글 삭제 실패");
+			return "common/errorPage";
+		}
 	}
+	*/
+	
+	// 공지사항 수정하기 페이지 포워딩 (사용자)
+	@RequestMapping("noticeUpdate.bo")
+	public String updateForm(int bno, Model model) {
+		model.addAttribute("bf", bService.selectNoticeFile(bno));
+		model.addAttribute("b", bService.selectNotice(bno));
+		return "board/noticeUpdateForm";
+	}
+		
+	// 공지사항 수정하기 (사용자)
+	
+	
+	
+	
+	
 	
 		
 	
@@ -192,8 +211,9 @@ public class BoardController {
 		int result = bService.increaseBoardCount(bno);
 		
 		if(result>0) { 
+			BoardFile bf = bService.selectBoardFile(bno);
 			Board b = bService.selectBoard(bno); 
-			mv.addObject("b", b).setViewName("board/boardDetailView");
+			mv.addObject("b", b).addObject("bf", bf).setViewName("board/boardDetailView");
 			
 		}else {
 			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
@@ -208,6 +228,36 @@ public class BoardController {
 	public String boardEnrollForm() {
 		return "board/boardEnrollForm";
 	}
+	
+	
+	// 사내게시판 등록하기(사용자)
+	@RequestMapping("boardInsert.bo")
+	public String insertboard(int memNo, Board b, BoardFile bf, MultipartFile upfile, HttpSession session, Model model) {
+	
+		if(!upfile.getOriginalFilename().equals("")) {
+			
+			String changeName = saveFile(session, upfile); 
+			bf.setOriginName(upfile.getOriginalFilename());  
+			bf.setChangeName(changeName); 
+		}
+		
+		int result = bService.insertBoard(b);
+		
+		if(result > 0 ) {
+			
+			if(bf.getOriginName() != null) {
+				bService.insertBoardFile(bf);
+			}
+				
+			session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
+			return "redirect:boardList.bo";
+		}else { 
+			model.addAttribute("errorMsg", "게시글 등록 실패");
+			return "common/errorPage";
+		}
+					
+	}
+	
 	
 	
 	
@@ -250,6 +300,28 @@ public class BoardController {
 		
 		return mv;
 		
+	}
+	
+	
+	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
+	public String saveFile(HttpSession session, MultipartFile upfile) {
+		// 경로
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+						
+		String originName = upfile.getOriginalFilename();
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // Date : java.util import
+		int ranNum = (int)(Math.random() * 90000 + 10000);
+		String ext = originName.substring(originName.lastIndexOf("."));
+						
+		String changeName = currentTime + ranNum + ext;
+						
+		try {
+			upfile.transferTo(new File(savePath + changeName));   // File : java.io import
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+			
+		return changeName;
 	}
 	
 }

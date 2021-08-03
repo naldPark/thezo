@@ -24,7 +24,6 @@ public interface BoardService {
 		BoardFile selectNoticeFile(int refBno);
 		
 		// 4_1. 사용자 : 공지사항 등록용
-		//int insertNotice(int memNo, Board b);
 		int insertNotice(Board b);
 		
 		// 4_2. 사용자 : 공지사항 첨부파일 등록용
@@ -43,7 +42,13 @@ public interface BoardService {
 		// 3. 사용자 : 사내게시판 상세조회용
 		int increaseBoardCount(int boardNo);
 		Board selectBoard(int boardNo);
+		BoardFile selectBoardFile(int refBno);
 				
+		// 4_1. 사용자 : 사내게시판 등록용
+		int insertBoard(Board b);
+				
+		// 4_2. 사용자 : 사내게시판 첨부파일 등록용
+		int insertBoardFile(BoardFile bf);
 		
 		
 		// -------------------------관리자영역 ------------------------------

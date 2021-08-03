@@ -16,13 +16,15 @@
 		<result column="address" property="address"/>
 		<result column="enroll_date" property="enrollDate"/>
 		<result column="gender" property="gender"/>
-		<result column="resign_date" property="resignDate"/><result column="dep_no" property="depNo"/>
+		<result column="resign_date" property="resignDate"/>
+		<result column="dep_no" property="depNo"/>
 		<result column="department" property="department"/>
 		<result column="job" property="job"/>
 		<result column="rank" property="rank"/>
 		<result column="extension_no" property="extensionNo"/>
 		<result column="origin_name" property="originName"/>
 		<result column="path" property="path"/> 
+		<result column="notice_auth" property="noticeAuth"/> 
 	</resultMap>
 
 

@@ -1,6 +1,7 @@
 package com.kh.thezo.note.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.stereotype.Service;
 
@@ -11,18 +12,22 @@ import com.kh.thezo.note.model.vo.Note;
 public interface NoteService {
 	
 	// 노트 조회
-	int selectListCount();
-	ArrayList<Note> selectNoteList(PageInfo pi);
-	Note selectNote();
+	int selectListCount(int memNo);
+	ArrayList<Note> selectNoteList(PageInfo pi, int memNo);
+	Note selectNote(int noteNo);
 	
 	// 노트 추가
-	int insertNote();
+	int insertNote(Note nt);
 	
 	// 노트 수정
-	int updateNote();
+	int updateNote(Note nt);
 	
 	// 노트 삭제
-	int deleteNote();
+	int deleteNote(int noteNo);
+	
+	// 노트 검색
+	int searchListCount(HashMap map);
+	ArrayList<Note> searchNoteList(PageInfo pi, HashMap map);
 	
 	
 }

@@ -57,6 +57,7 @@
           overflow: auto; */
 
         }
+        #newApprnav{background:rgb(20,70,104)!important; color: white!important;}
 
       </style>
 
@@ -112,14 +113,17 @@
                     <textarea class="form-control" name="content" id="summernote" maxlength="140" rows="7"
                       autocomplete="off">${ a.formContent }</textarea>
                   </div><br>
+                  <input type="hidden" id="tempStatus" name="tempStatus">
                   <div class="row justify-content-center">
                     <button type="button" id="submitBtn" class="btn btn-primary">기안하기</button>&nbsp;
+                    <button type="button" onclick="tempSave();" class="btn btn-primary">임시저장</button>&nbsp;
                     <button type="button" onclick="location.href='main.appr'" class="btn btn-secondary">취소</button>
                   </div>
-      
-               
+              
               </div>
             </div>
+
+          
             <!--오른쪽 결재선 시작-->
             <div class="card row  border-0" style="margin-bottom: 5rem; width:21%">
               <div class="card-body" id="selectedLine">
@@ -156,6 +160,25 @@
         </div>
       </section>
 
+       
+      <!-- <script>
+          function tempSave(){
+            if($("#docName").val()=="") {
+              alert("제목은 반드시 입력하셔야합니다");
+              return false;
+            } else if($("#summernote").val() == "") {
+              alert("내용은 반드시 입력하셔야합니다");
+              return false;
+            } else {
+              if (confirm("정말로 제출하시겠습니까?\n기안 후엔 수정이 불가능합니다.")) {
+                $("#tempStatus").val("임시");
+                $("#form").submit();
+              }
+            }
+           
+          }
+
+      </script> -->
 
 
       <script>

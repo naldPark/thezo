@@ -25,6 +25,7 @@
 		<result column="origin_name" property="originName"/>
 		<result column="path" property="path"/> 
 		<result column="notice_auth" property="noticeAuth"/> 
+		<result column="status" property="status"/>
 	</resultMap>
 
 
@@ -55,6 +56,7 @@
 			, MEM_TOTAL_DATE
 			, MESSAGE_FUNC
 			, NOTICE_AUTH
+			, status
 		  from member
 	 		where status IN ('Y', 'A')
 		   	and mem_id = #{memId}  

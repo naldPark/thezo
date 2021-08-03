@@ -9,7 +9,7 @@
 
 <style>
     .fa-file-alt{font-size:50pt;}
-
+    #newApprnav{background:rgb(20,70,104)!important; color: white!important;}
 </style>
 </head>
 <body>
@@ -55,10 +55,27 @@
                 <br>
                 <!-- 안읽은 문서 건수 안내 끝 -->
                 <!-- 문서리스트 -->
+
                 
                  <c:forEach var="a" items="${ list }">
 	                  <div class="d-flex mb-4 shadow newDocu">
-	                    <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i> ${ a.category }</b> <br>${ a.formName }</div>
+	                    <div class="p-2 newDocuCate"><b class="text-primary">
+                            <c:choose>
+                                <c:when test="${a.category eq '인사'}">
+                                    <i class="fas fa-user-alt docMenu"></i>
+                                </c:when>
+                                <c:when test="${a.category eq '비용'}">
+                                    <i class="fas fa-coins docMenu"></i>
+                                </c:when>
+                                <c:when test="${a.category eq '총무'}">
+                                    <i class="fas fa-box-open docMenu"></i>
+                                </c:when>
+                                <c:otherwise>
+                                    <i class="far fa-file docMenu"></i>
+                                </c:otherwise>
+                            </c:choose>
+                           
+                             ${ a.category }</b> <br>${ a.formName }</div>
 	                    <div class="p-4 flex-grow-1">${ a.formInfo } </div>
 	                    <div class="p-4"><button type="button"  onclick="location.href='enrollForm.appr?ano=${ a.formNo }'" class="btn btn-primary">작성</button></div>
 	                 </div>

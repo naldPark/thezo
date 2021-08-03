@@ -7,11 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <title>The Zo</title>
-<style>
-   
-    /* *{border:1px solid green} */
-   
-</style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
@@ -54,17 +49,33 @@
 	                <!-- 문서리스트 -->
 	                <div class="apprList shadow p-4 mb-3 bg-white w3-cell-row" onclick="location.href='detailDocu.appr?docNo=${a.docNo}'">
 	                    <div class="w3-cell" style="width:10%">
-	                        <h3 class="w3-cell"><i class="fas fa-coins docMenu"></i></h3>
-	                        <span>${ a.category } </span>
+	                        <h3 class="w3-cell">
+								<c:choose>
+									<c:when test="${a.category eq '인사'}">
+										<i class="fas fa-user-alt docMenu"></i>
+									</c:when>
+									<c:when test="${a.category eq '비용'}">
+										<i class="fas fa-coins docMenu"></i>
+									</c:when>
+									<c:when test="${a.category eq '총무'}">
+										<i class="fas fa-box-open docMenu"></i>
+									</c:when>
+									<c:otherwise>
+										<i class="far fa-file docMenu"></i>
+									</c:otherwise>
+								</c:choose><br>
+								<span style="font-size:9pt">${ a.formName }</span>
+							</h3>
 	                    </div>
-	                    <div class="w3-cell text-left" style="width:20%">
-	                        <h5 class="w3-cell">${ a.formName }</h5>
-	                        <small>${ a.docDate }</small>
+	                    <div class="w3-cell text-left" style="width:30%; padding-left:10px">
+	                        <h5 class="w3-cell">${ a.docName}</h5>
+							<small>${ a.docDate }</small>
+	                        
 	                    </div>
 	                    <div class="w3-cell">
 	                        <h3 class="w3-cell"><i class="fas fa-user-edit"></i></h3>
-	                        <h5 class="w3-cell">&nbsp; 박날드 대리</h5>
-	                        <small>경영지원본부 > 인사팀 > 팀원</small>
+	                        <h5 class="w3-cell">&nbsp; ${ a.memName }</h5>
+	                        <small>${ a.department }</small>
 	                    </div>
 	                    <div class="w3-cell" style="width:30%;">
 	                        <c:forTokens var="l" items="${a.line}" delims="," varStatus="status">
@@ -93,27 +104,26 @@
 				<!--페이징 처리 시작-->
                  <div id="pagingArea">
 					<ul class="pagination">
-						<c:choose>
-							<c:when test="${ pi.currentPage eq 1 }">
-								<li class="page-item disabled"><a class="page-link">이전</a></li>
-							</c:when>
-							<c:otherwise>
-								<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ pi.currentPage-1 }">이전</a></li>
-							</c:otherwise>
-						</c:choose>
+						<c:if test="${ pi.currentPage ne 1 }">
+							<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ pi.currentPage-1 }&apprFolder=${apprFolder}">이전</a></li>
+						</c:if>
 
 						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-								<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ p }">${ p }</a></li>
+							<c:choose>
+								<c:when test="${ pi.currentPage eq p }">
+									<li class="page-item"><a class="page-link" style="background-color: lightsteelblue" href="main.appr?currentPage=${ p }&apprFolder=${apprFolder}">${ p }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ p }&apprFolder=${apprFolder}">${ p }</a></li>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 
-						<c:choose>
-							<c:when test="${ pi.currentPage eq pi.maxPage }">
-								<li class="page-item disabled"><a class="page-link">다음</a></li>
-							</c:when>
-							<c:otherwise>
-									<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ pi.currentPage+1 }">다음</a></li>
-							</c:otherwise>
-						</c:choose>
+						<c:if test="${ pi.currentPage ne pi.maxPage }">
+							<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ pi.currentPage+1 }&apprFolder=${apprFolder}">다음</a></li>
+						</c:if>
+
+
 					</ul>
            		 </div>
 				<!--페이징 처리 끝-->

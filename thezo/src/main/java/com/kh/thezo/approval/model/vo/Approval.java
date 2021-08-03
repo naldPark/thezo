@@ -20,6 +20,8 @@ public class Approval {
 	
 	private int docNo;
 	private int memNo;
+	private String memName;
+	private String department;
 	private int formNo;
 	private int deptNo; //유저의 부서코드
 	private String docName;  //유저 작성 제목
@@ -28,7 +30,7 @@ public class Approval {
 	private String formInfo; //양식에 대한 설명
 	private String formContent; // 폼 양식내용
 	private String content; //사용자가 입력한내용
-	private String status;
+	private String status; // 승인 반려
 	private Date docDate;
 	private String line; //결재선(ex.김말똥 차장, 김개똥 과장)
 	private String refMemNo; // 참조자(컴마)
@@ -36,9 +38,9 @@ public class Approval {
 	private String sort; //현재 결재자(ex. 김말똥 차장)
 	private ArrayList<ApprovalAccept> apAccept; 
 	private ArrayList<Attachment> at; 
-	
 	private Date startDate;  // 연차 시작일
 	private Date endDate;   // 연차 종료일
 	private int leaveCount; // 연차 차감갯수
 	private String leaveCategory; // 카테고리(연차/경조사)
+	private String apprFolder; // 폴더명
 }

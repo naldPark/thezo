@@ -47,7 +47,7 @@
                         <div class="col-sm-8"  style="height: 45%;">
                             <h5>${loginUser.memName} ${loginUser.rank}</h5> <h5>${loginUser.department}</h5>
                             <button type="button" class="btn btn-sm btn-secondary">정보수정</button>
-                            <button type="button" class="btn btn-sm btn-secondary">로그아웃</button>                            
+                             <a href="logout.me" class="btn btn-sm btn-secondary">로그아웃</a>                            
                         </div>
                     </div>
                     <div class="ml-5 mb-3" align="left">
@@ -110,12 +110,14 @@
 
             <div class="outer-wrap" style="width:45%">
                 <div class="wrap">
-                    <div class="boxTitle">전자결재<button type="button" class="btn badge-secondary btn-sm more">more</button></div>
+                    <div class="boxTitle">전자결재 <a href="main.appr" class="btn badge-secondary btn-sm more">more</a></div>
                     <div style="padding:12px;">
                         <div class="input-group-prepend" style="justify-content: left;">
-                            <button type="button" class="btn btn-sm btn-outline-primary">대기중 0건</button> &nbsp;
-                            <button type="button" class="btn btn-sm btn-outline-success">진행중 0건</button> &nbsp;
-                            <button type="button" class="btn btn-sm btn-outline-danger">반려됨 0건</button>
+                            <a href="main.appr?apprFolder=waiting" class="btn btn-sm btn-outline-danger">
+                            	결재대기 <i class="fas fa-exclamation-circle" style="color:red"></i>
+                            </a> &nbsp;
+                            <a href="main.appr?apprFolder=send" class="btn btn-sm btn-outline-success">상신문서</a> &nbsp;
+                            <a href="main.appr?apprFolder=sendFin" class="btn btn-sm btn-outline-primary">완료문서</a>
                         </div>  
                     </div>
                     <table class="table table-sm board table-hover" style="text-align: center;" >

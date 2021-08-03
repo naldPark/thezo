@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.thezo.approval.model.vo.Approval;
 import com.kh.thezo.approval.model.vo.ApprovalAccept;
 import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.mail.model.vo.Attachment;
 import com.kh.thezo.member.model.vo.Member;
 
 
@@ -25,10 +26,10 @@ public class ApprovalDao {
 	}
 	
 	//전자결재 메인페이지로 관련있는 결재리스트 불러오기
-	public ArrayList<Approval> selectApprovalMain(int memNo, SqlSessionTemplate sqlSession, PageInfo pi){
+	public ArrayList<Approval> selectApprovalMain(Approval a, SqlSessionTemplate sqlSession, PageInfo pi){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		ArrayList<Approval> list = (ArrayList)sqlSession.selectList("approvalMapper.selectApprovalMain", memNo, rowBounds);
+		ArrayList<Approval> list = (ArrayList)sqlSession.selectList("approvalMapper.selectApprovalMain", a, rowBounds);
 
 		return list;	
 	}
@@ -60,23 +61,38 @@ public class ApprovalDao {
 		return line;
 	}
 	
-	public int insertApprovalDocument(SqlSessionTemplate sqlSession, Approval a) {
-		int result = 0;
-		result = sqlSession.insert("approvalMapper.insertApproval",a);
-		result = result*sqlSession.delete("approvalMapper.deleteExsitedCustomLine",a);
-		result = result*sqlSession.insert("approvalMapper.insertNewCustomLine",a);
-		result = result*sqlSession.insert("approvalMapper.insertSpecificDocuLine",a);
-		if(a.getRefMemNoAry()!=null) {
-			result = result*sqlSession.insert("approvalMapper.reference",a);
-		}
-		if(a.getAt()!=null) {
-			result = result*sqlSession.insert("approvalMapper.insertDocuAttachment",a);
-		}
-		if(a.getFormNo()==5) {
-			result = result*sqlSession.insert("approvalMapper.insertLeaveDocu",a);
-			result = result*sqlSession.update("approvalMapper.updateLeaveDocu",a);
-		}
-		return result;
+	public int insertApproval(SqlSessionTemplate sqlSession, Approval a) {
+		return  sqlSession.insert("approvalMapper.insertApproval",a);
+		
+	}
+	public int deleteExsitedCustomLine(SqlSessionTemplate sqlSession, Approval a) {
+		return  sqlSession.delete("approvalMapper.deleteExsitedCustomLine",a);
+		
+	}
+	
+	public int insertNewCustomLine(SqlSessionTemplate sqlSession, Approval a) {
+		return  sqlSession.insert("approvalMapper.insertNewCustomLine",a);
+	}
+	
+	public int insertSpecificDocuLine(SqlSessionTemplate sqlSession, Approval a) {
+		return  sqlSession.insert("approvalMapper.insertSpecificDocuLine",a);
+	}
+
+	public int approvalMapper(SqlSessionTemplate sqlSession, Approval a) {
+		return sqlSession.insert("approvalMapper.reference",a);
+		
+	}
+	
+	public int insertDocuAttachment(SqlSessionTemplate sqlSession, Approval a) {
+		return sqlSession.insert("approvalMapper.insertDocuAttachment",a);
+	}
+
+	public int insertLeaveDocu(SqlSessionTemplate sqlSession , Approval a) {
+		return sqlSession.insert("approvalMapper.insertLeaveDocu",a);
+	}
+	
+	public int updateLeaveDocu(SqlSessionTemplate sqlSession, Approval a) {
+		return sqlSession.insert("approvalMapper.updateLeaveDocu",a);		
 	}
 	
 	public Member selectLeave(SqlSessionTemplate sqlSession, int memNo) {
@@ -87,10 +103,32 @@ public class ApprovalDao {
 		return sqlSession.selectOne("approvalMapper.detailApproval",docNo);
 	}
 	
+	public ArrayList<Attachment> detailApprovalAt(SqlSessionTemplate sqlSession, int docNo) {
+		return (ArrayList)sqlSession.selectList("approvalMapper.detailApprovalAt",docNo);
+	}
+	
+	
 
 	public ArrayList<ApprovalAccept> detailApprovalLine(SqlSessionTemplate sqlSession, int docNo) {
 		return (ArrayList)sqlSession.selectList("approvalMapper.detailApprovalLine",docNo);
 	}
+	
+	public int approveDocu(SqlSessionTemplate sqlSession, ApprovalAccept a) {
+		return sqlSession.update("approvalMapper.approveDocu",a);
+	}
+	
+	public int setApprovalStatus(SqlSessionTemplate sqlSession, int lastApprover, ApprovalAccept a) {
+		if(lastApprover==a.getMemNo()) {
+			a.setStatus("완료");
+		}
+		return sqlSession.update("approvalMapper.setApprovalStatus",a);
+
+	}
+	
+//	public int selectRecentTemp(SqlSessionTemplate sqlSession, int memNo) {
+//		return sqlSession.selectOne("approvalMapper.selectRecentTemp",memNo);
+//
+//	}
 	
 	
 }

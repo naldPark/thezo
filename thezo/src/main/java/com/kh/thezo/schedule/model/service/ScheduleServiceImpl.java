@@ -29,20 +29,17 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Override
 	public int updateSchedule(Schedule sc) {
-		// TODO Auto-generated method stub
-		return 0;
+		return scDao.updateSchedule(sqlSession, sc);
 	}
 
 	@Override
 	public int deleteSchedule(int scNo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return scDao.deleteSchedule(sqlSession, scNo);
 	}
 
 	@Override
-	public Schedule selectSchedule(int scNo) {
-		// TODO Auto-generated method stub
-		return null;
+	public Schedule selectScheduleDetail(int scNo) {
+		return scDao.selectScheduleDetail(sqlSession, scNo);
 	}
 
 	@Override

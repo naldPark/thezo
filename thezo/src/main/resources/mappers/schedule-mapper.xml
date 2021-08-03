@@ -51,6 +51,29 @@
 		  from schedule
 	</select>
 	
+	<select id="selectScheduleDetail" resultMap="scheduleResult">
+		select
+			   sc_no
+		     , sc_writer
+		     , sc_title
+		     , sc_content
+		     , sc_type
+		     , sc_start
+		     , sc_end
+		     , allday
+		     , s.status
+		     , report_title
+		     , report_writer
+		     , report_content
+		     , origin_name
+		     , change_name
+		     , create_date
+		  from schedule s
+		  left join biz_report using (sc_no)
+		 where s.status = 'Y'
+		   and sc_no = #{scNo} 
+	</select>
+	
 	<insert id="insertSchedule">
 		insert 
 		  into schedule
@@ -78,4 +101,24 @@
 		 , 'Y'
 		 )
 	</insert>
+	
+	<delete id="deleteSchedule">
+		delete
+		  from schedule
+		 where sc_no = #{scNo}
+	</delete>
+	
+	<update id="updateSchedule">
+		update schedule
+		   set 
+		       sc_writer = #{scWriter}
+		     , sc_title = #{title}
+		     , sc_content = #{scContent}
+		     , sc_type = #{scType}
+		     , sc_start = #{start}
+		     , sc_end = #{end}
+		     , allday = #{allday}
+		 where sc_no = #{scNo}
+	</update>
+	
 </mapper>

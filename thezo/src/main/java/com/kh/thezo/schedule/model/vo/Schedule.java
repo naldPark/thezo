@@ -20,6 +20,7 @@ public class Schedule {
 	private String start;
 	private String end;
 	private String allday;
+	//private boolean allday;
 	private String status;
 	
 	private String reportTitle;

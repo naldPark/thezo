@@ -10,7 +10,7 @@
 <body>
 	<form action="insert.sc" method="post">
 		<!-- The Modal -->
-		<input type="hidden" name="scWriter" value="${ loginUser.userId }"> <!-- 현재 로그인한 유저 아이디 전달 -->
+		<input type="hidden" name="scWriter" value="${ loginUser.memNo }"> <!-- 현재 로그인한 유저 아이디 전달 -->
 		<div class="modal" id="insertSc">
 		  <div class="modal-dialog modal-lg">
 		    <div class="modal-content">
@@ -42,11 +42,12 @@
 			        <tr>
 			            <th>시작일</th>
 			            <td width="350px">
-			            	<input type="date" name="start" id="startDate"> <input type="time" name="start" id="startTime">
+			            	<input type="date" name="start" id="startDate"> 
+			            	<input type="time" name="start" id="startTime" required hidden>
 			            </td>
 			            <td rowspan="2">
-							<input type="checkbox" id="timeCheck" checked>
-							<input type="hidden" id="allDay" name="allday" value="N">
+							<input type="checkbox" id="timeCheck">
+							<input type="hidden" id="allDay" name="allday">
 							<label for="timeCheck">시간설정</label>
 						</td>
 			            <!-- 시간설정 체크 해제시 시간 input 사라지게 / 기본값: 체크설정-->
@@ -56,7 +57,7 @@
 			            <th>종료일</th>
 			            <td>
 				            <input type="date" name="end" id="endDate"> 
-				            <input type="time" name="end" id="endTime">
+				            <input type="time" name="end" id="endTime" required hidden>
 			            </td>
 			        </tr>
 			        <tr>
@@ -75,11 +76,13 @@
 			        	// => 체크해제시 하루종일 'Y'로 되게
 					$(function(){
 						$("#timeCheck").change(function(){
-							if($(this).is(":checked")){
-								$("input[type=time]").show();
+							if($(this).is(":checked")){ // 시간설정 체크시 => 하루종일 일정이 아님
+								$("input[type=time]").removeAttr("hidden");
+								$("input[type=time]").attr("required", true);
 								$("#allday").val('N');
 							}else{
-								$("input[type=time]").hide();
+								$("input[type=time]").attr("hidden", true);
+								$("input[type=time]").removeAttr("required");
 								$("input[type=time]").val("");
 								$("#allday").val('Y');
 							}
@@ -88,7 +91,7 @@
 		        </script>
 		      <!-- Modal footer -->
 		      <div class="modal-footer center">
-			      <div class="button-area">
+			      <div class="button-area" align="right">
 				        <button class="btn btn-secondary" data-dismiss="modal">취소</button>
 				        <button class="btn btn-primary" type="submit">저장</button>
 				  </div>

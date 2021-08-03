@@ -17,6 +17,7 @@ import lombok.ToString;
 @ToString
 public class Document {
 	private int docNo;
+	private int memNo;
 	private String docWriter;
 	private String department;
 	private String docContent;

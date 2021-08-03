@@ -29,6 +29,9 @@ public interface BoardService {
 		// 4_2. 사용자 : 공지사항 첨부파일 등록용
 		int insertNoticeFile(BoardFile bf);
 		
+		// 5. 사용자 : 공지사항, 사내게시판 삭제
+		int deleteBoard(int boardNo);
+		
 		// --------------- 사내게시판 영역 --------------------
 
 		// 1. 사용자 : 사내게시판 리스트 페이지 조회용

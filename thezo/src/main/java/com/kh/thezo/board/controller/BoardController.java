@@ -123,11 +123,12 @@ public class BoardController {
 					
 	}
 	
-	/*
-	// 공지사항 삭제하기 (사용자)
+	
+	// 공지사항 삭제하기 (사용자) -> filePath가 제대로 지워지는지..>? 
 	@RequestMapping("noticeDelete.bo")
-	public String deleteBoard(int bno, String filePath, Model model, HttpSession session) {
-		int result = bService.deleteNotice(bno);
+	public String deleteNotice(int bno, String filePath, Model model, HttpSession session) {
+		
+		int result = bService.deleteBoard(bno);
 		
 		if(result > 0) { // 성공 => 리스트 페이지
 			
@@ -136,15 +137,15 @@ public class BoardController {
 				new File(removeFilePath).delete();
 			}
 			
-			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
-			return "redirect:list.bo";
+			session.setAttribute("alertMsg", "성공적으로 공지사항이 삭제되었습니다.");
+			return "redirect:noticeList.bo";
 			
 		}else { // 실패
-			model.addAttribute("errorPage", "게시글 삭제 실패");
+			model.addAttribute("errorPage", "공지사항 삭제 실패");
 			return "common/errorPage";
 		}
 	}
-	*/
+	
 	
 	// 공지사항 수정하기 페이지 포워딩 (사용자)
 	@RequestMapping("noticeUpdate.bo")
@@ -258,7 +259,27 @@ public class BoardController {
 					
 	}
 	
-	
+	// 사내게시판 삭제하기 (사용자) -> filePath가 제대로 지워지는지..>? 
+	@RequestMapping("boardDelete.bo")
+	public String deleteBoard(int bno, String filePath, Model model, HttpSession session) {
+		
+		int result = bService.deleteBoard(bno);
+		
+		if(result > 0) { // 성공 => 리스트 페이지
+			
+			if(!filePath.equals("")) { // 첨부파일이 있었을 경우 => 파일 삭제
+				String removeFilePath = session.getServletContext().getRealPath(filePath);
+				new File(removeFilePath).delete();
+			}
+			
+			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
+			return "redirect:boardList.bo";
+			
+		}else { // 실패
+			model.addAttribute("errorPage", "게시글 삭제 실패");
+			return "common/errorPage";
+		}
+	}
 	
 	
 	

@@ -67,6 +67,11 @@ public class BoardDao {
 		return sqlSession.insert("boardMapper.insertNoticeFile", bf);
 	}
 	
+	// 사용자 : 공지사항, 사내게시판 글 삭제 
+	public int deleteBoard(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("boardMapper.deleteBoard", boardNo);
+	}
+	
 	
 	// ------------------------  사내게시판 영역  ----------------------------
 	
@@ -121,7 +126,7 @@ public class BoardDao {
 	public int insertBoardFile(SqlSessionTemplate sqlSession, BoardFile bf) {
 		return sqlSession.insert("boardMapper.insertBoardFile", bf);
 	}
-	
+
 	
 	
 	// ----------------------- 관리자 영역 ---------------------------

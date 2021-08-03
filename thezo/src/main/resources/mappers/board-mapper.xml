@@ -173,8 +173,14 @@
 		         )
 	</insert>
 	
-	
-	
+	<!-- 사용자 : 공지사항 글 삭제 -->
+	<update id="deleteBoard">
+			update
+				  board
+			  set status = 'N'
+			where board_no = #{boardNo}  		
+	</update>
+		
 	
 	<!--  사내게시판 영역  -->
 	
@@ -277,7 +283,7 @@
            and b.status = 'Y'   
 	</select>
 	
-	<!-- 사용자 : 공지사항 첨부파일 상세 조회 -->
+	<!-- 사용자 : 사내게시판 첨부파일 상세 조회 -->
 	<select id="selectBoardFile" resultMap="boardFileResult">
 		select 
 		       origin_name

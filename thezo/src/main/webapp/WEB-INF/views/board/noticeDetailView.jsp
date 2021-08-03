@@ -55,9 +55,9 @@
                     </tr>
                     <tr>
                         <td >
-                            <p style="height:400px; font-size:17px;" >
+                            <div style="height:400px; font-size:17px;" >
                                	${ b.boardContent }
-                            </p>
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -94,7 +94,7 @@
 	             <script>
 	            	function postFormSubmit(num){
 	            		if(num == 1){ // 수정하기 클릭시
-	            			$("#postForm").attr("action", "noticeUpdate.bo").submit();
+	            			$("#postForm").attr("action", "noticeUpdateForm.bo").submit();
 	            		}else{ // 삭제하기 클릭시
 	            			$("#postForm").attr("action", "noticeDelete.bo").submit();
 	            		}

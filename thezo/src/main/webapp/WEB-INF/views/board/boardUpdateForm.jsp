@@ -89,15 +89,8 @@
 					</tr>
 					<tr height="500px;">
 						<!--에디터 api 적용하자-->
-						<th><label for="content">내용</label></th>
-						<th><textarea class="form-control" name="summernote"
-								id="summernote"></textarea></th>
-
-
-
-						<!--일단 남겨두기-->
-						<th><textarea class="form-control" value="ㅋㅋㅋㅋ" required
-								name="" id="content" rows="10" style="resize: none;"></textarea></th>
+						<th><label for="content">내용</label></th> <!-- 내용 수정하기  -->
+						<th><textarea class="form-control" name="boardContent" id="summernote">${ b.boardContent }</textarea></th>
 					</tr>
 					<tr>
 						<th><label for="upfile">첨부파일</label></th>

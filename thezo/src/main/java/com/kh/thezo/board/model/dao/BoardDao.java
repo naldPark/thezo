@@ -72,6 +72,15 @@ public class BoardDao {
 		return sqlSession.update("boardMapper.deleteBoard", boardNo);
 	}
 	
+	// 사용자 : 공지사항 글 수정
+	public int updateNotice(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.update("boardMapper.updateNotice", b);
+	} 
+	
+	// 사용자 : 공지사항 글 수정(첨부파일)
+	public int updateNoticeFile(SqlSessionTemplate sqlSession, BoardFile bf) {
+		return sqlSession.update("boardMapper.updateNoticeFile", bf);
+	} 
 	
 	// ------------------------  사내게시판 영역  ----------------------------
 	

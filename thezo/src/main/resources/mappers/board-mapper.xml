@@ -181,6 +181,29 @@
 			where board_no = #{boardNo}  		
 	</update>
 		
+	<!-- 사용자 : 공지사항 글 수정 -->	
+	<update id="updateNotice">
+		update
+			   board
+		   set board_title = #{boardTitle}
+		     , board_content = #{boardContent}
+		 where board_no = #{boardNo}
+	</update>	
+		
+	<!-- 사용자 : 공지사항 글 수정(첨부파일) -->	
+	<update id="updateNoticeFile">
+		update
+			   board_file
+		   set origin_name = #{originName}
+		     , change_name = #{changeName}
+		 where ref_bno = #{refBno}
+	</update>		
+	
+	
+	
+	
+	
+	
 	
 	<!--  사내게시판 영역  -->
 	

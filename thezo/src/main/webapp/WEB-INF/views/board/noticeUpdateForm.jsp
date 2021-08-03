@@ -76,7 +76,7 @@
 			<br><br>
 
 			<form id="updateForm" method="post" action="noticeUpdate.bo" enctype="multipart/form-data">
-				<input type="hidden" name="boardNo" value="">
+				<input type="hidden" name="boardNo" value="${ b.boardNo }">
 				<table align="center">
 					<tr>
 						<th><label for="title">제목</label></th>
@@ -88,8 +88,8 @@
 					</tr>
 					<tr>
 						<!--에디터 api 적용하자-->
-						<th><label for="content">내용</label></th> <!-- 내용 수정하기  -->
-						<th><textarea class="form-control" name="boardContent" id="summernote" value="${ b.boardContent }"></textarea></th>
+						<th><label for="content">내용</label></th>
+						<th><textarea class="form-control" name="boardContent" id="summernote">${ b.boardContent }</textarea></th>
 					</tr>
 					<tr>
 						<th><label for="upfile">첨부파일</label></th>

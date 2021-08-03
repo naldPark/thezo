@@ -82,6 +82,19 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.deleteBoard(sqlSession, boardNo);
 	}
 
+	// 사용자 : 공지사항 수정용
+	@Override
+	public int updateNotice(Board b) {
+		return bDao.updateNotice(sqlSession, b);
+	}
+
+	// 사용자 : 공지사항 수정용(첨부파일)
+	@Override
+	public int updateNoticeFile(BoardFile bf) {
+		return bDao.updateNoticeFile(sqlSession, bf);
+	}
+
+	
 	
 	
 	

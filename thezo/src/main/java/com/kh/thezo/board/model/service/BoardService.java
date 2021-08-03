@@ -32,6 +32,10 @@ public interface BoardService {
 		// 5. 사용자 : 공지사항, 사내게시판 삭제
 		int deleteBoard(int boardNo);
 		
+		// 6. 사용자 : 공지사항 수정용(글)
+		int updateNotice(Board b);
+		int updateNoticeFile(BoardFile bf);
+		
 		// --------------- 사내게시판 영역 --------------------
 
 		// 1. 사용자 : 사내게시판 리스트 페이지 조회용

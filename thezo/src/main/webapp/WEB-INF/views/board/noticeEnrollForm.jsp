@@ -75,6 +75,8 @@
 			<br> <br>
 
 			<form id="enrollForm" method="post" action="noticeInsert.bo" enctype="multipart/form-data">
+				<input type="hidden" name="memNo" value="${ loginUser.memNo }">
+				<input type="hidden" name="boardWriter" value="${ loginUser.memId }">
 				<table align="center">
 					<tr>
 						<th><label for="title">제목</label></th>
@@ -95,6 +97,7 @@
 						</td>
 					</tr>
 				</table>
+				
 			
 				<br> <br>
 	

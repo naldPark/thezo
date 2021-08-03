@@ -129,11 +129,11 @@
 		  into board
 		values(
 		            seq_nbno.nextval
-		          , #{ mem_no}  
-		          , #{ board_wirter }
+		          , #{ memNo}  
+		          , #{ boardWriter }
 		          , 1
-				  , #{ board_title }
-				  , #{ board_content }
+				  , #{ boardTitle }
+				  , #{ boardContent }
 		          , sysdate
 		          , 0
 		          , default
@@ -141,15 +141,15 @@
 	</insert>
 	
 	<!-- 사용자 : 공지사항 첨부파일  -->
-	<insert id="">
+	<insert id="insertNoticeFile">
 		insert 
 		   into board_file
 		   values(
 		           seq_bfno.nextval
 		         , '공지'
 		         , seq_nbno.currval 
-		         , #{ origin_name }
-		         , #{ change_name }
+		         , #{ originName }
+		         , #{ changeName }
 		         , 'resources/uploadFiles/'
 		         , sysdate
 		         , default

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.thezo.board.model.vo.Board;
+import com.kh.thezo.board.model.vo.BoardFile;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 
@@ -21,8 +22,12 @@ public interface BoardService {
 		int increaseNoticeCount(int boardNo);
 		Board selectNotice(int boardNo);
 		
-		// 4. 사용자 : 공지사항 등록용
+		// 4_1. 사용자 : 공지사항 등록용
+		//int insertNotice(int memNo, Board b);
 		int insertNotice(Board b);
+		
+		// 4_2. 사용자 : 공지사항 첨부파일 등록용
+		int insertNoticeFile(BoardFile bf);
 		
 		// --------------- 사내게시판 영역 --------------------
 

@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.thezo.board.model.vo.Board;
+import com.kh.thezo.board.model.vo.BoardFile;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 
@@ -51,11 +52,16 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectNotice", boardNo);
 	}
 	
+	
 	// 사용자 : 공지사항 등록 
 	public int insertNotice(SqlSessionTemplate sqlSession, Board b) {
 		return sqlSession.insert("boardMapper.insertNotice", b);
 	}
 	
+	// 사용자 : 공지사항 첨부파일 등록
+	public int insertNoticeFile(SqlSessionTemplate sqlSession, BoardFile bf) {
+		return sqlSession.insert("boardMapper.insertNoticeFile", bf);
+	}
 	
 	
 	// ------------------------  사내게시판 영역  ----------------------------

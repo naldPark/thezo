@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.thezo.board.model.dao.BoardDao;
 import com.kh.thezo.board.model.vo.Board;
+import com.kh.thezo.board.model.vo.BoardFile;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 
@@ -57,12 +58,19 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.selectNotice(sqlSession, boardNo);
 	}
 	
-	// 사용자 : 공지사항 등록 
+	
+	// 사용자 : 공지사항 등록 (board)
 	@Override
 	public int insertNotice(Board b) {
-		return bDao.insertNotice(sqlSession, b);
+		return bDao.insertNotice(sqlSession,b);
 	}
-
+	
+	// 사용자 : 공지사항 첨부파일 등록(boardFile)
+	@Override
+	public int insertNoticeFile(BoardFile bf) { 
+		return bDao.insertNoticeFile(sqlSession, bf);
+	}
+	
 	
 	// --------------- 사내게시판 영역 --------------------
 	
@@ -128,6 +136,7 @@ public class BoardServiceImpl implements BoardService{
 	public ArrayList<Report> reportSearchList(PageInfo pi, HashMap<String, String> map) {
 		return bDao.reportSearchList(sqlSession, pi, map);
 	}
+
 
 	
 }

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.thezo.board.model.service.BoardService;
 import com.kh.thezo.board.model.vo.Board;
+import com.kh.thezo.board.model.vo.BoardFile;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
@@ -93,23 +94,28 @@ public class BoardController {
 		return "board/noticeEnrollForm";
 	}
 	
-	/*
+	
 	// 공지사항 등록하기(사용자)
 	@RequestMapping("noticeInsert.bo")
-	public String insertboard(Board b, BoardFile bf, MultipartFile upfile, HttpSession session, Model model) {
+	public String insertboard(int memNo, Board b, BoardFile bf, MultipartFile upfile, HttpSession session, Model model) {
 	
 		// 전달된 파일이 있을경우 => 파일명 수정 작업 후 서버 업로드 => 원본명, 서버 업로드 된 경로 b에 담기
 		if(!upfile.getOriginalFilename().equals("")) {
 			
 			String changeName = saveFile(session, upfile); // 20210720217013023152.jpg
-			b.setOriginName(upfile.getOriginalFilename());  // 원본명 담기
-			b.setChangeName("resources/uploadFiles/" + changeName); // resources/uploadFiles/20210720217013023152.jpg
+			bf.setOriginName(upfile.getOriginalFilename());  // 원본명 담기
+			bf.setChangeName("resources/uploadFiles/" + changeName); // resources/uploadFiles/20210720217013023152.jpg
 				
+			int result1 = bService.insertNoticeFile(bf);
 		}
 			
-			int result = bService.insertNotice(b);
-			
-			if(result > 0) { // 성공 => 게시글 리스트 페이지(첫번째 페이지) 
+		System.out.println(b);
+		
+		//int result2 = bService.insertNotice(b, memNo);
+		
+		int result2 = bService.insertNotice(b);
+		
+		if(result2 > 0 ) { // 성공 => 게시글 리스트 페이지(첫번째 페이지) 
 				session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
 				return "redirect:noticeList.bo";
 		}else { // 실패 => 에러페이지
@@ -118,7 +124,7 @@ public class BoardController {
 		}
 					
 	}
-		
+	
 	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
 	public String saveFile(HttpSession session, MultipartFile upfile) {
 		// 경로
@@ -140,7 +146,7 @@ public class BoardController {
 			
 		return changeName;
 	}
-	*/
+	
 		
 	
 	// -------------------- 사내게시판 영역 --------------------------

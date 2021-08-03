@@ -58,16 +58,14 @@
                     </tr>
                     <tr>
                     	<c:choose>
-                    		<c:when test="${ empty b.originName }">
+                    		<c:when test="${ empty bf.originName }">
                     			<td>
-                    				<img src="resources/images/clip.png" width="20" height="20">
                     				첨부파일이 없습니다.
                     			</td>
                     		</c:when>
                     		<c:otherwise>
                     			<td>
-                    				<img src="resources/images/cilp.png" width="20" height="20">
-                    				첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="${ b.changeName }" download="${ b.originName }">${ b.originName }</a>
+                    				첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="${ bf.changeName }" download="${ bf.originName }">${ bf.originName }</a>
                     			</td>
                     		</c:otherwise>	
                     	</c:choose>

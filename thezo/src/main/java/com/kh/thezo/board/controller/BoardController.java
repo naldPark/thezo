@@ -77,8 +77,10 @@ public class BoardController {
 		int result = bService.increaseNoticeCount(bno);
 		
 		if(result>0) { 
+			BoardFile bf = bService.selectNoticeFile(bno);
 			Board b = bService.selectNotice(bno); 
-			mv.addObject("b", b).setViewName("board/noticeDetailView");
+			
+			mv.addObject("b", b).addObject("bf", bf).setViewName("board/noticeDetailView");
 			
 		}else {
 			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
@@ -99,26 +101,20 @@ public class BoardController {
 	@RequestMapping("noticeInsert.bo")
 	public String insertboard(int memNo, Board b, BoardFile bf, MultipartFile upfile, HttpSession session, Model model) {
 	
-		// 전달된 파일이 있을경우 => 파일명 수정 작업 후 서버 업로드 => 원본명, 서버 업로드 된 경로 b에 담기
 		if(!upfile.getOriginalFilename().equals("")) {
 			
-			String changeName = saveFile(session, upfile); // 20210720217013023152.jpg
-			bf.setOriginName(upfile.getOriginalFilename());  // 원본명 담기
-			bf.setChangeName("resources/uploadFiles/" + changeName); // resources/uploadFiles/20210720217013023152.jpg
-				
-			int result1 = bService.insertNoticeFile(bf);
+			String changeName = saveFile(session, upfile); 
+			bf.setOriginName(upfile.getOriginalFilename());  
+			bf.setChangeName(changeName); 
 		}
-			
-		System.out.println(b);
 		
-		//int result2 = bService.insertNotice(b, memNo);
+		int result = bService.insertNotice(b);
 		
-		int result2 = bService.insertNotice(b);
-		
-		if(result2 > 0 ) { // 성공 => 게시글 리스트 페이지(첫번째 페이지) 
-				session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
+		if(result > 0 ) {
+				bService.insertNoticeFile(bf);
+				session.setAttribute("alertMsg", "성공적으로 공지사항이 등록되었습니다.");
 				return "redirect:noticeList.bo";
-		}else { // 실패 => 에러페이지
+		}else { 
 			model.addAttribute("errorMsg", "공지사항 등록 실패");
 			return "common/errorPage";
 		}
@@ -130,7 +126,6 @@ public class BoardController {
 		// 경로
 		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
 						
-		// 파일명 수정 : 202107202170130(년월일시분초) + 23152(랜덤값) + .jpg(원본파일확장자) 
 		String originName = upfile.getOriginalFilename();
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // Date : java.util import
 		int ranNum = (int)(Math.random() * 90000 + 10000);

@@ -58,6 +58,13 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.selectNotice(sqlSession, boardNo);
 	}
 	
+	// 사용자 : 공지사항 상세조회(첨부파일)
+	@Override
+	public BoardFile selectNoticeFile(int refBno) {
+		return bDao.selectNoticeFile(sqlSession, refBno);
+	}
+
+	
 	
 	// 사용자 : 공지사항 등록 (board)
 	@Override
@@ -136,6 +143,7 @@ public class BoardServiceImpl implements BoardService{
 	public ArrayList<Report> reportSearchList(PageInfo pi, HashMap<String, String> map) {
 		return bDao.reportSearchList(sqlSession, pi, map);
 	}
+
 
 
 	

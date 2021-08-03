@@ -52,6 +52,10 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectNotice", boardNo);
 	}
 	
+	// 사용자 : 공지사항 상세조회(첨부파일)
+	public BoardFile selectNoticeFile(SqlSessionTemplate sqlSession, int refBno) {
+		return sqlSession.selectOne("boardMapper.selectNoticeFile", refBno);
+	}
 	
 	// 사용자 : 공지사항 등록 
 	public int insertNotice(SqlSessionTemplate sqlSession, Board b) {

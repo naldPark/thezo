@@ -4,13 +4,22 @@
 
 	<resultMap id="boardResult" type="Board">
 		<result column="board_no" property="boardNo"/>
+		<result column="mem_no" property="memNo"/>
 		<result column="board_title" property="boardTitle"/>
 		<result column="board_writer" property="boardWriter"/>
 		<result column="board_content" property="boardContent"/>
 		<result column="board_date" property="boardDate"/> 
 		<result column="count" property="count"/>
+	</resultMap>
+	
+	<resultMap id="boardFileResult" type="BoardFile">
+		<result column="file_no" property="fileNo"/>
+		<result column="ref_section" property="refSection"/>
+		<result column="ref_bno" property="ref_bno"/>
 		<result column="origin_name" property="originName"/>
-		<result column="change_name" property="changeName"/>
+		<result column="change_name" property="changeName"/> 
+		<result column="file_path" property="filePath"/>
+		<result column="uploadDate" property="uploadDate"/>
 	</resultMap>
 	
 	<resultMap id="reportResult" type="Report">
@@ -123,6 +132,16 @@
            and b.status = 'Y'   
 	</select>
 	
+	<!-- 사용자 : 공지사항 첨부파일 상세 조회 -->
+	<select id="selectNoticeFile" resultMap="boardFileResult">
+		select 
+		       origin_name
+		     , change_name
+		  from board_file
+		 where ref_bno = #{refBno}
+		   and status = 'Y'      
+	</select>
+	
 	<!-- 사용자 : 공지사항 등록 -->
 	<insert id="insertNotice">
 		insert 
@@ -140,14 +159,14 @@
 				)
 	</insert>
 	
-	<!-- 사용자 : 공지사항 첨부파일  -->
+	<!-- 사용자 : 공지사항 등록 첨부파일  -->
 	<insert id="insertNoticeFile">
 		insert 
 		   into board_file
 		   values(
 		           seq_bfno.nextval
 		         , '공지'
-		         , seq_nbno.currval 
+		         , seq_nbno.currval
 		         , #{ originName }
 		         , #{ changeName }
 		         , 'resources/uploadFiles/'

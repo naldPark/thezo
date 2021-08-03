@@ -21,6 +21,7 @@ public interface BoardService {
 		// 3. 사용자 : 공지사항 상세조회용
 		int increaseNoticeCount(int boardNo);
 		Board selectNotice(int boardNo);
+		BoardFile selectNoticeFile(int refBno);
 		
 		// 4_1. 사용자 : 공지사항 등록용
 		//int insertNotice(int memNo, Board b);

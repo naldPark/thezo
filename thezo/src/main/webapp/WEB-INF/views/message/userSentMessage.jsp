@@ -23,6 +23,53 @@
 </style>
 </head>
 <body>
+		<script>
+		function showStMsg(){				
+		 	$.ajax({
+		 		url:"selectSentList.msg",
+				data:{memNo: "${sessionScope.loginUser.memNo}"},
+		 		success:function(sentList){
+		 			var value ="";
+		 			if(sentList.length != 0){
+			 			for(var i in sentList){
+			 				value += '<tr onclick="openDetailMSG('
+			 					   + sentList[i].msgNo	
+			 				       + ",'s');" + '">'
+			 				       + '<td onclick="event.cancelBubble=true">' 
+			 				       + '<input type="checkbox" name="tossNo" value="'
+			 				       + sentList[i].msgNo
+			 				       + '"></td><td>'
+			 				       + sentList[i].recipientNameAndRank
+			 				       + '</td><td>'
+			 				       + sentList[i].msgStatus
+			 				       + '</td><td>'
+			 				       + sentList[i].contentStatus
+			 				       + '</td><td>'
+			 				       + sentList[i].createDate
+			 				       + '</td></tr>';
+			 			}
+			 			$("#sent-msg-table tbody").html(value);
+		 			}else{
+		 				value += '<table class="table table-sm" id="empty-sent-msg-table">'
+		 				       + '<thead><tr><th></th>'
+                    		   + '<th>받는사람</th><th>상태</th><th>관련내용</th><th>보낸날자</th>'
+                    		   + '</tr></thead><tbody><tr><td colspan="5">보낸 쪽지가 없습니다!</td>'
+                    		   + '</tr></tbody></table>';   
+		                $(".sent-content-area").html(value);
+		 			}
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})		 	
+		}
+		
+		$(function(){		
+			showStMsg();
+		})
+	</script>
+	
+
+
     <div class="sent-btn-area">
         <div>
             <button type="button" class="sent-del" onclick="openSentMsgDelete();">삭제</button>
@@ -55,61 +102,8 @@
                     <td>회의</td>
                     <td>11:10</td>
                 </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="tossNo" value="2">
-                    </td>
-                    <td>김땡떙 과장</td>
-                    <td>공지</td>
-                    <td>행사</td>
-                    <td>16:20</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="tossNo" value="3">
-                    </td>
-                    <td>이땡떙 개발자큼</td>
-                    <td>긴급</td>
-                    <td>업무</td>
-                    <td>1일전</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="tossNo" value="4">
-                    </td>
-                    <td>xxxx 사장</td>
-                    <td>답장불필요</td>
-                    <td>업무</td>
-                    <td>30일전</td>
-                </tr>
             </tbody>
         </table>
-
-        <!-- 위에서 작업 하고 안에 집어 넣기! -->
-        <c:choose>
-            <c:when test="">
-
-            </c:when>
-            <c:otherwise>
-                <table class="table table-sm" id="empty-sent-msg-table">
-                    <thead>
-                        <tr>
-                            <th>
-                            </th>
-                            <th>받는사람</th>
-                            <th>상태</th>
-                            <th>관련내용</th>
-                            <th>보낸날자</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="5">보낸 쪽지가 없습니다!</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </c:otherwise>
-        </c:choose>
     </div>
 
     <script>

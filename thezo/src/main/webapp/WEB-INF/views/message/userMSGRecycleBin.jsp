@@ -42,6 +42,84 @@
 </style>
 </head>
 <body>
+	<script>
+		// 휴지통 받은 쪽지 목록 
+		function showRcRecycleBin(){				
+		 	$.ajax({
+		 		url:"selectRcRbList.msg",
+				data:{memNo: "${sessionScope.loginUser.memNo}"},
+		 		success:function(receiveList){
+
+		 			var value ="";
+		 			if(receiveList.length != 0){
+			 			for(var i in receiveList){
+			 				value += '<tr onclick="openDetailMSG('
+			 					   + receiveList[i].msgNo	
+			 				       + ",'rrb');" + '">'
+			 				       + '<td onclick="event.cancelBubble=true">' 
+			 				       + '<input type="checkbox" name="tossNo" value="'
+			 				       + receiveList[i].msgNo
+			 				       + ',rm"></td><td>'
+			 				       + receiveList[i].senderNameAndRank
+			 				       + '</td><td>'
+			 				       + receiveList[i].msgStatus
+			 				       + '</td><td>'
+			 				       + receiveList[i].contentStatus
+			 				       + '</td><td>'
+			 				       + receiveList[i].createDate
+			 				       + '</td></tr>';
+			 			}
+		 			}else{
+		 				value += '<tr><td colspan="5">받은 쪽지가 없습니다!</td></tr>';
+		 			}
+		 			$("#for-rb-receive-checkbox").html(value);
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})		 	
+		}
+		// 휴지통 보낸 쪽지 목록 
+		function showStRecycleBin(){				
+		 	$.ajax({
+		 		url:"selectRcStList.msg",
+				data:{memNo: "${sessionScope.loginUser.memNo}"},
+		 		success:function(sentList){
+		 			var value ="";
+		 			if(sentList.length != 0){
+			 			for(var i in sentList){
+			 				value += '<tr onclick="openDetailMSG('
+			 					   + sentList[i].msgNo	
+			 				       + ",'srb');" + '">'
+			 				       + '<td onclick="event.cancelBubble=true">' 
+			 				       + '<input type="checkbox" name="tossNo" value="'
+			 				       + sentList[i].msgNo
+			 				       + ',sm"></td><td>'
+			 				       + sentList[i].recipientNameAndRank
+			 				       + '</td><td>'
+			 				       + sentList[i].msgStatus
+			 				       + '</td><td>'
+			 				       + sentList[i].contentStatus
+			 				       + '</td><td>'
+			 				       + sentList[i].createDate
+			 				       + '</td></tr>';
+			 			}
+		 			}else{
+		 				value += '<tr><td colspan="5">받은 쪽지가 없습니다!</td></tr>';
+		 			}
+			 			$("#for-rb-sent-checkbox").html(value);
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})		 	
+		}
+		
+		$(function(){		
+			showRcRecycleBin();
+			showStRecycleBin();
+		})
+	</script>
+
+
     <div class="recycle-bin-btn-area">
         <div>
             <button type="button" class="recycle-bin-del" onclick="openRecycleBinDelete();">영구 삭제</button>
@@ -81,33 +159,6 @@
                         <td>회의</td>
                         <td>11:10</td>
                     </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="tossNo" value="2,rm">
-                        </td>
-                        <td>김땡떙 과장</td>
-                        <td>공지</td>
-                        <td>행사</td>
-                        <td>16:20</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="tossNo" value="3,rm">
-                        </td>
-                        <td>이땡떙 개발자큼</td>
-                        <td>긴급</td>
-                        <td>업무</td>
-                        <td>1일전</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="tossNo" value="4,rm">
-                        </td>
-                        <td>xxxx 사장</td>
-                        <td>답장불필요</td>
-                        <td>업무</td>
-                        <td>30일전</td>
-                    </tr>
                 </tbody>
                 <thead>
                     <tr>
@@ -136,83 +187,8 @@
                         <td>회의</td>
                         <td>11:10</td>
                     </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="tossNo" value="2,sm">
-                        </td>
-                        <td>김땡떙 과장</td>
-                        <td>공지</td>
-                        <td>행사</td>
-                        <td>16:20</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="tossNo" value="3,sm">
-                        </td>
-                        <td>이땡떙 개발자큼</td>
-                        <td>긴급</td>
-                        <td>업무</td>
-                        <td>1일전</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" name="tossNo" value="4,sm">
-                        </td>
-                        <td>xxxx 사장</td>
-                        <td>답장불필요</td>
-                        <td>업무</td>
-                        <td>30일전</td>
-                    </tr>
                 </tbody>
         </table>
-
-        <!-- 위에서 작업 하고 안에 집어 넣기!   휴지통에 리스트가 없을떄 보여질것 !  -->
-        <c:choose>
-            <c:when test="">
-
-            </c:when>
-            <c:otherwise>
-                <table class="table table-sm" id="empty-recycle-msg-table">
-                    <thead>
-                        <tr>
-                            <th colspan="5" style="font-size: 20px; background-color: lightblue; color: white;">휴지통 받은 쪽지 목록 </th>
-                        </tr>        
-                        <tr>
-                            <th>
-                            </th>
-                            <th>보낸사람</th>
-                            <th>상태</th>
-                            <th>관련내용</th>
-                            <th>받은날자</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="5">받은 쪽지가 없습니다!</td>
-                        </tr>
-                    </tbody>
-                    <thead>
-                        <tr>
-                            <th colspan="5" style="font-size: 20px; background-color: lightgreen; color: white; border-top: 3px solid rgb(204,204,204);">휴지통 보낸 쪽지 목록 </th>
-                        </tr>        
-                        <tr>
-                            <th>
-                            </th>
-                            <th>받는사람</th>
-                            <th>상태</th>
-                            <th>관련내용</th>
-                            <th>보낸날자</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="5">보낸 쪽지가 없습니다!</td>
-                        </tr>
-                    </tbody>
-
-                </table>
-            </c:otherwise>
-        </c:choose>
     </div>
 
     <!-- 스크립트 영역 !  -->
@@ -253,8 +229,48 @@
             $(".report-header-btn").hide();            
         }
     </script>
-
+<%-- ------------------------------------------------------------------------------------------------- --%>
+<%-- ------------------------------------------------------------------------------------------------- --%>
 <%-- ----------------------------------------신고처리 내역 부분 시작 ------------------------------------------ --%>
+   	<script>
+   		// ※ 정석적으로 report쪽으로 받아와야한다. 
+		/*function showReportMsg(){				
+		 	$.ajax({
+		 		url:"selectReportList.msg",
+				data:{memNo: "${sessionScope.loginUser.memNo}"},
+		 		success:function(reportList){
+
+		 			var value ="";
+		 			if(reportList.length != 0){
+			 			for(var i in reportList){
+			 				value += '<tr onclick="userTossReportNo('
+			 					   + reportList[i].msgNo	
+			 				       + ');"><td>'
+			 				       + reportList[i].senderNameAndRank
+			 				       + '</td><td>'
+			 				       + reportList[i].msgStatus
+			 				       + '</td><td>'
+			 				       + reportList[i].contentStatus
+			 				       + '</td><td>'
+			 				       + reportList[i].createDate
+			 				       + '</td></tr>';
+			 			}
+		 			}else{
+		 				value += '<tr><td colspan="5">신고 내역이 없습니다!</td></tr>';
+		 			}
+		 			$("#user-report-list-table tbody").html(value);
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})		 	
+		}
+		
+		$(function(){		
+			showReportMsg();
+		})*/
+	</script>
+    
+    
     <div class="report-list-area w3-animate-opacity">
         <!-- 여기가 !!! 신고쪽 보이게 하는것이다!  -->
     
@@ -278,50 +294,8 @@
                         <td>기능제한</td>
                         <td>11:10</td>
                     </tr>
-                    <tr onclick="userTossReportNo(2);">
-                        <td>xxxxxx</td>
-                        <td>반려</td>
-                        <td>처리불가</td>
-                        <td>16:20</td>
-                    </tr>
-                    <tr onclick="userTossReportNo(3);">
-                        <td>xxxxxx</td>
-                        <td>처리완료</td>
-                        <td>기능제한</td>
-                        <td>1일전</td>
-                    </tr>
-                    <tr onclick="userTossReportNo(4);">
-                        <td>xxxx 사장</td>
-                        <td>처리중</td>
-                        <td>미정</td>
-                        <td>미정</td>
-                    </tr>
                 </tbody>
             </table>
-    
-            <!-- 위에서 작업 하고 안에 집어 넣기! -->
-            <c:choose>
-                <c:when test="">
-    
-                </c:when>
-                <c:otherwise>
-                    <table class="table table-sm" id="empty-user-report-list-table">
-                        <thead>
-                            <tr>
-                                <th>보낸사람</th>
-                                <th>처리상태</th>
-                                <th>조치내용</th>
-                                <th>처리날자</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="5">신고 내역이 없습니다!</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </c:otherwise>
-            </c:choose>
         </div>
     </div>
 

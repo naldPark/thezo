@@ -615,6 +615,7 @@
 <%-------------------------------------------신고 모달 끝 ---------------------------------------------------- --%>
 <%-------------------------------------------삭제 모달 시작 (다른데서도 동일한 css가 쓰임 ) ---------------------------------------------------- --%>
     <script>
+        var rcMultiVal = []; 
         function openReceivedMsgDelete(){
             var  eachCheck = $("#received-msg-table input:checkbox[name=tossNo]:checked");
 
@@ -622,78 +623,52 @@
                 alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
             }else{
                 // 쪽지 번호들을 배열에 담았다. 
-                var multiVal = []; 
+                if(rcMultiVal.length > 0){
+                	rcMultiVal = []; 
+                }
                 eachCheck.each(function(){
                     var checkedItem = $(this).val();
-                    multiVal.push(checkedItem)
+                    rcMultiVal.push(checkedItem)
                 })
-                //console.log(multiVal);
-
-                $("#receive-msg-delete-modal #multiSelectMsgNo").val(multiVal);    
+				// multiVal에 값들이 담겨있는 상태 ! 
+                $("#receive-msg-delete-modal #multiSelectMsgNo").val(rcMultiVal);    
                 $("#receive-msg-delete-modal #deleteItemCount").text(eachCheck.length);    
-                $("#receive-msg-delete-modal").modal();
+                $("#receive-msg-delete-modal").modal();                
             }
+        }
+        
+        function rcMsgMoveToRB(){
+            //여기서 ajax 통신이다! + modal 닫기전에 !! controller에서 ! 목록 뿌려주는거 다시 사용해야한다. 
+            $.ajax({
+		 		url:"moveToRB.msg",
+		 		traditional : true,
+				data:{multiMsgNo: rcMultiVal 
+					 , memNo : ${ loginUser.memNo }
+            		 , msgType : 'rc'
+            	},
+		 		success:function(result){
+		 			alert(result);
+		 			showRcMsg();
+		 			$("#receive-msg-delete-modal").modal('hide')
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})
         }
     </script>
 
     <style>
-        #receive-msg-delete-modal .modal-content{
-            width: 365px;
-            height: 182px;
-            transform: translate(130px, 150px);
-        }
-
-        #receive-msg-delete-modal .modal-header{
-            height: 52px;
-            border-bottom: none;
-        }
-
-        #receive-msg-delete-modal .modal-header>p{
-            font-size: 22px;
-            font-weight: bold;
-            color: rgb(231,76,60);
-        }
-        #receive-msg-delete-modal .modal-body{
-            height: 85px;
-            font-size: 17px;
-        }
-
-        #deleteItemCount{
-            color: red;
-            font-weight: bold;
-        }
-
-        #receive-msg-delete-modal .modal-footer{
-            height: 45px;
-            border-top: none;
-            padding: 0px;
-        }
-
-        #receive-msg-delete-modal .modal-footer>button{
-            width: 50%;
-            height: 100%;
-            font-size: 22px;
-            margin: 0px;
-            border: none;
-        }
-
-        #receive-msg-delete-modal .modal-footer>button:hover{
-            font-weight: bold;
-        }
-        #receive-msg-delete-modal .modal-footer>button:focus{
-            outline: none;
-        }
-
-
-        #receive-msg-delete-modal .modal-footer>button:first-child{
-            background-color: rgb(224,224,224);
-            color: rgb(51,51,51);
-        }
-
-        #receive-msg-delete-modal .modal-footer>button:last-child{
-            background-color: rgb(231,76,60);
-            color: white;
-        }
+        #receive-msg-delete-modal .modal-content{width: 365px; height: 182px; transform: translate(130px, 150px);}
+        #receive-msg-delete-modal .modal-header{height: 52px; border-bottom: none;}
+        #receive-msg-delete-modal .modal-header>p{color: rgb(231,76,60); font-size: 22px; font-weight: bold;}
+        #receive-msg-delete-modal .modal-body{height: 85px; font-size: 17px;}
+        #deleteItemCount{color: red; font-weight: bold;}
+        #receive-msg-delete-modal .modal-footer{height: 45px; padding: 0px; border-top: none;}
+        #receive-msg-delete-modal .modal-footer>button{width: 50%; height: 100%; border: none; margin: 0px; font-size: 22px;}
+        #receive-msg-delete-modal .modal-footer>button:hover{font-weight: bold;}
+        #receive-msg-delete-modal .modal-footer>button:focus{outline: none;}
+        #receive-msg-delete-modal .modal-footer>button:first-child{color: rgb(51,51,51); background-color: rgb(224,224,224);}
+        #receive-msg-delete-modal .modal-footer>button:last-child{color: white; background-color: rgb(231,76,60);}
     </style>
     <!-- The Modal -->
     <div class="modal fade" id="receive-msg-delete-modal">
@@ -717,7 +692,7 @@
                     <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal">취소</button>
-                        <button type="submit" data-dismiss="modal" onclick="">삭제</button>
+                        <button type="button" onclick="rcMsgMoveToRB();">삭제</button>
                     </div>
                 </form>
                 
@@ -728,24 +703,47 @@
 <%-------------------------------------------삭제 모달 끝 (다른데서도 동일한 css가 쓰임 )---------------------------------------------------- --%>
 <%-------------------------------------------보낸 쪽지함 삭제 모달 시작  ---------------------------------------------------- --%>
     <script>     
-        function openSentMsgDelete(){
-            var  eachCheck = $("#sent-msg-table input:checkbox[name=tossNo]:checked");
-            if(eachCheck.length == 0){
-                alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
-            }else{
-                // 쪽지 번호들을 배열에 담았다. 
-                var multiVal = []; 
-                eachCheck.each(function(){
-                    var checkedItem = $(this).val();
-                    multiVal.push(checkedItem)
-                })
-                // console.log(multiVal);
-
-                $("#send-msg-delete-modal #sendMultiSentSelectMsgNo").val(multiVal);    
-                $("#send-msg-delete-modal #sendDeleteSentItemCount").text(eachCheck.length);    
-                $("#send-msg-delete-modal").modal();
+    var stMultiVal = []; 
+    function openSentMsgDelete(){
+        var  eachCheck = $("#sent-msg-table input:checkbox[name=tossNo]:checked");
+        if(eachCheck.length == 0){
+            alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
+        }else{
+            // 쪽지 번호들을 배열에 담았다.
+            if(stMultiVal.length > 0){
+            	stMultiVal = []; 
             }
+            eachCheck.each(function(){
+                var checkedItem = $(this).val();
+                stMultiVal.push(checkedItem)
+            })
+            //console.log(stMultiVal);
+
+            $("#send-msg-delete-modal #sendMultiSentSelectMsgNo").val(stMultiVal);    
+            $("#send-msg-delete-modal #sendDeleteSentItemCount").text(eachCheck.length);    
+            $("#send-msg-delete-modal").modal();
         }
+    }
+
+    function stMsgMoveToRB(){
+        //여기서 ajax 통신이다! + modal 닫기전에 !! controller에서 ! 목록 뿌려주는거 다시 사용해야한다. 
+        $.ajax({
+	 		url:"moveToRB.msg",
+	 		traditional : true,
+			data:{multiMsgNo: stMultiVal 
+				 , memNo : ${ loginUser.memNo }
+        		 , msgType : 'st'
+        	},
+	 		success:function(result){
+	 			alert(result);
+	 			showStMsg();
+	 			$("#send-msg-delete-modal").modal('hide')
+	 		},error:function(){
+	 			console.log("ajax통신 실패");
+	 		}				
+	 	})
+    }
+    
     </script>
 
     <style>
@@ -828,7 +826,7 @@
                     <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal">취소</button>
-                        <button type="submit" data-dismiss="modal" onclick="">삭제</button>
+                        <button type="button" onclick="stMsgMoveToRB();">삭제</button>
                     </div>
                 </form>
                 

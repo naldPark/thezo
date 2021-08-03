@@ -25,6 +25,53 @@
 </style>
 </head>
 <body>
+	<script>
+		function showRcMsg(){				
+		 	$.ajax({
+		 		url:"selectReceiveList.msg",
+				data:{memNo: "${sessionScope.loginUser.memNo}"},
+		 		success:function(receiveList){
+
+		 			var value ="";
+		 			if(receiveList.length != 0){
+			 			for(var i in receiveList){
+			 				value += '<tr onclick="openDetailMSG('
+			 					   + receiveList[i].msgNo	
+			 				       + ",'r');" + '">'
+			 				       + '<td onclick="event.cancelBubble=true">' 
+			 				       + '<input type="checkbox" name="tossNo" value="'
+			 				       + receiveList[i].msgNo
+			 				       + '"></td><td>'
+			 				       + receiveList[i].senderNameAndRank
+			 				       + '</td><td>'
+			 				       + receiveList[i].msgStatus
+			 				       + '</td><td>'
+			 				       + receiveList[i].contentStatus
+			 				       + '</td><td>'
+			 				       + receiveList[i].createDate
+			 				       + '</td></tr>';
+			 			}
+			 			$("#received-msg-table tbody").html(value);
+		 			}else{
+		 				value += '<table class="table table-sm" id="empty-received-msg-table">'
+		 				       + '<thead><tr><th></th>'
+                    		   + '<th>보낸사람</th><th>상태</th><th>관련내용</th><th>받은날자</th>'
+                    		   + '</tr></thead><tbody><tr><td colspan="5">받은 쪽지가 없습니다!</td>'
+                    		   + '</tr></tbody></table>';
+		                $(".receive-content-area").html(value);
+		 			}
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})		 	
+		}
+		
+		$(function(){		
+			showRcMsg();
+		})
+	</script>
+
+
     <div class="receive-btn-area">
         <div>
             <button type="button" class="receive-del" onclick="openReceivedMsgDelete();">삭제</button>
@@ -59,61 +106,8 @@
                     <td>회의</td>
                     <td>11:10</td>
                 </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="tossNo" value="2">
-                    </td>
-                    <td>김땡떙 과장</td>
-                    <td>공지</td>
-                    <td>행사</td>
-                    <td>16:20</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="tossNo" value="3">
-                    </td>
-                    <td>이땡떙 개발자큼</td>
-                    <td>긴급</td>
-                    <td>업무</td>
-                    <td>1일전</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="checkbox" name="tossNo" value="4">
-                    </td>
-                    <td>xxxx 사장</td>
-                    <td>답장불필요</td>
-                    <td>업무</td>
-                    <td>30일전</td>
-                </tr>
-            </tbody>
+             </tbody>
         </table>
-
-        <!-- 위에서 작업 하고 안에 집어 넣기! -->
-        <c:choose>
-            <c:when test="">
-
-            </c:when>
-            <c:otherwise>
-                <table class="table table-sm" id="empty-received-msg-table">
-                    <thead>
-                        <tr>
-                            <th>
-                            </th>
-                            <th>보낸사람</th>
-                            <th>상태</th>
-                            <th>관련내용</th>
-                            <th>받은날자</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td colspan="5">받은 쪽지가 없습니다!</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </c:otherwise>
-        </c:choose>
     </div>
 
     <script>

@@ -30,5 +30,9 @@ public interface MessageService {
 	
 	// 읽지 않은 쪽지 갯수 가져오는 서비스 
 	int ajaxCountUnreadedMsg(int memNo);
-	
+
+	// 메세지 상세조회하는 서비스 
+	Message ajaxSelectDetailMsg(int memNo, String MsgType);
 }
+
+

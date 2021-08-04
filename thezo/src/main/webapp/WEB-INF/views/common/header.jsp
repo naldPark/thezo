@@ -400,10 +400,9 @@
 		 				$(".msgUnreadCount").css("visibility","hidden");
 		 				$(".mainMsgUnreadCount ").text('');
 		 				$("#notifyNewMsg").hide();
-		 			if else(unreadMsgCount > 99){
+		 			}else if(unreadMsgCount > 99){
 		 				$(".msgUnreadCount").text("99..");
-		 				$(".mainMsgUnreadCount ").text(unreadMsgCount +'99..건');		 				
-		 			}	
+		 				$(".mainMsgUnreadCount ").text(unreadMsgCount +'99..건');		 					
 		 			}else{
 		 				$(".msgUnreadCount").text(unreadMsgCount);
 		 				$(".mainMsgUnreadCount ").text(unreadMsgCount +'건');

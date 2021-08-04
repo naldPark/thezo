@@ -77,7 +77,19 @@
         // 쪽지 상세 보기 쪽인데 !!! 여기서 ajax로 값 뿌려주면서 만들어줘야한다
         function openDetailMSG(msgNo,checkMsgType){
             if(checkMsgType == 'r'){//받은 쪽지 (보낸 사람, 받은 시간을 표기)
-                $("#receiverType").hide();
+    		 	$.ajax({
+    		 		url: "Detail.msg",
+    		 		data:{memNo: "${sessionScope.loginUser.memNo}"
+    		 			, MsgType :checkMsgType 
+    		 		},
+    		 		success:function(){
+    		 			
+    		 		},error:function(){
+    		 			console.log("ajax통신 실패");
+    		 		}    		 		
+    		 	})
+            
+            	$("#receiverType").hide();
                 $("#sendTiem").hide();
                 $("#reply-btn").show();
                 $("#senderType").show();

@@ -72,6 +72,14 @@ public class MessageServiceImpl implements MessageService{
 		return msgDao.ajaxCountUnreadedMsg(sqlSession, memNo);
 	}
 
+
+	/** 메세지 상세조회하는 서비스   (여기서 비즈니스 로직 처리를 해줘야한다! MsgType을 가지고!!! 
+	 */
+	@Override
+	public Message ajaxSelectDetailMsg(int memNo, String MsgType) {
+		return null;
+	}
+
 	
 
 }

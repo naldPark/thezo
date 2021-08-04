@@ -134,4 +134,18 @@ public class MessageController {
 	    return new Gson().toJson(count);
 	}
 
+	
+	
+	/** message 상세 정보를 가져오는 것인데 여기서 !!! 일단은 바로 서비스단으로 넘겨서 서비스단에서 조건문으로 처리하면서 비즈니스 로직 처리한다. 
+	 * @param memNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="Detail.msg", produces="application/json; charset=utf-8")
+	public String ajaxSelectDetailMsg(int memNo, String MsgType){
+		Message msgDetail = msgService.ajaxSelectDetailMsg(memNo, MsgType);		
+	    return new Gson().toJson("큼");
+	}
+
+	
 }

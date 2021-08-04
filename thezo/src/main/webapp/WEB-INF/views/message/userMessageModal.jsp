@@ -9,57 +9,17 @@
 <meta name="author" content="Jaewon.s">
 <title>쪽지 모달들</title>
 <style>
-    #messageDetail .modal-content{
-        width: 630px;
-        height: 315px;
-        transform: translateY(150px);
-    } 
-
-    #messageDetail .modal-header{
-        width: 100%;
-        height: 77px;
-        border-bottom: 3px solid rgb(193,193,193);
-    }
-
-    #messageDetail .modal-header>table{
-        width: 440px;
-    }
-
-    #messageDetail .modal-header>div{
-        display: flex;
-        flex-direction: column;
-    }
-
-    #messageDetail .modal-header>div>button[class="close"]{
-        font-size: 35px;
-        padding: 1px;
-    }
-
-    #messageDetail #reply-btn, #reply-send-message #reply-send-btn{
-        color: white;
-        margin-top: 20px;
-        width: 70px;
-        height: 25px;
-        border: none;
-        font-size: 14px;
-        line-height: 25px;
-        font-weight: bold;
-        background-color: rgb(52,152,219);
-        border-radius: 5px;
-    }
-
-    #messageDetail .modal-body{
-        padding: 0px;
-    }
-
-    .detail-modal-content pre{
-        width: 100%;
-        height: 235px;
+	/* 받은 쪽지 상세 모달  */
+    #messageDetail .modal-content{width: 630px; height: 315px; transform: translateY(150px);} 
+    #messageDetail .modal-header{width: 100%; height: 77px; border-bottom: 3px solid rgb(193,193,193);}
+    #messageDetail .modal-header>table{width: 440px;}
+    #messageDetail .modal-header>div{display: flex; flex-direction: column;}
+    #messageDetail .modal-header>div>button[class="close"]{font-size: 35px; padding: 1px;}
+    #messageDetail #reply-btn, #reply-send-message #reply-send-btn{width: 70px; height: 25px; color: white; font-size: 14px; font-weight: bold; line-height: 25px; margin-top: 20px; border: none; border-radius: 5px; background-color: rgb(52,152,219);}
+    #messageDetail .modal-body{padding: 0px;}
+    .detail-modal-content pre{width: 100%; height: 235px; padding: 15px; font-family:'Noto Sans KR', sans-serif;
         overflow-y: scroll;
-        padding: 15px;
-        font-family:'Noto Sans KR', sans-serif;
-        white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;
-    }
+        white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;}
 
 </style>
 </head>
@@ -67,6 +27,9 @@
 <%-------------------------------------------받은쪽지 상세보기 모달 시작---------------------------------------------------- --%>
 <!--  겁나 중요 하다 여기서 중요한것은 메소드로 해당 !모달을 호출할때에  인자값을 2개를 넘긴다 !이를 가지고  받은쪽지인지 보낸쪽지인지 휴지통에 있는 쪽지인지 판별 -->
     <!-- 쪽지 상세보기모달인데 ! 상관관계상 ! header쪽에서 삽입함.  -->
+    
+    
+	<!-- 받은 쪽지 (답장버튼있음) 휴지통에서 받은 쪽지 보는곳 / 그리고 보낸 쪽지 보는것이 혼합 되어있는 복잡한 놈이다!!! 조심해서 다뤄주자! -->
     <div class="modal fade" id="messageDetail">
         <div class="modal-dialog">
             <div class="modal-content" >                
@@ -107,39 +70,6 @@
         </div>
     </div>
 
-    <script>
-        function openReplyAndSendMsg(msgNo){
-            if(msgNo != null){
-                $("#messageDetail").modal('hide');
-
-                // 여기서 이제 반복문 돌리면서 !!! 
-                //reply쪽은 !!! block 처리를 해주고 
-                //send 쪽은 class를 부여해줘야한다. 클래스명은  .send-display 이다!!! 
-
-                var rd = document.getElementsByClassName("reply-display");
-                for(var i=0; i<rd.length;i++){
-                    $(rd[i]).css("display", "block");
-                }
-                var sd = document.getElementsByClassName("send-display");
-                for(var i=0; i<sd.length;i++){
-                    $(sd[i]).css("display", "none");
-                }
-            }
-
-            if(msgNo == null){
-                var rd = document.getElementsByClassName("reply-display");
-                for(var i=0; i<rd.length;i++){
-                    $(rd[i]).css("display", "none");
-                }
-                var sd = document.getElementsByClassName("send-display");
-                for(var i=0; i<sd.length;i++){
-                    $(sd[i]).css("display", "block");
-                }
-            }
-
-            $("#reply-send-message").modal();
-        }
-    </script>
 
 <%-------------------------------------------받은쪽지 상세보기 모달 끝---------------------------------------------------- --%>
 <%-------------------------------------------답장하기 , 쪽지 쓰기 모달 시작---------------------------------------------------- --%>
@@ -307,6 +237,41 @@
     }
 
     </style>
+
+     <script>
+        function openReplyAndSendMsg(msgNo){
+            if(msgNo != null){
+                $("#messageDetail").modal('hide');
+
+                // 여기서 이제 반복문 돌리면서 !!! 
+                //reply쪽은 !!! block 처리를 해주고 
+                //send 쪽은 class를 부여해줘야한다. 클래스명은  .send-display 이다!!! 
+
+                var rd = document.getElementsByClassName("reply-display");
+                for(var i=0; i<rd.length;i++){
+                    $(rd[i]).css("display", "block");
+                }
+                var sd = document.getElementsByClassName("send-display");
+                for(var i=0; i<sd.length;i++){
+                    $(sd[i]).css("display", "none");
+                }
+            }
+
+            if(msgNo == null){
+                var rd = document.getElementsByClassName("reply-display");
+                for(var i=0; i<rd.length;i++){
+                    $(rd[i]).css("display", "none");
+                }
+                var sd = document.getElementsByClassName("send-display");
+                for(var i=0; i<sd.length;i++){
+                    $(sd[i]).css("display", "block");
+                }
+            }
+
+            $("#reply-send-message").modal();
+        }
+    </script>
+
 
     <!-- 쪽지 상세보기모달인데 ! 상관관계상 ! header쪽에서 삽입함.  -->
     <!-- 아주 단순하다!!! ajax로다가 값을 가져올때 !!! 자바스크립트로!!! 

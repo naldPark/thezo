@@ -94,6 +94,12 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.updateNoticeFile(sqlSession, bf);
 	}
 
+	// 사용자 : 공지사항 reUpfile 등록
+	@Override
+	public int insertNoticeRefile(BoardFile bf) {
+		return bDao.insertNoticeRefile(sqlSession, bf);
+	}
+
 	
 	
 	

@@ -155,7 +155,7 @@ public class BoardController {
 		return "board/noticeUpdateForm";
 	}
 		
-	// 공지사항 수정하기 (사용자) : 왜 첨부파일이 안되냐고!
+	// 공지사항 수정하기 (사용자) 
 	@RequestMapping("noticeUpdate.bo")
 	public String updateNotice(BoardFile bf, Board b, MultipartFile reupfile, HttpSession session, Model model) {
 		
@@ -164,22 +164,31 @@ public class BoardController {
 			// 기본에 첨부파일이 있었을 경우 => 기존의 첨부파일 지우기
 			if(bf.getOriginName() != null) {
 				new File(session.getServletContext().getRealPath(bf.getChangeName())).delete();
+				// 새로 넘어온 첨부파일 서버 업로드 시키기
+				String changeName = saveFile(session, reupfile);
+				// bf에 새로 넘어온 첨부파일에 대한 정보 담기
+				bf.setOriginName(reupfile.getOriginalFilename());
+				bf.setChangeName(changeName);
+			}else {
+				
+				// 새로 넘어온 첨부파일 서버 업로드 시키기
+				String changeName = saveFile(session, reupfile);
+				// bf에 새로 넘어온 첨부파일에 대한 정보 담기
+				bf.setOriginName(reupfile.getOriginalFilename());
+				bf.setChangeName(changeName);
+				
+				bService.insertNoticeRefile(bf);
 			}
 			
-		 	// 새로 넘어온 첨부파일 서버 업로드 시키기
-			String changeName = saveFile(session, reupfile);
-			// bf에 새로 넘어온 첨부파일에 대한 정보 담기
-			bf.setOriginName(reupfile.getOriginalFilename());
-			bf.setChangeName("resources/uploadFiles/" + changeName);
+		 	
 		}
 	
 		// update문 실행하러 service 호출  
 		int result = bService.updateNotice(b);
-		 
+		
 		if(result > 0) { // 성공
-			if(bf.getOriginName() != null) {
-				bService.updateNoticeFile(bf);
-			}
+			
+			bService.updateNoticeFile(bf);
 			session.setAttribute("alertMsg", "게시글 수정 성공");
 			return "redirect:noticeDetail.bo?bno=" + b.getBoardNo();
 		}else { // 실패
@@ -187,13 +196,6 @@ public class BoardController {
 			return "common/errorPage";
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 		
 	

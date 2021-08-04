@@ -82,6 +82,10 @@ public class BoardDao {
 		return sqlSession.update("boardMapper.updateNoticeFile", bf);
 	} 
 	
+	public int insertNoticeRefile(SqlSessionTemplate sqlSession, BoardFile bf) {
+		return sqlSession.insert("boardMapper.insertNoticeRefile", bf);
+	}
+	
 	// ------------------------  사내게시판 영역  ----------------------------
 	
 	// 사용자 : 사내게시판 글 총 갯수 

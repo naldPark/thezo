@@ -89,6 +89,7 @@
                  <form id="postForm" action="" method="post">
 	            	<input type="hidden" name="bno" value="${ b.boardNo }">
 	            	<input type="hidden" name="filePath" value="${ bf.changeName }">
+	            	<input type="hidden" name="refBno" value="${ b.boardNo }">
 	             </form>
 	             
 	             <script>

@@ -199,6 +199,22 @@
 		 where ref_bno = #{refBno}
 	</update>		
 	
+	<!-- 사용자 : 공지사항 등록 첨부파일  -->
+	<insert id="insertNoticeRefile">
+		insert 
+		   into board_file
+		   values(
+		           seq_bfno.nextval
+		         , '공지'
+		         , #{ refBno }
+		         , #{ originName }
+		         , #{ changeName }
+		         , 'resources/uploadFiles/'
+		         , sysdate
+		         , default
+		         )
+	</insert>
+	
 	
 	
 	

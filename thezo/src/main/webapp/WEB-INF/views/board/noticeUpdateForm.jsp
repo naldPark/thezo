@@ -94,6 +94,7 @@
 					<tr>
 						<th><label for="upfile">첨부파일</label></th>
 						<td>
+							<input type="hidden" name="refBno" value="${ b.boardNo }">
 							<input type="file" id="upfile" class="form-control-file border" name="reupfile">
 							<c:if test="${ !empty bf.originName }">
                          		  현재 업로드된 파일 : 

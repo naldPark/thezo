@@ -35,6 +35,7 @@ public interface BoardService {
 		// 6. 사용자 : 공지사항 수정용(글)
 		int updateNotice(Board b);
 		int updateNoticeFile(BoardFile bf);
+		int insertNoticeRefile(BoardFile bf);
 		
 		// --------------- 사내게시판 영역 --------------------
 

@@ -87,7 +87,7 @@
 
                             </div>
                             <div class="col text-left">
-                                <span onclick="mainOpenUnreadChat">대화하기 
+                                <span onclick="mainOpenUnreadChat();">대화하기 
                                 <i id="notifyNewChat" class="fas fa-exclamation-circle" style="color:red"></i>
                                 </span>
                             </div>
@@ -97,7 +97,8 @@
                                 <i class="fas fa-sticky-note fa-lg"></i>
                             </div>
                             <div class="col text-left">
-                                <span onclick="mainOpenUnreadMsg">쪽지
+                                <span onclick="mainOpenUnreadMsg();">쪽지 
+                                <span class="mainMsgUnreadCount"></span>
                                 <i id="notifyNewMsg" class="fas fa-exclamation-circle" style="color:red"></i>
                                 </span>
                             </div>
@@ -298,7 +299,7 @@
 	    	$("#notifyNewNf").show();    		
     	}else{    		
 	    	$("#notifyNewNf").hide();    		
-    	}
+    	}    	    	
  	})
     
     function mainOpenUnreadNf(){
@@ -311,14 +312,14 @@
    		}
     }
 
-    // @Author: Jaewon.S
+    // @Author: Jaewon.S    
     function mainOpenUnreadChat(){
-    	
     }
     
     // @Author: Jaewon.S
     function mainOpenUnreadMsg(){
-    	
+		showMessengerArea();
+    	moveToMessage();    	
     }
     
     </script>

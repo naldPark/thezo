@@ -27,4 +27,8 @@ public interface MessageService {
 	// 특이한놈으로 신고임에도 Message객체에 값을 담아오는 것으로 단순히 신고목록만을 가져오는  service
 	//ArrayList<Message> ajaxselectReportList(int memNo);
 	// 정석적으로 Report VO로 받아와야한다.
+	
+	// 읽지 않은 쪽지 갯수 가져오는 서비스 
+	int ajaxCountUnreadedMsg(int memNo);
+	
 }

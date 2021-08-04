@@ -18,6 +18,7 @@ import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.member.model.service.MemberService;
 import com.kh.thezo.member.model.vo.Member;
+import com.kh.thezo.message.model.service.MessageService;
 import com.kh.thezo.notification.model.service.NotificationService;
 
 @Controller
@@ -29,7 +30,10 @@ public class MemberController {
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	@Autowired
 	private NotificationService nfService;
+	@Autowired
+	private MessageService msgService;
 
+	
 	@RequestMapping("logout.me")
 	public String logoutMember(HttpSession session){
 		session.invalidate();
@@ -51,14 +55,12 @@ public class MemberController {
 			mv.setViewName("common/errorPage");
 		}
 		
-		int count = nfService.ajaxCountUnreadedNf(loginUser.getMemNo());		
-		if(count != 0) {
-			session.setAttribute("unreadNotification", count);
+		int nfCount = nfService.ajaxCountUnreadedNf(loginUser.getMemNo());		
+		if(nfCount != 0) {
+			session.setAttribute("unreadNotification", nfCount);
 		}
-
 		
-		return mv;		
-		
+		return mv;			
 	}
 	
 	

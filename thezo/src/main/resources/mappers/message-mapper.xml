@@ -74,7 +74,8 @@
               else
                    to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')) || '일전' 
               end as receive_date   
-  	         , mb.mem_name || ' ' || mb.rank as sender_name_rank	     
+  	         , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	         , read_status
 		  from message msg
   	      join member mb on (msg.sender_no = mb.mem_no )	  
 		 where recipient_no = #{ memNo }    
@@ -193,4 +194,22 @@
 	<select id="ajaxselectReportList" resultMap="messageResult">
 	</select>
 	 -->
+	 
+	 <select id="ajaxCountUnreadedMsg" resultType="_int">
+	 	select count(*)
+	 	  from message
+	 	 where recipient_no = #{ memNo }
+	 	   and read_status = 'N'	
+	 	   and to_recycle_bin = 'Y'
+	 	   and to_del_status = 'Y'
+	 </select>
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 </mapper>

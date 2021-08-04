@@ -35,7 +35,13 @@
 		 			var value ="";
 		 			if(receiveList.length != 0){
 			 			for(var i in receiveList){
-			 				value += '<tr onclick="openDetailMSG('
+		 					   if(receiveList[i].readStatus == 'N'){
+		 						  value += '<tr style="font-weight:bolder;" '
+		 					   }else{
+		 						  value += '<tr'
+		 					   }
+			 				
+			 				value += 'onclick="openDetailMSG('
 			 					   + receiveList[i].msgNo	
 			 				       + ",'r');" + '">'
 			 				       + '<td onclick="event.cancelBubble=true">' 

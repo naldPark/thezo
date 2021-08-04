@@ -58,5 +58,15 @@ public class MessageDao {
 	}*/
 	// 정석적으로 Report VO로 받아와야하나.
 
+	
+	
+	/** 읽지 않은 쪽지 갯수 가져오는 dao
+	 * @param sqlSession
+	 * @param memNo
+	 * @return
+	 */
+	public int ajaxCountUnreadedMsg(SqlSessionTemplate sqlSession, int memNo) {
+		return sqlSession.selectOne("messageMapper.ajaxCountUnreadedMsg", memNo);
+	}
 
 }

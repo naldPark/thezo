@@ -126,4 +126,12 @@ public class MessageController {
 	}*/
 	// 정석적으로 Report VO로 받아와야한다.
 	
+	
+	@ResponseBody
+	@RequestMapping(value="countUnreadMsg.msg", produces="application/json; charset=utf-8")
+	public String ajaxCountUnreadedMsg(int memNo){
+		int count = msgService.ajaxCountUnreadedMsg(memNo);		
+	    return new Gson().toJson(count);
+	}
+
 }

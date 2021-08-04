@@ -33,9 +33,15 @@ public interface BoardService {
 		int deleteBoard(int boardNo);
 		
 		// 6. 사용자 : 공지사항 수정용(글)
-		int updateNotice(Board b);
-		int updateNoticeFile(BoardFile bf);
 		int insertNoticeRefile(BoardFile bf);
+		
+		
+		
+		// *** 사용자 : 공지사항, 사내게시판 글, 첨부파일 수정용
+		int updateBoard(Board b);
+		int updateBoardFile(BoardFile bf);
+		
+
 		
 		// --------------- 사내게시판 영역 --------------------
 
@@ -58,6 +64,8 @@ public interface BoardService {
 		// 4_2. 사용자 : 사내게시판 첨부파일 등록용
 		int insertBoardFile(BoardFile bf);
 		
+		// 5. 사용자 : 공지사항 수정용(글)
+		int insertBoardRefile(BoardFile bf);
 		
 		// -------------------------관리자영역 ------------------------------
 

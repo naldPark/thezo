@@ -75,28 +75,34 @@
 			<br>
 			<br>
 
-			<form id="enrollForm" method="post" action="" enctype="">
+			<form id="updateForm" method="post" action="boardUpdate.bo" enctype="multipart/form-data">
+				<input type="hidden" name="boardNo" value="${ b.boardNo }">
 				<table align="center">
 					<tr>
 						<th><label for="title">제목</label></th>
-						<td><input type="text" id="title" class="form-control"
-							value="사내게시판제목" name="" required></td>
+						<td><input type="text" id="title" class="form-control" value="${ b.boardTitle }" name="boardTitle" required></td>
 					</tr>
 					<tr>
 						<th><label for="writer">작성자</label></th>
-						<td><input type="text" id="writer" class="form-control"
-							value="user01" name="" readonly></td>
+						<td><input type="text" id="writer" class="form-control" value="${ b.boardWriter }" name="boardWriter" readonly></td>
 					</tr>
-					<tr height="500px;">
+					<tr>
 						<!--에디터 api 적용하자-->
-						<th><label for="content">내용</label></th> <!-- 내용 수정하기  -->
+						<th><label for="content">내용</label></th>
 						<th><textarea class="form-control" name="boardContent" id="summernote">${ b.boardContent }</textarea></th>
 					</tr>
 					<tr>
 						<th><label for="upfile">첨부파일</label></th>
-						<td><input type="file" id="upfile"
-							class="form-control-file border" name=""> 현재 업로드된 파일 : <a
-							href="" download="">flower.png</a></td>
+						<td>
+							<input type="hidden" name="refBno" value="${ b.boardNo }">
+							<input type="file" id="upfile" class="form-control-file border" name="reupfile">
+							<c:if test="${ !empty bf.originName }">
+                         		  현재 업로드된 파일 : 
+                            	<a href="${ bf.changeName }" download="${ bf.originName }">${ bf.originName }</a>
+                            	<input type="hidden" name="originName" value="${ bf.originName }">
+                            	<input type="hidden" name="changeName" value="${ bf.changeName }">
+                            </c:if>
+						</td>
 					</tr>
 
 				</table>
@@ -106,9 +112,9 @@
 					<button type="submit" class="btn btn-secondary">수정</button>
 					<button type="button" class="btn btn-secondary"onclick="javascript:history.go(-1);">이전</button>
 				</div>
+				<br><br>
 				
 			</form>	
-			<br><br>
 		</div>
 		<br>
 

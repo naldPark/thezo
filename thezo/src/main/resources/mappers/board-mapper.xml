@@ -173,7 +173,7 @@
 		         )
 	</insert>
 	
-	<!-- 사용자 : 공지사항 글 삭제 -->
+	<!-- 사용자 : 공지사항, 사내게시판 글 삭제 -->
 	<update id="deleteBoard">
 			update
 				  board
@@ -181,8 +181,8 @@
 			where board_no = #{boardNo}  		
 	</update>
 		
-	<!-- 사용자 : 공지사항 글 수정 -->	
-	<update id="updateNotice">
+	<!-- 사용자 : 공지사항, 사내게시판 글 수정 -->	
+	<update id="updateBoard">
 		update
 			   board
 		   set board_title = #{boardTitle}
@@ -190,8 +190,8 @@
 		 where board_no = #{boardNo}
 	</update>	
 		
-	<!-- 사용자 : 공지사항 글 수정(첨부파일) -->	
-	<update id="updateNoticeFile">
+	<!-- 사용자 : 공지사항, 사내게시판 글 수정(첨부파일) -->	
+	<update id="updateBoardFile">
 		update
 			   board_file
 		   set origin_name = #{originName}
@@ -199,7 +199,7 @@
 		 where ref_bno = #{refBno}
 	</update>		
 	
-	<!-- 사용자 : 공지사항 등록 첨부파일  -->
+	<!-- 사용자 : 공지사항 등록 첨부파일(글 수정)  -->
 	<insert id="insertNoticeRefile">
 		insert 
 		   into board_file
@@ -366,6 +366,21 @@
 		         )
 	</insert>
 	
+	<!-- 사용자 : 사내게시판 등록 첨부파일(글 수정)  -->
+	<insert id="insertBoardRefile">
+		insert 
+		   into board_file
+		   values(
+		           seq_bfno.nextval
+		         , '사내'
+		         , #{ refBno }
+		         , #{ originName }
+		         , #{ changeName }
+		         , 'resources/uploadFiles/'
+		         , sysdate
+		         , default
+		         )
+	</insert>
 	
 
 

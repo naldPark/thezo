@@ -31,7 +31,7 @@ table {
 
 	<jsp:include page="../common/header.jsp" />
 	
-	<c:if test="${loginUser.userId eq 'admin' }">
+	<c:if test="${loginUser.memId eq 'admin' }">
 		<script>	
 			document.getElementById("admin-header").style.display = "block";
 			document.getElementById("admin-mode").style.color = "red";
@@ -65,9 +65,9 @@ table {
 					</tr>
 					<tr>
 						<td>
-							<p style="height: 400px; font-size: 17px;">
+							<div style="height: 400px; font-size: 17px;">
 								${ b.boardContent }
-							</p>
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -82,7 +82,7 @@ table {
                     				첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="${ bf.changeName }" download="${ bf.originName }">${ bf.originName }</a>
                     			</td>
                     		</c:otherwise>	
-                    	</c:choose>
+                    	</c:choose>	
 					</tr>
 				</table>
 	
@@ -140,12 +140,13 @@ table {
 				<form id="postForm" action="" method="post">
 	            	<input type="hidden" name="bno" value="${ b.boardNo }">
 	            	<input type="hidden" name="filePath" value="${ bf.changeName }">
+	            	<input type="hidden" name="refBno" value="${ b.boardNo }">
 	            </form>
 	            
 	            <script>
 	            	function postFormSubmit(num){
 	            		if(num == 1){ // 수정하기 클릭시
-	            			$("#postForm").attr("action", "boardUpdate.bo").submit();
+	            			$("#postForm").attr("action", "boardUpdateForm.bo").submit();
 	            		}else{ // 삭제하기 클릭시
 	            			$("#postForm").attr("action", "boardDelete.bo").submit();
 	            		}
@@ -172,8 +173,9 @@ table {
 									<input type="hidden" name="userId" value=""> <input
 										type="hidden" name="boardType" value="">
 									<!-- 컬럼명확인 -->
-									<input type="hidden" name="boardNo" value=""> <b>신고
-										구분</b><br> <select id="rpSection" name="rpSection">
+									<input type="hidden" name="boardNo" value=""> 
+									<b>신고구분</b><br> 
+									<select id="rpSection" name="rpSection">
 										<option value="욕설">욕설/비방</option>
 										<option value="음란">음란/유해</option>
 										<option value="도배">도배/스팸</option>

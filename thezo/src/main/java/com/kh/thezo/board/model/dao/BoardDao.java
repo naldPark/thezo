@@ -72,16 +72,17 @@ public class BoardDao {
 		return sqlSession.update("boardMapper.deleteBoard", boardNo);
 	}
 	
-	// 사용자 : 공지사항 글 수정
-	public int updateNotice(SqlSessionTemplate sqlSession, Board b) {
-		return sqlSession.update("boardMapper.updateNotice", b);
+	// 사용자 : 공지사항, 사내게시판 글 수정
+	public int updateBoard(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.update("boardMapper.updateBoard", b);
 	} 
 	
-	// 사용자 : 공지사항 글 수정(첨부파일)
-	public int updateNoticeFile(SqlSessionTemplate sqlSession, BoardFile bf) {
-		return sqlSession.update("boardMapper.updateNoticeFile", bf);
+	// 사용자 : 공지사항, 사내게시판 글 수정(첨부파일)
+	public int updateBoardFile(SqlSessionTemplate sqlSession, BoardFile bf) {
+		return sqlSession.update("boardMapper.updateBoardFile", bf);
 	} 
 	
+	// 사용자 : 공지사항 수정하기 첨부파일 재업로드용
 	public int insertNoticeRefile(SqlSessionTemplate sqlSession, BoardFile bf) {
 		return sqlSession.insert("boardMapper.insertNoticeRefile", bf);
 	}
@@ -124,7 +125,7 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectBoard", boardNo);
 	}
 	
-	// 사용자 : 공지사항 상세조회(첨부파일)
+	// 사용자 : 사내게시판 상세조회(첨부파일)
 	public BoardFile selectBoardFile(SqlSessionTemplate sqlSession, int refBno) {
 		return sqlSession.selectOne("boardMapper.selectBoardFile", refBno);
 	}
@@ -140,6 +141,10 @@ public class BoardDao {
 		return sqlSession.insert("boardMapper.insertBoardFile", bf);
 	}
 
+	// 사용자 : 사내게시판 첨부파일(reupfile) 등록
+	public int insertBoardRefile(SqlSessionTemplate sqlSession, BoardFile bf) {
+		return sqlSession.insert("boardMapper.insertBoardRefile", bf);
+	}
 	
 	
 	// ----------------------- 관리자 영역 ---------------------------

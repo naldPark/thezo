@@ -84,14 +84,14 @@ public class BoardServiceImpl implements BoardService{
 
 	// 사용자 : 공지사항 수정용
 	@Override
-	public int updateNotice(Board b) {
-		return bDao.updateNotice(sqlSession, b);
+	public int updateBoard(Board b) {
+		return bDao.updateBoard(sqlSession, b);
 	}
 
 	// 사용자 : 공지사항 수정용(첨부파일)
 	@Override
-	public int updateNoticeFile(BoardFile bf) {
-		return bDao.updateNoticeFile(sqlSession, bf);
+	public int updateBoardFile(BoardFile bf) {
+		return bDao.updateBoardFile(sqlSession, bf);
 	}
 
 	// 사용자 : 공지사항 reUpfile 등록
@@ -160,6 +160,14 @@ public class BoardServiceImpl implements BoardService{
 	public int insertBoardFile(BoardFile bf) {
 		return bDao.insertBoardFile(sqlSession, bf);
 	}
+	
+
+	// 사용자 : 사내게시판 reUpfile 등록
+	@Override
+	public int insertBoardRefile(BoardFile bf) {
+		return bDao.insertBoardRefile(sqlSession, bf);
+	}
+
 
 	
 	
@@ -189,6 +197,7 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.reportSearchList(sqlSession, pi, map);
 	}
 
+	
 	
 
 

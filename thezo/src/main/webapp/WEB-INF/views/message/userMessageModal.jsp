@@ -41,14 +41,14 @@
                             <th id="receiverType" style="display: none;">받는사람</th>
                             <td id="toFromPerson">김땡땡 과장</td>
                             <th>상태</th>
-                            <td>긴급</td>						
+                            <td id="detailMsgStatus">긴급</td>						
                         </tr>
                         <tr>
-                            <th id="receiveTiem" style="display: none;">받은시간</th>
-                            <th id="sendTiem" style="display: none;">보낸시간</th>
-                            <td>2021-07-30 [16:24]</td>
+                            <th id="receiveTime" style="display: none;">받은시간</th>
+                            <th id="sendTime" style="display: none;">보낸시간</th>
+                            <td id="msgDetailTime">2021-07-30 [16:24]</td>
                             <th>관련내용</th>
-                            <td>행사</td>						
+                            <td id="detailMsgContentMsg">행사</td>						
                         </tr>
                     </table>
                     <div>

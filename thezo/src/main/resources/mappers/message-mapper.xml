@@ -204,12 +204,44 @@
 	 	   and to_del_status = 'Y'
 	 </select>
 	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
+	 <!-- 어짜피 넘어오는 값은 고정된 쪽지 번호가 넘어온다.  해당 쪽지 번호로 조회를 해오는것이기에 조건 검사를 까다롭게 하지 않아도 된다! -->
+	 <select id="ajaxSelectDetailMsg" parameterType="hashMap" resultMap="messageResult">
+		select
+		       msg_no
+		     , msg_status
+		     , content_status
+             , to_char(create_date, 'YYYY-MM-DD [HH24:mi]') as create_date
+		     , msg_content
+		     , read_status
+             <choose>
+             	<when test='(msgType == "rrb") or (msgType == "r")'>
+		  	         , mb2.mem_name || ' ' || mb2.rank as recipient_name_rank	     
+             	</when>
+      	        <when test='(msgType == "srb") or (msgType == "s")'>
+    		         , mb.mem_name || ' ' || mb.rank as recipient_name_rank
+             	</when>
+             </choose>
+		  from message msg
+              <choose>
+             	<when test='(msgType == "rrb") or (msgType == "r")'>
+				      join member mb2 on (msg.sender_no = mb2.mem_no )	  
+	           	</when>
+      	        <when test='(msgType == "srb") or (msgType == "s")'>
+        			  join member mb on (msg.recipient_no = mb.mem_no )
+             	</when>
+             </choose>
+  	      where msg_no = #{ msgNo }
+  	      <choose>
+  	      	<when test='(msgType == "rrb") or (msgType == "r")'>
+ 	      		and recipient_no = #{ memNo }
+				and to_del_status = 'Y' 
+  	      	</when>
+     		<when test='(msgType == "srb") or (msgType == "s")'>
+  	      		and sender_no = #{ memNo }
+	      		and from_del_status = 'Y' 
+  	      	</when>
+  	      </choose>		  					    
+		 order
+		    by create_date desc      
+	 </select>
 </mapper>

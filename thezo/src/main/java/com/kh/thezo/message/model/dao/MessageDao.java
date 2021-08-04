@@ -69,4 +69,9 @@ public class MessageDao {
 		return sqlSession.selectOne("messageMapper.ajaxCountUnreadedMsg", memNo);
 	}
 
+	// 메세지 상세보기 정보 뽑아오는 DAO들 ! 총 4개임 (로직처리를 동적sql로 뽑아서  받은쪽지, 보낸쪽지, 휴지통에있는 받은 쪽지, 휴지통에 있는 보낸쪽지)를 가져온다
+	public Message ajaxSelectDetailMsg(SqlSessionTemplate sqlSession, HashMap<String, Object> hm) {
+		return sqlSession.selectOne("messageMapper.ajaxSelectDetailMsg", hm);
+	}
+
 }

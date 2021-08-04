@@ -32,7 +32,7 @@ public interface MessageService {
 	int ajaxCountUnreadedMsg(int memNo);
 
 	// 메세지 상세조회하는 서비스 
-	Message ajaxSelectDetailMsg(int memNo, String MsgType);
+	Message ajaxSelectDetailMsg(HashMap<String, Object> hm);
 }
 
 

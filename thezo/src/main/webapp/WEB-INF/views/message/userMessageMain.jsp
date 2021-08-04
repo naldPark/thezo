@@ -66,6 +66,8 @@
         }
 
         function moveToRecycleBin(){
+			showRcRecycleBin();
+			showStRecycleBin();
             $("#receive-message-page").hide();
             $("#sent-message-page").hide();
             $("#recycle-bin-page").show();
@@ -74,51 +76,75 @@
             $(".sent-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");            
         }
 
+        
+        
         // 쪽지 상세 보기 쪽인데 !!! 여기서 ajax로 값 뿌려주면서 만들어줘야한다
         function openDetailMSG(msgNo,checkMsgType){
             if(checkMsgType == 'r'){//받은 쪽지 (보낸 사람, 받은 시간을 표기)
+            	//console.log("받은 쪽지 함수열림");
+            	
+            	ajaxCommonDetailMsg();
+            	$("#receiverType").hide();
+                $("#sendTime").hide();
+                $("#reply-btn").show();
+                $("#senderType").show();
+                $("#receiveTime").show();
+                $("#messageDetail").modal();
+
+            }else if(checkMsgType =='s'){//보낸 쪽지 (받는사람, 보낸시간을 표기)    
+            	//console.log("보낸 쪽지 함수열림");
+            	
+            	ajaxCommonDetailMsg();
+                $("#reply-btn").hide();
+                $("#senderType").hide();
+                $("#receiveTime").hide();
+                $("#receiverType").show();
+                $("#sendTime").show();
+                $("#messageDetail").modal();
+
+            }else if(checkMsgType =='srb'){// 휴지통에 있는 보낸 쪽지 ( 받는사람, 보낸시간을 표기)
+            	//console.log("휴지통 보낸 쪽지 함수열림");
+				
+            	ajaxCommonDetailMsg();
+                $("#reply-btn").hide();
+                $("#senderType").hide();
+                $("#receiveTime").hide();
+                $("#receiverType").show();
+                $("#sendTime").show();
+                $("#messageDetail").modal();
+            
+            }else{// 휴지통에 있는 받은 쪽지 (보낸 사람, 받은 시간을 표기)  checkMsgType이 rrb로 넘어온다.
+            	//console.log("휴지통 받은 쪽지 함수열림");
+            	
+            	ajaxCommonDetailMsg();
+            	$("#receiverType").hide();
+                $("#sendTime").hide();
+                $("#reply-btn").hide();
+                $("#senderType").show();
+                $("#receiveTime").show();
+                $("#messageDetail").modal();
+            }
+            
+            function ajaxCommonDetailMsg(){
     		 	$.ajax({
     		 		url: "Detail.msg",
-    		 		data:{memNo: "${sessionScope.loginUser.memNo}"
-    		 			, MsgType :checkMsgType 
+    		 		data:{msgNo: msgNo
+    		 			, memNo: "${sessionScope.loginUser.memNo}"
+    		 			, msgType :checkMsgType 
     		 		},
-    		 		success:function(){
+    		 		success:function(msgDetail){
+    		 			console.log(msgDetail);
+    		 			
+    		 			$("#toFromPerson").html(msgDetail.recipientNameAndRank);
+    		 			$("#detailMsgStatus").html(msgDetail.msgStatus);
+    		 			$("#msgDetailTime").html(msgDetail.createDate);
+    		 			$("#detailMsgContentMsg").html(msgDetail.contentStatus);
+    		 			$(".detail-modal-content pre").html(msgDetail.msgContent);
     		 			
     		 		},error:function(){
     		 			console.log("ajax통신 실패");
     		 		}    		 		
     		 	})
-            
-            	$("#receiverType").hide();
-                $("#sendTiem").hide();
-                $("#reply-btn").show();
-                $("#senderType").show();
-                $("#receiveTiem").show();
-                $("#messageDetail").modal();
-
-            }else if(checkMsgType =='s'){//보낸 쪽지 (받는사람, 보낸시간을 표기)                
-                $("#reply-btn").hide();
-                $("#senderType").hide();
-                $("#receiveTiem").hide();
-                $("#receiverType").show();
-                $("#sendTiem").show();
-                $("#messageDetail").modal();
-
-            }else if(checkMsgType =='srb'){// 휴지통에 있는 보낸 쪽지 ( 받는사람, 보낸시간을 표기)
-                $("#reply-btn").hide();
-                $("#senderType").hide();
-                $("#receiveTiem").hide();
-                $("#receiverType").show();
-                $("#sendTiem").show();
-                $("#messageDetail").modal();
-            
-            }else{// 휴지통에 있는 보낸 쪽지 (보낸 사람, 받은 시간을 표기)  checkMsgType이 rrb로 넘어온다.
-                $("#receiverType").hide();
-                $("#sendTiem").hide();
-                $("#reply-btn").hide();
-                $("#senderType").show();
-                $("#receiveTiem").show();
-                $("#messageDetail").modal();
             }
         }
     </script>  

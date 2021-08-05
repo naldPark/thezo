@@ -6,12 +6,16 @@
 <head>
 <meta charset="UTF-8">
 <title>The Zo</title>
-
+<script>
+	window.onload = function(){
+	    startPage();	    
+	}
+</script>
 <style>
     .outer{margin:auto; height: 770px;}
     .wrap{width: 100%; height:350px; margin-top:20px; border: 1px solid lightgray; font-size:11.5pt;}
     .outer-wrap{float: left; width:28%; margin: 15px;}
-    .boxTitle{width:100%; height:40px; background-color: rgba(20, 70, 104, 0.123); color: black; padding-top:7px; padding-left:20px;text-align: left;}
+    .boxTitle{width:100%; height:40px; background-color: rgba(20, 70, 104, 0.123); color: black; padding-top:7px; padding-left:20px; text-align: left;}
     .more{float: right; margin-right: 20px; height:28px;}
     .board > tbody  > tr > td:nth-child(1) {
         width:60%; padding-left:20px;
@@ -31,12 +35,22 @@
 		font-weight:bold;
 	}
 
+	/* 출퇴근 버튼 스타일 */
+    #strTime, #finTime{
+        width: 150px;
+        height: 30px;
+        text-align: center;
+        line-height: 28px;
+    }
+    #start, #finish{width: 70px; background-color: rgb(22,190,190) !important; border: none;}
+    #start:hover, #finish:hover{ font-weight: bold; background-color: rgb(22, 220, 220) !important;}
+	/*-------------*/	
 </style>
 </head>
 <body>
 	<jsp:include page="common/header.jsp"/>
-	
    	 <section>
+   	 
         <div class="outer" align="center">      
             <div class="outer-wrap" style="width:24%">
                 <div class="wrap"><br>
@@ -51,14 +65,27 @@
                         </div>
                     </div>
                     <div class="ml-5 mb-3" align="left">
-                        출근시간: 오전 9시 35분<br>
-                        퇴근시간: <br>
+                        <table>
+                            <tr>
+                                <td>출근시간 :</td>
+                                <th><div id="strTime">${ attData.strTime }</div></th>
+                            </tr>
+                            <tr>
+                                <td>퇴근시간 :</td>
+                                <th><div id="finTime">${ attData.finTime }</div></th>
+                            </tr>
+                        </table>
                     </div>
-                    <form action="">
-                    	<input type="hidden" id="timevalue">
-	                    <button type="submit" id="start" onclick="start_click();" class="btn btn-primary">출근</button>
-	                    <button type="submit" id="finish" onclick="finish_click();"class="btn btn-primary">퇴근</button><br>
-                    </form>
+                    	<c:choose>
+                    		<c:when test="${ empty attData.strTime }">
+	                    		<button type="button" id="start" onclick="start_click();" class="btn btn-primary">출근</button>&nbsp;&nbsp;
+	                    		<button type="button" id="finish" onclick="finish_click();" class="btn btn-primary" disabled>퇴근</button><br>
+	                    	</c:when>
+	                    	<c:otherwise>
+	                    		<button type="button" id="start" onclick="start_click();" class="btn btn-primary" disabled>출근</button>&nbsp;&nbsp;
+	                    		<button type="button" id="finish" onclick="finish_click();" class="btn btn-primary">퇴근</button><br>
+	                    	</c:otherwise>
+                    	</c:choose>
                 </div>
                 <div class="wrap">
                     <div class="boxTitle">메세지</div>
@@ -285,16 +312,58 @@
     }
     buildCalendar();
     
-    function start_click(){
-    	alert("오늘도 화이팅!!");
-    	document.getElementById("start").disabled = true;
-    	location.href="start.att";
+    //main페이지 시작시 또는 로그아웃 이후에 값이 출력 가능하도록
+    function startPage(){
+    	$.ajax({
+        		url:"startPage.att?memNo=${loginUser.memNo}",
+        		success:function(attData){
+        			var str = attData.strTime;
+        			$("#strTime").html(str);
+        			console.log(str);
+        			if( str == null){
+        				document.getElementById("start").disabled = false;
+        			}else{
+        				document.getElementById("start").disabled = true;
+        			}
+        			var fin = attData.finTime;
+        			$("#finTime").html(fin);
+        		},error:function(){
+        			alert("메인 조회 실패!!"); 			
+        		}
+    	})
     }
     
+    //출근 버튼 클릭시 현재 시간 등록
+    function start_click(){
+    	$.ajax({
+    		url:"start.att?memNo=${loginUser.memNo}",
+    		success:function(attData){
+    			console.log(attData);
+    			alert("출근 완료!!\n오늘도 즐거운 하루 되세요");
+    			var value = attData.strTime;
+    			$("#strTime").html(value);
+				document.getElementById("start").disabled = true;
+				document.getElementById("finish").disabled = false;
+    		},error:function(){
+    			alert("퇴근 입력 실패!!\n관리자에게 문의바랍니다"); 			
+    		}
+    	})   
+    }
+    
+    //퇴근 버튼 클릭시 현재 시간 등록
     function finish_click(){
-    	alert("오늘도 수고하셨습니다!!");
-    	document.getElementById("finish").disabled = true;
-    	location.href="finish.att";
+    	$.ajax({
+    		url:"finish.att?memNo=${loginUser.memNo}",
+    		success:function(attData){
+    			console.log(attData);
+    			alert("퇴근 완료!!\n오늘도 수고하셨습니다");
+    			var value = attData.finTime;
+    						$("#finTime").html(value);
+		    	document.getElementById("finish").disabled = true;
+    		},error:function(){
+    			alert("출근 입력 실패!!\n관리자에게 문의바랍니다"); 			
+    		}
+    	})
     }
     
     // @Author: Jaewon.S

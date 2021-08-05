@@ -49,8 +49,8 @@ public class CompanyInfoController {
 	}
 
 	@RequestMapping("company.info")
-	public String companyInfo(CompanyInfo ci, HttpSession session) {
-		CompanyInfo cInfo = cService.companyInfo(ci);
+	public String companyInfo(HttpSession session) {
+		CompanyInfo cInfo = cService.companyInfo();
 		
 		session.setAttribute("cInfo", cInfo);
 		System.out.println(cInfo);
@@ -59,7 +59,7 @@ public class CompanyInfoController {
 	
 	@RequestMapping("adminCompanyInfo.st")
 	public String companyInfoManage(CompanyInfo ci, HttpSession session) {
-		CompanyInfo cInfo = cService.companyInfo(ci);
+		CompanyInfo cInfo = cService.companyInfo();
 		
 		session.setAttribute("cInfo", cInfo);
 		System.out.println(cInfo);

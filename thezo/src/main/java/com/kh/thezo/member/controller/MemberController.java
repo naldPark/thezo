@@ -13,7 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
+import com.kh.thezo.attendance.model.service.AttendanceService;
+import com.kh.thezo.attendance.model.vo.Attendance;
 import com.kh.thezo.approval.model.service.ApprovalService;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
@@ -29,6 +30,8 @@ public class MemberController {
 	private ApprovalService aService;
 	@Autowired
 	private MemberService mService;
+	@Autowired
+	private AttendanceService aService;
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	@Autowired
@@ -47,18 +50,20 @@ public class MemberController {
 	public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
 		
 		Member loginUser = mService.loginMember(m);
+		Attendance attData = aService.attendanceData2(m); //메인화면 출퇴근 조회용
 		String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
 		
 		if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) { // 로그인 성공
 			loginUser.setUserId(loginUser.getMemId()); //userId임시로 넣은 jsp오류방지용
 			session.setAttribute("loginUser", loginUser);
+			session.setAttribute("attData", attData);
 			
 			// 전자결재 파트 시작
 			HashMap<String, Integer> mainApprCount= aService.mainApprCount(loginUser.getMemNo());
 			session.setAttribute("mainApprCount", mainApprCount);
 			System.out.println(mainApprCount);
 			// 전자결재 파트 끝
-			
+
 			mv.setViewName("redirect:/");
 			
 		}else {// 로그인 실패

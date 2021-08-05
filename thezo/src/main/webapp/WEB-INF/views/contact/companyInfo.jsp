@@ -51,68 +51,66 @@
                 </div>
             </div>
             <div class="content">
-                <form action="">
-                    <table id="company-table">
-                        <tr>
-                            <th colspan="4"><h5 style="margin-bottom: 30px";></h5></th>
-                        </tr>
-                        <tr>
-                            <th width="200">회사명</th>
-                            <td width="400">${ cInfo.companyName }</td>
-                            <th width="200">대표자명</th>
-                            <td>${ cInfo.ceoName }</td>
-                        </tr>
-                        <tr>
-                            <th>사업자등록번호</th>
-                            <td>${ cInfo.regNo }</td>
-                            <th>이메일</th>
-                            <td>${ cInfo.email }</td>
-                        </tr>
-                        <tr>
-                            <th>업태</th>
-                            <td>${ cInfo.bussStatus }</td>
-                            <th>종목</th>
-                            <td>${ cInfo.bussKind }</td>
-                        </tr>
-                        <tr>
-                            <th colspan="4"><h5 id="sub-title"></h5></th>
-                        </tr>
-                        <tr>
-                            <th>회사전화</th>
-                            <td>${ cInfo.phone }</td>
-                            <th>홈페이지</th>
-                            <td>${ cInfo.homePage }</td>
-                        </tr>
-                        <tr>
-                            <th>법인등록번호</th>
-                            <td>${ cInfo.corNo }</td>
-                            <th>팩스</th>
-                            <td>${ cInfo.fax }</td>
-                        </tr>
-                        <tr>
-                            <th>설립일자</th>
-                            <td>${ cInfo.estDate }</td>
-                        </tr>
-                        <tr>
-                            <th>주소</th>
-                            <td>${ cInfo.address }</td>
-                            <th>대표자명(영문)</th>
-                            <td>${ cInfo.ceoEng }</td>
-                        </tr>
-                        <tr>
-                            <th>회사명(영문)</th>
-                            <td>${ cInfo.cnameEng }</td>
-                        </tr>
-                        <tr>
-                            <th>주소(영문)</th>
-                            <td colspan="2">${ cInfo.addressEng }</td>
-                        </tr>
-                        <tr>
-                            <th>회사도장</th>
-                            <td><img src="${ cInfo.changeName }" width="45px" height="45px"></td>
-                        </tr>
-                    </table>
-                </form>
+                <table id="company-table">
+                    <tr>
+                        <th colspan="4"><h5 style="margin-bottom: 30px"></h5></th>
+                    </tr>
+                    <tr>
+                        <th width="200">회사명</th>
+                        <td width="400">${ cInfo.companyName }</td>
+                        <th width="200">대표자명</th>
+                        <td>${ cInfo.ceoName }</td>
+                    </tr>
+                    <tr>
+                        <th>사업자등록번호</th>
+                        <td>${ cInfo.regNo }</td>
+                        <th>이메일</th>
+                        <td>${ cInfo.email }</td>
+                    </tr>
+                    <tr>
+                        <th>업태</th>
+                        <td>${ cInfo.bussStatus }</td>
+                        <th>종목</th>
+                        <td>${ cInfo.bussKind }</td>
+                    </tr>
+                    <tr>
+                        <th colspan="4"><h5 id="sub-title"></h5></th>
+                    </tr>
+                    <tr>
+                        <th>회사전화</th>
+                        <td>${ cInfo.phone }</td>
+                        <th>홈페이지</th>
+                        <td>${ cInfo.homePage }</td>
+                    </tr>
+                    <tr>
+                        <th>법인등록번호</th>
+                        <td>${ cInfo.corNo }</td>
+                        <th>팩스</th>
+                        <td>${ cInfo.fax }</td>
+                    </tr>
+                    <tr>
+                        <th>설립일자</th>
+                        <td>${ cInfo.estDate }</td>
+                    </tr>
+                    <tr>
+                        <th>주소</th>
+                        <td>${ cInfo.address }</td>
+                        <th>대표자명(영문)</th>
+                        <td>${ cInfo.ceoEng }</td>
+                    </tr>
+                    <tr>
+                        <th>회사명(영문)</th>
+                        <td>${ cInfo.cnameEng }</td>
+                    </tr>
+                    <tr>
+                        <th>주소(영문)</th>
+                        <td colspan="2">${ cInfo.addressEng }</td>
+                    </tr>
+                    <tr>
+                        <th>회사도장</th>
+                        <td><img src="${ cInfo.changeName }" width="45px" height="45px"></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </section>

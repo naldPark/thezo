@@ -14,12 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.thezo.board.model.service.BoardService;
 import com.kh.thezo.board.model.vo.Board;
 import com.kh.thezo.board.model.vo.BoardFile;
+import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
@@ -365,8 +368,27 @@ public class BoardController {
 	}
 	
 		
+	// 게시판 댓글 조회
+	@ResponseBody
+	@RequestMapping(value="rlist.bo", produces="application/json; charset=utf-8")
+	public String selectReplyList(int bno){
+		
+		ArrayList<Reply> list = bService.selectReplyList(bno);
+		//System.out.println(list);
+		return new Gson().toJson(list);
+		
+	}
 	
-	
+	/*
+	// 게시판 댓글 입력
+	@ResponseBody
+	@RequestMapping("rinsert.bo")
+	public String insertReply(Reply r) {
+		int result = bService.insertReply(r);
+		
+		return result>0?"success":"fail";
+	}
+	*/
 	
 	// ----------------------- 관리자 영역 --------------------------------------
 	// 게시판 신고관리(관리자)

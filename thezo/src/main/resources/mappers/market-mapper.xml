@@ -16,7 +16,16 @@
 		<result column="count" property="count"/>
 		<result column="origin_name" property="originName"/>
 		<result column="change_name" property="changeName"/>
-		
+	</resultMap>
+	
+	<resultMap id="boardFileResult" type="BoardFile">
+		<result column="file_no" property="fileNo"/>
+		<result column="ref_section" property="refSection"/>
+		<result column="ref_bno" property="ref_bno"/>
+		<result column="origin_name" property="originName"/>
+		<result column="change_name" property="changeName"/> 
+		<result column="file_path" property="filePath"/>
+		<result column="uploadDate" property="uploadDate"/>
 	</resultMap>
 
 
@@ -120,5 +129,42 @@
 		 where market_no = #{marketNo}
            and mk.status = 'Y'
 	</select>
+	
+		
+	<!-- 사용자 : 벼룩시장 글 등록 -->
+	<insert id="insertMarket">
+		insert 
+		  into market
+		values(
+		            seq_mkno.nextval
+		          , #{ memNo}  
+		          , #{ marketWriter }
+				  , #{ marketTitle }
+				  , #{ marketContent }
+		          , sysdate
+		          , '판매중'
+		          , #{ price }
+                  , 'resources/uplodaFiles/'
+                  , 0
+                  , 0
+                  , 'Y'
+				)
+	</insert>
+	
+	<!-- 사용자 : 벼룩시장 등록 첨부파일  -->
+	<insert id="insertMarketFile">
+		insert 
+		   into board_file
+		   values(
+		           seq_bfno.nextval
+		         , '벼룩'
+		         , seq_mkno.currval
+		         , #{ originName }
+		         , #{ changeName }
+		         , 'resources/uploadFiles/'
+		         , sysdate
+		         , default
+		         )
+	</insert>
 	
 </mapper>

@@ -36,7 +36,10 @@
             <div align="center">
                 <a href="">찜하기</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="" data-toggle="modal" data-target="#reportForm">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="">삭제</a> <!-- 글작성자만 보이게-->
+                <!--게시글 작성자만 보이도록-->
+				<c:if test="${ loginUser.memId eq mk.marketWriter}">
+		            <a style="float:right; cursor: pointer; color: #0091FF;" onclick="postFormSubmit(2);">삭제</a>
+		        </c:if>
             </div>
             <br>
             <div id="thumbnail"align="center">
@@ -47,16 +50,16 @@
               
 	            <div>
 		                      작성자 : ${ mk.marketWriter }<br>
-		                      작성일 : 2021-08-21
+		                      작성일 : ${ mk.marketDate }
 		            <p style="font-size: small;">
-			        	<img src="resources/images/countView.png" width="20" height="20">${ mk.count }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			            <img src="resources/images/heart.png" width="20" height="20">${ mk.productLike}<!-- 찜: 하트이미지 바꾸기-->
+			        	<img src="resources/images/countView.png" width="20" height="20">&nbsp;&nbsp;${ mk.count }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			            <img src="resources/images/heart.png" width="20" height="20">&nbsp;&nbsp;${ mk.productLike}<!-- 찜: 하트이미지 바꾸기-->
 		            </p>
 	            </div>
             	<hr width="700">
             </div>
-            <div class="content" align="center">
-                <p>${ mk.marketContent }</p>
+            <div class="content" align="center" style="min-height: 400px; font-size: 17px;">
+                ${ mk.marketContent }
             </div>
             
             <br><br><br><br>
@@ -74,10 +77,7 @@
                     	첨부파일이 없습니다.
                     </c:when>
                    	<c:otherwise>
-                    	<img src="${ b.titleImg }" width="200" height="200">
-			            <img src="${ b.titleImg }" width="200" height="200">
-			            <img src="${ b.titleImg }" width="200" height="200">
-			            <hr width="700">
+                    	첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="${ bf.changeName }" download="${ bf.originName }">${ bf.originName }</a>
                     </c:otherwise>	
                 </c:choose>
             </div>

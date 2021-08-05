@@ -89,44 +89,61 @@ table {
 				<hr>
 				<br>
 	
-				<table id="replyArea" class="table-borderless" align="center">
+	            <!-- class="table-borderless"  -->
+				<table id="replyArea" border="1" align="center">
 					<thead>
 						<tr>
-							<td colspan="3">댓글 (<span id="rcount">3</span>)
+							<td colspan="4">댓글 (<span id="rcount"></span>)
 							</td>
 						</tr>
-						<tr>
-							<th>user02</th>
-							<td>좋은 내용 댓글~~~</td>
-							<td>2020-08-01</td>
-						</tr>
-						<tr>
-							<th>user01</th>
-							<td>비방용 댓글~~</td>
-							<td>2020-08-02</td>
-						</tr>
-						<tr>
-							<th>user04</th>
-							<td>ㅋㅋㅋ</td>
-							<td>2020-08-03</td>
-						</tr>
 					</thead>
-	
 					<tbody>
+					</tbody>
+					<tfoot>
 						<tr>
-							<th colspan="2"><textarea class="form-control" name=""
-									id="content" cols="55" rows="2"
-									style="resize: none; width: 100%"></textarea></th>
-							<th style="vertical-align: middle">&nbsp;&nbsp;
-								<button class="btn btn-secondary">등록하기</button>
+							<th colspan="3"><textarea class="form-control" id="content" cols="55" rows="2" style="resize: none; width: 100%"></textarea></th>
+							<th colspan="2" style="vertical-align: middle">
+								&nbsp;&nbsp;<button class="btn btn-secondary" onclick="addReply();">등록하기</button>
 							</th>
 						</tr>
-					</tbody>
+					</tfoot>
 				</table>
-				<br>
-				<br>
-				<br>
-	
+				<br><br><br>
+				
+				<script>
+		        	$(function(){
+		        		selectReplyList();
+		        	})
+		        	
+		        	function selectReplyList(){
+		        		$.ajax({
+		        			url:"rlist.bo",
+		        			data:{bno:${ b.boardNo }},
+		        			success:function(list){
+		        				console.log(list);
+		        				
+		        				$("#rcount").text(list.length);
+		        				
+		        				var value = "";
+		        				for(var i in list){
+		        					value += "<tr>"
+				                              + "<th>" + list[i].replyWriter + "</th>"
+				                              + "<td>" + list[i].replyContent + "</td>"
+				                              + "<td>" + list[i].createDate + "</td>"
+				                              + "<td>신고</td>"
+				                              + "<td>삭제</td>"
+				                           + "</tr>";
+		        				}
+		        				
+		        				$("#replyArea tbody").html(value);
+		        				
+		        			},error:function(){
+		        				console.log("댓글 리스트 조회용 ajax 통신 실패");
+		        			}
+		        		})
+		        	}
+		        </script>
+			
 	
 				<div align="center">
 					<!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->

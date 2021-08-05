@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import com.kh.thezo.board.model.vo.Board;
 import com.kh.thezo.board.model.vo.BoardFile;
+import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 
@@ -64,8 +65,14 @@ public interface BoardService {
 		// 4_2. 사용자 : 사내게시판 첨부파일 등록용
 		int insertBoardFile(BoardFile bf);
 		
-		// 5. 사용자 : 공지사항 수정용(글)
+		// 5. 사용자 : 사내게시판 수정용(글)
 		int insertBoardRefile(BoardFile bf);
+		
+		// 6. 사용자 : 사내게시판 댓글 조회용
+		ArrayList<Reply> selectReplyList(int boardNo);
+		
+		// 7. 사용자 : 사내게시판 댓글 작성용
+		int insertReply(Reply r);
 		
 		// -------------------------관리자영역 ------------------------------
 

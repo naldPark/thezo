@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.thezo.board.model.vo.BoardFile;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.dao.MarketDao;
 import com.kh.thezo.market.model.vo.Market;
@@ -54,6 +55,18 @@ public class MarketServiceImpl implements MarketService {
 	@Override
 	public Market selectMarket(int marketNo) {
 		return mkDao.selectMarket(sqlSession, marketNo);
+	}
+
+	// 사용자 : 벼룩시장 등록(글)
+	@Override
+	public int insertMarket(Market mk) {
+		return mkDao.insertMarket(sqlSession, mk);
+	}
+
+	// 사용자 : 벼룩시장 등록(첨부파일)
+	@Override
+	public int insertMarketFile(BoardFile bf) {
+		return mkDao.insertMarketFile(sqlSession, bf);
 	}
 	
 

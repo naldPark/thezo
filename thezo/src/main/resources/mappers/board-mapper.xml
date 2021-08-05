@@ -32,6 +32,17 @@
 		<result column="status" property="status"/>
 	</resultMap>
 	
+	<resultMap id="replyResult" type="Reply">
+		<result column="reply_no" property="replyNo"/>
+		<result column="mem_no" property="memNo"/>
+		<result column="ref_section" property="refSection"/>
+		<result column="ref_no" property="refNo"/>
+		<result column="reply_content" property="replyContent"/>
+		<result column="reply_writer" property="replyWriter"/> 
+		<result column="create_date" property="createDate"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	
 
 	<!-- 사용자 : 공지사항 글 총 갯수  -->
 	<select id="noticeListCount" resultType="_int">
@@ -382,6 +393,38 @@
 		         )
 	</insert>
 	
+	<!-- 사용자 : 사내게시판 댓글 조회 -->
+	<select id="selectReplyList" resultMap="replyResult">
+		select 
+		       reply_no
+		     , reply_content
+		     , reply_writer
+		     , to_char(create_date, 'YYYY-MM-DD') create_date
+		  from reply
+		 where status = 'Y'
+		   and ref_no = #{boardNo}
+		 order
+		    by reply_no desc      
+	</select>
+	
+	<!-- 사용자 : 사내게시판 댓글 등록 -->
+	<insert id="insertReply">
+		insert
+			  into reply
+			  values
+			  (
+			   	seq_rno.nextval
+	          , #{ memNo }
+	          , '사내'
+	          , #{refNo} 
+			  , #{replyContent}
+			  , #{replyWriter}
+			  , sysdate 
+	          , default
+			  )  
+	</insert>
+
+
 
 
 	<!-- 관리자 영역 -->

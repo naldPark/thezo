@@ -111,13 +111,18 @@
 
             <div class="outer-wrap" style="width:45%">
                 <div class="wrap">
-                    <div class="boxTitle">전자결재 <a href="main.appr" class="btn badge-secondary btn-sm more">more</a></div>
+                    <div class="boxTitle">전자결재(수정중)  <a href="main.appr" class="btn badge-secondary btn-sm more">more</a></div>
                     <div style="padding:12px;">
                         <div class="input-group-prepend" style="justify-content: left;">
                             <a href="main.appr?apprFolder=waiting" class="btn btn-sm btn-outline-danger">
-                            	결재대기 <i class="fas fa-exclamation-circle" style="color:red"></i>
+                            	안읽은문서 ${mainApprCount.get("APPRREAD")+mainApprCount.get("REFERREAD")}
+                                <c:if test='${mainApprCount.get("APPRREAD")+mainApprCount.get("REFERREAD") ne 0}'>
+                                    <i class="fas fa-exclamation-circle" style="color:red"></i>
+                                </c:if>
+                                
+                                건 
                             </a> &nbsp;
-                            <a href="main.appr?apprFolder=send" class="btn btn-sm btn-outline-success">상신문서</a> &nbsp;
+                            <a href="main.appr?apprFolder=send" class="btn btn-sm btn-outline-success">결재대기 0건</a> &nbsp;
                             <a href="main.appr?apprFolder=sendFin" class="btn btn-sm btn-outline-primary">완료문서</a>
                         </div>  
                     </div>

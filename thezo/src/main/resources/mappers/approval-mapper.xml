@@ -63,6 +63,25 @@
 		<result column="FILE_LEVEL" property="fileLevel"/>
 	</resultMap>
 	
+	
+	<select id ="mainApprCount" resultType="map">
+		 select 
+                (SELECT 
+                    count(*)
+                FROM appr_accept	
+                where mem_no =#{memNo}
+                and read ='N') apprRead,
+               (SELECT 
+                    count(*)
+                FROM reference
+                where ref_no =#{memNo}
+                and read ='N') referRead
+            from dual
+           
+	
+	</select>
+	
+	
 	<select id="selectListCount" resultType="_int">
 		select 
 				count(*)
@@ -164,8 +183,24 @@
 			order by doc_date desc
 			
 	</select>
-
-
+	
+	<!-- 메인리스트에 read/unread  -->
+	<select id ="selectApprovalRead" resultMap="apprAcceptResult">
+        SELECT 
+	        	doc_no
+	          , mem_no
+			  , read
+        	FROM appr_accept	
+			where mem_no =#{memNo}
+		UNION  
+ 		SELECT 
+	 			doc_no
+	          , ref_mem_no mem_no
+			  , read
+			FROM 
+			reference
+			where ref_mem_no =#{memNo}
+	</select>
 	
 	<!-- 신규작성을 위한 문서 양식 리스트 갯수 조회  -->
 	<select id="newApprListCount" resultType="_int">
@@ -490,10 +525,29 @@
 	
 	<update id="setApprovalStatus">
 		update approval
-				set
-				 status = #{status}
-				where doc_no = #{docNo}
+			set
+			 status = #{status}
+			where doc_no = #{docNo}
 	</update>
+	
+	<update id="detailApprovalReadUpdate">
+		update reference
+			set
+			 read = 'Y'
+			where doc_no = #{docNo}
+			and ref_no = #{memNo}
+	</update>
+	
+	<update id="detailReferenceReadUpdate">
+		update appr_accept
+             set 
+              READ ='Y'
+             where doc_no = #{docNo}
+             and MEM_NO = #{memNo} 
+	</update>
+	
+	
+	
 
 
 </mapper>

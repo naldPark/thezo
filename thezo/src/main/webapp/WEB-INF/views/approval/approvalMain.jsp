@@ -47,7 +47,8 @@
                 <!-- 안읽은 문서 건수 안내 끝 -->
                 <c:forEach var="a" items="${ list }">
 	                <!-- 문서리스트 -->
-	                <div class="apprList shadow p-4 mb-3 bg-white w3-cell-row" onclick="location.href='detailDocu.appr?docNo=${a.docNo}'">
+	                <div class="apprList shadow p-4 mb-3 bg-white w3-cell-row" id="${a.docNo}doclist" 
+						onclick="location.href='detailDocu.appr?docNo=${a.docNo}'">
 	                    <div class="w3-cell" style="width:10%">
 	                        <h3 class="w3-cell">
 								<c:choose>
@@ -64,11 +65,11 @@
 										<i class="far fa-file docMenu"></i>
 									</c:otherwise>
 								</c:choose><br>
-								<span style="font-size:9pt">${ a.formName }</span>
+								<span style="font-size:9pt" >${ a.formName }</span>
 							</h3>
 	                    </div>
 	                    <div class="w3-cell text-left" style="width:30%; padding-left:10px">
-	                        <h5 class="w3-cell">${ a.docName}</h5>
+	                        <h5 class="w3-cell" id="${a.docNo}docName">${a.docName}</h5>
 							<small>${ a.docDate }</small>
 	                        
 	                    </div>
@@ -76,7 +77,20 @@
 	                        <h3 class="w3-cell"><i class="fas fa-user-edit"></i></h3>
 	                        <h5 class="w3-cell">&nbsp; ${ a.memName }</h5>
 	                        <small>${ a.department }</small>
+							
 	                    </div>
+
+						<script>
+
+						
+						<c:forEach var="rc" items="${ readCheckList }">
+							<c:if test="${rc.docNo eq a.docNo and rc.read eq 'N'}">
+								$("#${a.docNo}docName").html("<i class='fas fa-exclamation-circle' style='color:firebrick'></i> ${a.docName}");
+							</c:if>
+						</c:forEach>
+						</script>
+
+
 	                    <div class="w3-cell" style="width:30%;">
 	                        <c:forTokens var="l" items="${a.line}" delims="," varStatus="status">
 		   						<c:choose>

@@ -1,6 +1,7 @@
 package com.kh.thezo.approval.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -14,6 +15,11 @@ import com.kh.thezo.member.model.vo.Member;
 
 @Repository
 public class ApprovalDao {
+	
+	// 홈페이지 메인페이지에 전자결재 읽지않은 문서 카운트
+	public HashMap<String, Integer> mainApprCount(int memNo,SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("approvalMapper.mainApprCount",memNo);
+	}
 	
 	// 전 사원 정보
 	public ArrayList<Member> employeeList(SqlSessionTemplate sqlSession) {
@@ -33,6 +39,13 @@ public class ApprovalDao {
 
 		return list;	
 	}
+	
+	//전자결재 리스트에서 수신자에 해당하는 사람이 해당 문서를 읽었는지 여부를 체크
+	public ArrayList<ApprovalAccept> selectApprovalRead(Approval a, SqlSessionTemplate sqlSession){
+		ArrayList<ApprovalAccept> readList = (ArrayList)sqlSession.selectList("approvalMapper.selectApprovalRead", a);
+		return readList;	
+	}
+	
 	
 	// 문서양식 갯수 카운트
 	public int newApprListCount(SqlSessionTemplate sqlSession) {
@@ -61,6 +74,7 @@ public class ApprovalDao {
 		return line;
 	}
 	
+	// 문서 기안시 사용하는 메소드 시작
 	public int insertApproval(SqlSessionTemplate sqlSession, Approval a) {
 		return  sqlSession.insert("approvalMapper.insertApproval",a);
 		
@@ -80,7 +94,6 @@ public class ApprovalDao {
 
 	public int approvalMapper(SqlSessionTemplate sqlSession, Approval a) {
 		return sqlSession.insert("approvalMapper.reference",a);
-		
 	}
 	
 	public int insertDocuAttachment(SqlSessionTemplate sqlSession, Approval a) {
@@ -94,6 +107,9 @@ public class ApprovalDao {
 	public int updateLeaveDocu(SqlSessionTemplate sqlSession, Approval a) {
 		return sqlSession.insert("approvalMapper.updateLeaveDocu",a);		
 	}
+	// 문서 기안시 사용하는 메소드 끝
+	
+	// 상세문서 조회 페이지에 사용할 메소드 시작
 	
 	public Member selectLeave(SqlSessionTemplate sqlSession, int memNo) {
 		return sqlSession.selectOne("approvalMapper.selectLeave",memNo);
@@ -103,16 +119,26 @@ public class ApprovalDao {
 		return sqlSession.selectOne("approvalMapper.detailApproval",docNo);
 	}
 	
+	
 	public ArrayList<Attachment> detailApprovalAt(SqlSessionTemplate sqlSession, int docNo) {
 		return (ArrayList)sqlSession.selectList("approvalMapper.detailApprovalAt",docNo);
 	}
+			// 읽은 경우 읽음으로 표시 
+	public int detailApprovalReadUpdate(SqlSessionTemplate sqlSession, HashMap<String, Integer> hs) {
+		return sqlSession.insert("approvalMapper.detailApprovalReadUpdate",hs);		
+	}
 	
+	public int detailReferenceReadUpdate(SqlSessionTemplate sqlSession, HashMap<String, Integer> hs) {
+		return sqlSession.insert("approvalMapper.detailReferenceReadUpdate",hs);		
+	}
+			// 읽은 경우 읽음으로 표시 끝
 	
-
 	public ArrayList<ApprovalAccept> detailApprovalLine(SqlSessionTemplate sqlSession, int docNo) {
 		return (ArrayList)sqlSession.selectList("approvalMapper.detailApprovalLine",docNo);
 	}
+	// 상세문서 조회 페이지에 사용할 메소드 끝
 	
+	// 결재자가 결재/반려시 사용하는 메소드 시작
 	public int approveDocu(SqlSessionTemplate sqlSession, ApprovalAccept a) {
 		return sqlSession.update("approvalMapper.approveDocu",a);
 	}
@@ -122,8 +148,10 @@ public class ApprovalDao {
 			a.setStatus("완료");
 		}
 		return sqlSession.update("approvalMapper.setApprovalStatus",a);
-
 	}
+	// 결재자가 결재/반려시 사용하는 메소드 끝
+	
+	
 	
 //	public int selectRecentTemp(SqlSessionTemplate sqlSession, int memNo) {
 //		return sqlSession.selectOne("approvalMapper.selectRecentTemp",memNo);

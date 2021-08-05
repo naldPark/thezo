@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -50,12 +51,14 @@ public class ApprovalController {
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		ArrayList<Approval> list = aService.selectApprovalMain(a, pi);
-//		System.out.println(list);
+		ArrayList<ApprovalAccept> readCheckList = aService.selectApprovalRead(a);
+		System.out.println(readCheckList);
+		System.out.println(list);
 		mv.addObject("list", list)
+		  .addObject("readCheckList",readCheckList)
 		  .addObject("pi", pi)
 		  .addObject("apprFolder", apprFolder)
 		  .setViewName("approval/approvalMain");
-//		System.out.println(pi);
 		return mv;
 	}
 	
@@ -202,13 +205,18 @@ public class ApprovalController {
 	
 	// 결재문서 상세조회 (회수/승인/반려는 여기서 진행)
 	@RequestMapping("detailDocu.appr")
-	public ModelAndView detailApproval(int docNo, ModelAndView mv) {
+	public ModelAndView detailApproval(int docNo, ModelAndView mv, HttpSession session) {
+		Member m = (Member) session.getAttribute("loginUser");
+		// 문서 수신자(결재자, 참조자) 문서를 읽은 경우 읽음으로 표시
+		HashMap<String,Integer> hs = new HashMap<>();
+		hs.put("memNo", m.getMemNo());
+		hs.put("docNo", docNo);
+		aService.detailReadUpdate(hs);
 		Approval a = aService.detailApproval(docNo);
 		ArrayList<ApprovalAccept> aLine = aService.detailApprovalLine(docNo);
 		mv.addObject("a", a) 
 		.addObject("aLine", aLine) 
 		.setViewName("approval/apprDetailDocu");
-		System.out.println(a);
 		return mv;
 	}
 	
@@ -218,7 +226,6 @@ public class ApprovalController {
 		Member m = (Member) session.getAttribute("loginUser");
 		a.setStatus(apprStatus); //모델앤뷰 변수와 충돌되어서 별도로 뺐음
 		if(m.getMemNo()==a.getMemNo() || m.getStatus().equals("A")) {
-			System.out.println("여기 뭐가 있는지 알게 뭐람"+a);
 			int result = aService.approveDocu(lastApprover,a);
 			if(result > 0) { // 성공
 				session.setAttribute("alertMsg", "성공적으로 등록 되었습니다.");
@@ -235,26 +242,26 @@ public class ApprovalController {
 	}
 	
 	// 반려 선택시 진행되는 매핑
-		@RequestMapping("denyDocu.appr")
-		public ModelAndView denyDocu(HttpSession session, ApprovalAccept a, String apprStatus, ModelAndView mv) {
-			Member m = (Member) session.getAttribute("loginUser");
-			a.setStatus(apprStatus); //모델앤뷰 변수와 충돌되어서 별도로 뺐음
-			if(m.getMemNo()==a.getMemNo() || m.getStatus().equals("A")) {
-				
-				int result = aService.approveDocu(-1,a);
-				if(result > 0) { // 성공
-					session.setAttribute("alertMsg", "성공적으로 등록 되었습니다.");
-					mv.setViewName("redirect:detailDocu.appr?docNo="+a.getDocNo());
-				}else {
-					mv.addObject("errorMsg", "작성에 실패했습니다");
-					mv.setViewName("common/errorPage");
-				}
+	@RequestMapping("denyDocu.appr")
+	public ModelAndView denyDocu(HttpSession session, ApprovalAccept a, String apprStatus, ModelAndView mv) {
+		Member m = (Member) session.getAttribute("loginUser");
+		a.setStatus(apprStatus); //모델앤뷰 변수와 충돌되어서 별도로 뺐음
+		if(m.getMemNo()==a.getMemNo() || m.getStatus().equals("A")) {
+			
+			int result = aService.approveDocu(-1,a);
+			if(result > 0) { // 성공
+				session.setAttribute("alertMsg", "성공적으로 등록 되었습니다.");
+				mv.setViewName("redirect:detailDocu.appr?docNo="+a.getDocNo());
 			}else {
-				mv.addObject("errorMsg", "잘못된 경로로 접근하셨습니다. 로그인을 확인 해 주세요");
+				mv.addObject("errorMsg", "작성에 실패했습니다");
 				mv.setViewName("common/errorPage");
 			}
-			return mv;	
+		}else {
+			mv.addObject("errorMsg", "잘못된 경로로 접근하셨습니다. 로그인을 확인 해 주세요");
+			mv.setViewName("common/errorPage");
 		}
+		return mv;	
+	}
 		
 	
 	@RequestMapping("adminMain.appr") //관리자 페이지 메인

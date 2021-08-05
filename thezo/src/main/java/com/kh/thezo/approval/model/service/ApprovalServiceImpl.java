@@ -2,6 +2,7 @@ package com.kh.thezo.approval.model.service;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,13 @@ public class ApprovalServiceImpl implements ApprovalService {
 	private SqlSessionTemplate sqlSession;
 	@Autowired
 	private DataSourceTransactionManager transactionManager;
+	
+	@Override
+	public HashMap<String, Integer> mainApprCount(int memNo) {
+		return aDao.mainApprCount(memNo, sqlSession);
+	}
+
+	
 	@Override
 	public int selectListCount(Approval a) {
 		return aDao.selectListCount(a, sqlSession);
@@ -35,6 +43,12 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public ArrayList<Approval> selectApprovalMain(Approval a, PageInfo pi) {
 		return aDao.selectApprovalMain(a, sqlSession, pi);
 	}
+	
+	@Override
+	public ArrayList<ApprovalAccept> selectApprovalRead(Approval a) {
+		return aDao.selectApprovalRead(a, sqlSession);
+	}
+	
 
 	@Override
 	public int newApprListCount() {
@@ -101,18 +115,26 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public Approval detailApproval(int docNo) {
 		Approval a = aDao.detailApproval(sqlSession, docNo);
 		try {
-		a.setAt(aDao.detailApprovalAt(sqlSession, docNo));
+			a.setAt(aDao.detailApprovalAt(sqlSession, docNo));
 		}catch(RuntimeException e) {}
 		return a;
 	}
+	
+	@Override
+	public void detailReadUpdate(HashMap<String, Integer> hs) {
+		int result =0;
+		result= result+aDao.detailApprovalReadUpdate(sqlSession, hs);
+		result= result+aDao.detailReferenceReadUpdate(sqlSession, hs);
+	}	
 
 	@Override
 	public ArrayList<ApprovalAccept> detailApprovalLine(int docNo) {
 		return aDao.detailApprovalLine(sqlSession, docNo);
 	}
-
+	
+	// 전자결재 승인
 	@Override
-	public int approveDocu(int lastApprover,ApprovalAccept a) {
+	public int approveDocu(int lastApprover, ApprovalAccept a) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
@@ -127,7 +149,10 @@ public class ApprovalServiceImpl implements ApprovalService {
 		}
 		return result;
 	}
+
 	
+
+
 
 //	@Override
 //	public int tempApproval(Approval a) {

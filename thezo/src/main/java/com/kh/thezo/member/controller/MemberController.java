@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.thezo.approval.model.service.ApprovalService;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.member.model.service.MemberService;
@@ -24,6 +25,8 @@ import com.kh.thezo.notification.model.service.NotificationService;
 @Controller
 public class MemberController {
 	
+	@Autowired
+	private ApprovalService aService;
 	@Autowired
 	private MemberService mService;
 	@Autowired
@@ -39,7 +42,7 @@ public class MemberController {
 		session.invalidate();
 		return "redirect:/"; // 메인페이지로 재요청
 	}
-	// 담당자가 없는거같아서 제가 그냥 작성했어요(영익)
+	
 	@RequestMapping("login.me")
 	public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
 		
@@ -49,11 +52,20 @@ public class MemberController {
 		if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) { // 로그인 성공
 			loginUser.setUserId(loginUser.getMemId()); //userId임시로 넣은 jsp오류방지용
 			session.setAttribute("loginUser", loginUser);
+			
+			// 전자결재 파트 시작
+			HashMap<String, Integer> mainApprCount= aService.mainApprCount(loginUser.getMemNo());
+			session.setAttribute("mainApprCount", mainApprCount);
+			System.out.println(mainApprCount);
+			// 전자결재 파트 끝
+			
 			mv.setViewName("redirect:/");
+			
 		}else {// 로그인 실패
 			mv.addObject("errorMsg", "로그인에 실패했습니다");
 			mv.setViewName("common/errorPage");
 		}
+		
 		
 		int nfCount = nfService.ajaxCountUnreadedNf(loginUser.getMemNo());		
 		if(nfCount != 0) {

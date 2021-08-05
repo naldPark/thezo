@@ -14,6 +14,7 @@
     .sideOuter .form-control:disabled,.sideOuter .form-control[readonly]{ background: white!important; }
     a{ text-decoration:none !important; cursor: pointer; }
     a:hover{ text-decoration:none !important; cursor: pointer; color: black !important;}
+    .popover-header{margin-top: 0px !important;}
   </style>
 </head>
 <body>
@@ -21,6 +22,7 @@
     <section>
         <div class="outer">    
           <p class="pageTitle">  approval <b> 전자결재</b></p>
+    
             <jsp:include page="apprSidebar.jsp"/>
             <div class="sideOuter row ">
               <div class="card border-0" style=" width:80%">
@@ -95,15 +97,22 @@
                       <div class="d-flex flex-row mb-3">
                         <div class="pl-2" style="width:60%">${c.department} </div>
                         <div>
-                          <span class="btn-sm btn-secondary">
-                            ${c.status} 
-                          </span>
+                          <button type="button" class="btn btn-sm btn-secondary" title="[${c.memName} ${c.status} 의견]"  data-toggle="opinionpop" data-placement="left" data-content="${c.memo}">
+                            ${c.status}  
+                          </button>
                         </div>
                       </div>
                     </div>
                   </c:forEach>
                 </div>
               </div>
+
+              <script>
+                $(document).ready(function(){
+                  $('[data-toggle="opinionpop"]').popover();   
+                });
+              </script>
+              
               <!--오른쪽 결재선 끝-->
 
 

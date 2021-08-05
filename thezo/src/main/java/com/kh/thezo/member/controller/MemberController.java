@@ -31,7 +31,7 @@ public class MemberController {
 	@Autowired
 	private MemberService mService;
 	@Autowired
-	private AttendanceService aService;
+	private AttendanceService atService;
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	@Autowired
@@ -50,7 +50,7 @@ public class MemberController {
 	public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
 		
 		Member loginUser = mService.loginMember(m);
-		Attendance attData = aService.attendanceData2(m); //메인화면 출퇴근 조회용
+		Attendance attData = atService.attendanceData2(m); //메인화면 출퇴근 조회용
 		String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
 		
 		if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) { // 로그인 성공

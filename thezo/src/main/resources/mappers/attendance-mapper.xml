@@ -24,7 +24,7 @@
 		values
 		     (
 		       seq_ano.nextval
-		     , 2
+		     , ${ memNo }
 		     , to_char(sysdate,'hh24:mi:ss')
 		     )
 	</insert>

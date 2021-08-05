@@ -18,8 +18,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 	private SqlSessionTemplate sqlSession;
 	
 	@Override
-	public ArrayList<Schedule> selectScheduleList() {
-		return scDao.selectScheduleList(sqlSession);
+	public ArrayList<Schedule> selectScheduleList(String scType) {
+		return scDao.selectScheduleList(sqlSession, scType);
 	}
 
 	@Override
@@ -40,11 +40,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Override
 	public Schedule selectScheduleDetail(int scNo) {
 		return scDao.selectScheduleDetail(sqlSession, scNo);
-	}
-
-	@Override
-	public ArrayList<Schedule> selectScheduleData() {
-		return scDao.selectScheduleData(sqlSession);
 	}
 
 }

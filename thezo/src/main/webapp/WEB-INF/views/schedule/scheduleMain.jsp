@@ -6,10 +6,15 @@
 <head>
     <meta charset="UTF-8">
     <title>일정관리</title>
-<style>
-</style>
 </head>
 <body>
+	<script>
+		var path = window.location.pathname.split('/');
+		//console.log(path[2]); 
+		if(path[2] = 'update.sc'){
+			self.close();
+		}
+	</script>
 	 
     <jsp:include page="../common/header.jsp"/>
     

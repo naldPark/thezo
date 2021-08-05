@@ -62,10 +62,10 @@ public class NoteController {
 		int result = ntService.insertNote(nt);
 		if(result > 0) {
 			session.setAttribute("alertMsg", "노트 작성이 완료되었습니다");
-			return "schedule/note/noteListView";
+			return "redirect:/list.note?memNo=" + nt.getNoteWriter();
 		}else {
 			session.setAttribute("alertMsg", "노트 작성 실패! 다시 시도해주세요.");
-			return "schedule/note/noteListView";
+			return "redirect:/list.note?memNo=" + nt.getNoteWriter();
 		}
 	}
 	

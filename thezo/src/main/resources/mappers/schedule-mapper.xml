@@ -23,7 +23,7 @@
 	<select id="selectScheduleList" resultMap="scheduleResult">
 		select 
 		       sc_no
-		     , sc_writer
+		     , mem_name as sc_writer
 		     , sc_title
 		     , sc_content
 		     , sc_type
@@ -31,15 +31,23 @@
 		     , sc_end
 		     , allday
 		     , s.status
-		     , report_title
-		     , report_writer
+		  from schedule s
+		  join member m on (s.sc_writer = m.mem_no)
+		 where s.status = 'Y'
+		   and sc_type like '%' || #{scType} || '%'
+	</select>
+	
+	<select id="selectBizReport" resultMap="scheduleResult">
+		select
+			   sc_no
+			 , report_title
+		     , mem_name as report_writer
 		     , report_content
 		     , origin_name
 		     , change_name
 		     , create_date
-		  from schedule s
-		  left join biz_report using (sc_no)
-		 where s.status = 'Y'
+		  from biz_report b
+		  join member on (b.report_writer = m.mem_no)
 	</select>
 	
 	<select id="selectScheduleData" resultMap="scheduleResult">
@@ -54,7 +62,7 @@
 	<select id="selectScheduleDetail" resultMap="scheduleResult">
 		select
 			   sc_no
-		     , sc_writer
+		     , mem_name as sc_writer
 		     , sc_title
 		     , sc_content
 		     , sc_type
@@ -63,13 +71,14 @@
 		     , allday
 		     , s.status
 		     , report_title
-		     , report_writer
+		     , mem_name as report_writer
 		     , report_content
-		     , origin_name
-		     , change_name
-		     , create_date
+		     , b.origin_name
+		     , b.change_name
+		     , b.create_date
 		  from schedule s
-		  left join biz_report using (sc_no)
+		  left join biz_report b using (sc_no)
+		  join member m on (sc_writer=mem_no)
 		 where s.status = 'Y'
 		   and sc_no = #{scNo} 
 	</select>

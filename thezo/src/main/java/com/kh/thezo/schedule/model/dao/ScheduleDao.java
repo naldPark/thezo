@@ -10,16 +10,12 @@ import com.kh.thezo.schedule.model.vo.Schedule;
 @Repository
 public class ScheduleDao {
 	
-	public ArrayList<Schedule> selectScheduleList(SqlSession sqlSession){
-		return (ArrayList)sqlSession.selectList("scheduleMapper.selectScheduleList");
+	public ArrayList<Schedule> selectScheduleList(SqlSession sqlSession, String scType){
+		return (ArrayList)sqlSession.selectList("scheduleMapper.selectScheduleList", scType);
 	}
 	
 	public int insertSchedule(SqlSession sqlSession, Schedule sc) {
 		return sqlSession.insert("scheduleMapper.insertSchedule", sc);
-	}
-	
-	public ArrayList<Schedule> selectScheduleData(SqlSession sqlSession){
-		return (ArrayList)sqlSession.selectList("scheduleMapper.selectScheduleData");
 	}
 	
 	public Schedule selectScheduleDetail(SqlSession sqlSession, int scNo) {

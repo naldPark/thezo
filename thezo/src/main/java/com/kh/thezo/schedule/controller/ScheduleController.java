@@ -32,8 +32,9 @@ public class ScheduleController {
 	
 	@ResponseBody
 	@RequestMapping("list.sc")
-	public void selectScheduleList(HttpServletResponse response) throws IOException {
-		ArrayList<Schedule> list = scService.selectScheduleList();
+	public void selectScheduleList(HttpServletResponse response,
+			@RequestParam(value="scType") String scType) throws IOException {
+		ArrayList<Schedule> list = scService.selectScheduleList(scType);
 		//System.out.println(list);
 		response.setContentType("text/html; charset=utf-8");
 		String result = new Gson().toJson(list);
@@ -41,21 +42,6 @@ public class ScheduleController {
 		response.getWriter().print(result);
 	}
 	
-	/**
-	 *  풀캘린더-DB 일정 조회 (화면 출력용)
-	 * @throws IOException
-	 */
-	/*
-	@ResponseBody
-	@RequestMapping("scList.sc")
-	public void selectScheduleList(HttpServletResponse response) throws IOException {
-		ArrayList<Schedule> list = scService.selectScheduleData();
-		response.setContentType("text/html; charset=utf-8");
-		String result = new Gson().toJson(list);
-		//System.out.println(result);
-		response.getWriter().print(result);
-	}
-	*/
 	
 	/**
 	 *  일정 추가
@@ -142,11 +128,11 @@ public class ScheduleController {
 			sc.setStart(sc.getStart().replace(",", ""));
 			sc.setEnd(sc.getEnd().replace(",", ""));
 		}
-		System.out.println(sc);
+		//System.out.println(sc);
 		int result = scService.updateSchedule(sc);
 		
 		if(result > 0) {
-			session.setAttribute("alertMsg", "일정이 수정되었습니다.");
+			session.setAttribute("alertMsg", "일정을 수정했습니다.");
 			return "schedule/scheduleMain";
 		}else {
 			session.setAttribute("alertMsg", "일정 수정에 실패했습니다. 다시 시도해주세요.");

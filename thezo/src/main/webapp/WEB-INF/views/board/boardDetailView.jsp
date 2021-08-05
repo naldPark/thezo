@@ -65,7 +65,7 @@ table {
 					</tr>
 					<tr>
 						<td>
-							<div style="height: 400px; font-size: 17px;">
+							<div style="min-height: 400px; font-size: 17px;">
 								${ b.boardContent }
 							</div>
 						</td>

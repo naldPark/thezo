@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="attendanceMapper">
+
+	<resultMap id="attendanceResult" type="Attendance">
+		<result column="att_no" property="attNo"/>
+		<result column="mem_no" property="memNo"/>
+		<result column="att_date" property="attDate"/>
+		<result column="att_str_time" property="strTime"/>
+		<result column="att_fin_time" property="finTime"/>
+		<result column="att_total_time" property="totalTime"/>
+		<result column="att_status" property="status"/>
+	</resultMap>
+	
+	<!-- 출근 버튼 입력 -->
+	<insert id="insertAtt">
+		insert
+		  into attendance
+		     (
+		       att_no
+		     , mem_no
+		     , att_str_time
+		     )
+		values
+		     (
+		       seq_ano.nextval
+		     , 2
+		     , to_char(sysdate,'hh24:mi:ss')
+		     )
+	</insert>
+	
+	<!-- 퇴근 버튼 입력 -->
+	<update id="insertfAtt">
+		update
+		 	   attendance
+		   set att_fin_time = to_char(sysdate, 'hh24:mi:ss')
+		 where att_date = to_char(sysdate, 'yy/mm/dd')
+		   and mem_no = #{ memNo }
+	</update>
+
+	<!-- 춭뢰근 정보 조회 -->
+	<select id="selectAttendance" resultMap="attendanceResult">
+		select
+			   att_str_time
+			 , att_fin_time
+	      from attendance
+	     where att_date = to_char(sysdate, 'yy/mm/dd')
+		   and mem_no = #{ memNo }
+	</select>
+	
+</mapper>

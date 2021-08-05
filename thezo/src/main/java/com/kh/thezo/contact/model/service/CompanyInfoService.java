@@ -8,6 +8,6 @@ public interface CompanyInfoService {
 	int insertCompanyInfo(CompanyInfo ci);
 	
 	//회사정보 조회용
-	CompanyInfo companyInfo(CompanyInfo ci);
+	CompanyInfo companyInfo();
 
 }

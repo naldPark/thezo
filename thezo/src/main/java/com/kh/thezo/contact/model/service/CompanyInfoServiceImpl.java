@@ -21,8 +21,8 @@ public class CompanyInfoServiceImpl implements CompanyInfoService {
 	}
 
 	@Override
-	public CompanyInfo companyInfo(CompanyInfo ci) {
-		return cDao.companyInfo(sqlSession, ci);
+	public CompanyInfo companyInfo() {
+		return cDao.companyInfo(sqlSession);
 	}
 
 }

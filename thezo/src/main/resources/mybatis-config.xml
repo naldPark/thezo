@@ -23,7 +23,8 @@
 		<typeAlias type="com.kh.thezo.board.model.vo.Report" alias="Report"/>
 		<typeAlias type="com.kh.thezo.schedule.model.vo.Schedule" alias="Schedule"/>
 		<typeAlias type="com.kh.thezo.contact.model.vo.CompanyInfo" alias="Company"/>
-		<typeAlias type="com.kh.thezo.note.model.vo.Note" alias="Note"/>	
+		<typeAlias type="com.kh.thezo.note.model.vo.Note" alias="Note"/>
+		<typeAlias type="com.kh.thezo.attendance.model.vo.Attendance" alias="Attendance"/>	
 	</typeAliases>
 	
 	<mappers>
@@ -41,6 +42,7 @@
 		<mapper resource="/mappers/schedule-mapper.xml"/>
 		<mapper resource="/mappers/company-mapper.xml"/>
 		<mapper resource="/mappers/note-mapper.xml"/>
+		<mapper resource="/mappers/attendance-mapper.xml"/>
 	</mappers>
 
 </configuration>

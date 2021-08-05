@@ -12,7 +12,7 @@ public class CompanyInfoDao {
 		return sqlSession.update("companyMapper.updateCompany", ci);
 	}
 
-	public CompanyInfo companyInfo(SqlSessionTemplate sqlSession, CompanyInfo ci) {
-		return sqlSession.selectOne("companyMapper.companyInfo", ci);
+	public CompanyInfo companyInfo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("companyMapper.companyInfo");
 	}
 }

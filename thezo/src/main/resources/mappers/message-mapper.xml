@@ -18,11 +18,9 @@
 		<result column="FROM_DEL_STATUS" property="fromDelStatus"/>
 		<result column="recipient_name_rank" property="recipientNameAndRank"/>
 		<result column="sender_name_rank" property="senderNameAndRank"/>
-		
 	</resultMap>
 
 	<!-- @author Jaewon.s -->
-	
 	<!-- 시간 많이 잡아먹은 .. sql문... 얘를 바탕으로 파생시키면된다. 받은 쪽지 목록 가져오는 sql문  -->
 	<!--<select id="ajaxSelectListNf" resultMap="messageResult">
 		select
@@ -58,7 +56,7 @@
 		    by create_date desc      
 	</select>-->
 
-
+	
 	<!-- 받은 쪽지 조회해오는 sql문 !!  -->
 	<select id="ajaxSelectReceiveMsgList" resultMap="messageResult">
 		select
@@ -137,8 +135,6 @@
 		    by create_date desc      
 	</select>
 
-
-
 	<!-- 받은 쪽지 조회해오는 sql문 !!  -->
 	<select id="ajaxSelectRcRbList" resultMap="messageResult">
 		select
@@ -163,7 +159,6 @@
 		 order
 		    by create_date desc      
 	</select>
-
 
 	<!-- 보낸 쪽지 조회해오는 sql문 !!  -->
 	<select id="ajaxSelectRcStList" resultMap="messageResult">
@@ -190,11 +185,7 @@
 		    by create_date desc      
 	</select>
 
-	<!-- 
-	<select id="ajaxselectReportList" resultMap="messageResult">
-	</select>
-	 -->
-	 
+	 <!-- 읽지 않은 쪽지 갯수 가져오는 sql문 -->
 	 <select id="ajaxCountUnreadedMsg" resultType="_int">
 	 	select count(*)
 	 	  from message
@@ -204,7 +195,7 @@
 	 	   and to_del_status = 'Y'
 	 </select>
 	 
-	 <!-- 어짜피 넘어오는 값은 고정된 쪽지 번호가 넘어온다.  해당 쪽지 번호로 조회를 해오는것이기에 조건 검사를 까다롭게 하지 않아도 된다! -->
+	 <!-- 메세지 상세보기 정보 뽑아오는  동적 DAO임! (받은쪽지, 보낸쪽지 , 휴지통 ) ! -->
 	 <select id="ajaxSelectDetailMsg" parameterType="hashMap" resultMap="messageResult">
 		select
 		       msg_no
@@ -244,4 +235,74 @@
 		 order
 		    by create_date desc      
 	 </select>
+	 
+	 <!-- 휴지통에서 받은 쪽지를 복구하는 sql문 -->
+	<update id="ajaxRestoreToRc" parameterType="hashMap">
+		update
+		       message
+				   set to_recycle_bin = 'Y'
+		 where msg_no in ( 
+			<foreach item="msgNo" index="index" collection="rcMultiMsgNo" separator=",">
+				${msgNo}
+			</foreach>
+			)
+	       and recipient_no = ${memNo}
+	</update>	 	 
+	 
+ 	 <!-- 휴지통에서 보낸 쪽지를 복구하는 sql문 -->
+	<update id="ajaxRestoreToSt" parameterType="hashMap">
+		update
+		       message
+				   set from_recycle_bin = 'Y'
+		 where msg_no in ( 
+			<foreach item="msgNo" index="index" collection="stMultiMsgNo" separator=",">
+				${msgNo}
+			</foreach>
+			)
+	       and sender_no = ${memNo}
+	
+	</update>	 	 
+	
+	<!-- 받은 쪽지 영구 삭제  sql문 -->
+	<update id="ajaxDeleteRcMsg" parameterType="hashMap">
+		update
+		       message
+				   set to_del_status = 'N'
+		 where msg_no in ( 
+			<foreach item="msgNo" index="index" collection="rcMultiMsgNo" separator=",">
+				${msgNo}
+			</foreach>
+			)
+	       and recipient_no = ${memNo}
+	</update>	 	 
+	
+	<!-- 보낸 쪽지 영구 삭제  sql문 -->
+ 	<update id="ajaxDeleteStMsg" parameterType="hashMap">
+		update
+		       message
+				   set from_del_status = 'N'
+		 where msg_no in ( 
+			<foreach item="msgNo" index="index" collection="stMultiMsgNo" separator=",">
+				${msgNo}
+			</foreach>
+			)
+	       and sender_no = ${memNo}
+	</update>	 	 
+	 
+ 	<!-- 받은 쪽지에서 오직 상세보기시만 read_status update하는 sql문 -->	 
+	 <update id="ajaxUpdateReadStatusMsg" parameterType="hashMap">
+ 		update
+		       message
+				   set read_status = 'Y'
+		 where msg_no = ${msgNo}
+	       and recipient_no = ${memNo}
+	 </update>
+	 
+	 
+ 	<!-- 
+	<select id="ajaxselectReportList" resultMap="messageResult">
+	</select>
+	 -->
+	 
+	 
 </mapper>

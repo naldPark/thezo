@@ -73,6 +73,7 @@
 		 				value += '<tr><td colspan="5">받은 쪽지가 없습니다!</td></tr>';
 		 			}
 		 			$("#for-rb-receive-checkbox").html(value);
+		 	        $("#rrbSelectAllCheckBox").prop("checked", false);
 		 		},error:function(){
 		 			console.log("ajax통신 실패");
 		 		}				
@@ -107,6 +108,7 @@
 		 				value += '<tr><td colspan="5">받은 쪽지가 없습니다!</td></tr>';
 		 			}
 			 			$("#for-rb-sent-checkbox").html(value);
+			 	        $("#srbSelectAllCheckBox").prop("checked", false);
 		 		},error:function(){
 		 			console.log("ajax통신 실패");
 		 		}				
@@ -119,15 +121,14 @@
 		})
 	</script>
 
-
     <div class="recycle-bin-btn-area">
         <div>
             <button type="button" class="recycle-bin-del" onclick="openRecycleBinDelete();">영구 삭제</button>
             <button type="button" class="recycle-bin-restore" onclick="openRecycleBinResorte();">복구</button>
         </div>
         <span class="report-header-btn report-span">※ 신고 처리 내역</span>
-        <button type="button" class="report-log-btn" onclick="moveToRepostListArea();">신고 처리 내역</button>
-        <button type="button" class="report-header-btn" onclick="movebackToRepostList();">뒤로가기</button>
+        <button type="button" class="report-log-btn" onclick="moveToReportListArea();">신고 처리 내역</button>
+        <button type="button" class="report-header-btn" onclick="movebackToReportList();">뒤로가기</button>
     </div>
 
     <div class="recycle-bin-content-area w3-animate-opacity">
@@ -192,7 +193,6 @@
     </div>
 
     <!-- 스크립트 영역 !  -->
-
     <script>
         function rrbSelectAll() {
             if ($("#rrbSelectAllCheckBox").is(':checked')) {
@@ -211,7 +211,7 @@
         }
 
         //  신고처리 내역으로 넘어가기!!! 
-        function moveToRepostListArea(){
+        function moveToReportListArea(){
             $(".recycle-bin-content-area").hide();
             $(".recycle-bin-del").hide();
             $(".recycle-bin-restore").hide();
@@ -220,7 +220,7 @@
             $(".report-header-btn").show();            
         }
 
-        function movebackToRepostList(){
+        function movebackToReportList(){
             $(".recycle-bin-content-area").show();
             $(".recycle-bin-del").show();
             $(".recycle-bin-restore").show();

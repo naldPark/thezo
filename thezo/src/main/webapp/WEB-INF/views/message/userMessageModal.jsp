@@ -21,14 +21,64 @@
         overflow-y: scroll;
         white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;}
 
+	/* 받은 쪽지 삭제 모달 css영역*/
+    #receive-msg-delete-modal .modal-content{width: 365px; height: 182px; transform: translate(130px, 150px);}
+    #receive-msg-delete-modal .modal-header{height: 52px; border-bottom: none;}
+    #receive-msg-delete-modal .modal-header>p{color: rgb(231,76,60); font-size: 22px; font-weight: bold;}
+    #receive-msg-delete-modal .modal-body{height: 83px; font-size: 17px;}
+    #deleteItemCount{color: red; font-weight: bold;}
+    #receive-msg-delete-modal .modal-footer{height: 45px; padding: 0px; border-top: none; overflow:hidden;}
+    #receive-msg-delete-modal .modal-footer>button{width: 50%; height: 100%; border: none; margin: 0px; font-size: 22px;}
+    #receive-msg-delete-modal .modal-footer>button:hover{font-weight: bold;}
+    #receive-msg-delete-modal .modal-footer>button:focus{outline: none;}
+    #receive-msg-delete-modal .modal-footer>button:first-child{color: rgb(51,51,51); background-color: rgb(224,224,224);}
+    #receive-msg-delete-modal .modal-footer>button:last-child{color: white; background-color: rgb(231,76,60);}
+
+	/* 보낸 쪽지 삭제 모달 css영역*/
+    #send-msg-delete-modal .modal-content{width: 365px; height: 182px; transform: translate(130px, 150px);}
+    #send-msg-delete-modal .modal-header{height: 52px; border-bottom: none;}
+    #send-msg-delete-modal .modal-header>p{color: rgb(231,76,60); font-size: 22px; font-weight: bold;}
+    #send-msg-delete-modal .modal-body{height: 83px; font-size: 17px;}
+    #sendDeleteSentItemCount{color: red; font-weight: bold;}
+    #send-msg-delete-modal .modal-footer{height: 45px; padding: 0px; border-top: none; overflow:hidden;}
+    #send-msg-delete-modal .modal-footer>button{width: 50%; height: 100%; font-size: 22px; border: none; margin: 0px;}
+    #send-msg-delete-modal .modal-footer>button:hover{font-weight: bold;}
+    #send-msg-delete-modal .modal-footer>button:focus{outline: none;}
+    #send-msg-delete-modal .modal-footer>button:first-child{color: rgb(51,51,51); background-color: rgb(224,224,224);}
+    #send-msg-delete-modal .modal-footer>button:last-child{color: white; background-color: rgb(231,76,60);}
+
+	/* 휴지통 영구삭제 모달 css영역 */
+    #recycle-bin-msg-delete-modal .modal-content{width: 365px; height: 182px; transform: translate(130px, 150px);}
+    #recycle-bin-msg-delete-modal .modal-header{height: 52px; border-bottom: none;}
+    #recycle-bin-msg-delete-modal .modal-header>p{color: rgb(231,76,60); font-size: 22px; font-weight: bold;}
+    #recycle-bin-msg-delete-modal .modal-body{height: 83px; font-size: 15px; padding-top: 5px ;}
+    #receive-deleteItemCount, #sent-deleteItemCount {color: red; font-weight: bold;}
+    #recycle-bin-msg-delete-modal .modal-footer{height: 45px; border-top: none; padding: 0px; overflow:hidden;}
+    #recycle-bin-msg-delete-modal .modal-footer>button{width: 50%; height: 100%; font-size: 22px; margin: 0px; border: none;}
+    #recycle-bin-msg-delete-modal .modal-footer>button:hover{font-weight: bold;}
+    #recycle-bin-msg-delete-modal .modal-footer>button:focus{outline: none;}
+    #recycle-bin-msg-delete-modal .modal-footer>button:first-child{color: rgb(51,51,51); background-color: rgb(224,224,224);}
+    #recycle-bin-msg-delete-modal .modal-footer>button:last-child{color: white; background-color: rgb(231,76,60);}
+
+	/* 휴지통 복구 모달 css영역 */
+    #recycle-bin-msg-restore-modal .modal-content{width: 365px; height: 182px; transform: translate(130px, 150px);}
+    #recycle-bin-msg-restore-modal .modal-header{height: 52px; border-bottom: none;}
+    #recycle-bin-msg-restore-modal .modal-header>p{color: rgb(138,211,169); font-size: 22px; font-weight: bold;}
+    #recycle-bin-msg-restore-modal .modal-body{height: 83px; font-size: 15px; padding-top: 5px ;}
+    #rs-receive-deleteItemCount, #rs-sent-deleteItemCount {color: blue; font-weight: bold; overflow:hidden;}
+    #recycle-bin-msg-restore-modal .modal-footer{height: 45px; border-top: none; padding: 0px;}
+    #recycle-bin-msg-restore-modal .modal-footer>button{width: 50%; height: 100%; font-size: 22px; margin: 0px; border: none;}
+    #recycle-bin-msg-restore-modal .modal-footer>button:hover{font-weight: bold;}
+    #recycle-bin-msg-restore-modal .modal-footer>button:focus{outline: none;}
+    #recycle-bin-msg-restore-modal .modal-footer>button:first-child{color: rgb(51,51,51); background-color: rgb(224,224,224);}
+    #recycle-bin-msg-restore-modal .modal-footer>button:last-child{color: white; background-color: rgb(138,211,169);}
+
 </style>
 </head>
 <body>
-<%-------------------------------------------받은쪽지 상세보기 모달 시작---------------------------------------------------- --%>
+<%-------------------------------------------(받은,보낸, 휴지통)쪽지 상세보기 모달 시작 (완료)---------------------------------------------------- --%>
 <!--  겁나 중요 하다 여기서 중요한것은 메소드로 해당 !모달을 호출할때에  인자값을 2개를 넘긴다 !이를 가지고  받은쪽지인지 보낸쪽지인지 휴지통에 있는 쪽지인지 판별 -->
     <!-- 쪽지 상세보기모달인데 ! 상관관계상 ! header쪽에서 삽입함.  -->
-    
-    
 	<!-- 받은 쪽지 (답장버튼있음) 휴지통에서 받은 쪽지 보는곳 / 그리고 보낸 쪽지 보는것이 혼합 되어있는 복잡한 놈이다!!! 조심해서 다뤄주자! -->
     <div class="modal fade" id="messageDetail">
         <div class="modal-dialog">
@@ -69,9 +119,362 @@
             </div>
         </div>
     </div>
+<%-------------------------------------------(받은,보낸, 휴지통)쪽지 상세보기 모달 끝 (완료)---------------------------------------------------- --%>
+<%-------------------------------------------벋은 쪽지 삭제 모달 시작 (다른데서도 동일한 css가 쓰임 ) (완료)---------------------------------------------------- --%>
+    <script>
+        var rcMultiVal = []; 
+        function openReceivedMsgDelete(){
+            var  eachCheck = $("#received-msg-table input:checkbox[name=tossNo]:checked");
+
+            if(eachCheck.length == 0){
+                alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
+            }else{
+                // 쪽지 번호들을 배열에 담았다. 
+                if(rcMultiVal.length > 0){
+                	rcMultiVal = []; 
+                }
+                eachCheck.each(function(){
+                    var checkedItem = $(this).val();
+                    rcMultiVal.push(checkedItem)
+                })
+				// multiVal에 값들이 담겨있는 상태 ! 
+                $("#receive-msg-delete-modal #multiSelectMsgNo").val(rcMultiVal);    
+                $("#receive-msg-delete-modal #deleteItemCount").text(eachCheck.length);    
+                $("#receive-msg-delete-modal").modal();                
+            }
+        }
+        
+        function rcMsgMoveToRB(){
+            //여기서 ajax 통신이다! + modal 닫기전에 !! controller에서 ! 목록 뿌려주는거 다시 사용해야한다. 
+            $.ajax({
+		 		url:"moveToRB.msg",
+		 		traditional : true,
+				data:{multiMsgNo: rcMultiVal 
+					 , memNo : ${ loginUser.memNo }
+            		 , msgType : 'rc'
+            	},
+		 		success:function(result){
+		 			alert(result);
+		 			showRcMsg();
+		 			ajaxBringUnreadedMsgCount()
+		 			$("#receive-msg-delete-modal").modal('hide')
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})
+        }
+    </script>
+
+    <!-- The Modal -->
+    <div class="modal fade" id="receive-msg-delete-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <p class="modal-title">쪽지 삭제</p>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="" method="POST">                  
+                    <!-- 넘어온 배열은 !!! 알아서 ,를 기준으로 싸그리 문자열로 들어간다! -->
+                    <input type="hidden" id="multiSelectMsgNo" name="" value="">  
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        선택하신 (<span id="deleteItemCount">갯수</span>)개 의 <br>
+                        쪽지를 삭제하시겠습니까?
+                    </div>
+                    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal">취소</button>
+                        <button type="button" onclick="rcMsgMoveToRB();">삭제</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+<%-------------------------------------------받은 쪽지 삭제 모달 끝 (다른데서도 동일한 css가 쓰임 ) (완료)---------------------------------------------------- --%>
+<%-------------------------------------------보낸 쪽지함 삭제 모달 시작  (완료) ---------------------------------------------------- --%>
+    <script>     
+    var stMultiVal = []; 
+    function openSentMsgDelete(){
+        var  eachCheck = $("#sent-msg-table input:checkbox[name=tossNo]:checked");
+        if(eachCheck.length == 0){
+            alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
+        }else{
+            // 쪽지 번호들을 배열에 담았다.
+            if(stMultiVal.length > 0){
+            	stMultiVal = []; 
+            }
+            eachCheck.each(function(){
+                var checkedItem = $(this).val();
+                stMultiVal.push(checkedItem)
+            })
+            //console.log(stMultiVal);
+            $("#send-msg-delete-modal #sendMultiSentSelectMsgNo").val(stMultiVal);    
+            $("#send-msg-delete-modal #sendDeleteSentItemCount").text(eachCheck.length);    
+            $("#send-msg-delete-modal").modal();
+        }
+    }
+
+    function stMsgMoveToRB(){
+        //여기서 ajax 통신이다! + modal 닫기전에 !! controller에서 ! 목록 뿌려주는거 다시 사용해야한다. 
+        $.ajax({
+	 		url:"moveToRB.msg",
+	 		traditional : true,
+			data:{multiMsgNo: stMultiVal 
+				 , memNo : ${ loginUser.memNo }
+        		 , msgType : 'st'
+        	},
+	 		success:function(result){
+	 			alert(result);
+	 			showStMsg();
+	 			$("#send-msg-delete-modal").modal('hide')
+	 		},error:function(){
+	 			console.log("ajax통신 실패");
+	 		}				
+	 	})
+    }
+    </script>
+
+    <!-- The Modal -->
+    <div class="modal fade" id="send-msg-delete-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <p class="modal-title">쪽지 삭제</p>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <form action="" method="POST">                  
+                    <!-- 넘어온 배열은 !!! 알아서 ,를 기준으로 싸그리 문자열로 들어간다! -->
+                    <input type="hidden" id="sendSeMultiSentSelectMsgNo" name="" value="">  
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        선택하신 (<span id="sendDeleteSentItemCount">갯수</span>)개 의 <br>
+                        쪽지를 삭제하시겠습니까?
+                    </div>
+                    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal">취소</button>
+                        <button type="button" onclick="stMsgMoveToRB();">삭제</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+
+<%-------------------------------------------보낸 쪽지함 삭제 모달 끝 (완료)---------------------------------------------------- --%>  
+<%-------------------------------------------휴지통 영구 삭제 모달 시작 (완료) ---------------------------------------------------- --%>
+    <script>
+        var delMultiRecieveMSGVal = []; // 휴지통에있는 받은 쪽지 번호들
+        var delMultisentMSGVal = [];  // 휴지통에 있는 보낸 쪽지 번호들
+        
+        function openRecycleBinDelete(){
+            var  eachCheck = $("#recycle-bin-msg-table input:checkbox[name=tossNo]:checked");
+
+            if(eachCheck.length == 0){
+                alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
+            }else{
+                // 쪽지 번호들을 배열에 담았다. 
+                if(delMultiRecieveMSGVal.length > 0){
+                	delMultiRecieveMSGVal = []; 
+                }
+                if(delMultisentMSGVal.length > 0){
+                	delMultisentMSGVal = []; 
+                }
+
+                eachCheck.each(function(){
+                    //console.log($(this).val().slice(0,$(this).val().indexOf(',')));
+                    if($(this).val().slice(-2) == 'rm'){// 받은 쪽지 번호들 multiRecieveMSGVal배열에 담기  
+                        var receiveCheckedItem = $(this).val().slice(0,$(this).val().indexOf(','));
+                        delMultiRecieveMSGVal.push(receiveCheckedItem);
+                    }else{ // 보낸 쪽지 번호들 multiSentMSGVal배열에 담기
+                        var sentCheckedItem = $(this).val().slice(0,$(this).val().indexOf(','));
+                        delMultisentMSGVal.push(sentCheckedItem);
+                    }
+                })
+                //console.log("삭제할 받은 쪽지번호" + delMultiRecieveMSGVal);
+                //console.log("삭제할 보낸 쪽지번호" + delMultisentMSGVal);
+
+                $("#recycle-bin-msg-delete-modal #receive-deleteItemCount").text(delMultiRecieveMSGVal.length);    
+                $("#recycle-bin-msg-delete-modal #sent-deleteItemCount").text(delMultisentMSGVal.length);    
+                $("#recycle-bin-msg-delete-modal").modal();
+            }
+        }
+        
+        function MsgDeleteByStatus(){
+            //여기서 ajax 통신이다! + modal 닫기전에 !! controller에서 ! 목록 뿌려주는거 다시 사용해야한다. 
+            $.ajax({
+    	 		url:"delete.msg",
+    	 		traditional : true,
+    			data:{ rcMultiMsgNo: delMultiRecieveMSGVal 
+    				 , stMultiMsgNo: delMultisentMSGVal 
+    				 , memNo : ${ loginUser.memNo }
+            	},
+    	 		success:function(result){
+    	 			alert(result);
+    				showRcRecycleBin();
+    				showStRecycleBin();
+					showRcMsg();
+					showStMsg();
+    	 			$("#recycle-bin-msg-delete-modal").modal('hide')
+    	 		},error:function(){
+    	 			console.log("ajax통신 실패");
+    	 		}				
+    	 	})
+        }
+    </script>
+    <!-- The Modal -->
+    <div class="modal fade" id="recycle-bin-msg-delete-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <p class="modal-title">쪽지 삭제</p>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        선택하신 (<span id="receive-deleteItemCount">갯수</span>)개 의 <span style="color:rgb(144, 144, 247); font-weight: bold;">받은쪽지</span>와<br>
+                        선택하신 (<span id="sent-deleteItemCount">갯수</span>)개 의 <span style="color: rgb(109, 230, 109); font-weight: bold; ">보낸쪽지</span>를<br>
+                        영구 삭제 하시겠습니까?
+                    </div>
+                    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal">취소</button>
+                        <button type="button" onclick="MsgDeleteByStatus();">삭제</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+<%-------------------------------------------휴지통 영구 삭제 모달 끝 (완료)---------------------------------------------------- --%>
+<%-------------------------------------------휴지통 복구 모달 시작 (완료)---------------------------------------------------- --%>
+    <script>
+        var multiRecieveMSGVal = []; // 휴지통에있는 받은 쪽지 번호들
+        var multisentMSGVal = [];  // 휴지통에 있는 보낸 쪽지 번호들
+
+        function openRecycleBinResorte(){
+            var  eachCheck = $("#recycle-bin-msg-table input:checkbox[name=tossNo]:checked");
+
+            if(eachCheck.length == 0){
+                alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
+            }else{
+                // 쪽지 번호들을 배열에 담았다. 
+                
+                if(multiRecieveMSGVal.length > 0){
+                	multiRecieveMSGVal = []; 
+                }
+                if(multisentMSGVal.length > 0){
+                	multisentMSGVal = []; 
+                }
+                
+                eachCheck.each(function(){
+                    //console.log($(this).val().slice(0,$(this).val().indexOf(',')));
+                    if($(this).val().slice(-2) == 'rm'){// 받은 쪽지 번호들 multiRecieveMSGVal배열에 담기  
+                        var receiveCheckedItem = $(this).val().slice(0,$(this).val().indexOf(','));
+                        multiRecieveMSGVal.push(receiveCheckedItem);
+                    }else{ // 보낸 쪽지 번호들 multiSentMSGVal배열에 담기
+                        var sentCheckedItem = $(this).val().slice(0,$(this).val().indexOf(','));
+                        multisentMSGVal.push(sentCheckedItem);
+                    }
+                })
+                 //console.log(multiRecieveMSGVal);
+                 //console.log(multisentMSGVal);
+                $("#recycle-bin-msg-restore-modal #rs-receive-deleteItemCount").text(multiRecieveMSGVal.length);    
+                $("#recycle-bin-msg-restore-modal #rs-sent-deleteItemCount").text(multisentMSGVal.length);    
+                $("#recycle-bin-msg-restore-modal").modal();
+            }
+        }
+                    
+        function MsgReStoreToRcSt(){
+            //여기서 ajax 통신이다! + modal 닫기전에 !! controller에서 ! 목록 뿌려주는거 다시 사용해야한다. 
+            $.ajax({
+    	 		url:"restoreToRcSt.msg",
+    	 		traditional : true,
+    			data:{ rcMultiMsgNo: multiRecieveMSGVal 
+    				 , stMultiMsgNo: multisentMSGVal 
+    				 , memNo : ${ loginUser.memNo }
+            	},
+    	 		success:function(result){
+    	 			alert(result);
+    				showRcRecycleBin();
+    				showStRecycleBin();
+					showRcMsg();
+					showStMsg();
+					//ajaxBringUnreadedMsgCount()
+    	 			$("#recycle-bin-msg-restore-modal").modal('hide')
+    	 		},error:function(){
+    	 			console.log("ajax통신 실패");
+    	 		}				
+    	 	})
+        }
+        
+    </script>
+    <!-- The Modal -->
+    <div class="modal fade" id="recycle-bin-msg-restore-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <p class="modal-title">쪽지 복구</p>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                    <!-- 넘어온 배열은 !!! 알아서 ,를 기준으로 싸그리 문자열로 들어간다! 배열 두개를 넘긴다 !! name 잘지정해줘 !  -->
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        선택하신 (<span id="rs-receive-deleteItemCount">갯수</span>)개 의 <span style="color:rgb(144, 144, 247); font-weight: bold;">받은쪽지</span>와<br>
+                        선택하신 (<span id="rs-sent-deleteItemCount">갯수</span>)개 의 <span style="color: rgb(109, 230, 109); font-weight: bold; ">보낸쪽지</span>를<br>
+                        쪽지함으로 복구 하시겠습니까?
+                    </div>
+                    
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal">취소</button>
+                        <button type="button" onclick="MsgReStoreToRcSt()">복구</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+<%-------------------------------------------휴지통 복구 모달 끝 (완료)---------------------------------------------------- --%>
 
 
-<%-------------------------------------------받은쪽지 상세보기 모달 끝---------------------------------------------------- --%>
+
+
+
+
+
+
+
+
+
+
+
+<%-------------------------------------------여기 까지 끝난것---------------------------------------------------- --%>
+<%-------------------------------------------여기 까지 끝난것---------------------------------------------------- --%>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <%-------------------------------------------답장하기 , 쪽지 쓰기 모달 시작---------------------------------------------------- --%>
 
     <style>
@@ -578,390 +981,7 @@
         </div>
     </div>
 <%-------------------------------------------신고 모달 끝 ---------------------------------------------------- --%>
-<%-------------------------------------------삭제 모달 시작 (다른데서도 동일한 css가 쓰임 ) ---------------------------------------------------- --%>
-    <script>
-        var rcMultiVal = []; 
-        function openReceivedMsgDelete(){
-            var  eachCheck = $("#received-msg-table input:checkbox[name=tossNo]:checked");
 
-            if(eachCheck.length == 0){
-                alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
-            }else{
-                // 쪽지 번호들을 배열에 담았다. 
-                if(rcMultiVal.length > 0){
-                	rcMultiVal = []; 
-                }
-                eachCheck.each(function(){
-                    var checkedItem = $(this).val();
-                    rcMultiVal.push(checkedItem)
-                })
-				// multiVal에 값들이 담겨있는 상태 ! 
-                $("#receive-msg-delete-modal #multiSelectMsgNo").val(rcMultiVal);    
-                $("#receive-msg-delete-modal #deleteItemCount").text(eachCheck.length);    
-                $("#receive-msg-delete-modal").modal();                
-            }
-        }
-        
-        function rcMsgMoveToRB(){
-            //여기서 ajax 통신이다! + modal 닫기전에 !! controller에서 ! 목록 뿌려주는거 다시 사용해야한다. 
-            $.ajax({
-		 		url:"moveToRB.msg",
-		 		traditional : true,
-				data:{multiMsgNo: rcMultiVal 
-					 , memNo : ${ loginUser.memNo }
-            		 , msgType : 'rc'
-            	},
-		 		success:function(result){
-		 			alert(result);
-		 			showRcMsg();
-		 			$("#receive-msg-delete-modal").modal('hide')
-		 		},error:function(){
-		 			console.log("ajax통신 실패");
-		 		}				
-		 	})
-        }
-    </script>
-
-    <style>
-        #receive-msg-delete-modal .modal-content{width: 365px; height: 182px; transform: translate(130px, 150px);}
-        #receive-msg-delete-modal .modal-header{height: 52px; border-bottom: none;}
-        #receive-msg-delete-modal .modal-header>p{color: rgb(231,76,60); font-size: 22px; font-weight: bold;}
-        #receive-msg-delete-modal .modal-body{height: 85px; font-size: 17px;}
-        #deleteItemCount{color: red; font-weight: bold;}
-        #receive-msg-delete-modal .modal-footer{height: 45px; padding: 0px; border-top: none;}
-        #receive-msg-delete-modal .modal-footer>button{width: 50%; height: 100%; border: none; margin: 0px; font-size: 22px;}
-        #receive-msg-delete-modal .modal-footer>button:hover{font-weight: bold;}
-        #receive-msg-delete-modal .modal-footer>button:focus{outline: none;}
-        #receive-msg-delete-modal .modal-footer>button:first-child{color: rgb(51,51,51); background-color: rgb(224,224,224);}
-        #receive-msg-delete-modal .modal-footer>button:last-child{color: white; background-color: rgb(231,76,60);}
-    </style>
-    <!-- The Modal -->
-    <div class="modal fade" id="receive-msg-delete-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <p class="modal-title">쪽지 삭제</p>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="" method="POST">                  
-                    <!-- 넘어온 배열은 !!! 알아서 ,를 기준으로 싸그리 문자열로 들어간다! -->
-                    <input type="hidden" id="multiSelectMsgNo" name="" value="">  
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        선택하신 (<span id="deleteItemCount">갯수</span>)개 의 <br>
-                        쪽지를 삭제하시겠습니까?
-                    </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">취소</button>
-                        <button type="button" onclick="rcMsgMoveToRB();">삭제</button>
-                    </div>
-                </form>
-                
-            </div>
-        </div>
-    </div>
-
-<%-------------------------------------------삭제 모달 끝 (다른데서도 동일한 css가 쓰임 )---------------------------------------------------- --%>
-<%-------------------------------------------보낸 쪽지함 삭제 모달 시작  ---------------------------------------------------- --%>
-    <script>     
-    var stMultiVal = []; 
-    function openSentMsgDelete(){
-        var  eachCheck = $("#sent-msg-table input:checkbox[name=tossNo]:checked");
-        if(eachCheck.length == 0){
-            alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
-        }else{
-            // 쪽지 번호들을 배열에 담았다.
-            if(stMultiVal.length > 0){
-            	stMultiVal = []; 
-            }
-            eachCheck.each(function(){
-                var checkedItem = $(this).val();
-                stMultiVal.push(checkedItem)
-            })
-            //console.log(stMultiVal);
-
-            $("#send-msg-delete-modal #sendMultiSentSelectMsgNo").val(stMultiVal);    
-            $("#send-msg-delete-modal #sendDeleteSentItemCount").text(eachCheck.length);    
-            $("#send-msg-delete-modal").modal();
-        }
-    }
-
-    function stMsgMoveToRB(){
-        //여기서 ajax 통신이다! + modal 닫기전에 !! controller에서 ! 목록 뿌려주는거 다시 사용해야한다. 
-        $.ajax({
-	 		url:"moveToRB.msg",
-	 		traditional : true,
-			data:{multiMsgNo: stMultiVal 
-				 , memNo : ${ loginUser.memNo }
-        		 , msgType : 'st'
-        	},
-	 		success:function(result){
-	 			alert(result);
-	 			showStMsg();
-	 			$("#send-msg-delete-modal").modal('hide')
-	 		},error:function(){
-	 			console.log("ajax통신 실패");
-	 		}				
-	 	})
-    }
-    
-    </script>
-
-    <style>
-        #send-msg-delete-modal .modal-content{
-            width: 365px;
-            height: 182px;
-            transform: translate(130px, 150px);
-        }
-
-        #send-msg-delete-modal .modal-header{
-            height: 52px;
-            border-bottom: none;
-        }
-
-        #send-msg-delete-modal .modal-header>p{
-            font-size: 22px;
-            font-weight: bold;
-            color: rgb(231,76,60);
-        }
-        #send-msg-delete-modal .modal-body{
-            height: 85px;
-            font-size: 17px;
-        }
-
-        #sendDeleteSentItemCount{
-            color: red;
-            font-weight: bold;
-        }
-
-        #send-msg-delete-modal .modal-footer{
-            height: 45px;
-            border-top: none;
-            padding: 0px;
-        }
-
-        #send-msg-delete-modal .modal-footer>button{
-            width: 50%;
-            height: 100%;
-            font-size: 22px;
-            margin: 0px;
-            border: none;
-        }
-
-        #send-msg-delete-modal .modal-footer>button:hover{
-            font-weight: bold;
-        }
-        #send-msg-delete-modal .modal-footer>button:focus{
-            outline: none;
-        }
-
-        #send-msg-delete-modal .modal-footer>button:first-child{
-            background-color: rgb(224,224,224);
-            color: rgb(51,51,51);
-        }
-
-        #send-msg-delete-modal .modal-footer>button:last-child{
-            background-color: rgb(231,76,60);
-            color: white;
-        }
-    </style>
-    <!-- The Modal -->
-    <div class="modal fade" id="send-msg-delete-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <p class="modal-title">쪽지 삭제</p>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="" method="POST">                  
-                    <!-- 넘어온 배열은 !!! 알아서 ,를 기준으로 싸그리 문자열로 들어간다! -->
-                    <input type="hidden" id="sendSeMultiSentSelectMsgNo" name="" value="">  
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        선택하신 (<span id="sendDeleteSentItemCount">갯수</span>)개 의 <br>
-                        쪽지를 삭제하시겠습니까?
-                    </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">취소</button>
-                        <button type="button" onclick="stMsgMoveToRB();">삭제</button>
-                    </div>
-                </form>
-                
-            </div>
-        </div>
-    </div>
-
-<%-------------------------------------------보낸 쪽지함 삭제 모달 끝---------------------------------------------------- --%>  
-<%-------------------------------------------휴지통 영구 삭제 모달 시작 ---------------------------------------------------- --%>
-    <style>
-        #recycle-bin-msg-delete-modal .modal-content{width: 365px; height: 182px; transform: translate(130px, 150px);}
-        #recycle-bin-msg-delete-modal .modal-header{height: 52px; border-bottom: none;}
-        #recycle-bin-msg-delete-modal .modal-header>p{color: rgb(231,76,60); font-size: 22px; font-weight: bold;}
-        #recycle-bin-msg-delete-modal .modal-body{height: 85px; font-size: 15px; padding-top: 5px ;}
-        #receive-deleteItemCount, #sent-deleteItemCount {color: red; font-weight: bold;}
-        #recycle-bin-msg-delete-modal .modal-footer{height: 45px; border-top: none; padding: 0px;}
-        #recycle-bin-msg-delete-modal .modal-footer>button{width: 50%; height: 100%; font-size: 22px; margin: 0px; border: none;}
-        #recycle-bin-msg-delete-modal .modal-footer>button:hover{font-weight: bold;}
-        #recycle-bin-msg-delete-modal .modal-footer>button:focus{outline: none;}
-        #recycle-bin-msg-delete-modal .modal-footer>button:first-child{color: rgb(51,51,51); background-color: rgb(224,224,224);}
-        #recycle-bin-msg-delete-modal .modal-footer>button:last-child{color: white; background-color: rgb(231,76,60);}
-    </style>
-
-    <script>
-        function openRecycleBinDelete(){
-            var  eachCheck = $("#recycle-bin-msg-table input:checkbox[name=tossNo]:checked");
-
-            if(eachCheck.length == 0){
-                alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
-            }else{
-                // 쪽지 번호들을 배열에 담았다. 
-                var multiRecieveMSGVal = []; // 휴지통에있는 받은 쪽지 번호들
-                var multisentMSGVal = [];  // 휴지통에 있는 보낸 쪽지 번호들
-                
-                eachCheck.each(function(){
-                    //console.log($(this).val().slice(0,$(this).val().indexOf(',')));
-                    if($(this).val().slice(-2) == 'rm'){// 받은 쪽지 번호들 multiRecieveMSGVal배열에 담기  
-                        var receiveCheckedItem = $(this).val().slice(0,$(this).val().indexOf(','));
-                        multiRecieveMSGVal.push(receiveCheckedItem);
-                    }else{ // 보낸 쪽지 번호들 multiSentMSGVal배열에 담기
-                        var sentCheckedItem = $(this).val().slice(0,$(this).val().indexOf(','));
-                        multisentMSGVal.push(sentCheckedItem);
-                    }
-                })
-                // console.log(multiRecieveMSGVal);
-                // console.log(multisentMSGVal);
-
-                $("#recycle-bin-msg-delete-modal #receive-multiSelectMsgNo").val(multiRecieveMSGVal);    
-                $("#recycle-bin-msg-delete-modal #sent-multiSelectMsgNo").val(multisentMSGVal);    
-
-                $("#recycle-bin-msg-delete-modal #receive-deleteItemCount").text(multiRecieveMSGVal.length);    
-                $("#recycle-bin-msg-delete-modal #sent-deleteItemCount").text(multisentMSGVal.length);    
-                $("#recycle-bin-msg-delete-modal").modal();
-            }
-        }
-    </script>
-    <!-- The Modal -->
-    <div class="modal fade" id="recycle-bin-msg-delete-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <p class="modal-title">쪽지 삭제</p>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="" method="POST">                  
-                    <!-- 넘어온 배열은 !!! 알아서 ,를 기준으로 싸그리 문자열로 들어간다! 배열 두개를 넘긴다 !! name 잘지정해줘 !  -->
-                    <input type="hidden" id="receive-multiSelectMsgNo" name="" value="">  
-                    <input type="hidden" id="sent-multiSelectMsgNo" name="" value="">  
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        선택하신 (<span id="receive-deleteItemCount">갯수</span>)개 의 <span style="color:rgb(144, 144, 247); font-weight: bold;">받은쪽지</span>와<br>
-                        선택하신 (<span id="sent-deleteItemCount">갯수</span>)개 의 <span style="color: rgb(109, 230, 109); font-weight: bold; ">보낸쪽지</span>를<br>
-                        영구 삭제 하시겠습니까?
-                    </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">취소</button>
-                        <button type="submit" data-dismiss="modal" onclick="">삭제</button>
-                    </div>
-                </form>
-                
-            </div>
-        </div>
-    </div>
-
-<%-------------------------------------------휴지통 영구 삭제 모달 끝---------------------------------------------------- --%>
-<%-------------------------------------------휴지통 복구 모달 시작 ---------------------------------------------------- --%>
-    <style>
-        #recycle-bin-msg-restore-modal .modal-content{width: 365px; height: 182px; transform: translate(130px, 150px);}
-        #recycle-bin-msg-restore-modal .modal-header{height: 52px; border-bottom: none;}
-        #recycle-bin-msg-restore-modal .modal-header>p{color: rgb(138,211,169); font-size: 22px; font-weight: bold;}
-        #recycle-bin-msg-restore-modal .modal-body{height: 85px; font-size: 15px; padding-top: 5px ;}
-        #rs-receive-deleteItemCount, #rs-sent-deleteItemCount {color: blue; font-weight: bold;}
-        #recycle-bin-msg-restore-modal .modal-footer{height: 45px; border-top: none; padding: 0px;}
-        #recycle-bin-msg-restore-modal .modal-footer>button{width: 50%; height: 100%; font-size: 22px; margin: 0px; border: none;}
-        #recycle-bin-msg-restore-modal .modal-footer>button:hover{font-weight: bold;}
-        #recycle-bin-msg-restore-modal .modal-footer>button:focus{outline: none;}
-        #recycle-bin-msg-restore-modal .modal-footer>button:first-child{color: rgb(51,51,51); background-color: rgb(224,224,224);}
-        #recycle-bin-msg-restore-modal .modal-footer>button:last-child{color: white; background-color: rgb(138,211,169);}
-    </style>
-
-    <script>
-        function openRecycleBinResorte(){
-            var  eachCheck = $("#recycle-bin-msg-table input:checkbox[name=tossNo]:checked");
-
-            if(eachCheck.length == 0){
-                alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
-            }else{
-                // 쪽지 번호들을 배열에 담았다. 
-                var multiRecieveMSGVal = []; // 휴지통에있는 받은 쪽지 번호들
-                var multisentMSGVal = [];  // 휴지통에 있는 보낸 쪽지 번호들
-                
-                eachCheck.each(function(){
-                    //console.log($(this).val().slice(0,$(this).val().indexOf(',')));
-                    if($(this).val().slice(-2) == 'rm'){// 받은 쪽지 번호들 multiRecieveMSGVal배열에 담기  
-                        var receiveCheckedItem = $(this).val().slice(0,$(this).val().indexOf(','));
-                        multiRecieveMSGVal.push(receiveCheckedItem);
-                    }else{ // 보낸 쪽지 번호들 multiSentMSGVal배열에 담기
-                        var sentCheckedItem = $(this).val().slice(0,$(this).val().indexOf(','));
-                        multisentMSGVal.push(sentCheckedItem);
-                    }
-                })
-                // console.log(multiRecieveMSGVal);
-                // console.log(multisentMSGVal);
-
-                $("#recycle-bin-msg-restore-modal #rs-receive-multiSelectMsgNo").val(multiRecieveMSGVal);    
-                $("#recycle-bin-msg-restore-modal #rs-sent-multiSelectMsgNo").val(multisentMSGVal);    
-
-                $("#recycle-bin-msg-restore-modal #rs-receive-deleteItemCount").text(multiRecieveMSGVal.length);    
-                $("#recycle-bin-msg-restore-modal #rs-sent-deleteItemCount").text(multisentMSGVal.length);    
-                $("#recycle-bin-msg-restore-modal").modal();
-            }
-        }
-    </script>
-    <!-- The Modal -->
-    <div class="modal fade" id="recycle-bin-msg-restore-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <p class="modal-title">쪽지 복구</p>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <form action="" method="POST">                  
-                    <!-- 넘어온 배열은 !!! 알아서 ,를 기준으로 싸그리 문자열로 들어간다! 배열 두개를 넘긴다 !! name 잘지정해줘 !  -->
-                    <input type="hidden" id="rs-receive-multiSelectMsgNo" name="" value="">  
-                    <input type="hidden" id="rs-sent-multiSelectMsgNo" name="" value="">  
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        선택하신 (<span id="rs-receive-deleteItemCount">갯수</span>)개 의 <span style="color:rgb(144, 144, 247); font-weight: bold;">받은쪽지</span>와<br>
-                        선택하신 (<span id="rs-sent-deleteItemCount">갯수</span>)개 의 <span style="color: rgb(109, 230, 109); font-weight: bold; ">보낸쪽지</span>를<br>
-                        쪽지함으로 복구 하시겠습니까?
-                    </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">취소</button>
-                        <button type="submit" data-dismiss="modal" onclick="">복구</button>
-                    </div>
-                </form>
-                
-            </div>
-        </div>
-    </div>
-
-<%-------------------------------------------휴지통 복구 모달 끝---------------------------------------------------- --%>
 <%-----------------------------------------------------------유저 신고상세 모달 영역 시작----------------------------------------------------------%>	
 <!-- 모달 jsp쪽으로 옮겨줘야해  -->
 

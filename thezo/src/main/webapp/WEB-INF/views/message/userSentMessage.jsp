@@ -14,16 +14,16 @@
     .sent-btn-area>div>button{width: 42px;}
     .sent-btn-area>div>button:first-child{background-color: rgb(236,112,99);}
     .sent-content-area{margin-top: 32px;}
-    #sent-msg-table, #empty-sent-msg-table{font-size: 11.5px; text-align: center; letter-spacing: -0.8px; border-top: 3px solid rgb(204,204,204); border-bottom: 2px solid rgb(204,204,204); }
-    #sent-msg-table>thead>tr, #empty-sent-msg-table>thead>tr{height: 35px; font-size: 11.5px; border-bottom: 1px solid rgb(204,204,204); background-color: rgb(234,234,234);}
-    #sent-msg-table>tbody>tr, #empty-sent-msg-table>tbody>tr{height: 30px; line-height: 1; border-bottom: 1px solid rgb(204,204,204);}
+    #sent-msg-table{font-size: 11.5px; text-align: center; letter-spacing: -0.8px; border-top: 3px solid rgb(204,204,204); border-bottom: 2px solid rgb(204,204,204); }
+    #sent-msg-table>thead>tr{height: 35px; font-size: 11.5px; border-bottom: 1px solid rgb(204,204,204); background-color: rgb(234,234,234);}
+    #sent-msg-table>tbody>tr{height: 30px; line-height: 1; border-bottom: 1px solid rgb(204,204,204);}
     #sent-msg-table>tbody>tr:hover{cursor: pointer; background-color: rgb(252,232,200);}
-    #sent-msg-table>thead>tr>th, #sent-msg-table>tbody>tr>td, #empty-sent-msg-table>thead>tr>th, #empty-sent-msg-table>tbody>tr>td  {padding: 0px; border-bottom: none; vertical-align: middle;}
+    #sent-msg-table>thead>tr>th, #sent-msg-table>tbody>tr>td{padding: 0px; border-bottom: none; vertical-align: middle;}
     #sent-msg-table input{width: 20px; height: 20px;}
 </style>
 </head>
 <body>
-		<script>
+	<script>
 		function showStMsg(){				
 		 	$.ajax({
 		 		url:"selectSentList.msg",
@@ -50,13 +50,10 @@
 			 			}
 			 			$("#sent-msg-table tbody").html(value);
 		 			}else{
-		 				value += '<table class="table table-sm" id="empty-sent-msg-table">'
-		 				       + '<thead><tr><th></th>'
-                    		   + '<th>받는사람</th><th>상태</th><th>관련내용</th><th>보낸날자</th>'
-                    		   + '</tr></thead><tbody><tr><td colspan="5">보낸 쪽지가 없습니다!</td>'
-                    		   + '</tr></tbody></table>';   
-		                $(".sent-content-area").html(value);
+		 				value += '<tr><td colspan="5">보낸 쪽지가 없습니다!</td></tr>';
+		                $("#sent-msg-table tbody").html(value);
 		 			}
+		 	        $("#sSelectAllCheckBox").prop("checked", false)
 		 		},error:function(){
 		 			console.log("ajax통신 실패");
 		 		}				

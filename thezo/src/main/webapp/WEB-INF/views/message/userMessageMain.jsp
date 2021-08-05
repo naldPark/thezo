@@ -48,6 +48,7 @@
     <!-- 각각의 스크립트에서 ! 일단 값을 뽑아서 !!! 값들 뿌려주고 호출이다!  -->
     <script>
         function moveToReceive(){
+        	showRcMsg();                        
             $("#receive-message-page").show();
             $("#sent-message-page").hide();
             $("#recycle-bin-page").hide();
@@ -57,6 +58,7 @@
         }
 
         function moveToSent(){
+        	showStMsg();
             $("#receive-message-page").hide();
             $("#sent-message-page").show();
             $("#recycle-bin-page").hide();
@@ -76,13 +78,10 @@
             $(".sent-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");            
         }
 
-        
-        
         // 쪽지 상세 보기 쪽인데 !!! 여기서 ajax로 값 뿌려주면서 만들어줘야한다
         function openDetailMSG(msgNo,checkMsgType){
             if(checkMsgType == 'r'){//받은 쪽지 (보낸 사람, 받은 시간을 표기)
             	//console.log("받은 쪽지 함수열림");
-            	
             	ajaxCommonDetailMsg();
             	$("#receiverType").hide();
                 $("#sendTime").hide();
@@ -93,7 +92,6 @@
 
             }else if(checkMsgType =='s'){//보낸 쪽지 (받는사람, 보낸시간을 표기)    
             	//console.log("보낸 쪽지 함수열림");
-            	
             	ajaxCommonDetailMsg();
                 $("#reply-btn").hide();
                 $("#senderType").hide();
@@ -104,7 +102,6 @@
 
             }else if(checkMsgType =='srb'){// 휴지통에 있는 보낸 쪽지 ( 받는사람, 보낸시간을 표기)
             	//console.log("휴지통 보낸 쪽지 함수열림");
-				
             	ajaxCommonDetailMsg();
                 $("#reply-btn").hide();
                 $("#senderType").hide();
@@ -115,7 +112,6 @@
             
             }else{// 휴지통에 있는 받은 쪽지 (보낸 사람, 받은 시간을 표기)  checkMsgType이 rrb로 넘어온다.
             	//console.log("휴지통 받은 쪽지 함수열림");
-            	
             	ajaxCommonDetailMsg();
             	$("#receiverType").hide();
                 $("#sendTime").hide();
@@ -133,14 +129,16 @@
     		 			, msgType :checkMsgType 
     		 		},
     		 		success:function(msgDetail){
-    		 			console.log(msgDetail);
+    		 			//console.log(msgDetail);
     		 			
     		 			$("#toFromPerson").html(msgDetail.recipientNameAndRank);
     		 			$("#detailMsgStatus").html(msgDetail.msgStatus);
     		 			$("#msgDetailTime").html(msgDetail.createDate);
     		 			$("#detailMsgContentMsg").html(msgDetail.contentStatus);
     		 			$(".detail-modal-content pre").html(msgDetail.msgContent);
-    		 			
+    					showRcMsg();
+    					ajaxBringUnreadedMsgCount()
+
     		 		},error:function(){
     		 			console.log("ajax통신 실패");
     		 		}    		 		

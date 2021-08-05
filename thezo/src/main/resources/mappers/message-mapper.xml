@@ -2,8 +2,246 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="messageMapper">
 
+	<resultMap id="messageResult" type="Message">
+		<result column="MSG_NO" property="msgNo"/>
+		<result column="RECIPIENT_NO" property="recipientNo"/>
+		<result column="SENDER_NO" property="senderNo"/>
+		<result column="MSG_STATUS" property="msgStatus"/>
+		<result column="CONTENT_STATUS" property="contentStatus"/>
+		<result column="CREATE_DATE" property="createDate"/>		
+		<result column="receive_date" property="createDate"/>		
+		<result column="MSG_CONTENT" property="msgContent"/>
+		<result column="READ_STATUS" property="readStatus"/>
+		<result column="TO_RECYCLE_BIN" property="toRecycleBin"/>
+		<result column="FROM_RECYCLE_BIN" property="fromRecycleBin"/>
+		<result column="TO_DEL_STATUS" property="toDelStatus"/>
+		<result column="FROM_DEL_STATUS" property="fromDelStatus"/>
+		<result column="recipient_name_rank" property="recipientNameAndRank"/>
+		<result column="sender_name_rank" property="senderNameAndRank"/>
+		
+	</resultMap>
+
 	<!-- @author Jaewon.s -->
+	
+	<!-- 시간 많이 잡아먹은 .. sql문... 얘를 바탕으로 파생시키면된다. 받은 쪽지 목록 가져오는 sql문  -->
+	<!--<select id="ajaxSelectListNf" resultMap="messageResult">
+		select
+		       msg_no
+		     , recipient_no
+		     , sender_no
+		     , msg_status
+		     , content_status
+             ,case when (to_char(create_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
+                 then to_char(create_date, 'HH24:MI')
+                 when to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365 > 1 
+                 then round(to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365) || '년 전'  
+                 when (to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD'))) = 1
+                 then '어제'
+              else
+                   to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')) || '일전' 
+              end as receive_date   
+		     , msg_content
+		     , read_status
+		     , to_recycle_bin
+		     , from_recycle_bin
+		     , to_del_status
+		     , from_del_status
+             , mb.mem_name || ' ' || mb.rank as recipient_name_rank
+  	         , mb2.mem_name || ' ' || mb2.rank as sender_name_rank	     
+		  from message msg
+          join member mb on (msg.recipient_no = mb.mem_no )
+  	      join member mb2 on (msg.sender_no = mb2.mem_no )	  
+		 where recipient_no = #{ memNo }    
+		   and to_recycle_bin = 'Y'
+		   and to_del_status = 'Y' 
+		 order
+		    by create_date desc      
+	</select>-->
+
+
+	<!-- 받은 쪽지 조회해오는 sql문 !!  -->
+	<select id="ajaxSelectReceiveMsgList" resultMap="messageResult">
+		select
+		       msg_no
+		     , msg_status
+		     , content_status
+             ,case when (to_char(create_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
+                 then to_char(create_date, 'HH24:MI')
+                 when to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365 > 1 
+                 then round(to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365) || '년 전'  
+                 when (to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD'))) = 1
+                 then '어제'
+              else
+                   to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')) || '일전' 
+              end as receive_date   
+  	         , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	         , read_status
+		  from message msg
+  	      join member mb on (msg.sender_no = mb.mem_no )	  
+		 where recipient_no = #{ memNo }    
+		   and to_recycle_bin = 'Y'
+		   and to_del_status = 'Y' 
+		 order
+		    by create_date desc      
+	</select>
+
+	<!-- 받은 쪽지 휴지통으로 이동 시키는 sql문 !!  -->
+	<update id="ajaxMoveToRB" parameterType="hashMap">
+		update
+		       message
+   			<choose>
+				<when test="msgType == 'rc'">
+				   set to_recycle_bin = 'N'
+				</when>
+				<otherwise>
+				   set from_recycle_bin = 'N'				
+				</otherwise>
+			</choose>
+		 where msg_no in ( 
+			<foreach item="msgNo" index="index" collection="multiMsgNo" separator=",">
+				${msgNo}
+			</foreach>
+			)
+			<choose>
+				<when test="msgType == 'rc'">
+			    	and recipient_no = ${memNo}
+				</when>
+				<otherwise>
+			    	and sender_no = ${memNo}				
+				</otherwise>
+			</choose>
+	</update>
+
+	<!-- 보낸 쪽지 조회해오는 sql문 !!  -->
+	<select id="ajaxSelectSentMsgList" resultMap="messageResult">
+		select
+		       msg_no
+		     , msg_status
+		     , content_status
+             ,case when (to_char(create_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
+                 then to_char(create_date, 'HH24:MI')
+                 when to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365 > 1 
+                 then round(to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365) || '년 전'  
+                 when (to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD'))) = 1
+                 then '어제'
+              else
+                   to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')) || '일전' 
+              end as receive_date   
+             , mb.mem_name || ' ' || mb.rank as recipient_name_rank
+		  from message msg
+          join member mb on (msg.recipient_no = mb.mem_no )
+		 where sender_no = #{ memNo }    
+		   and from_recycle_bin = 'Y'
+		   and from_del_status = 'Y' 
+		 order
+		    by create_date desc      
+	</select>
 
 
 
+	<!-- 받은 쪽지 조회해오는 sql문 !!  -->
+	<select id="ajaxSelectRcRbList" resultMap="messageResult">
+		select
+		       msg_no
+		     , msg_status
+		     , content_status
+             ,case when (to_char(create_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
+                 then to_char(create_date, 'HH24:MI')
+                 when to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365 > 1 
+                 then round(to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365) || '년 전'  
+                 when (to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD'))) = 1
+                 then '어제'
+              else
+                   to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')) || '일전' 
+              end as receive_date   
+  	         , mb.mem_name || ' ' || mb.rank as sender_name_rank	     
+		  from message msg
+  	      join member mb on (msg.sender_no = mb.mem_no )	  
+		 where recipient_no = #{ memNo }    
+		   and to_recycle_bin = 'N'
+		   and to_del_status = 'Y' 
+		 order
+		    by create_date desc      
+	</select>
+
+
+	<!-- 보낸 쪽지 조회해오는 sql문 !!  -->
+	<select id="ajaxSelectRcStList" resultMap="messageResult">
+		select
+		       msg_no
+		     , msg_status
+		     , content_status
+             ,case when (to_char(create_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
+                 then to_char(create_date, 'HH24:MI')
+                 when to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365 > 1 
+                 then round(to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365) || '년 전'  
+                 when (to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD'))) = 1
+                 then '어제'
+              else
+                   to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')) || '일전' 
+              end as receive_date   
+             , mb.mem_name || ' ' || mb.rank as recipient_name_rank
+		  from message msg
+          join member mb on (msg.recipient_no = mb.mem_no )
+		 where sender_no = #{ memNo } 
+		   and from_recycle_bin = 'N'
+		   and from_del_status = 'Y' 
+		 order
+		    by create_date desc      
+	</select>
+
+	<!-- 
+	<select id="ajaxselectReportList" resultMap="messageResult">
+	</select>
+	 -->
+	 
+	 <select id="ajaxCountUnreadedMsg" resultType="_int">
+	 	select count(*)
+	 	  from message
+	 	 where recipient_no = #{ memNo }
+	 	   and read_status = 'N'	
+	 	   and to_recycle_bin = 'Y'
+	 	   and to_del_status = 'Y'
+	 </select>
+	 
+	 <!-- 어짜피 넘어오는 값은 고정된 쪽지 번호가 넘어온다.  해당 쪽지 번호로 조회를 해오는것이기에 조건 검사를 까다롭게 하지 않아도 된다! -->
+	 <select id="ajaxSelectDetailMsg" parameterType="hashMap" resultMap="messageResult">
+		select
+		       msg_no
+		     , msg_status
+		     , content_status
+             , to_char(create_date, 'YYYY-MM-DD [HH24:mi]') as create_date
+		     , msg_content
+		     , read_status
+             <choose>
+             	<when test='(msgType == "rrb") or (msgType == "r")'>
+		  	         , mb2.mem_name || ' ' || mb2.rank as recipient_name_rank	     
+             	</when>
+      	        <when test='(msgType == "srb") or (msgType == "s")'>
+    		         , mb.mem_name || ' ' || mb.rank as recipient_name_rank
+             	</when>
+             </choose>
+		  from message msg
+              <choose>
+             	<when test='(msgType == "rrb") or (msgType == "r")'>
+				      join member mb2 on (msg.sender_no = mb2.mem_no )	  
+	           	</when>
+      	        <when test='(msgType == "srb") or (msgType == "s")'>
+        			  join member mb on (msg.recipient_no = mb.mem_no )
+             	</when>
+             </choose>
+  	      where msg_no = #{ msgNo }
+  	      <choose>
+  	      	<when test='(msgType == "rrb") or (msgType == "r")'>
+ 	      		and recipient_no = #{ memNo }
+				and to_del_status = 'Y' 
+  	      	</when>
+     		<when test='(msgType == "srb") or (msgType == "s")'>
+  	      		and sender_no = #{ memNo }
+	      		and from_del_status = 'Y' 
+  	      	</when>
+  	      </choose>		  					    
+		 order
+		    by create_date desc      
+	 </select>
 </mapper>

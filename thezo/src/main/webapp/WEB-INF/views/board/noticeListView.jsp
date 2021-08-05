@@ -125,11 +125,11 @@ table tbody {
 			
 			<br><br>
 			<!-- 권한자만 볼 수 있게 -->
-			<a class="btn btn-secondary" style="float: right"
-				href="noticeEnrollForm.bo">글쓰기</a>&nbsp;&nbsp; <br>
+			<c:if test="${ loginUser.noticeAuth eq 'Y' }">
+				<a class="btn btn-secondary" style="float: right" href="noticeEnrollForm.bo">글쓰기</a>&nbsp;&nbsp; <br>
+			</c:if>
+			
 			<br>
-			
-			
 			<div id="pagingArea">
                 <ul class="pagination">
                 	<c:choose>

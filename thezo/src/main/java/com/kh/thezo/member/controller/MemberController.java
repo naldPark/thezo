@@ -13,18 +13,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.kh.thezo.attendance.model.service.AttendanceService;
 import com.kh.thezo.attendance.model.vo.Attendance;
+import com.kh.thezo.approval.model.service.ApprovalService;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.member.model.service.MemberService;
 import com.kh.thezo.member.model.vo.Member;
+import com.kh.thezo.message.model.service.MessageService;
 import com.kh.thezo.notification.model.service.NotificationService;
 
 @Controller
 public class MemberController {
 	
+	@Autowired
+	private ApprovalService aService;
 	@Autowired
 	private MemberService mService;
 	@Autowired
@@ -33,13 +36,16 @@ public class MemberController {
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	@Autowired
 	private NotificationService nfService;
+	@Autowired
+	private MessageService msgService;
 
+	
 	@RequestMapping("logout.me")
 	public String logoutMember(HttpSession session){
 		session.invalidate();
 		return "redirect:/"; // 메인페이지로 재요청
 	}
-	// 담당자가 없는거같아서 제가 그냥 작성했어요(영익)
+	
 	@RequestMapping("login.me")
 	public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
 		
@@ -51,20 +57,27 @@ public class MemberController {
 			loginUser.setUserId(loginUser.getMemId()); //userId임시로 넣은 jsp오류방지용
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("attData", attData);
+			
+			// 전자결재 파트 시작
+			HashMap<String, Integer> mainApprCount= aService.mainApprCount(loginUser.getMemNo());
+			session.setAttribute("mainApprCount", mainApprCount);
+			System.out.println(mainApprCount);
+			// 전자결재 파트 끝
+
 			mv.setViewName("redirect:/");
+			
 		}else {// 로그인 실패
 			mv.addObject("errorMsg", "로그인에 실패했습니다");
 			mv.setViewName("common/errorPage");
 		}
 		
-		int count = nfService.ajaxCountUnreadedNf(loginUser.getMemNo());		
-		if(count != 0) {
-			session.setAttribute("unreadNotification", count);
+		
+		int nfCount = nfService.ajaxCountUnreadedNf(loginUser.getMemNo());		
+		if(nfCount != 0) {
+			session.setAttribute("unreadNotification", nfCount);
 		}
-
 		
-		return mv;		
-		
+		return mv;			
 	}
 	
 	

@@ -224,7 +224,7 @@
                                     <div class="message-menu w3-animate-opacity" onclick="moveToMessage();">
                                         <i class="fas fa-comment-alt"></i>
                                         <span>쪽지</span>
-                                        <div>3</div>
+                                        <div class="msgUnreadCount"></div>
                                     </div>
                                     <div class="notification-menu w3-animate-opacity" onclick="moveToNotification();">
                                         <div><i class="fas fa-lightbulb"></i></div>
@@ -308,6 +308,8 @@
 	            	$("section").css("margin-top","70px");
 					}
 				}
+				
+				ajaxBringUnreadedMsgCount();
 			})
         
         
@@ -386,6 +388,33 @@
                 
                 ajaxShowMyNotification();
             }
+            
+            // AJAX로다가 count 가져 오는 함수를 header쪽에 만들어서 !!!! 다른 곳에서 ! 읽음 처리할때마다 해당 함수 호출만 해주면된다! 
+        	function ajaxBringUnreadedMsgCount(){				
+		 	$.ajax({
+		 		url:"countUnreadMsg.msg",
+				data:{memNo: "${sessionScope.loginUser.memNo}"},
+		 		success:function(unreadMsgCount){
+		 			//console.log(unreadMsgCount);
+		 			if(unreadMsgCount == 0){
+		 				$(".msgUnreadCount").css("visibility","hidden");
+		 				$(".mainMsgUnreadCount ").text('');
+		 				$("#notifyNewMsg").hide();
+		 			}else if(unreadMsgCount > 99){
+		 				$(".msgUnreadCount").text("99..");
+		 				$(".mainMsgUnreadCount ").text(unreadMsgCount +'99..건');		 					
+		 			}else{
+		 				$(".msgUnreadCount").text(unreadMsgCount);
+		 				$(".mainMsgUnreadCount ").text(unreadMsgCount +'건');
+		 			}
+		 			
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})		 	
+		}
+
+            
         </script>
     </div>    
 <!-- 채팅 상에서 모달을 띄우기 위해서 header쪽에 넣어줘야함 -->

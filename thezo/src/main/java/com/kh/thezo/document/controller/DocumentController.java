@@ -52,9 +52,6 @@ public class DocumentController {
 		
 		// 카테고리 불러오기(부서명)
 		//ArrayList<Department> depList = dService.selectDepartMentList();
-		
-		
-		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
 		model.addAttribute("dCount", dCount);

@@ -58,7 +58,12 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.selectNotice(sqlSession, boardNo);
 	}
 	
-	
+	// 사용자 : 공지사항 상세조회(첨부파일)
+	@Override
+	public BoardFile selectNoticeFile(int refBno) {
+		return bDao.selectNoticeFile(sqlSession, refBno);
+	}
+
 	// 사용자 : 공지사항 등록 (board)
 	@Override
 	public int insertNotice(Board b) {
@@ -70,6 +75,34 @@ public class BoardServiceImpl implements BoardService{
 	public int insertNoticeFile(BoardFile bf) { 
 		return bDao.insertNoticeFile(sqlSession, bf);
 	}
+	
+	// 사용자 : 공지사항, 사내게시판 삭제
+	@Override
+	public int deleteBoard(int boardNo) {
+		return bDao.deleteBoard(sqlSession, boardNo);
+	}
+
+	// 사용자 : 공지사항, 사내게시판 수정용
+	@Override
+	public int updateBoard(Board b) {
+		return bDao.updateBoard(sqlSession, b);
+	}
+
+	// 사용자 : 공지사항, 사내게시판 수정용(첨부파일)
+	@Override
+	public int updateBoardFile(BoardFile bf) {
+		return bDao.updateBoardFile(sqlSession, bf);
+	}
+
+	// 사용자 : 공지사항 reUpfile 등록
+	@Override
+	public int insertNoticeRefile(BoardFile bf) {
+		return bDao.insertNoticeRefile(sqlSession, bf);
+	}
+
+	
+	
+	
 	
 	
 	// --------------- 사내게시판 영역 --------------------
@@ -110,6 +143,33 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.selectBoard(sqlSession, boardNo);
 	}
 	
+	// 사용자 : 사내게시판 상세조회(첨부파일)
+	@Override
+	public BoardFile selectBoardFile(int refBno) {
+		return bDao.selectBoardFile(sqlSession, refBno);
+	}
+
+	// 사용자 : 사내게시판 글 등록 (board)
+	@Override
+	public int insertBoard(Board b) {
+		return bDao.insertBoard(sqlSession, b);
+	}
+
+	// 사용자 : 사내게시판  첨부파일 등록 (boardFile)
+	@Override
+	public int insertBoardFile(BoardFile bf) {
+		return bDao.insertBoardFile(sqlSession, bf);
+	}
+	
+
+	// 사용자 : 사내게시판 reUpfile 등록
+	@Override
+	public int insertBoardRefile(BoardFile bf) {
+		return bDao.insertBoardRefile(sqlSession, bf);
+	}
+
+
+	
 	
 	// ----------------------- 관리자 영역 ---------------------------
 	
@@ -136,6 +196,9 @@ public class BoardServiceImpl implements BoardService{
 	public ArrayList<Report> reportSearchList(PageInfo pi, HashMap<String, String> map) {
 		return bDao.reportSearchList(sqlSession, pi, map);
 	}
+
+	
+	
 
 
 	

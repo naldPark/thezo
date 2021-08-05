@@ -25,7 +25,7 @@
       width: 100%;
       text-align: left!important;
     }
-
+    #newApprnav{background:rgb(20,70,104)!important; color: white!important;}
 
 </style>
 
@@ -124,8 +124,9 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" style="background-color: white; border:0px;">휴가사유</span>
                     </div>
-                    <textarea class="form-control" maxlength="50" rows="4" name="content" id="content" placeholder="휴가 사유를 입력해주세요"
+                    <textarea class="form-control" maxlength="50" rows="4" name="formContent" id="content" placeholder="휴가 사유를 입력해주세요"
                       style="resize:none; height: 60px"></textarea>
+                      <input type="hidden" name="content" id="leaveContentHtml" value="">
                   </div>
                   <br>
                   <div class="row justify-content-center">
@@ -174,12 +175,8 @@
       <script>
 
       $(function () {
-        //날짜 관련 
-
-//$( 'startDate' ).attr( 'max', '2017-12-25' );
-
-
-
+   
+       
         $("input[type=date],#leaveType").change(function(){
 
           var startDate = new Date($("#startDate").val());
@@ -330,6 +327,21 @@
             return false;
           } else {
             if (confirm("정말로 제출하시겠습니까?\n기안 후엔 수정이 불가능합니다.")) {
+                var tempHtml= '<div class="input-group mb-3"><div class="input-group-prepend"><span class="input-group-text" style="background-color: white; border:0px;">휴가분류</span></div>'
+                +'<input type="text" disabled value="'+ $("#leaveType").val()+'" class="form-control"  style="border:1px solid lightgray; background: white; ">'
+                +'<div class="input-group-prepend"><span class="input-group-text" style="background-color: white; border:0px;">부여연차</span></div>'
+                +' <span class="input-group-text" style="margin-left:5px; width:80px;background-color: white">${leaveCount.memVacDate}개</span>'  
+                +'<div class="input-group-prepend"> <span class="input-group-text" style="background-color: white; border:0px;">잔여연차</span></div>'
+                +'<span class="input-group-text" style="margin-left:5px; width:80px;background-color: white"> ${leaveCount.memTotalDate}개</span></div>'
+                +'<div class="input-group mb-3"> <div class="input-group-prepend"> <span class="input-group-text" style="background-color: white; border:0px;">시작일자</span></div>'
+                +'<input type="text" disabled value="'+ $("#startDate").val()+'"  class="form-control" style="border:1px solid lightgray;">'
+                +'<div class="input-group-prepend"><span class="input-group-text" style="background-color: white; border:0px;">종료일자</span> </div>'
+                +'<input type="text" disabled value="'+ $("#endDate").val()+'" class="form-control" style="border:1px solid lightgray;">'
+                +'<div class="input-group-prepend"><span class="input-group-text" style="margin-left:5px; width:130px;">차감연차: &nbsp; '+ $("#countLeave").text()+'개</span></div></div>'
+                +'<div class="input-group mb-3"><div class="input-group-prepend"><span class="input-group-text" style="background-color: white; border:0px;">휴가사유</span></div>'
+                +'<textarea class="form-control" maxlength="50" rows="4" style="resize:none; height: 60px" disabled>'+ $("#content").val()+'</textarea></div>'    
+                $("#leaveContentHtml").val(tempHtml);
+
               $("#form").submit();
             }
           }

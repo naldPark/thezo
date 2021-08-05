@@ -4,13 +4,22 @@
 
 	<resultMap id="boardResult" type="Board">
 		<result column="board_no" property="boardNo"/>
+		<result column="mem_no" property="memNo"/>
 		<result column="board_title" property="boardTitle"/>
 		<result column="board_writer" property="boardWriter"/>
 		<result column="board_content" property="boardContent"/>
 		<result column="board_date" property="boardDate"/> 
 		<result column="count" property="count"/>
+	</resultMap>
+	
+	<resultMap id="boardFileResult" type="BoardFile">
+		<result column="file_no" property="fileNo"/>
+		<result column="ref_section" property="refSection"/>
+		<result column="ref_bno" property="ref_bno"/>
 		<result column="origin_name" property="originName"/>
-		<result column="change_name" property="changeName"/>
+		<result column="change_name" property="changeName"/> 
+		<result column="file_path" property="filePath"/>
+		<result column="uploadDate" property="uploadDate"/>
 	</resultMap>
 	
 	<resultMap id="reportResult" type="Report">
@@ -114,13 +123,21 @@
 		     , board_content
 		     , to_char(board_date, 'YYYY-MM-DD') as board_date
 		     , count
-		     , origin_name
-			 , change_name
  		  from board b
           left outer join board_file on(board_no = ref_bno)
 		 where board_no = #{boardNo}
 		   and board_type = 1
            and b.status = 'Y'   
+	</select>
+	
+	<!-- 사용자 : 공지사항 첨부파일 상세 조회 -->
+	<select id="selectNoticeFile" resultMap="boardFileResult">
+		select 
+		       origin_name
+		     , change_name
+		  from board_file
+		 where ref_bno = #{refBno}
+		   and status = 'Y'      
 	</select>
 	
 	<!-- 사용자 : 공지사항 등록 -->
@@ -140,14 +157,14 @@
 				)
 	</insert>
 	
-	<!-- 사용자 : 공지사항 첨부파일  -->
+	<!-- 사용자 : 공지사항 등록 첨부파일  -->
 	<insert id="insertNoticeFile">
 		insert 
 		   into board_file
 		   values(
 		           seq_bfno.nextval
 		         , '공지'
-		         , seq_nbno.currval 
+		         , seq_nbno.currval
 		         , #{ originName }
 		         , #{ changeName }
 		         , 'resources/uploadFiles/'
@@ -155,6 +172,51 @@
 		         , default
 		         )
 	</insert>
+	
+	<!-- 사용자 : 공지사항, 사내게시판 글 삭제 -->
+	<update id="deleteBoard">
+			update
+				  board
+			  set status = 'N'
+			where board_no = #{boardNo}  		
+	</update>
+		
+	<!-- 사용자 : 공지사항, 사내게시판 글 수정 -->	
+	<update id="updateBoard">
+		update
+			   board
+		   set board_title = #{boardTitle}
+		     , board_content = #{boardContent}
+		 where board_no = #{boardNo}
+	</update>	
+		
+	<!-- 사용자 : 공지사항, 사내게시판 글 수정(첨부파일) -->	
+	<update id="updateBoardFile">
+		update
+			   board_file
+		   set origin_name = #{originName}
+		     , change_name = #{changeName}
+		 where ref_bno = #{refBno}
+	</update>		
+	
+	<!-- 사용자 : 공지사항 등록 첨부파일(글 수정)  -->
+	<insert id="insertNoticeRefile">
+		insert 
+		   into board_file
+		   values(
+		           seq_bfno.nextval
+		         , '공지'
+		         , #{ refBno }
+		         , #{ originName }
+		         , #{ changeName }
+		         , 'resources/uploadFiles/'
+		         , sysdate
+		         , default
+		         )
+	</insert>
+	
+	
+	
 	
 	
 	
@@ -253,14 +315,72 @@
 		     , board_content
 		     , to_char(board_date, 'YYYY-MM-DD') as board_date
 		     , count
-		     , origin_name
-			 , change_name
  		  from board b
           left outer join board_file on(board_no = ref_bno)
 		 where board_no = #{boardNo}
 		   and board_type = 2
            and b.status = 'Y'   
 	</select>
+	
+	<!-- 사용자 : 사내게시판 첨부파일 상세 조회 -->
+	<select id="selectBoardFile" resultMap="boardFileResult">
+		select 
+		       origin_name
+		     , change_name
+		  from board_file
+		 where ref_bno = #{refBno}
+		   and status = 'Y'      
+	</select>
+	
+		
+	<!-- 사용자 : 사내게시판 글 등록 -->
+	<insert id="insertBoard">
+		insert 
+		  into board
+		values(
+		            seq_nbno.nextval
+		          , #{ memNo}  
+		          , #{ boardWriter }
+		          , 2
+				  , #{ boardTitle }
+				  , #{ boardContent }
+		          , sysdate
+		          , 0
+		          , default
+				)
+	</insert>
+	
+	<!-- 사용자 : 사내게시판 등록 첨부파일  -->
+	<insert id="insertBoardFile">
+		insert 
+		   into board_file
+		   values(
+		           seq_bfno.nextval
+		         , '사내'
+		         , seq_nbno.currval
+		         , #{ originName }
+		         , #{ changeName }
+		         , 'resources/uploadFiles/'
+		         , sysdate
+		         , default
+		         )
+	</insert>
+	
+	<!-- 사용자 : 사내게시판 등록 첨부파일(글 수정)  -->
+	<insert id="insertBoardRefile">
+		insert 
+		   into board_file
+		   values(
+		           seq_bfno.nextval
+		         , '사내'
+		         , #{ refBno }
+		         , #{ originName }
+		         , #{ changeName }
+		         , 'resources/uploadFiles/'
+		         , sysdate
+		         , default
+		         )
+	</insert>
 	
 
 

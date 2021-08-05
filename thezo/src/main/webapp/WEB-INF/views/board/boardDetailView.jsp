@@ -31,7 +31,7 @@ table {
 
 	<jsp:include page="../common/header.jsp" />
 	
-	<c:if test="${loginUser.userId eq 'admin' }">
+	<c:if test="${loginUser.memId eq 'admin' }">
 		<script>	
 			document.getElementById("admin-header").style.display = "block";
 			document.getElementById("admin-mode").style.color = "red";
@@ -48,7 +48,9 @@ table {
 				<div align="right">
 					<a href="" data-toggle="modal" data-target="#reportForm">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<!--게시글 작성자만 보이도록-->
-					<a href="">삭제</a>
+					<c:if test="${ loginUser.memId eq b.boardWriter}">
+		            	<a style="float:right; cursor: pointer; color: #0091FF;" onclick="postFormSubmit(2);">삭제</a>
+		            </c:if>
 				</div>
 				<br>
 				<table id="contentArea" align="center" class="table">
@@ -63,26 +65,24 @@ table {
 					</tr>
 					<tr>
 						<td>
-							<p style="height: 400px; font-size: 17px;">
+							<div style="min-height: 400px; font-size: 17px;">
 								${ b.boardContent }
-							</p>
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<c:choose>
-                    		<c:when test="${ empty b.originName }">
+                    		<c:when test="${ empty bf.originName }">
                     			<td>
-                    				<img src="resources/images/clip.png" width="20" height="20">
                     				첨부파일이 없습니다.
                     			</td>
                     		</c:when>
                     		<c:otherwise>
                     			<td>
-                    				<img src="resources/images/cilp.png" width="20" height="20">
-                    				첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="${ b.changeName }" download="${ b.originName }">${ b.originName }</a>
+                    				첨부파일&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;<a href="${ bf.changeName }" download="${ bf.originName }">${ bf.originName }</a>
                     			</td>
                     		</c:otherwise>	
-                    	</c:choose>
+                    	</c:choose>	
 					</tr>
 				</table>
 	
@@ -130,12 +130,29 @@ table {
 	
 				<div align="center">
 					<!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
-					<a class="btn btn-secondary" href="">목록</a> <a
-						class="btn btn-secondary" href="">수정</a>
+					<a class="btn btn-secondary" href="">목록</a> 
+					<c:if test="${ loginUser.memId eq b.boardWriter}">
+                    	<a class="btn btn-secondary" onclick="postFormSubmit(1);">수정</a>
+                    </c:if>
 				</div>
-	
-				<br>
-				<br>
+				<br><br>
+				
+				<form id="postForm" action="" method="post">
+	            	<input type="hidden" name="bno" value="${ b.boardNo }">
+	            	<input type="hidden" name="filePath" value="${ bf.changeName }">
+	            	<input type="hidden" name="refBno" value="${ b.boardNo }">
+	            </form>
+	            
+	            <script>
+	            	function postFormSubmit(num){
+	            		if(num == 1){ // 수정하기 클릭시
+	            			$("#postForm").attr("action", "boardUpdateForm.bo").submit();
+	            		}else{ // 삭제하기 클릭시
+	            			$("#postForm").attr("action", "boardDelete.bo").submit();
+	            		}
+	            	}
+	            </script>
+    
 	
 	
 				<!-- 신고하기 버튼 클릭시 보여질 Modal -->
@@ -156,8 +173,9 @@ table {
 									<input type="hidden" name="userId" value=""> <input
 										type="hidden" name="boardType" value="">
 									<!-- 컬럼명확인 -->
-									<input type="hidden" name="boardNo" value=""> <b>신고
-										구분</b><br> <select id="rpSection" name="rpSection">
+									<input type="hidden" name="boardNo" value=""> 
+									<b>신고구분</b><br> 
+									<select id="rpSection" name="rpSection">
 										<option value="욕설">욕설/비방</option>
 										<option value="음란">음란/유해</option>
 										<option value="도배">도배/스팸</option>

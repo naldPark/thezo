@@ -80,14 +80,13 @@
 				<table align="center">
 					<tr>
 						<th><label for="title">제목</label></th>
-						<td><input type="text" id="title" class="form-control"
-							name="" required></td>
+						<td><input type="text" id="title" class="form-control" name="boardTitle" required></td>
 					</tr>
 					<tr>
 						<!--에디터 api 적용하자-->
 						<th><label for="content">내용</label></th>
 						<th>
-							<textarea class="form-control" name="summernote" id="summernote"></textarea><br>
+							<textarea class="form-control" name="boardContent" id="summernote"></textarea><br>
 						</th>
 					</tr>
 					<tr>
@@ -102,7 +101,6 @@
 				<br> <br>
 	
 				<div align="center">
-					<!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
 					<button type="submit" class="btn btn-secondary">등록</button>
 					<button type="reset" class="btn btn-secondary">취소</button>
 				</div>
@@ -112,7 +110,7 @@
 		</div>
 
 	</div>
-	<section>
+	</section>
 
 
 </body>

@@ -77,8 +77,10 @@ public class BoardController {
 		int result = bService.increaseNoticeCount(bno);
 		
 		if(result>0) { 
+			BoardFile bf = bService.selectNoticeFile(bno);
 			Board b = bService.selectNotice(bno); 
-			mv.addObject("b", b).setViewName("board/noticeDetailView");
+			
+			mv.addObject("b", b).addObject("bf", bf).setViewName("board/noticeDetailView");
 			
 		}else {
 			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
@@ -97,54 +99,100 @@ public class BoardController {
 	
 	// 공지사항 등록하기(사용자)
 	@RequestMapping("noticeInsert.bo")
-	public String insertboard(int memNo, Board b, BoardFile bf, MultipartFile upfile, HttpSession session, Model model) {
+	public String insertNotice(Board b, BoardFile bf, MultipartFile upfile, HttpSession session, Model model) {
 	
-		// 전달된 파일이 있을경우 => 파일명 수정 작업 후 서버 업로드 => 원본명, 서버 업로드 된 경로 b에 담기
 		if(!upfile.getOriginalFilename().equals("")) {
 			
-			String changeName = saveFile(session, upfile); // 20210720217013023152.jpg
-			bf.setOriginName(upfile.getOriginalFilename());  // 원본명 담기
-			bf.setChangeName("resources/uploadFiles/" + changeName); // resources/uploadFiles/20210720217013023152.jpg
-				
-			int result1 = bService.insertNoticeFile(bf);
+			String changeName = saveFile(session, upfile); 
+			bf.setOriginName(upfile.getOriginalFilename());  
+			bf.setChangeName(changeName); 
 		}
-			
-		System.out.println(b);
 		
-		//int result2 = bService.insertNotice(b, memNo);
+		int result = bService.insertNotice(b);
 		
-		int result2 = bService.insertNotice(b);
-		
-		if(result2 > 0 ) { // 성공 => 게시글 리스트 페이지(첫번째 페이지) 
-				session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
-				return "redirect:noticeList.bo";
-		}else { // 실패 => 에러페이지
+		if(result > 0 ) {
+			if(bf.getOriginName() != null) {
+				bService.insertNoticeFile(bf);
+			}
+			session.setAttribute("alertMsg", "성공적으로 공지사항이 등록되었습니다.");
+			return "redirect:noticeList.bo";
+		}else { 
 			model.addAttribute("errorMsg", "공지사항 등록 실패");
 			return "common/errorPage";
 		}
 					
 	}
 	
-	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
-	public String saveFile(HttpSession session, MultipartFile upfile) {
-		// 경로
-		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
-						
-		// 파일명 수정 : 202107202170130(년월일시분초) + 23152(랜덤값) + .jpg(원본파일확장자) 
-		String originName = upfile.getOriginalFilename();
-		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // Date : java.util import
-		int ranNum = (int)(Math.random() * 90000 + 10000);
-		String ext = originName.substring(originName.lastIndexOf("."));
-						
-		String changeName = currentTime + ranNum + ext;
-						
-		try {
-			upfile.transferTo(new File(savePath + changeName));   // File : java.io import
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
+	
+	// 공지사항 삭제하기 (사용자) -> filePath가 제대로 지워지는지..>? 
+	@RequestMapping("noticeDelete.bo")
+	public String deleteNotice(int bno, String filePath, Model model, HttpSession session) {
+		
+		int result = bService.deleteBoard(bno);
+		
+		if(result > 0) { // 성공 => 리스트 페이지
 			
-		return changeName;
+			if(!filePath.equals("")) { // 첨부파일이 있었을 경우 => 파일 삭제
+				String removeFilePath = session.getServletContext().getRealPath(filePath);
+				new File(removeFilePath).delete();
+			}
+			
+			session.setAttribute("alertMsg", "성공적으로 공지사항이 삭제되었습니다.");
+			return "redirect:noticeList.bo";
+			
+		}else { // 실패
+			model.addAttribute("errorPage", "공지사항 삭제 실패");
+			return "common/errorPage";
+		}
+	}
+	
+	
+	// 공지사항 수정하기 페이지 포워딩 (사용자)
+	@RequestMapping("noticeUpdateForm.bo")
+	public String updateForm(int bno, Model model) {
+		model.addAttribute("bf", bService.selectNoticeFile(bno));
+		model.addAttribute("b", bService.selectNotice(bno));
+		return "board/noticeUpdateForm";
+	}
+		
+	// 공지사항 수정하기 (사용자) 
+	@RequestMapping("noticeUpdate.bo")
+	public String updateNotice(BoardFile bf, Board b, MultipartFile reupfile, HttpSession session, Model model) {
+		
+		// 새로 넘어온 첨부파일이 있을 경우
+		if(!reupfile.getOriginalFilename().equals("")) {
+			// 기본에 첨부파일이 있었을 경우 => 기존의 첨부파일 지우기
+			if(bf.getOriginName() != null) {
+				new File(session.getServletContext().getRealPath(bf.getChangeName())).delete();
+				// 새로 넘어온 첨부파일 서버 업로드 시키기
+				String changeName = saveFile(session, reupfile);
+				// bf에 새로 넘어온 첨부파일에 대한 정보 담기
+				bf.setOriginName(reupfile.getOriginalFilename());
+				bf.setChangeName(changeName);
+			}else {
+				
+				// 새로 넘어온 첨부파일 서버 업로드 시키기
+				String changeName = saveFile(session, reupfile);
+				// bf에 새로 넘어온 첨부파일에 대한 정보 담기
+				bf.setOriginName(reupfile.getOriginalFilename());
+				bf.setChangeName(changeName);
+				
+				bService.insertNoticeRefile(bf);
+			}
+		}
+	
+		// update문 실행하러 service 호출  
+		int result = bService.updateBoard(b);
+		
+		if(result > 0) { // 성공
+			
+			bService.updateBoardFile(bf);
+			session.setAttribute("alertMsg", "게시글 수정 성공");
+			return "redirect:noticeDetail.bo?bno=" + b.getBoardNo();
+		}else { // 실패
+			model.addAttribute("errorMsg", "게시글 수정 실패");
+			return "common/errorPage";
+		}
 	}
 	
 		
@@ -197,8 +245,9 @@ public class BoardController {
 		int result = bService.increaseBoardCount(bno);
 		
 		if(result>0) { 
+			BoardFile bf = bService.selectBoardFile(bno);
 			Board b = bService.selectBoard(bno); 
-			mv.addObject("b", b).setViewName("board/boardDetailView");
+			mv.addObject("b", b).addObject("bf", bf).setViewName("board/boardDetailView");
 			
 		}else {
 			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
@@ -215,6 +264,107 @@ public class BoardController {
 	}
 	
 	
+	// 사내게시판 등록하기(사용자)
+	@RequestMapping("boardInsert.bo")
+	public String insertboard(int memNo, Board b, BoardFile bf, MultipartFile upfile, HttpSession session, Model model) {
+	
+		if(!upfile.getOriginalFilename().equals("")) {
+			
+			String changeName = saveFile(session, upfile); 
+			bf.setOriginName(upfile.getOriginalFilename());  
+			bf.setChangeName(changeName); 
+		}
+		
+		int result = bService.insertBoard(b);
+		
+		if(result > 0 ) {
+			
+			if(bf.getOriginName() != null) {
+				bService.insertBoardFile(bf);
+			}
+				
+			session.setAttribute("alertMsg", "성공적으로 게시글이 등록되었습니다.");
+			return "redirect:boardList.bo";
+		}else { 
+			model.addAttribute("errorMsg", "게시글 등록 실패");
+			return "common/errorPage";
+		}
+					
+	}
+	
+	// 사내게시판 삭제하기 (사용자) -> filePath가 제대로 지워지는지..>? 
+	@RequestMapping("boardDelete.bo")
+	public String deleteBoard(int bno, String filePath, Model model, HttpSession session) {
+		
+		int result = bService.deleteBoard(bno);
+		
+		if(result > 0) { // 성공 => 리스트 페이지
+			
+			if(!filePath.equals("")) { // 첨부파일이 있었을 경우 => 파일 삭제
+				String removeFilePath = session.getServletContext().getRealPath(filePath);
+				new File(removeFilePath).delete();
+			}
+			
+			session.setAttribute("alertMsg", "성공적으로 게시글이 삭제되었습니다.");
+			return "redirect:boardList.bo";
+			
+		}else { // 실패
+			model.addAttribute("errorPage", "게시글 삭제 실패");
+			return "common/errorPage";
+		}
+	}
+	
+	
+	
+	// 사내게시판 수정하기 페이지 포워딩 (사용자)
+	@RequestMapping("boardUpdateForm.bo")
+	public String updateBoardForm(int bno, Model model) {
+		model.addAttribute("bf", bService.selectBoardFile(bno));
+		model.addAttribute("b", bService.selectBoard(bno));
+		return "board/boardUpdateForm";
+	}
+		
+	// 공지사항 수정하기 (사용자) 
+	@RequestMapping("boardUpdate.bo")
+	public String updateBoard(BoardFile bf, Board b, MultipartFile reupfile, HttpSession session, Model model) {
+		
+		// 새로 넘어온 첨부파일이 있을 경우
+		if(!reupfile.getOriginalFilename().equals("")) {
+			// 기본에 첨부파일이 있었을 경우 => 기존의 첨부파일 지우기
+			if(bf.getOriginName() != null) {
+				new File(session.getServletContext().getRealPath(bf.getChangeName())).delete();
+				// 새로 넘어온 첨부파일 서버 업로드 시키기
+				String changeName = saveFile(session, reupfile);
+				// bf에 새로 넘어온 첨부파일에 대한 정보 담기
+				bf.setOriginName(reupfile.getOriginalFilename());
+				bf.setChangeName(changeName);
+			}else {
+				
+				// 새로 넘어온 첨부파일 서버 업로드 시키기
+				String changeName = saveFile(session, reupfile);
+				// bf에 새로 넘어온 첨부파일에 대한 정보 담기
+				bf.setOriginName(reupfile.getOriginalFilename());
+				bf.setChangeName(changeName);
+				
+				bService.insertBoardRefile(bf);
+			}
+		}
+	
+		// update문 실행하러 service 호출  
+		int result = bService.updateBoard(b);
+		
+		if(result > 0) { // 성공
+			
+			bService.updateBoardFile(bf);
+			session.setAttribute("alertMsg", "게시글 수정 성공");
+			return "redirect:boardDetail.bo?bno=" + b.getBoardNo();
+		}else { // 실패
+			model.addAttribute("errorMsg", "게시글 수정 실패");
+			return "common/errorPage";
+		}
+	}
+	
+		
 	
 	
 	
@@ -255,6 +405,28 @@ public class BoardController {
 		
 		return mv;
 		
+	}
+	
+	
+	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
+	public String saveFile(HttpSession session, MultipartFile upfile) {
+		// 경로
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+						
+		String originName = upfile.getOriginalFilename();
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // Date : java.util import
+		int ranNum = (int)(Math.random() * 90000 + 10000);
+		String ext = originName.substring(originName.lastIndexOf("."));
+						
+		String changeName = currentTime + ranNum + ext;
+						
+		try {
+			upfile.transferTo(new File(savePath + changeName));   // File : java.io import
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+			
+		return changeName;
 	}
 	
 }

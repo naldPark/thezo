@@ -5,6 +5,7 @@
 	<resultMap id="noteResult" type="Note">
 		<result column="note_no" property="noteNo" />
 		<result column="note_sc" property="noteSc" />
+		<result column="sc_title" property="noteSc" />
 		<result column="note_writer" property="noteWriter" />
 		<result column="note_title" property="noteTitle" />
 		<result column="note_content" property="noteContent" />
@@ -16,9 +17,59 @@
 		select count(*)
 		  from note
 		 where status = 'Y'
+		   and note_writer = #{memNo}
 	</select>
 	
 	<select id="selectNoteList" resultMap="noteResult">
+		select 
+			   note_no
+			 , sc_title
+			 , note_writer
+			 , note_title
+			 , note_content
+			 , create_date
+			 , n.status
+		  from note n
+		  left join schedule on (note_sc = sc_no)
+		 where n.status = 'Y'	
+		   and note_writer = #{memNo}
+		 order
+		    by create_date desc  
+	</select>
+	
+	<select id="selectNote" resultMap="noteResult">
+		select
+			   note_no
+			 , note_sc
+			 , note_writer
+			 , note_title
+			 , note_content
+			 , create_date
+			 , status
+		  from note
+		 where status = 'Y'	
+		   and note_no = #{noteNo}
+	</select>
+	
+	<select id="searchListCount" resultType="_int">
+		select count(*)
+		  from note
+		 where status = 'Y'
+		   and note_writer = #{noteWriter}
+		   and
+		   <if test="condition=='title'">
+		   		note_title like '%' || #{keyword} || '%'
+		   </if>
+		   <if test="condition=='content'">
+		   		note_content like '%' || #{keyword} || '%'
+		   </if>
+		   <if test="condition=='titleContent'">
+		   		note_title like '%' || #{keyword} || '%'
+		   	 or note_content like '%' || #{keyword} || '%'
+		   </if>
+	</select>
+	
+	<select id="searchNoteList" resultMap="noteResult">
 		select 
 			   note_no
 			 , note_sc
@@ -29,7 +80,61 @@
 			 , status
 		  from note
 		 where status = 'Y'	
+		   and note_writer = #{noteWriter}
+		   and
+		   <if test="condition=='title'">
+		   		note_title like '%' || #{keyword} || '%'
+		   </if>
+		   <if test="condition=='content'">
+		   		note_content like '%' || #{keyword} || '%'
+		   </if>
+		   <if test="condition=='titleContent'">
+		   		note_title like '%' || #{keyword} || '%'
+		   	 or note_content like '%' || #{keyword} || '%'
+		   </if>
 		 order
 		    by create_date desc  
 	</select>
+	
+	<insert id="insertNote">
+		insert 
+		  into note
+			  (
+			    note_no
+			  , note_sc
+			  , note_writer
+			  , note_title
+			  , note_content
+			  , create_date
+			  , status
+			  )
+		  values
+			  (
+			    seq_ntno.nextval
+			  , #{noteSc}
+			  , #{noteWriter}
+			  , #{noteTitle}
+			  , #{noteContent}
+			  , sysdate
+			  , 'Y'
+			  )
+	</insert>
+	
+	<update id="updateNote">
+		update note
+		   set 
+			   note_sc = #{noteSc}
+			 , note_title = #{noteTitle}
+			 , note_content = #{noteContent}
+			 , create_date = sysdate
+		 where note_no = #{noteNo}
+	</update>
+	
+	<update id="deleteNote">
+		update note
+		   set status = 'N'
+		 where note_no = #{noteNo}
+	</update>
+	
+	
 </mapper>

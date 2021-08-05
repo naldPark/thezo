@@ -16,25 +16,18 @@
 	<script src='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/main.js'></script>
 	<!-- 한국어설정 -->
 	<script src='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/locales/ko.js'></script>
-
-<style>
-	.fc-event{
-	    cursor: pointer;
-		
-	}
-	.fc-event:hover{
-		opacity: 0.7;
-	}
-</style>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 	    var calendarEl = document.getElementById('calendar');
 	    
 	    var calendar = new FullCalendar.Calendar(calendarEl, {
     	
-	    	dateClick: function() { 
+	    	dateClick: function(date) { 
 	    		// 날짜셀 클릭했을 시 이벤트 설정하면됨! 
 	    		// => 일정추가 모달창 뜨게 설정
+	    		//console.log(date.dateStr);
+	    		$('#startDate').val(date.dateStr);
+	    		$('#endDate').val(date.dateStr);
 	    		$('#insertSc').modal();
 	    	},
 	    	
@@ -67,27 +60,45 @@
 	        eventClick: function(info) {
 	        	// 이벤트 클릭했을 시 기능 설정
 	        	// 일정 내용과 보고서가 보여져야 함!!
-	        	
+	        	//console.log(info.event.start);
+				//console.log(info.event.extendedProps.allday);
+				
 	        	// 시간 형식 바꾸기
 	        	var start = newDateFormat(info.event.start);
 				if(info.event.end != null){
 					var end = newDateFormat(info.event.end);
 				}
+				var allday = info.event.extendedProps.allday;
 				
-				/* 나중에 해야징..ㅠㅠ
-				console.log(end);
-				console.log(info.event.extendedProps.allday);
-				// 끝나는 시간이 비어있다면 출력 X
-				if(info.event.extendedProps.allday = "Y"){
-					end = ""
+				//console.log(new Date(end-start));
+				
+				
+				
+				if(allday = 'Y'){
+					// 일정이 1일 하루 종일이라면
+					// => 시작일 출력, 끝나는 날(년월일시)출력 X (시작일 년월일만 출력)
+					start = start.substring(0, 10);
+					end = "";
+				//}else if(allday = 'Y' &&){
+					// 일정이 며칠동안의 하루종일이라면 ?
+					// => 시간출력x, 끝나는 일 출력
+					//start = start.substring(0, 10);
+				//	end = end.substring(0, 10);
 				}else{
+					// 일정이 하루종일이 아니라면
+					// 시작, 끝 년월일시 모두 출력
 					end = " ~ " + end;
 				}
-				*/
 				
+				// 등록된 보고서가 없을 때 !! 
+				// => 1. 등록 버튼 출력 2. 보고서 영역 비워주기
 				$("#repInsertBtn").removeAttr("hidden");
 				$("#repInfo").html("");
+				
 	        	//console.log(info.event.extendedProps);
+	        	
+	        	$("#scNo").val(info.event.extendedProps.scNo);
+	        	
 	        	$("#scInfo").html("<tr>"
 	        						+ "<th width='120px'>일정 제목</th>"
 	        						+ "<td width='300px'>" + info.event.title + "</td>"
@@ -110,24 +121,24 @@
 	        		// 등록된 보고서가 있다면
 		        	// => 보고서 출력
 	        		$("#repInfo").html("<tr>"
-    						+ "<th width='120px'>제목</th>"
-    						+ "<td width='250px'>" + info.event.extendedProps.reportTitle + "</td>"
-    					 + "</tr>"
-    					 + "<tr>"
-    					 	+"<th>보고서 작성자</th>"
-    					 	+"<td>" + info.event.extendedProps.reportWriter + "</td>"
-    					 + "<tr>"
-    					 	+ "<th>등록일</th>"
-    					 	+"<td>" + info.event.extendedProps.createDate + "</td>"
-    					 + "</tr>"
-    					 + "<tr>"
-    					 	+"<th>내용</th>"
-    					 	+"<td>" + info.event.extendedProps.reportContent + "</td>"
-    					 + "</tr>"
-    					 + "<tr>"
-    					 	+"<th>첨부파일</th>"
-    					 	+"<td>" + info.event.extendedProps.originName + "</td>"
-    					 + "</tr>"
+			    						+ "<th width='120px'>제목</th>"
+			    						+ "<td width='250px'>" + info.event.extendedProps.reportTitle + "</td>"
+			    					 + "</tr>"
+			    					 + "<tr>"
+			    					 	+"<th>보고서 작성자</th>"
+			    					 	+"<td>" + info.event.extendedProps.reportWriter + "</td>"
+			    					 + "<tr>"
+			    					 	+ "<th>등록일</th>"
+			    					 	+"<td>" + info.event.extendedProps.createDate + "</td>"
+			    					 + "</tr>"
+			    					 + "<tr>"
+			    					 	+"<th>내용</th>"
+			    					 	+"<td>" + info.event.extendedProps.reportContent + "</td>"
+			    					 + "</tr>"
+			    					 + "<tr>"
+			    					 	+"<th>첨부파일</th>"
+			    					 	+"<td>" + info.event.extendedProps.originName + "</td>"
+			    					 + "</tr>"
     				);
 	        		$("#repInsertBtn").attr("hidden", true);
 	        	}
@@ -144,6 +155,8 @@
 	});
 	
 	function newDateFormat(date){
+		// Tue Aug 10 2021 00:00:00 GMT+0900 (한국 표준시)
+		// => yyyy-MM-dd hh:mm
 		date.setHours(date.getHours() + 9);
 		return date.toISOString().replace('T', ' ').substring(0, 16);
 	}
@@ -152,9 +165,16 @@
 
 <style>
 	#calendar{
-    	width: 900px;
+    	width: 100%;
     	padding: 20px;
     }
+	.fc-event{
+	    cursor: pointer;
+		
+	}
+	.fc-event:hover{
+		opacity: 0.7;
+	}
 </style>
 </head>
 <body>

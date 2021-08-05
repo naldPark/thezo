@@ -11,7 +11,7 @@ public interface ScheduleService {
 	ArrayList<Schedule> selectScheduleData();
 	
 	// 일정 상세조회
-	Schedule selectSchedule(int scNo);
+	Schedule selectScheduleDetail(int scNo);
 	
 	// 일정 추가
 	int insertSchedule(Schedule sc);

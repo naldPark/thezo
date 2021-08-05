@@ -89,6 +89,7 @@
 							<c:otherwise>
 								<c:forEach var="d" items="${ list }">
 									<tr>
+										<td hidden>${ d.memNo }</td>
 										<td><input type="checkbox" class="docCheck"></td>
 										<td>${ d.docNo }</td>
 										<td>${ d.department } ${ d.docWriter }</td>
@@ -135,10 +136,12 @@
 		    					alert("한 개의 게시물만 수정할 수 있습니다.");
 		    					location.reload();
 		    				}else{ // 선택된 게시물이 하나라면, 아이디 조건 검사
-		    					if('${ loginUser.userId }' == $("input[type=checkbox]:checked").parent().next().next().text()){ // 작성자 아이디 검사
+		    					if('${ loginUser.memNo }' == $("input[type=checkbox]:checked").parent().prev().text()){ // 작성자 아이디 검사
 		    						updateDoc();
 		    					}else{
 		    						alert("작성자만 수정할 수 있습니다.");
+		    						arr = [];
+									location.reload();
 		    					}
 		    				}
 		    			})
@@ -181,7 +184,7 @@
 								//console.log(dno);
 							
 								// 1. 삭제 권한 검사 (로그인한 유저 id == 작성자 id)
-								if('${ loginUser.userId }' == $(this).parent().next().next().text()){  // 작성자와 로그인한 사람의 아이디가 같다면
+								if('${ loginUser.memNo }' == $(this).parent().prev().text()){  // 작성자와 로그인한 사람의 아이디가 같다면
 									arr.push(dno); // 배열에 담기
 									// 컨트롤러로 배열값 넘겨주기
 									//console.log("arr값 : " + arr)
@@ -278,9 +281,9 @@
 									<table class="" align="center">
 										<tr>
 											<th width="120px">작성자</th>
-											<td colspan="2"><input type="text" id="docWriter" name="docWriter" value="" readonly></td>
+											<td colspan="2"><input type="text" id="docWriter" name="docWriter" value="${ loginUser.memId }" readonly></td>
 											<td>
-												<select name="docCategory" id="docCategory">
+												<select name="docCategory" id="docCategory" value="${ d.docCategory }">
 													<option value='공용'>공용</option>
 												</select>
 											</td>
@@ -288,7 +291,7 @@
 			
 										<tr>
 											<th>내용</th>
-											<td colspan="2"><textarea name="docContent" id="docContent" cols="50" rows="10" style="text-aling: left; resize: none;"required></textarea></td>
+											<td colspan="2"><textarea name="docContent" id="docContent" cols="50" rows="10" style="text-aling: left; resize: none;" required>${ d.docContent }</textarea></td>
 										</tr>
 										<tr>
 					                        <th><label for="upfile">첨부파일</label></th>

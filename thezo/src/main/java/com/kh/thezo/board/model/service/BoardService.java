@@ -21,13 +21,27 @@ public interface BoardService {
 		// 3. 사용자 : 공지사항 상세조회용
 		int increaseNoticeCount(int boardNo);
 		Board selectNotice(int boardNo);
+		BoardFile selectNoticeFile(int refBno);
 		
 		// 4_1. 사용자 : 공지사항 등록용
-		//int insertNotice(int memNo, Board b);
 		int insertNotice(Board b);
 		
 		// 4_2. 사용자 : 공지사항 첨부파일 등록용
 		int insertNoticeFile(BoardFile bf);
+		
+		// 5. 사용자 : 공지사항, 사내게시판 삭제
+		int deleteBoard(int boardNo);
+		
+		// 6. 사용자 : 공지사항 수정용(글)
+		int insertNoticeRefile(BoardFile bf);
+		
+		
+		
+		// *** 사용자 : 공지사항, 사내게시판 글, 첨부파일 수정용
+		int updateBoard(Board b);
+		int updateBoardFile(BoardFile bf);
+		
+
 		
 		// --------------- 사내게시판 영역 --------------------
 
@@ -42,8 +56,16 @@ public interface BoardService {
 		// 3. 사용자 : 사내게시판 상세조회용
 		int increaseBoardCount(int boardNo);
 		Board selectBoard(int boardNo);
+		BoardFile selectBoardFile(int refBno);
 				
+		// 4_1. 사용자 : 사내게시판 등록용
+		int insertBoard(Board b);
+				
+		// 4_2. 사용자 : 사내게시판 첨부파일 등록용
+		int insertBoardFile(BoardFile bf);
 		
+		// 5. 사용자 : 공지사항 수정용(글)
+		int insertBoardRefile(BoardFile bf);
 		
 		// -------------------------관리자영역 ------------------------------
 

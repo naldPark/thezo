@@ -1,6 +1,7 @@
 package com.kh.thezo.note.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,31 +20,35 @@ public class NoteServiceImpl implements NoteService{
 	private SqlSessionTemplate sqlSession;
 	
 	@Override
-	public int selectListCount() {
-		return nDao.selectListCount(sqlSession);
+	public int selectListCount(int memNo) {
+		return nDao.selectListCount(sqlSession, memNo);
 	}
 	@Override
-	public ArrayList<Note> selectNoteList(PageInfo pi) {
-		return nDao.selectNoteList(pi, sqlSession);
+	public ArrayList<Note> selectNoteList(PageInfo pi, int memNo) {
+		return nDao.selectNoteList(sqlSession, pi, memNo);
 	}
 	@Override
-	public Note selectNote() {
-		// TODO Auto-generated method stub
-		return null;
+	public Note selectNote(int noteNo) {
+		return nDao.selectNote(sqlSession, noteNo);
 	}
 	@Override
-	public int insertNote() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertNote(Note nt) {
+		return nDao.insertNote(sqlSession, nt);
 	}
 	@Override
-	public int updateNote() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateNote(Note nt) {
+		return nDao.updateNote(sqlSession, nt);
 	}
 	@Override
-	public int deleteNote() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteNote(int noteNo) {
+		return nDao.deleteNote(sqlSession, noteNo);
+	}
+	@Override
+	public int searchListCount(HashMap map) {
+		return nDao.searchListCount(sqlSession, map);
+	}
+	@Override
+	public ArrayList<Note> searchNoteList(PageInfo pi, HashMap map) {
+		return nDao.searchNoteList(sqlSession, pi, map);
 	}
 }

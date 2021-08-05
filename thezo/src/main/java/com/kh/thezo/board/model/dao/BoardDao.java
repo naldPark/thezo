@@ -52,6 +52,10 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectNotice", boardNo);
 	}
 	
+	// 사용자 : 공지사항 상세조회(첨부파일)
+	public BoardFile selectNoticeFile(SqlSessionTemplate sqlSession, int refBno) {
+		return sqlSession.selectOne("boardMapper.selectNoticeFile", refBno);
+	}
 	
 	// 사용자 : 공지사항 등록 
 	public int insertNotice(SqlSessionTemplate sqlSession, Board b) {
@@ -63,6 +67,25 @@ public class BoardDao {
 		return sqlSession.insert("boardMapper.insertNoticeFile", bf);
 	}
 	
+	// 사용자 : 공지사항, 사내게시판 글 삭제 
+	public int deleteBoard(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("boardMapper.deleteBoard", boardNo);
+	}
+	
+	// 사용자 : 공지사항, 사내게시판 글 수정
+	public int updateBoard(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.update("boardMapper.updateBoard", b);
+	} 
+	
+	// 사용자 : 공지사항, 사내게시판 글 수정(첨부파일)
+	public int updateBoardFile(SqlSessionTemplate sqlSession, BoardFile bf) {
+		return sqlSession.update("boardMapper.updateBoardFile", bf);
+	} 
+	
+	// 사용자 : 공지사항 수정하기 첨부파일 재업로드용
+	public int insertNoticeRefile(SqlSessionTemplate sqlSession, BoardFile bf) {
+		return sqlSession.insert("boardMapper.insertNoticeRefile", bf);
+	}
 	
 	// ------------------------  사내게시판 영역  ----------------------------
 	
@@ -102,6 +125,26 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectBoard", boardNo);
 	}
 	
+	// 사용자 : 사내게시판 상세조회(첨부파일)
+	public BoardFile selectBoardFile(SqlSessionTemplate sqlSession, int refBno) {
+		return sqlSession.selectOne("boardMapper.selectBoardFile", refBno);
+	}
+		
+	
+	// 사용자 : 사내게시판 등록 
+	public int insertBoard(SqlSessionTemplate sqlSession, Board b) {
+		return sqlSession.insert("boardMapper.insertBoard", b);
+	}
+	
+	// 사용자 : 사내게시판 첨부파일 등록
+	public int insertBoardFile(SqlSessionTemplate sqlSession, BoardFile bf) {
+		return sqlSession.insert("boardMapper.insertBoardFile", bf);
+	}
+
+	// 사용자 : 사내게시판 첨부파일(reupfile) 등록
+	public int insertBoardRefile(SqlSessionTemplate sqlSession, BoardFile bf) {
+		return sqlSession.insert("boardMapper.insertBoardRefile", bf);
+	}
 	
 	
 	// ----------------------- 관리자 영역 ---------------------------

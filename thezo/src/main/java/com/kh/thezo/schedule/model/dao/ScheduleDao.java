@@ -21,4 +21,16 @@ public class ScheduleDao {
 	public ArrayList<Schedule> selectScheduleData(SqlSession sqlSession){
 		return (ArrayList)sqlSession.selectList("scheduleMapper.selectScheduleData");
 	}
+	
+	public Schedule selectScheduleDetail(SqlSession sqlSession, int scNo) {
+		return sqlSession.selectOne("scheduleMapper.selectScheduleDetail", scNo);
+	}
+	
+	public int deleteSchedule(SqlSession sqlSession, int scNo) {
+		return sqlSession.delete("scheduleMapper.deleteSchedule", scNo);
+	}
+	
+	public int updateSchedule(SqlSession sqlSession, Schedule sc) {
+		return sqlSession.update("scheduleMapper.updateSchedule", sc);
+	}
 }

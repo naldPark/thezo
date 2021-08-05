@@ -27,7 +27,7 @@ import com.kh.thezo.notification.model.service.NotificationService;
 public class MemberController {
 	
 	@Autowired
-	private ApprovalService aService;
+	private ApprovalService apprService;
 	@Autowired
 	private MemberService mService;
 	@Autowired
@@ -59,7 +59,7 @@ public class MemberController {
 			session.setAttribute("attData", attData);
 			
 			// 전자결재 파트 시작
-			HashMap<String, Integer> mainApprCount= aService.mainApprCount(loginUser.getMemNo());
+			HashMap<String, Integer> mainApprCount= apprService.mainApprCount(loginUser.getMemNo());
 			session.setAttribute("mainApprCount", mainApprCount);
 			System.out.println(mainApprCount);
 			// 전자결재 파트 끝

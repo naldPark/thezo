@@ -7,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.member.model.vo.Member;
 import com.kh.thezo.message.model.dao.MessageDao;
 import com.kh.thezo.message.model.vo.Message;
 
@@ -114,6 +116,7 @@ public class MessageServiceImpl implements MessageService{
 		}
 	}
 
+
 	
 	//-------------------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------------------
@@ -126,6 +129,22 @@ public class MessageServiceImpl implements MessageService{
 		return msgDao.ajaxselectReportList(sqlSession, memNo) ;
 	}*/
 	// 정석적으로 Report VO로 받아와야하나.
+	
+	/**	 이름에 따른 전체 검색 결과 갯수 가져오는 서비스
+	 */
+	@Override
+	public int selectListCount(String keyword) {
+		return msgDao.selectListCount(sqlSession, keyword);
+	}
+	
+	/** 팝업창 이름(키워드)로  맴버 목록 검색 해오는 서비스 
+	 */
+	@Override
+	public ArrayList<Member> searchMemListByName(String keyword, PageInfo pi) {
+		return msgDao.searchMemListByName(sqlSession, keyword, pi);
+	}
+
+
 
 	
 

@@ -3,9 +3,12 @@ package com.kh.thezo.message.model.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.member.model.vo.Member;
 import com.kh.thezo.message.model.vo.Message;
 
 //@author Jaewon.s
@@ -124,6 +127,7 @@ public class MessageDao {
 	public int ajaxUpdateReadStatusMsg(SqlSessionTemplate sqlSession, HashMap<String, Object> hm) {
 		return sqlSession.update("messageMapper.ajaxUpdateReadStatusMsg", hm);
 	}
+
 	
 	//-------------------------------------------------------------------------------------------------------------
 	//-------------------------------------------------------------------------------------------------------------
@@ -137,5 +141,27 @@ public class MessageDao {
 		return (ArrayList)sqlSession.selectList("messageMapper.ajaxselectReportList", memNo);
 	}*/
 	// 정석적으로 Report VO로 받아와야하나.
+
+	//-------------------------------------------------------------------------------
+	/** 이름에 따른 전체 검색 결과 갯수 가져오는 dao
+	 * @param sqlSession
+	 * @return
+	 */
+	public int selectListCount(SqlSessionTemplate sqlSession, String keyword) {
+		return sqlSession.selectOne("messageMapper.selectListCount", keyword);
+	}
+	
+	/** 팝업창 이름(키워드)로  맴버 목록 검색 해오는 서비스 
+	 * @param sqlSession
+	 * @param keyword
+	 * @return
+	 */
+	public ArrayList<Member> searchMemListByName(SqlSessionTemplate sqlSession, String keyword, PageInfo pi) {
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList)sqlSession.selectList("messageMapper.searchMemListByName", keyword, rowBounds);
+	}
+
 
 }

@@ -20,6 +20,15 @@
 		<result column="sender_name_rank" property="senderNameAndRank"/>
 	</resultMap>
 
+	<resultMap id="memberResult" type="Member">
+		<result column="mem_no" property="memNo"/>
+		<result column="mem_name" property="memName"/>
+		<result column="mem_id" property="memId"/>
+		<result column="department" property="department"/>
+		<result column="rank" property="rank"/>
+	</resultMap>
+
+
 	<!-- @author Jaewon.s -->
 	<!-- 시간 많이 잡아먹은 .. sql문... 얘를 바탕으로 파생시키면된다. 받은 쪽지 목록 가져오는 sql문  -->
 	<!--<select id="ajaxSelectListNf" resultMap="messageResult">
@@ -304,5 +313,27 @@
 	</select>
 	 -->
 	 
+	 <!-- 키워드로 검색한 결과 갯수 조회하는 sql문  -->
+	 <select id="selectListCount" resultType="_int">
+ 		select
+		       count(*)
+		  from member
+         where mem_name like '%' || #{ keyword } || '%'	 
+           and status in ('Y', 'A')      
+	 </select>
+	 
+	 <!-- 키워드로 검색한 결과를 rowBound 사용하여 조회하는 sql문  -->	 
+	 <select id="searchMemListByName" resultMap="memberResult">
+	 	select mem_no
+             , mem_name
+             , mem_id
+             , department
+             , rank
+          from member
+         where mem_name like '%' || #{ keyword } || '%'	 
+           and status in ('Y', 'A')      
+         order
+            by dep_no, decode(rank, '대표이사', 1, '상무', 2, '부장', 3, '과장', 4, '대리', 5, 6) ,mem_name asc
+	 </select>
 	 
 </mapper>

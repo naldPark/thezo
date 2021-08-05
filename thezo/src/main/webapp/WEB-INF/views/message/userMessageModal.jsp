@@ -73,6 +73,44 @@
     #recycle-bin-msg-restore-modal .modal-footer>button:first-child{color: rgb(51,51,51); background-color: rgb(224,224,224);}
     #recycle-bin-msg-restore-modal .modal-footer>button:last-child{color: white; background-color: rgb(138,211,169);}
 
+	/* 답장하기 , 쪽지 쓰기  css영역 */
+    #reply-send-message .modal-content{width: 630px; max-height: 490px; transform: translateY(150px); font-family:'Noto Sans KR', sans-serif; background-color: rgb(250,250,250);}
+    #reply-send-message .modal-header{height: 75px; padding: 5px;}
+    #reply-send-message .modal-header>div>p{margin: 0px;}
+    #reply-send-message .modal-header>div:nth-child(1){width: 300px; padding-left: 10px;}
+    #reply-send-message .modal-header>div:nth-child(1)>p{color: rgb(20,70,104); font-weight: bold;}
+    #reply-send-message .modal-header>div:nth-child(1)>div>span{font-weight: bold; margin-right: 20px;}
+    #reply-send-message .modal-header>div:nth-child(1)>p{font-size: 22px; font-weight: bold; margin-bottom: 3px;}
+    #reply-send-message .modal-header>div:nth-child(1)>div{display: flex; transform: translateY(1px);}
+    #reply-send-message input{width: 110px; height: 25px; margin-right: 0px; border: none; background-color: inherit;}
+    #searchMemMsg{width: 25px; height: 25px; outline: none; border: 1px solid lightgray; text-align: center;}
+    #reply-send-message .modal-header>div>div>div{border: 1px solid gray; border-radius: 5px; display: flex; justify-content: flex-start; overflow: hidden; background-color: rgb(190,190,190);}
+    #reply-send-message .modal-header>div:nth-child(2){width: 215px; height: 65px;}
+    #reply-send-message .modal-header>div:nth-child(2)>table{width: 100%; transform: translateY(1px);}
+    #reply-send-message .modal-header>div:nth-child(2)>table tr{height: 32px;}
+    #reply-send-message .modal-header>div:nth-child(2)>table select{width: 130px; height: 25px;}
+    #reply-send-message .modal-header>div:nth-child(3){display: flex; flex-direction: column;}
+    #reply-send-message .modal-body{height: 240px; padding: 10px 15px 0px 15px;}
+    #reply-send-message button[class="close"]{width: 35px; font-size: 30px; padding: 1px; margin: 0px 0px 0px 75px;}
+	#reply-send-message #reply-send-btn{width: 80px; height: 25px; line-height: 10px; margin: 5px 0px 0px 15px;}
+	#reply-send-message .modal-body>div:nth-child(1)>textarea{width: 595px; height: 195px; border: 1p solid red; transform: translateY(1px); resize: none;
+	   white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;}
+	#reply-send-message .modal-body>div:nth-child(2){width: 595px; height: 30px; position: relative;}    
+	#reply-send-message .modal-body>div:nth-child(2)>span{right: 0; position: absolute;}
+	#reply-send-message .modal-footer{padding: 0px 15px 15px 15px; border-top: none;}
+	#reply-send-message .modal-footer>pre{width: 595px; height: 155px; padding: 3px; background-color: rgb(224,224,224);
+	   overflow-y: scroll;
+	   white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;}
+	.reply-display{display: none;}
+	.send-display{display: block;}
+	#select-member-msg{
+	   -ms-user-select: none; 
+	   -moz-user-select: -moz-none;
+	   -khtml-user-select: none;
+	   -webkit-user-select: none;
+	   user-select: none;
+ }
+
 </style>
 </head>
 <body>
@@ -476,173 +514,9 @@
 
 
 <%-------------------------------------------답장하기 , 쪽지 쓰기 모달 시작---------------------------------------------------- --%>
-
-    <style>
-        #reply-send-message .modal-content{
-            width: 630px;
-            max-height: 490px;
-            transform: translateY(150px);
-            font-family:'Noto Sans KR', sans-serif;
-            background-color: rgb(250,250,250);
-        }
-
-        #reply-send-message .modal-header{
-            height: 75px;
-            padding: 5px;
-        }
-
-        #reply-send-message .modal-header>div>p{
-            margin: 0px;
-        }
-
-        #reply-send-message .modal-header>div:nth-child(1){
-            width: 300px;
-            padding-left: 10px;
-        }
-
-        #reply-send-message .modal-header>div:nth-child(1)>p{
-            color: rgb(20,70,104);
-            font-weight: bold;
-        }
-
-        #reply-send-message .modal-header>div:nth-child(1)>div>span{
-            font-weight: bold;
-            margin-right: 20px;
-        }
-
-        #reply-send-message .modal-header>div:nth-child(1)>p{
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 3px;
-        }
-
-        #reply-send-message .modal-header>div:nth-child(1)>div{
-            display: flex;
-            transform: translateY(1px);
-        }
-
-        #reply-send-message input{
-            width: 110px;
-            height: 25px;
-            margin-right: 0px;
-            border: none;
-            background-color: inherit;
-        }
-        
-        #searchMemMsg{
-            width: 25px;
-            height: 25px;
-            outline: none;
-            border: 1px solid lightgray;
-            text-align: center;
-        }
-
-        #reply-send-message .modal-header>div>div>div{
-            border: 1px solid gray;
-            border-radius: 5px;
-            display: flex;
-            justify-content: flex-start;
-            overflow: hidden;
-            background-color: rgb(190,190,190);
-        }
-
-        #reply-send-message .modal-header>div:nth-child(2){
-            width: 215px;
-            height: 65px;
-        }
-
-        #reply-send-message .modal-header>div:nth-child(2)>table{
-            width: 100%;
-            transform: translateY(1px);
-        }
-        #reply-send-message .modal-header>div:nth-child(2)>table tr{
-            height: 32px;
-        }
-
-        #reply-send-message .modal-header>div:nth-child(2)>table select{
-            width: 130px;
-            height: 25px;
-        }
-
-        #reply-send-message .modal-header>div:nth-child(3){
-            display: flex;
-            flex-direction: column;
-        }
-
-
-
-        #reply-send-message .modal-body{
-            height: 240px;
-            padding: 10px 15px 0px 15px;
-        }
-
-        #reply-send-message button[class="close"]{
-        width: 35px;
-        font-size: 30px;
-        padding: 1px;
-        margin: 0px 0px 0px 75px;
-    }
-
-    #reply-send-message #reply-send-btn{
-        margin: 5px 0px 0px 15px;
-        width: 80px;
-        height: 25px;
-        line-height: 10px;
-    }
-
-    #reply-send-message .modal-body>div:nth-child(1)>textarea{
-        width: 595px;
-        height: 195px;
-        border: 1p solid red;
-        transform: translateY(1px);
-        resize: none;
-        white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;
-    }
-
-    #reply-send-message .modal-body>div:nth-child(2){
-        width: 595px;
-        height: 30px;
-        position: relative;
-    }    
-
-    #reply-send-message .modal-body>div:nth-child(2)>span{
-        position: absolute;
-        right: 0;
-    }
-
-    #reply-send-message .modal-footer{
-        padding: 0px 15px 15px 15px;
-        border-top: none;
-    }
-
-    #reply-send-message .modal-footer>pre{
-        white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;
-        overflow-y: scroll;
-        width: 595px;
-        height: 155px;
-        background-color: rgb(224,224,224);
-        padding: 3px;
-    }
-    .reply-display{
-        display: none;
-    }
-
-    .send-display{
-        display: block;
-    }
-
-    #select-member-msg{
-        -ms-user-select: none; 
-        -moz-user-select: -moz-none;
-        -khtml-user-select: none;
-        -webkit-user-select: none;
-        user-select: none;
-    }
-
-    </style>
-
      <script>
         function openReplyAndSendMsg(msgNo){
+        	//console.log(msgNo); 번호 잘넘어온다
             if(msgNo != null){
                 $("#messageDetail").modal('hide');
 

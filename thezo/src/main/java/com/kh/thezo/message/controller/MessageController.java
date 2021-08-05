@@ -7,12 +7,17 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.common.template.Pagination;
+import com.kh.thezo.member.model.vo.Member;
 import com.kh.thezo.message.model.service.MessageService;
 import com.kh.thezo.message.model.vo.Message;
+import com.kh.thezo.notification.model.vo.Notification;
 
 @Controller
 public class MessageController {
@@ -192,5 +197,28 @@ public class MessageController {
 	}*/
 	// 정석적으로 Report VO로 받아와야한다.
 
+	//-----------------------------------------------------------------------------------------------------
+	
+	// 일단 팝업창에서 ! 이름 검색으로 가져오는 회원정보들 가져오는 controller
+	@ResponseBody
+	@RequestMapping(value="searchMemList.msg", produces="application/json; charset=utf-8")
+	public String searchMemListByName(String keyword, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+
+		System.out.println(keyword);
+		
+		int listCount = msgService.selectListCount(keyword);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		
+		ArrayList<Member> memList = msgService.searchMemListByName(keyword, pi);
+		// 2개의 값을 넘겨야한다. 이럴때는! 
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("memList", memList);
+		map.put("pi", pi);
+		
+	    return new Gson().toJson(map);
+	}
+
+	
+	
 
 }

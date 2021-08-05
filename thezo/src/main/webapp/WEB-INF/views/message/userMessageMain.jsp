@@ -138,6 +138,7 @@
     		 			$(".detail-modal-content pre").html(msgDetail.msgContent);
     					showRcMsg();
     					ajaxBringUnreadedMsgCount()
+    					$("#reply-btn").attr("onclick", "openReplyAndSendMsg(" + msgNo + ")")
 
     		 		},error:function(){
     		 			console.log("ajax통신 실패");

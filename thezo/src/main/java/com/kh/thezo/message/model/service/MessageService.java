@@ -3,6 +3,8 @@ package com.kh.thezo.message.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.member.model.vo.Member;
 import com.kh.thezo.message.model.vo.Message;
 
 //@author Jaewon.s
@@ -11,7 +13,7 @@ public interface MessageService {
 	// 받은 쪽지 list 조회해오는 service
 	ArrayList<Message> ajaxSelectReceiveMsgList(int memNo);
 
-	// 받은 쪽지 list 조회해오는 service	
+	// 보낸 쪽지 list 조회해오는 service	
 	ArrayList<Message> ajaxSelectSentMsgList(int memNo);
 	
 	// 휴지통으로 이동 시키는 service
@@ -40,6 +42,13 @@ public interface MessageService {
 	//ArrayList<Message> ajaxselectReportList(int memNo);
 	// 정석적으로 Report VO로 받아와야한다.
 
+	// 이름에 따른 전체 검색 결과 갯수 가져오는 서비스
+	int selectListCount(String keyword);
+	
+	// 팝업창 이름으로 맴버 검색 서비스
+	ArrayList<Member> searchMemListByName(String keyword, PageInfo pi);		
+
+	
 }
 
 

@@ -99,17 +99,6 @@
             </thead>
             <tbody>
                 <!-- 쪽지번호와 받은 쪽지인지 넘긴다. -->
-                <tr onclick="openDetailMSG(1,'r');">
-                    <td onclick="event.cancelBubble=true">
-                        <!-- 체크박스 value값은 !!! 쪽지번호다!!!  -->
-                        <input type="checkbox" name="tossNo" value="1">
-                    </td>
-                    <td>이땡떙 대리</td>
-                    <!-- 여기서는 css로다가 하나 스타일 뺴놓고 만약 ajax해왔을떄 긴급이면 해당 td에다가 class부여하는것으로 진행 -->
-                    <td>긴급</td>
-                    <td>회의</td>
-                    <td>11:10</td>
-                </tr>
              </tbody>
         </table>
     </div>

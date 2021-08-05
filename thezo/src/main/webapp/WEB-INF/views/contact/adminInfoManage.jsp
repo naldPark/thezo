@@ -121,7 +121,7 @@
                                 <div class="input-group mb-3" style="margin-bottom: 0% !important;">
                                     <input type="file" name="upImg" onchange="loadImg(this);" class="form-control" id="inputGroupFile02">
                                     <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                                    <img src="${ cInfo.changeName }" id="companyImg" width="45px" height="45px" style="margin-top:10px">
+                                    <img src="${ cInfo.changeName }" id="companyImg" width="60px" height="100px" style="margin-top:10px">
                                     <script>
 				                    	$(function(){
 				                    		$("#companyImg").click(function(){

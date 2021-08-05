@@ -108,7 +108,7 @@
                     </tr>
                     <tr>
                         <th>회사도장</th>
-                        <td><img src="${ cInfo.changeName }" width="45px" height="45px"></td>
+                        <td><img src="${ cInfo.changeName }" width="60px" height="100px"></td>
                     </tr>
                 </table>
             </div>

@@ -21,6 +21,7 @@
 		<typeAlias type="com.kh.thezo.board.model.vo.BoardFile" alias="BoardFile"/>	
 		<typeAlias type="com.kh.thezo.market.model.vo.Market" alias="Market"/>
 		<typeAlias type="com.kh.thezo.board.model.vo.Report" alias="Report"/>
+		<typeAlias type="com.kh.thezo.board.model.vo.Reply" alias="Reply"/>
 		<typeAlias type="com.kh.thezo.schedule.model.vo.Schedule" alias="Schedule"/>
 		<typeAlias type="com.kh.thezo.contact.model.vo.CompanyInfo" alias="Company"/>
 		<typeAlias type="com.kh.thezo.note.model.vo.Note" alias="Note"/>	

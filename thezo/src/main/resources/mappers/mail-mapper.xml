@@ -3,19 +3,125 @@
 <mapper namespace="mailMapper">
 
 	
-	<!-- 
-	<select id=" resultXXXX="">
+	<resultMap id="mailResult" type="Mail">
+		<result column="SE_MAIL_NO" property="seMailNo"/>
+		<result column="RE_MAIL_NO" property="reMailNo"/>
+		<result column="MAIL_TITLE" property="mailTitle"/>
+		<result column="MAIL_CONTENT" property="mailContent"/>
+		<result column="SENDER" property="sender"/>
+		<result column="RECEIVER" property="receiver"/>
+		<result column="read" property="read"/>
+		<result column="SEND_DATE" property="sendDate"/>
+		<result column="TEMP_SAVE" property="tempSave"/>
+		<result column="STATUS" property="status"/>
+		<result column="SPAM" property="spam"/>
+		<result column="FOLDER" property="folder"/>
+		
+	</resultMap>
 	
 	
+	<resultMap id="memberResult" type="Member">
+		<result column="mem_no" property="memNo"/>
+		<result column="mem_name" property="memName"/>
+		<result column="mem_id" property="memId"/>
+		<result column="email" property="email"/>
+		<result column="gender" property="gender"/>
+		<result column="department" property="department"/>
+		<result column="job" property="job"/>
+		<result column="rank" property="rank"/>
+		<result column="MEM_VAC_DATE" property="memVacDate"/>
+		<result column="MEM_TOTAL_DATE" property="memTotalDate"/>
+	</resultMap>
+	
+	<resultMap id="attachmentResult" type="Attachment">
+		<result column="file_no" property="fileNo"/>
+		<result column="doc_no" property="docNo"/>
+		<result column="FILE_TYPE" property="fileType"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="FILE_URL" property="fileUrl"/>
+		<result column="FILE_LEVEL" property="fileLevel"/>
+	</resultMap>
+	
+		
+	<select id="selectReceiveCount" resultType="_int">
+		
+		select 
+		   count(*)
+		from mail_receiver
+		where mem_no =#{memNo}
+		
 	</select>
-
-	<insert>
+	
+	
+	<select id="selectReceive" resultMap="mailResult">
+		
+		select 
+		      RE_MAIL_NO
+		    , MEM_NO
+		    , MAIL_TITLE
+		    , MAIL_CONTENT
+		    , SENDER
+		    , RECEIVER
+		    , READ
+		    , STATUS
+		    , SPAM
+		    , FOLDER
+		from mail_receiver
+		where mem_no =#{memNo}
+		
+	</select>
+	
+	<!-- 메일발송 -->
+	<insert id="sendMail">
+		INSERT
+			  INTO MAIL_SENDER
+			  (
+			    SE_MAIL_NO
+				, MAIL_TITLE
+				, MAIL_CONTENT
+				, SENDER
+				, RECEIVER
+				, SEND_DATE
+				, TEMP_SAVE
+			  )
+			  VALUES
+			  (
+			    SEQ_SMNO.NEXTVAL
+			  , #{mailTitle}
+			  , #{mailContent}
+			  , #{sender}
+			  , #{receiver}
+			  , SYSDATE
+			  , 'N'
+			  )
 	</insert>
-
-	<update>
-	</update>	
-
-	<delete>
-	</delete>
- 	-->
+	
+	<!-- 발송메일의 첨부파일 -->
+	<update id="insertMailAttachment" parameterType="java.util.List">
+		INSERT
+		      INTO ma_attach
+			      (
+		          FILE_NO
+		        , DOC_NO
+		        , FILE_TYPE
+		        , ORIGIN_NAME
+		        , FILE_URL
+		        , FILE_LEVEL
+		      	)
+    	SELECT 
+    			SEQ_AANO.NEXTVAL
+		      , SEQ_SMNO.CURRVAL
+		      , A.* 
+    	FROM(
+		<foreach collection="at" item="at" separator="UNION ALL"> 
+			       select 
+			       '메일' as fileType
+			      , #{at.originName} as originName
+			      , #{at.fileUrl} as fileUrl
+			      , #{at.fileLevel} as fileLevel
+			      FROM DUAL
+		</foreach> ) A
+	</update>
+	
+	
 </mapper>

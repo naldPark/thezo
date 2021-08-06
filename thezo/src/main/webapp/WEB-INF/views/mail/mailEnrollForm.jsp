@@ -40,10 +40,25 @@
     .note-modal-footer,.note-modal-footer:before, .note-modal-footer:after{box-sizing: unset!important;}
     .input-group-text{width:80px}
       /* *{border:1px solid red} */
-   .drop-zone{margin-left:80px; width: 100%; height: 110px; border: 1px solid lightgray; overflow: auto;
-     
-    }
-    
+      .referSpan{padding:10px; margin-right: 2px;}
+        .w3-dropdown-content{min-width: 714px !important;}
+        .drop-zone {
+          margin-left: 80px;
+          width: 100%;
+          height: 110px;
+          border: 1px solid lightgray;
+          overflow: auto;
+        }
+
+        .empAddZone {
+          margin-left: 80px;
+          width: 100%;
+          text-align: left!important;
+          font-size: 15pt;
+        }
+        .empListInput{width: 867px !important; }
+        
+        
   </style>
 </head>
 <body>
@@ -55,26 +70,55 @@
         <div class="mailOuter row">
           <div class="card" style="margin-bottom: 5rem; width:100%">
             <div class="card-body">
-              <form action="insertDocu.appr" method="post" id="fileForm" name="fileForm" enctype="multipart/form-data">
+              <form action="send.mail"  method="post" enctype="Multipart/form-data" id="form">
                 <h3 style="margin-bottom: 25px;">메일쓰기</h3>
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text bg-white border-0">제목</span>
                   </div>
-                  <input type="text" placeholder="제목을 입력해주세요" class="form-control">
+                  <input type="text" name="mailTitle" placeholder="제목을 입력해주세요" class="form-control">
                 </div>
+
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text bg-white border-0">받는사람</span>
                   </div>
-                  <input type="text" class="form-control" value="">
+                  <div class="w3-dropdown-click" style="width:700px">
+                    <div class="empListDiv w3-dropdown-content w3-bar-block w3-light-grey" id="receiveListDiv">
+                      <input type="text" class="form-control empListInput" name="receiveAry" id="receiveListInput" placeholder="(선택사항)이름을 입력하세요" onkeyup="filterFunction()">
+                       <!-- 동적문구 -->
+                       <a class="w3-bar-item w3-button" id="receiveKeyupInput" style="display: none;"></a>
+                       <input type="hidden" value="" style="display: none;">
+                       <!-- 동적 추가된 span자리 -->
+                    </div>
+                  </div>
+                  <div id="receiveListSpan" class="empAddZone" style="text-align: center; font-size: 15pt;">
+                    <span><input type="hidden" value="-1"></span> 
+                
+                  </div>
                 </div>
+
+
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text bg-white border-0">수신참조</span>
                   </div>
-                  <input type="text" class="form-control" value="">
+                  <div class="w3-dropdown-click" style="width:700px">
+                    <div class="empListDiv w3-dropdown-content w3-bar-block w3-light-grey" id="referListDiv">
+                      <input type="text" class="form-control empListInput"  id="referListInput" placeholder="(선택사항)이름을 입력하세요" onkeyup="filterFunction()">
+                      <!-- 동적문구 -->
+                        <a class="w3-bar-item w3-button" id="refKeyupInput" style="display: none;"></a>
+                      <input type="hidden" value="" style="display: none;">
+                    </div>
+                  </div>
+                  <div id="referListSpan" class="empAddZone" style="text-align: center; font-size: 15pt;">
+                    <span><input type="hidden" value="-1"></span> 
+                    <!-- 동적 추가된 span자리 -->
+                  </div>
                 </div>
+
+
+
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text bg-white border-0">파일첨부</span>
@@ -87,7 +131,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" name="summernote" id="summernote" maxlength="140" rows="7" autocomplete="off"></textarea>
+                    <textarea class="form-control" name="mailContent" id="summernote" maxlength="140" rows="7" autocomplete="off"></textarea>
                 </div><br>
                 <div class="row justify-content-center">
                   <button type="button" id="submitBtn" class="btn btn-primary">발송하기</button>&nbsp;
@@ -103,108 +147,243 @@
 
 
     <script>
-        
-      (function() {
-          
-          var $file = document.getElementById("file")
-          var dropZone = document.querySelector(".drop-zone")
-
-          var toggleClass = function(className) {
-              
-              console.log("current event: " + className)
-
-              var list = ["dragenter", "dragleave", "dragover", "drop"]
-
-              for (var i = 0; i < list.length; i++) {
-                  if (className === list[i]) {
-                      dropZone.classList.add("drop-zone-" + list[i])
-                  } else {
-                      dropZone.classList.remove("drop-zone-" + list[i])
-                  }
-              }
+      $(document).on('click', '#submitBtn', function () {
+          if($("#docName").val()=="") {
+            alert("제목은 반드시 입력하셔야합니다");
+            return false;
+          } else if($("#summernote").val() == "") {
+            alert("내용은 반드시 입력하셔야합니다");
+            return false;
+          } else {
+            if (confirm("정말로 제출하시겠습니까?\n기안 후엔 수정이 불가능합니다.")) {
+              $("#form").submit();
+            }
           }
-          
-          var showFiles = function(files) {
-              dropZone.innerHTML = ""
-              for(var i = 0, len = files.length; i < len; i++) {
-                  dropZone.innerHTML += "<p>" + files[i].name + "</p>"
-              }
+        });
+
+
+      $(function () {
+
+        var $file = document.getElementById("file")
+        var dropZone = document.querySelector(".drop-zone")
+
+        var toggleClass = function (className) {
+          var list = ["dragenter", "dragleave", "dragover", "drop"]
+
+          for (var i = 0; i < list.length; i++) {
+            if (className === list[i]) {
+              dropZone.classList.add("drop-zone-" + list[i])
+            } else {
+              dropZone.classList.remove("drop-zone-" + list[i])
+            }
+          }
+        }
+
+        var showFiles = function (files) {
+          dropZone.innerHTML = ""
+          for (var i = 0, len = files.length; i < len; i++) {
+            dropZone.innerHTML += "<p>" + files[i].name + "</p>"
+          }
+        }
+
+        var selectFile = function (files) {
+          // input file 영역에 드랍된 파일들로 대체
+          $file.files = files
+          showFiles($file.files)
+
+        }
+
+        $file.addEventListener("change", function (e) {
+          showFiles(e.target.files)
+        })
+
+        // 드래그한 파일이 최초로 진입했을 때
+        dropZone.addEventListener("dragenter", function (e) {
+          e.stopPropagation()
+          e.preventDefault()
+
+          toggleClass("dragenter")
+
+        })
+
+        // 드래그한 파일이 dropZone 영역을 벗어났을 때
+        dropZone.addEventListener("dragleave", function (e) {
+          e.stopPropagation()
+          e.preventDefault()
+          $(this).css("background-color", "#FFF");
+          toggleClass("dragleave")
+
+        })
+
+        // 드래그한 파일이 dropZone 영역에 머물러 있을 때
+        dropZone.addEventListener("dragover", function (e) {
+          e.stopPropagation()
+          e.preventDefault()
+          $(this).css("background-color", "rgb(248, 241, 214)");
+          toggleClass("dragover")
+
+        })
+
+        // 드래그한 파일이 드랍되었을 때
+        dropZone.addEventListener("drop", function (e) {
+          e.preventDefault()
+          $(this).css("background-color", "#FFF");
+          $(this).css("font-size", "11pt");
+          $(this).css("text-align", "left");
+
+          toggleClass("drop")
+
+          var files = e.dataTransfer && e.dataTransfer.files
+
+          if (files != null) {
+            if (files.length < 1) {
+              alert("폴더 업로드 불가")
+              return
+            }
+            selectFile(files)
+          } else {
+            alert("ERROR")
           }
 
-          var selectFile = function(files) {
-              // input file 영역에 드랍된 파일들로 대체
-              $file.files = files
-              showFiles($file.files)
-              
-          }
-          
-          $file.addEventListener("change", function(e) {
-              showFiles(e.target.files)
-          })
+        })
 
-          // 드래그한 파일이 최초로 진입했을 때
-          dropZone.addEventListener("dragenter", function(e) {
-              e.stopPropagation()
-              e.preventDefault()
-             
-              toggleClass("dragenter")
-
-          })
-
-          // 드래그한 파일이 dropZone 영역을 벗어났을 때
-          dropZone.addEventListener("dragleave", function(e) {
-              e.stopPropagation()
-              e.preventDefault()
-              $(this).css("background-color", "#FFF");
-              toggleClass("dragleave")
-
-          })
-
-          // 드래그한 파일이 dropZone 영역에 머물러 있을 때
-          dropZone.addEventListener("dragover", function(e) {
-              e.stopPropagation()
-              e.preventDefault()
-              $(this).css("background-color", "rgb(248, 241, 214)");
-              toggleClass("dragover")
-
-          })
-
-          // 드래그한 파일이 드랍되었을 때
-          dropZone.addEventListener("drop", function(e) {
-              e.preventDefault()
-              $(this).css("background-color", "#FFF");
-              $(this).css("font-size", "11pt");
-              $(this).css("text-align", "left");
-              
-              toggleClass("drop")
-
-              var files = e.dataTransfer && e.dataTransfer.files
-              console.log(files)
-
-              if (files != null) {
-                  if (files.length < 1) {
-                      alert("폴더 업로드 불가")
-                      return
-                  }
-                  selectFile(files)
-              } else {
-                  alert("ERROR")
-              }
-
-          })
-
-      })();
-  </script>
+      });
+    </script>
 
 
 <script>
-     $(document).on('click','#submitBtn',function(){
-          if(confirm("정말로 제출하시겠습니까?\n기안 후엔 수정이 불가능합니다.")){
-            $("#fileForm").submit();
-          }					
-        });
-</script>
+  $(function(){
+
+    // inputList
+    $(".empListDiv").on("click", "a", function(){
+        var email= $(this).next().val();  //a태그로 클릭한 사람의 강보람/boram@naver.com
+        var strArray=$(this).text().split(" "); // a태그로 선택한 사람으르 배열로 [강보람,대표이사]
+
+        var regExp =/^[0-9a-zA-Z가-힣/]([-_.]?[0-9a-zA-Z가-힣/])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+        if(!regExp.test(email)){
+            alert("유효한 이름을 입력해주세요");
+        } else {
+              //선택한 항목(수신/참조)에 있는 인풋 리스트 조회
+              var inputs = $(this).parent().parent().next().find("input[type=hidden]");
+
+              // a의 아빠의 아빠의 다음
+              var inputCate = ['', ''];
+              // 수신인지 참조인지 확인
+              if($(this).parent().attr("id")=='referListDiv'){
+                inputCate = ['refAry', 'referSpan'];
+              } else {
+                inputCate = ['receiveAry', 'receiveSpan'];
+              }
+
+              //중복체크
+              var addCheck=0; //이미 선택한 사람인지 확인하기 위한 변수
+              $(inputs).each(function(index, el){  
+                      var match =inputs.eq(index).val();   // 반복문이 도는 input의 각각의 벨류                  
+                    //만약 기존추가된 input과 추가할 사번이 일치하고, input의 갯수가 1개가 아니면 생략
+                    if(match==email&&$(inputs).length!=1){  
+                          addCheck++;
+                    }
+              })
+              if(addCheck==0){
+                // console.log(addCheck);
+                // 선택한 항목 추가하기
+                $("<span class='btn-sm btn-light "+inputCate[1]+" disabled'><input type='hidden' name='"+inputCate[0]+"' value='"+email+"'>"
+                +strArray[0]+" "+strArray[1]+" <button type='button' class='badge badge-light'> &times;</button></span>").appendTo($(this).parent().parent().next());
+              }
+          }
+          // 조회완료후 리스트닫아주기
+          $(".empListInput").nextAll().css("display","none");
+          $(".empListInput").val("");
+          
+      })
+      
+    })
+
+    // 전사원 리스트 세팅
+    $(function(){
+      <c:forEach var="p" items="${ empList }" varStatus="status">
+        $("<a class='w3-bar-item w3-button'>${p.memName} ${p.rank} "
+          +"<c:if test='${!empty p.job }'>(${p.job}) </c:if>/ ${p.department} / ${p.email}</a><input type='hidden' value='${p.memName}/${p.email}'>").appendTo("#referListDiv");
+          $("<a class='w3-bar-item w3-button'>${p.memName} ${p.rank} "
+          +"<c:if test='${!empty p.job }'>(${p.job}) </c:if>/ ${p.department} / ${p.email}</a><input type='hidden' value='${p.memName}/${p.email}'>").appendTo("#receiveListDiv");
+      </c:forEach>
     
+        var x = document.getElementById("referListDiv");
+        var y = document.getElementById("receiveListDiv");
+
+        $("#referListInput").nextAll().css("display","none");
+        $("#receiveListInput").nextAll().css("display","none");
+
+        if (y.className.indexOf("w3-show") == -1) {
+          y.className += " w3-show";
+        } else {
+          y.className = y.className.replace(" w3-show", "");
+        }
+
+        if (x.className.indexOf("w3-show") == -1) {
+          x.className += " w3-show";
+        } else {
+          x.className = x.className.replace(" w3-show", "");
+        }
+      })
+
+      // 참조 삭제
+      $(".empAddZone").on("click", "span button", function(){  
+        $(this).parent().remove();
+      })
+
+      // 키업으로 글작성시 아래로 리스트 표시하는 기능
+    function filterFunction() {
+
+      // 참조부분
+      if($("#referListInput").val().length >= 1){
+      
+        $("#refKeyupInput").text($("#referListInput").val()+" ");
+        $("#refKeyupInput").next().val($("#referListInput").val());
+        
+        $("#referListDiv").css("z-index","1");
+          var input, filter, ul, li, a, i;
+          input = document.getElementById("referListInput");
+          filter = input.value.toUpperCase();
+          div = document.getElementById("referListDiv");
+          a = div.getElementsByTagName("a");
+          for (i = 0; i < a.length; i++) {
+            txtValue = a[i].textContent || a[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              a[i].style.display = "";
+            } else {
+              a[i].style.display = "none";
+            }
+          }
+        }else{
+          $("#referListInput").nextAll().css("display","none");
+        }
+
+        // 수신부분
+        if($("#receiveListInput").val().length >= 1){
+
+          $("#receiveKeyupInput").text($("#receiveListInput").val()+" ");
+          $("#receiveKeyupInput").next().val($("#receiveListInput").val());
+          
+          $("#referListDiv").css("z-index","0");
+          var input, filter, ul, li, a, i;
+          input = document.getElementById("receiveListInput");
+          filter = input.value.toUpperCase();
+          div = document.getElementById("receiveListDiv");
+          a = div.getElementsByTagName("a");
+          for (i = 0; i < a.length; i++) {
+            txtValue = a[i].textContent || a[i].innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              a[i].style.display = "";
+            } else {
+              a[i].style.display = "none";
+            }
+          }
+        }else{
+          $("#receiveListInput").nextAll().css("display","none");
+        }
+  }
+</script>
 
 
 </body>

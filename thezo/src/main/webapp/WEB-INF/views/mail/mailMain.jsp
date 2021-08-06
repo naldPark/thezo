@@ -55,48 +55,7 @@
                         <td>Re:요청하신 자료 송부드립니다<i class="fas fa-paperclip"></i></td>
                         <td>2021-07-20 22:50</td>
                       </tr>
-                      <tr class="font-weight-bold">
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope"></i></td>
-                        <td>박날드</td>
-                        <td>주간회의자료 빨리 보내주세요</td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope-open"></i></td>
-                        <td>강보람</td>
-                        <td>마감기한 20일 남았는데 잠이 옵니까</td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope"></i></td>
-                        <td>남주혁</td>
-                        <td>Re:요청하신 자료 송부드립니다<i class="fas fa-paperclip"></i></td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr class="font-weight-bold">
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope"></i></td>
-                        <td>박날드</td>
-                        <td>주간회의자료 빨리 보내주세요</td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope-open"></i></td>
-                        <td>강보람</td>
-                        <td>마감기한 20일 남았는데 잠이 옵니까</td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope"></i></td>
-                        <td>남주혁</td>
-                        <td>Re:요청하신 자료 송부드립니다<i class="fas fa-paperclip"></i></td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
+                     
                     </tbody>
                   </table>
 

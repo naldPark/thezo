@@ -250,10 +250,10 @@
                                                      from department
                                                      where dep_class=#{deptNo})
                                    or dep_no =  (select par_dep_class
-                                     from department
-                                     where dep_class=(select par_dep_class
-                                                       from department
-                                                        where dep_class=#{deptNo}))
+				                                     from department
+				                                     where dep_class=(select par_dep_class
+			                                                       from department
+			                                                        where dep_class=#{deptNo}))
                                    or dep_no=#{deptNo}
                                    and job is not null
                                    order by  decode(rank,'대표이사',1,'상무',2,'부장',3,'과장',4,'대리',5))a

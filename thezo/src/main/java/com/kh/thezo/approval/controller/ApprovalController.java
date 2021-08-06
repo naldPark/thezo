@@ -52,8 +52,8 @@ public class ApprovalController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		ArrayList<Approval> list = aService.selectApprovalMain(a, pi);
 		ArrayList<ApprovalAccept> readCheckList = aService.selectApprovalRead(a);
-		System.out.println(readCheckList);
-		System.out.println(list);
+	//	System.out.println(readCheckList);
+	//	System.out.println(list);
 		mv.addObject("list", list)
 		  .addObject("readCheckList",readCheckList)
 		  .addObject("pi", pi)
@@ -87,7 +87,7 @@ public class ApprovalController {
 		Approval a = aService.enrollApproval(aTemp);
 		ArrayList<Member> empList = aService.employeeList();
 		ArrayList<ApprovalAccept> cLine = aService.selectformLineList(aTemp);
-		System.out.println(cLine);
+	//	System.out.println(cLine);
 		Member leaveCount = aService.selectLeave(aTemp.getMemNo());
 //		System.out.println("A는"+a);
 //		System.out.println("cLine는"+cLine);

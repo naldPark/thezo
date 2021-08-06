@@ -1,13 +1,14 @@
 package com.kh.thezo.schedule.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.thezo.schedule.model.vo.Schedule;
 
 public interface ScheduleService {
 	
 	// 일정 조회
-	ArrayList<Schedule> selectScheduleList(String scType);
+	ArrayList<Schedule> selectScheduleList(HashMap map);
 	
 	// 일정 상세조회
 	Schedule selectScheduleDetail(int scNo);
@@ -20,5 +21,7 @@ public interface ScheduleService {
 	
 	// 일정 삭제
 	int deleteSchedule(int scNo);
+	
+	int insertBizReport(Schedule sc);
 	
 }

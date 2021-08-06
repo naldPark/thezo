@@ -99,7 +99,7 @@
         </script>
         <hr>
 		<div class="button-area" align="center">
-			<button class="btn btn-secondary" data-dismiss="modal">취소</button>
+			<button class="btn btn-secondary" onclick="window.close();">취소</button>
 			<button class="btn btn-primary" type="submit">저장</button>
 		</div>
 		<br>

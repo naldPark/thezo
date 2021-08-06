@@ -47,7 +47,7 @@
      	        	// 1. 개인 일정
      				$.ajax({
      					url :'list.sc',
-     					data : {scType: "개인"},
+     					data : {scType: "개인", memNo : ${loginUser.memNo}},
      					cache: false,
      					success:function(list){
      						var scList = Object.values(JSON.parse(list));

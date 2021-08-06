@@ -35,6 +35,7 @@
 		  join member m on (s.sc_writer = m.mem_no)
 		 where s.status = 'Y'
 		   and sc_type like '%' || #{scType} || '%'
+		   and sc_writer = #{memNo}
 	</select>
 	
 	<select id="selectBizReport" resultMap="scheduleResult">
@@ -109,6 +110,32 @@
 		 , #{allday}
 		 , 'Y'
 		 )
+	</insert>
+	
+	<insert id="insertBizReport">
+		insert
+		  into biz_report
+		  	   (
+		  	   	 sc_no
+		  	   , report_writer
+		  	   , report_title
+		  	   , report_content
+		  	   , origin_name
+		  	   , change_name
+		  	   , create_date
+		  	   , status
+		  	   )
+		 values
+		 	   (
+		 	     #{scNo}
+		 	   , #{reportWriter}
+		 	   , #{reportTitle}
+		 	   , #{reportContent}
+		 	   , #{originName}
+		 	   , #{changeName}
+		 	   , sysdate
+		 	   , 'Y'
+		 	   )
 	</insert>
 	
 	<delete id="deleteSchedule">

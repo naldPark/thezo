@@ -85,10 +85,10 @@
 				<c:when test="${ empty sc.reportTitle }"> <!-- 보고서가 없다면 -->
 					<div class="modal-body">
 						<table id="repInfo" align="center">
-							<div align="center" id="repInsertBtn">
+							<div align="center">
 								작성된 보고서가 없습니다. <br>
 								<br>
-								<button type="button" class="btn btn-primary">등록하기</button>
+								<button type="button" id="repInsert" class="btn btn-primary">등록하기</button>
 							</div>
 						</table>
 					</div>
@@ -175,6 +175,12 @@
 					
 					$("#deleteScBtn").click(function(){
 						location.href = "delete.sc?scNo=" + $("#scNo").val()
+					})
+					
+					$("#repInsert").click(function(){
+						var option = "width = 680, height = 530, top = 100, left = 200, location = no";
+						window.open("insertForm.bizRep?scNo=" + $("#scNo").val(), "업무 보고하기", option);
+						self.close();
 					})
 				})
 			</script>

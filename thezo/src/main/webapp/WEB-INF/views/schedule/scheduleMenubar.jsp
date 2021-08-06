@@ -40,16 +40,13 @@
 			success: function(data){
 				var scList = Object.values(JSON.parse(list));
 				for(var i=0; i<scList.length; i++){
-					calendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
 					var value = "";
 					console.log(scList[i]);
-					/*
-					if(scList[i].start = td || scList[i].end = td){
+					if(scList[i].start == td || scList[i].end == td){
 						 value += "<li>"
 									+ scList[i].title
 								+ "</li>";
 					}
-				}*/
 				$("#todaySchedule").html(value);
 			},error: function(){
 				console.log("오늘일정 표시용 ajax 통신 실패");

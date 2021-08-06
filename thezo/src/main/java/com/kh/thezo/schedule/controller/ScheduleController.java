@@ -1,7 +1,11 @@
 package com.kh.thezo.schedule.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,7 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.kh.thezo.schedule.model.service.ScheduleService;
@@ -33,8 +37,11 @@ public class ScheduleController {
 	@ResponseBody
 	@RequestMapping("list.sc")
 	public void selectScheduleList(HttpServletResponse response,
-			@RequestParam(value="scType") String scType) throws IOException {
-		ArrayList<Schedule> list = scService.selectScheduleList(scType);
+			@RequestParam(value="scType") String scType, int memNo) throws IOException {
+		HashMap map = new HashMap();
+		map.put("scType", scType);
+		map.put("memNo", memNo);
+		ArrayList<Schedule> list = scService.selectScheduleList(map);
 		//System.out.println(list);
 		response.setContentType("text/html; charset=utf-8");
 		String result = new Gson().toJson(list);
@@ -112,6 +119,9 @@ public class ScheduleController {
 		
 	}
 	
+	/**
+	 *  일정 수정하기
+	 */
 	@RequestMapping("update.sc")
 	public String updateSchedule(Schedule sc, HttpSession session) {
 		if(sc.getStart().contains(":")) { 
@@ -128,7 +138,6 @@ public class ScheduleController {
 			sc.setStart(sc.getStart().replace(",", ""));
 			sc.setEnd(sc.getEnd().replace(",", ""));
 		}
-		//System.out.println(sc);
 		int result = scService.updateSchedule(sc);
 		
 		if(result > 0) {
@@ -140,7 +149,37 @@ public class ScheduleController {
 		}
 	}
 	
+	/**
+	 *  업무 보고하기 팝업창
+	 */
+	@RequestMapping("insertForm.bizRep")
+	public String insertFormBizReport(int scNo, Model model) {
+		model.addAttribute("scNo", scNo);
+		return "schedule/bizReportInsertView";
+	}
 	
+	/**
+	 *  업무보고 작성하기
+	 */
+	@RequestMapping("insert.bizRep")
+	public String insertBizReport(Schedule sc, int memNo, HttpSession session, MultipartFile upfile) {
+		String reportWriter = String.valueOf(memNo);
+		sc.setReportWriter(reportWriter);
+		String changeName = saveFile(session, upfile);
+		sc.setOriginName(upfile.getOriginalFilename());
+		sc.setChangeName("resources/uploadFiles/" + changeName);
+		int result = scService.insertBizReport(sc);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "업무 보고를 등록했습니다.");
+			return "schedule/quitView";
+		
+		}else {
+			session.setAttribute("alertMsg", "등록하지 못했습니다. 다시 시도해주세요!!");
+			return "schedule/quitView";
+		}
+	}
+		
+		
 	
 	// 자원예약 기능
 	@RequestMapping("myList.rez")
@@ -151,6 +190,31 @@ public class ScheduleController {
 	@RequestMapping("con.rez")
 	public String conferenceRoom() {
 		return "schedule/reservation/conferenceRezView";
+	}
+	
+	
+	// 파일 등록 메소드
+	public String saveFile(HttpSession session, MultipartFile upfile) {
+		
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+		
+		String originName = upfile.getOriginalFilename();
+		
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		int ranNum = (int)(Math.random() * 90000 + 10000); // 10000 ~ 99999 랜덤값
+		String ext = originName.substring(originName.lastIndexOf("."));
+		
+		String changeName = currentTime + ranNum + ext;
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return changeName;
 	}
 	
 	

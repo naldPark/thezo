@@ -144,7 +144,7 @@
 		          , sysdate
 		          , '판매중'
 		          , #{ price }
-                  , 'resources/uplodaFiles/'
+                  , #{ productImg }
                   , 0
                   , 0
                   , 'Y'

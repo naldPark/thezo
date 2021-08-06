@@ -25,6 +25,4 @@ public interface MarketService {
 	// 4_1. 사용자 : 벼룩시장 등록용
 	int insertMarket(Market mk);
 	
-	// 4_2. 사용자 : 벼룩시장 첨부파일 등록용
-	int insertMarketFile(BoardFile bf);
 }

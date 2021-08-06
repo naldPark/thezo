@@ -63,11 +63,6 @@ public class MarketServiceImpl implements MarketService {
 		return mkDao.insertMarket(sqlSession, mk);
 	}
 
-	// 사용자 : 벼룩시장 등록(첨부파일)
-	@Override
-	public int insertMarketFile(BoardFile bf) {
-		return mkDao.insertMarketFile(sqlSession, bf);
-	}
 	
 
 }

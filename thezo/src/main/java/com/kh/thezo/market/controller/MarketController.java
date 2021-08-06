@@ -101,22 +101,18 @@ public class MarketController {
 
 	// 공지사항 등록하기(사용자)
 	@RequestMapping("marketInsert.bo")
-	public String insertMarket(Market mk, BoardFile bf, MultipartFile upfile, HttpSession session, Model model) {
+	public String insertMarket(Market mk, MultipartFile upfile, HttpSession session, Model model) {
 	
 		if(!upfile.getOriginalFilename().equals("")) {
 			
 			String changeName = saveFile(session, upfile); 
-			bf.setOriginName(upfile.getOriginalFilename());  
-			bf.setChangeName(changeName); 
-			mk.setProductImg(changeName);
+			mk.setProductImg("resources/uploadFiles/" + changeName);
 		}
 		
 		int result = mkService.insertMarket(mk);
 		
 		if(result > 0 ) {
-			if(bf.getOriginName() != null) {
-				mkService.insertMarketFile(bf);
-			}
+			
 			session.setAttribute("alertMsg", "성공적으로 공지사항이 등록되었습니다.");
 			return "redirect:marketList.bo";
 		}else { 

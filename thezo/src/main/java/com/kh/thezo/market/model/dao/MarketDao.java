@@ -56,9 +56,6 @@ public class MarketDao {
 		return sqlSession.insert("marketMapper.insertMarket", mk);
 	}
 		
-	// 사용자 : 벼룩시장 첨부파일 등록
-	public int insertMarketFile(SqlSessionTemplate sqlSession, BoardFile bf) {
-		return sqlSession.insert("marketMapper.insertMarketFile", bf);
-	}
+	
 		
 }

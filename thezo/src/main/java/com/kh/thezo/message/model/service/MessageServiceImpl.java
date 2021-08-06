@@ -144,6 +144,34 @@ public class MessageServiceImpl implements MessageService{
 		return msgDao.searchMemListByName(sqlSession, keyword, pi);
 	}
 
+	/** 부서에 따른 전체 검색 결과 갯수 가져오는 서비스
+	 */
+	@Override
+	public int selectListCountByDept(String keyword) {
+		return msgDao.selectListCountByDept(sqlSession, keyword);
+	}
+
+	/** 팝업창 이름(부서명)으로  맴버 목록 검색 해오는 서비스 
+	 */
+	@Override
+	public ArrayList<Member> searchMemListByDept(String keyword, PageInfo pi) {
+		return msgDao.searchMemListByDept(sqlSession, keyword, pi);
+	}
+
+	/** 직급에 따른 전체 검색 결과 갯수 가져오는 서비스
+	 */
+	@Override
+	public int selectListCountByRank(HashMap<Object, Object> mapForCount) {
+		return msgDao.selectListCountByRank(sqlSession, mapForCount);
+	}
+
+	/** 팝업창 이름(부서명과 직급)으로  맴버 목록 검색 해오는 서비스 
+	 */
+	@Override
+	public ArrayList<Member> searchMemListByRank(HashMap<Object, Object> mapForCount, PageInfo pi) {
+		return msgDao.searchMemListByRank(sqlSession, mapForCount, pi);
+	}
+
 
 
 	

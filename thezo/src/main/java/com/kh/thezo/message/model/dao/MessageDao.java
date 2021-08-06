@@ -163,5 +163,49 @@ public class MessageDao {
 		return (ArrayList)sqlSession.selectList("messageMapper.searchMemListByName", keyword, rowBounds);
 	}
 
+	/** 부서에 따른 전체 검색 결과 갯수 가져오는 dao
+	 * @param sqlSession
+	 * @param keyword
+	 * @return
+	 */
+	public int selectListCountByDept(SqlSessionTemplate sqlSession, String keyword) {
+		return sqlSession.selectOne("messageMapper.selectListCountByDept", keyword);
+	}
+
+	/** 팝업창 이름(부서)로  맴버 목록 검색 해오는 서비스 
+	 * @param sqlSession
+	 * @param keyword
+	 * @param pi
+	 * @return
+	 */
+	public ArrayList<Member> searchMemListByDept(SqlSessionTemplate sqlSession, String keyword, PageInfo pi) {
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList)sqlSession.selectList("messageMapper.searchMemListByDept", keyword, rowBounds);
+	}
+
+	/** 직급에 따른 전체 검색 결과 갯수 가져오는 dao
+	 * @param sqlSession
+	 * @param mapForCount
+	 * @return
+	 */
+	public int selectListCountByRank(SqlSessionTemplate sqlSession, HashMap<Object, Object> mapForCount) {
+		return sqlSession.selectOne("messageMapper.selectListCountByRank", mapForCount);
+	}
+
+	/** 팝업창 이름(직급)로  맴버 목록 검색 해오는 서비스 
+	 * @param sqlSession
+	 * @param mapForCount
+	 * @param pi
+	 * @return
+	 */
+	public ArrayList<Member> searchMemListByRank(SqlSessionTemplate sqlSession, HashMap<Object, Object> mapForCount, PageInfo pi) {
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList)sqlSession.selectList("messageMapper.searchMemListByRank", mapForCount, rowBounds);
+	}
+
 
 }

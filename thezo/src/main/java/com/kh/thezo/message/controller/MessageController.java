@@ -200,12 +200,14 @@ public class MessageController {
 	//-----------------------------------------------------------------------------------------------------
 	
 	// 일단 팝업창에서 ! 이름 검색으로 가져오는 회원정보들 가져오는 controller
+	/** 팝업창 이름으로 검색해서 동료 정보 가져오는 Controller로 paging처리까지 같이 진행함 
+	 * @param keyword
+	 * @param currentPage
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value="searchMemList.msg", produces="application/json; charset=utf-8")
-	public String searchMemListByName(String keyword, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
-
-		System.out.println(keyword);
-		
+	public String searchMemListByName(String keyword, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {		
 		int listCount = msgService.selectListCount(keyword);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		
@@ -218,7 +220,55 @@ public class MessageController {
 	    return new Gson().toJson(map);
 	}
 
-	
+
+	/** 팝업창에서 부서에 따라서 동료 정보를 가져오는 Controller
+	 * @param keyword
+	 * @param currentPage
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="MemListByDept.msg", produces="application/json; charset=utf-8")
+	public String searchMemListByDept(String keyword, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		//System.out.println(keyword);// 부서명이 담겨있어야한다. 
+		
+		int listCount = msgService.selectListCountByDept(keyword);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		
+		ArrayList<Member> memList = msgService.searchMemListByDept(keyword, pi);
+		// 2개의 값을 넘겨야한다. 이럴때는! 
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("memList", memList);
+		map.put("pi", pi);
+		
+	    return new Gson().toJson(map);
+	}
+
+	/** 팝업창에서 직급과 부서에 따라서 동료 정보를 가져오는 Controller
+	 * @param deptKeyword
+	 * @param rankKeyword
+	 * @param currentPage
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="MemListByRank.msg", produces="application/json; charset=utf-8")
+	public String searchMemListByRank(String deptKeyword, String rankKeyword, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		//System.out.println(deptKeyword);// 부서명이 담겨있어야한다.
+		//System.out.println(rankKeyword);// 직급이 담겨있어야한다.
+		HashMap<Object, Object> mapForCount = new HashMap<Object, Object>();
+		mapForCount.put("deptKeyword", deptKeyword);
+		mapForCount.put("rankKeyword", rankKeyword);
+		
+		int listCount = msgService.selectListCountByRank(mapForCount);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		
+		ArrayList<Member> memList = msgService.searchMemListByRank(mapForCount, pi);
+		// 2개의 값을 넘겨야한다. 이럴때는! 
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("memList", memList);
+		map.put("pi", pi);
+		
+	    return new Gson().toJson(map);
+	}
 	
 
 }

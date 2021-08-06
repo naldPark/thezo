@@ -336,4 +336,53 @@
             by dep_no, decode(rank, '대표이사', 1, '상무', 2, '부장', 3, '과장', 4, '대리', 5, 6) ,mem_name asc
 	 </select>
 	 
+	 <!-- 부서명으로 검색한 결과 갯수 조회하는 sql문  -->
+	 <select id="selectListCountByDept" resultType="_int">
+ 		select
+		       count(*)
+		  from member
+         where department like '%' || #{ keyword } || '%'	 
+           and status in ('Y', 'A')      
+	 </select>
+	 
+	 <!-- 부서명로 검색한 결과를 rowBound 사용하여 조회하는 sql문  -->	 
+	 <select id="searchMemListByDept" resultMap="memberResult">
+	 	select mem_no
+             , mem_name
+             , mem_id
+             , department
+             , rank
+          from member
+         where department like '%' || #{ keyword } || '%'	 
+           and status in ('Y', 'A')      
+         order
+            by dep_no, decode(rank, '대표이사', 1, '상무', 2, '부장', 3, '과장', 4, '대리', 5, 6) ,mem_name asc
+	 </select>
+	 
+	 <!-- 직급과 부서명으로 검색한 결과 갯수 조회하는 sql문  -->
+	 <select id="selectListCountByRank" resultType="_int" parameterType="hashMap">
+ 		select
+		       count(*)
+		  from member
+         where department like '%' || #{ deptKeyword } || '%'	 
+           and rank like '%' || #{ rankKeyword } || '%'
+           and status in ('Y', 'A')      
+	 </select>
+	 
+	 <!-- 직급과  부서명로 검색한 결과를 rowBound 사용하여 조회하는 sql문  -->	 
+	 <select id="searchMemListByRank" resultMap="memberResult">
+	 	select mem_no
+             , mem_name
+             , mem_id
+             , department
+             , rank
+          from member
+         where department like '%' || #{ deptKeyword } || '%'	 
+           and rank like '%' || #{ rankKeyword } || '%'
+           and status in ('Y', 'A')      
+         order
+            by dep_no, decode(rank, '대표이사', 1, '상무', 2, '부장', 3, '과장', 4, '대리', 5, 6) ,mem_name asc
+	 </select>
+	 
+	 
 </mapper>

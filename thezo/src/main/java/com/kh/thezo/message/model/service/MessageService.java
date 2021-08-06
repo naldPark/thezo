@@ -49,6 +49,18 @@ public interface MessageService {
 	ArrayList<Member> searchMemListByName(String keyword, PageInfo pi);		
 
 	
+	// 부서에 따른 전체 검색 결과 갯수 가져오는 서비스
+	int selectListCountByDept(String keyword);
+
+	// 팝업창 부서로 맴버 검색 서비스
+	ArrayList<Member> searchMemListByDept(String keyword, PageInfo pi);		
+
+	// 직급에 따른 전체 검색 결과 갯수 가져오는 서비스
+	int selectListCountByRank(HashMap<Object, Object> mapForCount);
+
+	// 팝업창 직급으로 맴버 검색 서비스
+	ArrayList<Member> searchMemListByRank(HashMap<Object, Object> mapForCount, PageInfo pi);		
+
 }
 
 

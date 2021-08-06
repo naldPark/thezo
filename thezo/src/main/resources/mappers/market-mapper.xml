@@ -18,17 +18,7 @@
 		<result column="change_name" property="changeName"/>
 	</resultMap>
 	
-	<resultMap id="boardFileResult" type="BoardFile">
-		<result column="file_no" property="fileNo"/>
-		<result column="ref_section" property="refSection"/>
-		<result column="ref_bno" property="ref_bno"/>
-		<result column="origin_name" property="originName"/>
-		<result column="change_name" property="changeName"/> 
-		<result column="file_path" property="filePath"/>
-		<result column="uploadDate" property="uploadDate"/>
-	</resultMap>
-
-
+	
 	<!-- 사용자 : 벼룩시장 글 총 갯수  -->
 	<select id="marketListCount" resultType="_int">
 		select 
@@ -151,20 +141,22 @@
 				)
 	</insert>
 	
-	<!-- 사용자 : 벼룩시장 등록 첨부파일  -->
-	<insert id="insertMarketFile">
-		insert 
-		   into board_file
-		   values(
-		           seq_bfno.nextval
-		         , '벼룩'
-		         , seq_mkno.currval
-		         , #{ originName }
-		         , #{ changeName }
-		         , 'resources/uploadFiles/'
-		         , sysdate
-		         , default
-		         )
-	</insert>
+	<!-- 사용자 : 벼룩시장 글 삭제 -->
+	<update id="deleteMarket">
+			update
+				  market
+			  set status = 'N'
+			where market_no = #{marketNo}  		
+	</update>
 	
+	<!-- 사용자 : 벼룩시장 글 수정 -->
+	<update id="updateMarket">
+		update
+			   market
+		   set market_title = #{marketTitle}
+		     , market_content = #{marketContent}
+		     , p_img = #{productImg}
+		 where market_no = #{marketNo}
+	</update>	
+
 </mapper>

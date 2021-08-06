@@ -3,8 +3,6 @@ package com.kh.thezo.market.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.kh.thezo.board.model.vo.Board;
-import com.kh.thezo.board.model.vo.BoardFile;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.vo.Market;
 
@@ -22,7 +20,13 @@ public interface MarketService {
 	int increaseMarketCount(int marketNo);
 	Market selectMarket(int marketNo);
 	
-	// 4_1. 사용자 : 벼룩시장 등록용
+	// 4. 사용자 : 벼룩시장 등록용
 	int insertMarket(Market mk);
 	
+	// 5. 사용자 : 벼룩시장 삭제
+	int deleteMarket(int marketNo);
+	
+	// 6. 사용자 : 벼룩시장 수정
+	int updateMarket(Market mk);
+
 }

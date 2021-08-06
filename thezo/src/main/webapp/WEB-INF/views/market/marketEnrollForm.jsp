@@ -52,8 +52,6 @@
   })( jQuery );
  </script>
 <style>
-    #marketUpdate>table{width:80%;}
-    #marketUpdate>table *{ margin:5px;}
     .innerOuter{
             width: 1000px;
             margin:auto;

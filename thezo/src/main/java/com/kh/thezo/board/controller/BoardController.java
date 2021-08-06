@@ -127,7 +127,7 @@ public class BoardController {
 	}
 	
 	
-	// 공지사항 삭제하기 (사용자) -> filePath가 제대로 지워지는지..>? 
+	// 공지사항 삭제하기 (사용자) -> 
 	@RequestMapping("noticeDelete.bo")
 	public String deleteNotice(int bno, String filePath, Model model, HttpSession session) {
 		

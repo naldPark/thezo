@@ -33,7 +33,7 @@ public interface BoardService {
 		// 5. 사용자 : 공지사항, 사내게시판 삭제
 		int deleteBoard(int boardNo);
 		
-		// 6. 사용자 : 공지사항 수정용(글)
+		// 6. 사용자 : 공지사항 수정용(첨부파일)
 		int insertNoticeRefile(BoardFile bf);
 		
 		

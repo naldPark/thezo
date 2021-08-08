@@ -15,12 +15,17 @@ import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.note.model.service.NoteService;
 import com.kh.thezo.note.model.vo.Note;
+import com.kh.thezo.schedule.model.service.ScheduleService;
+import com.kh.thezo.schedule.model.vo.Schedule;
 
 @Controller
 public class NoteController {
 	
 	@Autowired
 	private NoteService ntService; 
+	
+	@Autowired
+	private ScheduleService scService;
 	
 	/**
 	 *  노트 리스트 목록 조회
@@ -50,7 +55,14 @@ public class NoteController {
 	 * 노트작성 양식 화면
 	 */
 	@RequestMapping("insertForm.note")
-	public String noteInsertForm() {
+	public String noteInsertForm(String memNo, Model model) {
+		HashMap map = new HashMap();
+		int scWriter = Integer.parseInt(memNo);
+		map.put("memNo", memNo);
+		ArrayList<Schedule> scList = scService.selectScheduleList(map);
+		for(int i=0; i>scList.size(); i++) {
+		}
+		model.addAttribute("scList", scList);
 		return "schedule/note/noteInsertView";
 	}
 	

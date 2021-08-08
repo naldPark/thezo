@@ -19,6 +19,65 @@
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 	    var calendarEl = document.getElementById('calendar');
+	    var infoSet = new Set();
+	    var infoArr = new Array();
+	    function removeEvents(re){
+    		infoSet.add(re);
+    		//infoSet = new Set(infoArr);
+    	}
+	    var infoArr = Array.from(infoSet);
+	    
+	   
+	    // 일정 출력 필터
+	    $(scChk).change(function(){
+	    	 $.each(calendar.getEvents(), function(index, value){
+	 	    	removeEvents(value);
+	 	    });
+	    	var scTypeString = "";
+	    	
+			$.each(scChk, function (index, value) {
+				if($(value).is(":checked")){
+					scTypeString += $(value).val();
+				}else{
+					scTypeString += "";
+				}
+			});
+			
+			/* if(calendar.getEvents().length === 0){
+				$.each(infoArr, function(index, value){
+					//console.log(value);			
+					var scType = value._def.extendedProps.scType;
+					if(scTypeString.includes(scType)){
+						calendar.addEvent(value);
+					}
+						//console.log(value);
+				})
+			}else{ */
+				$.each(calendar.getEvents(), function(index, value){
+					//console.log(value);
+					var scType = value._def.extendedProps.scType
+					if(!scTypeString.includes(scType)){ 
+						// 메뉴바에서의 scType이 체크 해제 되었다면,
+						// 달력에서 출력되지 않게 한다.
+						removeEvents(value);
+						value.remove();
+					}else{
+						// 메뉴바에서 scType이 체크 되었다면,
+						// 달력에 다시 출력 한다.
+						$.each(infoArr, function(index, value){
+							var scType = value._def.extendedProps.scType;
+							if(scTypeString.includes(scType)){
+								calendar.addEvent(value);
+							}
+							//console.log(value);
+						})
+					}
+				});
+			
+			
+			
+			
+		});
 	    
 	    var calendar = new FullCalendar.Calendar(calendarEl, {
     	
@@ -31,6 +90,14 @@
 	    		$('#insertSc').modal();
 	    	},
 	    	
+	    	eventClick: function(info) {
+	        	// 이벤트 클릭했을 시 기능 설정
+	        	// 일정 내용과 보고서가 보여져야 함!!
+	        	var scNo = info.event._def.extendedProps.scNo;
+	        	var option = "width = 680, height = 530, top = 100, left = 200, location = no";
+				window.open("detail.sc?scNo=" + scNo, "일정상세정보", option);
+	        },
+	    	
 	      	headerToolbar: { // 헤더설정
 				left: 'prevYear,prev,next,nextYear today',
 				center: 'title',
@@ -42,70 +109,76 @@
 	        locale: 'ko', // 한국어 설정
 	        themeSystem: 'bootstrap', // 테마 설정
 	        eventSources:[
-	        	{
-        		 events: [ // ajax로 일정 불러오기
-     	        	// 1. 개인 일정
-     				$.ajax({
-     					url :'list.sc',
-     					data : {scType: "개인", memNo : ${loginUser.memNo}},
-     					cache: false,
-     					success:function(list){
-     						var scList = Object.values(JSON.parse(list));
-     						for(var i=0; i<scList.length; i++){
-     							calendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
-     						}
-     					},error: function(){
-     						console.log("일정 조회용 ajax 통신 실패");
-     					}
-     				})
+        		{
+        		id: 'es',
+				events: [ // ajax로 일정 불러오기
+					// 1. 개인 일정
+					$.ajax({
+						url :'list.sc',
+						data : {scType:"개인", memNo:${loginUser.memNo}},
+						cache: false,
+						success:function(list){
+							var scList = Object.values(JSON.parse(list));
+							for(var i=0; i<scList.length; i++){
+								scList[i].color = '#148CFF';
+								if(scTypeString.includes('개인')){
+									calendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								}
+							}
+						},error: function(){
+							console.log("일정 조회용 ajax 통신 실패");
+						}
+					})
 				],
+        		 
      	        events: [
      	        	// 2. 회사 일정
      	        	$.ajax({
      	        		url :'list.sc',
-	     				data : {scType: "회사"},
+	     				data : {scType: "회사", memNo:${loginUser.memNo}},
 	     				cache: false,
 	     				success:function(list){
 	     					var scList = Object.values(JSON.parse(list));
 	     					for(var i=0; i<scList.length; i++){
 	     						scList[i].color = '#378006';
-	     						calendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								if(scTypeString.includes('회사')){
+	     							calendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								}
 	     					}
 	     				},error: function(){
 	     					console.log("일정 조회용 ajax 통신 실패");
-	     				},
+	     				}
      	        	})
      	        ], 
      	        events: [
      	        	// 3. 부서 일정
      	        	$.ajax({
      	        		url :'list.sc',
-	     				data : {scType: "부서"},
+	     				data : {scType: "부서", memNo:${loginUser.memNo}},
 	     				cache: false,
 	     				success:function(list){
 	     					var scList = Object.values(JSON.parse(list));
 	     					for(var i=0; i<scList.length; i++){
 	     						scList[i].color = '#7B68EE';
-	     						calendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								if(scTypeString.includes('부서')){
+	     							calendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								}
 	     					}
 	     				},error: function(){
 	     					console.log("일정 조회용 ajax 통신 실패");
 	     				}
      	        	})
-     	        ], color: '#378006'
-	        }],
+     	        ],
+	        }]
 	        
-	        eventClick: function(info) {
-	        	// 이벤트 클릭했을 시 기능 설정
-	        	// 일정 내용과 보고서가 보여져야 함!!
-	        	var scNo = info.event._def.extendedProps.scNo;
-	        	var option = "width = 680, height = 530, top = 100, left = 200, location = no";
-				window.open("detail.sc?scNo=" + scNo, "일정상세정보", option);
-	        }
+	        
+	        
 		});
+	    
 	    calendar.render();
 	});
-		
+	
+	
 </script>
 
 <style>

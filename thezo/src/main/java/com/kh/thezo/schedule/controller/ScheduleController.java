@@ -37,10 +37,13 @@ public class ScheduleController {
 	@ResponseBody
 	@RequestMapping("list.sc")
 	public void selectScheduleList(HttpServletResponse response,
-			@RequestParam(value="scType") String scType, int memNo) throws IOException {
+			@RequestParam(value="scType") String scType, String memNo) throws IOException {
 		HashMap map = new HashMap();
 		map.put("scType", scType);
-		map.put("memNo", memNo);
+		if(memNo != null && !memNo.isEmpty()) { // =>개인일정
+			int scWriter = Integer.parseInt(memNo);
+			map.put("scWriter", scWriter);
+		}
 		ArrayList<Schedule> list = scService.selectScheduleList(map);
 		//System.out.println(list);
 		response.setContentType("text/html; charset=utf-8");

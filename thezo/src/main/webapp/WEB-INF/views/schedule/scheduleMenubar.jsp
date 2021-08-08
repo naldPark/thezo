@@ -12,6 +12,7 @@
 	.slide_menu>a{margin: 20px; color:black}
 	.slide_menu>a:hover{color: rgb(243,156,18);}
 	.btn>b{font-size: 18px; margin: 10px;}
+	.scColorBox{width:15px; height: 15px; border-radius:5px; display: inline-block;}
 </style>
 <script>
 	$(function(){
@@ -35,24 +36,27 @@
 		// 오늘 일정 구하기
 		$.ajax({
 			url: 'list.sc',
-			data: {scType:""},
+			data: {scType:"all", memNo:${loginUser.memNo}},
 			cache: false,
-			success: function(data){
+			success: function(list){
 				var scList = Object.values(JSON.parse(list));
+				var value = "";
 				for(var i=0; i<scList.length; i++){
-					var value = "";
-					console.log(scList[i]);
-					if(scList[i].start == td || scList[i].end == td){
+					var start = "";
+					var end = "";
+					start = scList[i].start.substring(0, 10);
+					end = scList[i].end.substring(0, 10);
+					if(td == start || td == end){
 						 value += "<li>"
-									+ scList[i].title
+									+ scList[i].title + " (" + scList[i].scType + " 일정)"  
 								+ "</li>";
 					}
+				}
 				$("#todaySchedule").html(value);
 			},error: function(){
 				console.log("오늘일정 표시용 ajax 통신 실패");
 			}
 		})
-		console.log(yyyy + '-' + mm + '-' + dd);
 	})
 </script>
 </head>
@@ -77,11 +81,8 @@
 			</button>
 			<div id="todaySc" class="w3-hide w3-white w3-card">
 				<br>
-				<ul id="todaySchedule">
+				<ul id="todaySchedule" style="list-style-type: square; margin-left:5px;">
 					<!-- 오늘일정 수만큼 li태그가 반복되는 반복문 -->
-					<li>Conference</li>
-					<li>Meeting</li>
-					<li>Lunch</li>
 				</ul>
 				<br>
 			</div>
@@ -130,16 +131,29 @@
 
 			<hr>
 			
-			<div class="table-bordered" id="do-navbar" style="width:200px; margin-top: 10px; padding: 5px;">
-			<b>필터</b>
-			<br> <!-- 걍 a링크로 ! -->
-				<input type="checkbox" value="all" checked> 전체 일정 <br>
-				<input type="checkbox" > 개인 일정 <br> 
-				<input type="checkbox" value="부서"> 내 부서 일정 <br>
-				<input type="checkbox" value="회사"> 회사 일정<br>
-				<input type="checkbox"> 비품 <br>
-				<input type="checkbox"> 회의실 <br>
+			<div class="table-bordered" id="scFilter" style="width:200px; margin-top: 10px; padding: 5px;">
+				<b>필터</b>
+				<br>
+				<input type="checkbox" id="개인" value="개인" checked> 
+				<label for="개인">개인 일정 <div class="scColorBox" style="background-color: #148CFF;"></div></label>
+				<br> 
+				<input type="checkbox" id="부서" value="부서" checked> 
+				<label for="부서">내 부서 일정 <div class="scColorBox" style="background-color: #7B68EE;"></div></label>
+				<br>
+				<input type="checkbox" id="회사" value="회사" checked> 
+				<label for="회사">회사 일정 <div class="scColorBox" style="background-color: #378006;"></div></label>
+				<br>
+				<!-- 
+				<input type="checkbox" checked> 비품 <br>
+				<input type="checkbox" checked> 회의실 <br>
+				 -->
 			</div>
+			
+			<script>
+				var scChk = $("#scFilter input[type=checkbox]");
+				var scTypeString = "개인부서회사";
+			</script>
+			
 		</div>
 		
 	</div>

@@ -34,8 +34,22 @@
 		  from schedule s
 		  join member m on (s.sc_writer = m.mem_no)
 		 where s.status = 'Y'
-		   and sc_type like '%' || #{scType} || '%'
-		   and sc_writer = #{memNo}
+		   <if test="scType=='개인'">
+		   		and sc_writer = #{scWriter}
+		   		and sc_type like '%' || #{scType} || '%'
+		   </if>
+		   <if test="scType=='회사'">
+		   		and sc_type like '%' || #{scType} || '%'
+		   </if>
+		   <if test="scType=='부서'">
+		   		and sc_type like '%' || #{scType} || '%'
+		   </if>
+		   <if test="scType=='all'">
+		   		and sc_writer = #{scWriter}
+		   		 or sc_type = '회사'
+		   		 or sc_type = '부서'
+		   </if>
+		   
 	</select>
 	
 	<select id="selectBizReport" resultMap="scheduleResult">

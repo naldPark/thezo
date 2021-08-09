@@ -34,7 +34,7 @@
             <h2><b>더조마켓</b></h2>
             <div align="center">
                 <a href="">찜하기</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="" data-toggle="modal" data-target="#reportForm">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="" data-toggle="modal" data-target="#marketReportForm" style="text-decoration:none;">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <!--게시글 작성자만 보이도록-->
 				<c:if test="${ loginUser.memId eq mk.marketWriter}">
 		            <a style="cursor: pointer; color: red;" onclick="postFormSubmit(2);">삭제</a>
@@ -57,7 +57,7 @@
 	            </div>
             	<hr width="700">
             </div>
-            <div class="content" align="center" style="min-height: 400px; font-size: 17px;">
+            <div class="content" align="center" style="min-height: 200px; font-size: 17px;">
                 ${ mk.marketContent }
             </div>
             
@@ -140,9 +140,9 @@
 		        				value += "<tr>"
 				                             + "<th>" + list[i].replyWriter + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>"
 				                             + "<td colspan='2' style='width: 400px;'>" + list[i].replyContent + "</td>"
-				                             + "<td>" + list[i].createDate + "</td>"
-				                             + "<td>신고</td>"
-				                             + "<td>삭제</td>"
+				                             + "<td>" + list[i].createDate + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
+				                             + "<td><a href='' data-toggle='modal' data-target='#mReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
+				                             + "<td><a href='deleteReply.mk' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
 				                          + "</tr>";
 		        			}
 		        				
@@ -183,44 +183,91 @@
 	            }
 	        </script>
             
-
-            <!-- 신고하기 버튼 클릭시 보여질 Modal -->
-					<div class="modal" id="reportForm">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                      
-                            <!-- Modal Header -->
-                            <div class="modal-header">
-                              <h4 class="modal-title">게시글 신고하기</h4>
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                      
-                            <!-- Modal body -->
-                            <div class="modal-body" align="center">
-                                  <form action="" method="post">
-                                   <!-- 신고할 내용 입력 -->
-                                       <input type="hidden" name="userId" value="">
-                                       <input type="hidden" name="boardType" value="">  <!-- 컬럼명확인 -->
-                                       <input type="hidden" name="boardNo" value="">
-                                       
-                                       <b>신고 구분</b><br>
-                                       <select id="rpSection" name="rpSection">
-                                           <option value="욕설">욕설/비방</option>
-                                           <option value="음란">음란/유해</option>
-                                           <option value="도배">도배/스팸</option>
-                                       </select>
-                                       <br><br>
-                                       <b>신고 내용 입력</b><br><br>
-                                       <textarea name="rpContent" id="rpContent" cols="50" row="1" style="resize:none"></textarea><br><br>
-                                      <button type="submit" class="btn btn-danger btb-sm">신고하기</button>
-                                 
-                                  </form>
-                             </div>
-              
-                            </div>
-                           </div>
-                          
-                      </div>   
+			
+			<!-- 신고하기 버튼 클릭시 보여질 Modal -->
+			<!-- 게시글 신고 -->
+			<div class="modal" id="marketReportForm">
+				<div class="modal-dialog">
+					<div class="modal-content">
+	
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title">게시글 신고하기</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+	
+						<!-- Modal body -->
+						<div class="modal-body" align="center">
+							<form action="memMarketReport.bo" method="post">
+								<!-- 신고할 내용 입력 -->
+								<input type="hidden" name="rpId" value="${ loginUser.memId }"> 
+								<input type="hidden" name="rpNo" value="${ mk.marketNo}">
+								<input type="hidden" name="boardType" value="2">
+								<input type="hidden" name="rpType" value="1"> 
+								<b>신고구분</b><br><br>
+								<select id="rpSection" name="rpSection"  class="form-control" style="width:130px;">
+									<option value="욕설/비방">욕설/비방</option>
+									<option value="음란/유해">음란/유해</option>
+									<option value="도배/스팸">도배/스팸</option>
+								</select> <br>
+								<br> 
+								<b>신고 내용 입력</b><br><br>
+								<textarea name="rpContent" id="rpContent" cols="50" row="1"
+									style="resize: none" class="form-control"></textarea>
+								<br><br>
+								<button type="submit" class="btn btn-danger btb-sm">신고하기</button>
+	
+							</form>
+						</div>
+	
+					</div>
+				</div>
+			</div>
+				
+			<!-- 신고하기 모달창 끝 -->
+			
+			<!-- 신고하기 버튼 클릭시 보여질 Modal -->
+			<!-- 댓글 신고 -->
+			<div class="modal" id="mReplyReportForm">
+				<div class="modal-dialog">
+					<div class="modal-content">
+	
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title">댓글 신고하기</h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+	
+						<!-- Modal body -->
+						<div class="modal-body" align="center">
+							<form action="marketReplyReport.bo" method="post">
+								<!-- 신고할 내용 입력 -->
+								<input type="hidden" name="rpId" value="${ loginUser.memId }"> 
+								<input type="hidden" name="rpNo" value="${ mk.marketNo}">
+								<input type="hidden" name="boardType" value="2">
+								<input type="hidden" name="rpType" value="2"> 
+								<b>신고구분</b><br><br>
+								<select id="rpSection" name="rpSection"  class="form-control" style="width:130px;">
+									<option value="욕설/비방">욕설/비방</option>
+									<option value="음란/유해">음란/유해</option>
+									<option value="도배/스팸">도배/스팸</option>
+								</select> <br><br>
+								<b>신고 내용 입력</b><br><br>
+								<textarea name="rpContent" id="rpContent" cols="50" row="1" style="resize: none" class="form-control"></textarea>
+								<br><br>
+								<button type="submit" class="btn btn-danger btb-sm">신고하기</button>
+	
+							</form>
+						</div>
+	
+					</div>
+				</div>
+			</div>
+				
+			<!-- 신고하기 모달창 끝 -->				
+			
+			
+			
 
         </div>
 

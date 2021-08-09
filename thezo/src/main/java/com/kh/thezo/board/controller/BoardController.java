@@ -390,6 +390,54 @@ public class BoardController {
 		return result>0?"success":"fail";
 	}
 	
+	// 사용자 : 사내게시글 신고하기 
+	@RequestMapping("memBoardReport.bo")
+	public String boardReport(Report rp, HttpSession session, Model model) {
+		
+		int result = bService.boardReport(rp);
+		
+		if(result>0) {
+			session.setAttribute("alertMsg", "성공적으로 게시글이 신고되었습니다.");
+			return "redirect:boardList.bo";
+		}else {
+			model.addAttribute("errorMsg", "게시글 신고 실패");
+			return "common/errorPage";
+		}
+	}
+	
+	// 사용자 : 사내게시글 댓글 신고하기 
+	@RequestMapping("boardReplyReport.bo")
+	public String BoardReplyReport(Report rp, HttpSession session, Model model) {
+			
+		int result = bService.boardReport(rp);
+			
+		if(result>0) {
+			session.setAttribute("alertMsg", "성공적으로 댓글이 신고되었습니다.");
+			return "redirect:boardList.bo";
+		}else {
+			model.addAttribute("errorMsg", "댓글 신고 실패");
+			return "common/errorPage";
+		}
+	}
+	
+	/*
+	// 사용자 : 댓글 삭제
+	@RequestMapping("deleteReply.bo")
+	public String deleteBoardReply(int replyNo,int bno, String filePath, Model model, HttpSession session) {
+		
+		int result = bService.deleteBoardReply(replyNo);
+		
+		if(result > 0) { // 성공 => 리스트 페이지
+			
+			session.setAttribute("alertMsg", "성공적으로 댓글이 삭제되었습니다.");
+			return "redirect:boardDetail.bo?bno=" + bno;
+			
+		}else { // 실패
+			model.addAttribute("errorPage", "댓글삭제 실패");
+			return "common/errorPage";
+		}
+	}
+	*/
 	
 	// ----------------------- 관리자 영역 --------------------------------------
 	// 게시판 신고관리(관리자)

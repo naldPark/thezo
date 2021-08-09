@@ -181,6 +181,20 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.insertReply(sqlSession, r);
 	}
 
+	// 사용자 : 사내게시판 신고하기 
+	@Override
+	public int boardReport(Report rp) {
+		return bDao.boardReport(sqlSession, rp);
+	}
+
+	// 사용자 : 댓글 삭제
+	@Override
+	public int deleteBoardReply(int boardNo) {
+		return bDao.deleteBoardReply(sqlSession, boardNo);
+	}
+
+	
+
 	
 	
 
@@ -212,7 +226,7 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.reportSearchList(sqlSession, pi, map);
 	}
 
-
+	
 
 	
 }

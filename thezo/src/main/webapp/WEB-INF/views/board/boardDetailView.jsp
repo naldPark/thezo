@@ -45,7 +45,7 @@ table {
 				<h2><b>사내게시판</b></h2>
 				<br>
 				<div align="right">
-					<a href="" data-toggle="modal" data-target="#reportForm">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="" data-toggle="modal" data-target="#boardReportForm" style="text-decoration:none;">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<!--게시글 작성자만 보이도록-->
 					<c:if test="${ loginUser.memId eq b.boardWriter}">
 		            	<a style="float:right; cursor: pointer; color: #0091FF;" onclick="postFormSubmit(2);">삭제</a>
@@ -154,14 +154,15 @@ table {
 		        				
 		        				$("#rcount").text(list.length);
 		        				
+		        				//<a href='' data-toggle='modal' data-target='#bReplyReportForm' style='text-decoration:none;'>신고</a>
 		        				var value = "";
 		        				for(var i in list){
 		        					value += "<tr>"
-				                              + "<th>" + list[i].replyWriter + "</th>"
+				                              + "<th>" + list[i].replyWriter +"</th>"
 				                              + "<td colspan='2' style='width: 400px;'>" + list[i].replyContent + "</td>"
 				                              + "<td>" + list[i].createDate + "</td>"
-				                              + "<td>신고</td>"
-				                              + "<td>삭제</td>"
+				                              + "<td><a href='' data-toggle='modal' data-target='#bReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
+				                              + "<td><a href='deleteReply.bo' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
 				                           + "</tr>";
 		        				}
 		        				
@@ -202,7 +203,8 @@ table {
 	
 	
 				<!-- 신고하기 버튼 클릭시 보여질 Modal -->
-				<div class="modal" id="reportForm">
+				<!-- 게시글 신고 -->
+				<div class="modal" id="boardReportForm">
 					<div class="modal-dialog">
 						<div class="modal-content">
 	
@@ -214,22 +216,22 @@ table {
 	
 							<!-- Modal body -->
 							<div class="modal-body" align="center">
-								<form action="" method="post">
+								<form action="memBoardReport.bo" method="post">
 									<!-- 신고할 내용 입력 -->
-									<input type="hidden" name="userId" value=""> <input
-										type="hidden" name="boardType" value="">
-									<!-- 컬럼명확인 -->
-									<input type="hidden" name="boardNo" value=""> 
-									<b>신고구분</b><br> 
-									<select id="rpSection" name="rpSection">
-										<option value="욕설">욕설/비방</option>
-										<option value="음란">음란/유해</option>
-										<option value="도배">도배/스팸</option>
+									<input type="hidden" name="rpId" value="${ loginUser.memId }"> 
+									<input type="hidden" name="rpNo" value="${ b.boardNo}">
+									<input type="hidden" name="boardType" value="1">
+									<input type="hidden" name="rpType" value="1"> 
+									<b>신고구분</b><br><br>
+									<select id="rpSection" name="rpSection"  class="form-control" style="width:130px;">
+										<option value="욕설/비방">욕설/비방</option>
+										<option value="음란/유해">음란/유해</option>
+										<option value="도배/스팸">도배/스팸</option>
 									</select> <br>
 									<br> <b>신고 내용 입력</b><br>
 									<br>
 									<textarea name="rpContent" id="rpContent" cols="50" row="1"
-										style="resize: none"></textarea>
+										style="resize: none" class="form-control"></textarea>
 									<br>
 									<br>
 									<button type="submit" class="btn btn-danger btb-sm">신고하기</button>
@@ -239,8 +241,55 @@ table {
 	
 						</div>
 					</div>
-	
 				</div>
+				
+				<!-- 신고하기 모달창 끝 -->
+
+
+				<!-- 신고하기 버튼 클릭시 보여질 Modal -->
+				<!-- 댓글 신고 -->
+				<div class="modal" id="bReplyReportForm">
+					<div class="modal-dialog">
+						<div class="modal-content">
+	
+							<!-- Modal Header -->
+							<div class="modal-header">
+								<h4 class="modal-title">댓글 신고하기</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+	
+							<!-- Modal body -->
+							<div class="modal-body" align="center">
+								<form action="boardReplyReport.bo" method="post">
+									<!-- 신고할 내용 입력 -->
+									<input type="hidden" name="rpId" value="${ loginUser.memId }"> 
+									<input type="hidden" name="rpNo" value="${ b.boardNo}">
+									<input type="hidden" name="boardType" value="1">
+									<input type="hidden" name="rpType" value="2"> 
+									<b>신고구분</b><br><br>
+									<select id="rpSection" name="rpSection"  class="form-control" style="width:130px;">
+										<option value="욕설/비방">욕설/비방</option>
+										<option value="음란/유해">음란/유해</option>
+										<option value="도배/스팸">도배/스팸</option>
+									</select> <br>
+									<br> <b>신고 내용 입력</b><br>
+									<br>
+									<textarea name="rpContent" id="rpContent" cols="50" row="1"
+										style="resize: none" class="form-control"></textarea>
+									<br>
+									<br>
+									<button type="submit" class="btn btn-danger btb-sm">신고하기</button>
+	
+								</form>
+							</div>
+	
+						</div>
+					</div>
+				</div>
+				
+			
+				
+				
 			</div>
 		</div>
 			

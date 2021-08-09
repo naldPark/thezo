@@ -29,6 +29,18 @@
 		<result column="status" property="status"/>
 	</resultMap>
 	
+	<resultMap id="reportResult" type="Report">
+		<result column="rp_code" property="rpCode"/>
+		<result column="rp_id" property="rpId"/>
+		<result column="rp_date" property="rpDate"/>
+		<result column="board_type" property="boardType"/>
+		<result column="rp_type" property="rpType"/> 
+		<result column="rp_no" property="rpNo"/> 
+		<result column="rp_section" property="rpSection"/>
+		<result column="rp_content" property="rpContent"/>
+		<result column="handling_date" property="handlingDate"/>
+		<result column="status" property="status"/>
+	</resultMap>
 	
 	
 	<!-- 사용자 : 벼룩시장 글 총 갯수  -->
@@ -39,7 +51,7 @@
 		 where status = 'Y' 
 	</select>
 
-	<!-- 사용자 : 공지사항 리스트 조회 -->
+	<!-- 사용자 : 벼룩시장 리스트 조회 -->
 	<select id="selectMarketList" resultMap="marketResult">
 		select
 			   market_no
@@ -202,6 +214,31 @@
 			  )  
 	</insert>
 
+
+	<!-- 사용자 : 벼룩시장 신고하기 -->
+	<insert id="marketReport">
+		insert
+		  into report
+              (
+                rp_code
+              , rp_id
+              , board_type
+              , rp_type
+              , rp_no
+              , rp_section
+              , rp_content
+              )
+			  values
+			  (
+			   	seq_brpno.nextval
+	          , #{rpId}
+	          , #{boardType}
+	          , #{rpType} 
+			  , #{rpNo}
+			  , #{rpSection}
+              , #{rpContent}
+			  )  
+	</insert>
 
 	
 

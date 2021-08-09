@@ -74,6 +74,12 @@ public interface BoardService {
 		// 7. 사용자 : 사내게시판 댓글 작성용
 		int insertReply(Reply r);
 		
+		// 8. 사용자 : 사내게시글, 댓글 신고 작성용
+		int boardReport(Report rp);
+		
+		// 9. 사용자 : 댓글 삭제
+		int deleteBoardReply(int boardNo);
+		
 		// -------------------------관리자영역 ------------------------------
 
 		// 1. 신고관리 : 신고관리 리스트 페이지 조회용

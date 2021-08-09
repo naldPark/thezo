@@ -28,7 +28,10 @@
 		<result column="rp_date" property="rpDate"/>
 		<result column="board_type" property="boardType"/>
 		<result column="rp_type" property="rpType"/> 
+		<result column="rp_no" property="rpNo"/> 
 		<result column="rp_section" property="rpSection"/>
+		<result column="rp_content" property="rpContent"/>
+		<result column="handling_date" property="handlingDate"/>
 		<result column="status" property="status"/>
 	</resultMap>
 	
@@ -422,6 +425,39 @@
 			  )  
 	</insert>
 
+	<!-- 사용자 : 사내게시판 신고하기 -->
+	<insert id="boardReport">
+		insert
+		  into report
+              (
+                rp_code
+              , rp_id
+              , board_type
+              , rp_type
+              , rp_no
+              , rp_section
+              , rp_content
+              )
+			  values
+			  (
+			   	seq_brpno.nextval
+	          , #{rpId}
+	          , #{boardType}
+	          , #{rpType} 
+			  , #{rpNo}
+			  , #{rpSection}
+              , #{rpContent}
+			  )  
+	</insert>
+              
+    <!-- 사용자 : 공지사항, 사내게시판 글 삭제 -->
+	<update id="deleteBoardReply">
+			update
+				  report
+			  set status = 'N'
+			where rp_no = #{boardNo}  		
+	</update>          
+              
 
 
 

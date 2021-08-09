@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.thezo.board.model.vo.Reply;
+import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.vo.Market;
 
@@ -35,6 +36,9 @@ public interface MarketService {
 			
 	// 8. 사용자 : 벼룩시장 댓글 작성용
 	int insertMarketReply(Reply r);
+	
+	// 9. 사용자 : 벼룩시장 게시글, 댓글 신고용
+	int marketReport(Report rp);
 			
 
 }

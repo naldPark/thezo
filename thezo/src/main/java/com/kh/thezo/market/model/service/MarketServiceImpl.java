@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.thezo.board.model.vo.Reply;
+import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.dao.MarketDao;
 import com.kh.thezo.market.model.vo.Market;
@@ -85,6 +86,12 @@ public class MarketServiceImpl implements MarketService {
 	@Override
 	public int insertMarketReply(Reply r) {
 		return mkDao.insertMarketReply(sqlSession, r);
+	}
+
+	// 사용자 : 벼룩시장 게시글, 댓글 신고
+	@Override
+	public int marketReport(Report rp) {
+		return mkDao.marketReport(sqlSession, rp);
 	}
 
 	

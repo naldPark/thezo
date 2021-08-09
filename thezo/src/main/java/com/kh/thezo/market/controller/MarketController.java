@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.thezo.board.model.vo.Reply;
+import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.market.model.service.MarketService;
@@ -205,6 +206,36 @@ public class MarketController {
 		return result>0?"success":"fail";
 	}
 	
+	
+	// 사용자 : 벼룩시장 게시글 신고하기 
+	@RequestMapping("memMarketReport.bo")
+		public String marketReport(Report rp, HttpSession session, Model model) {
+			
+			int result = mkService.marketReport(rp);
+			
+			if(result>0) {
+				session.setAttribute("alertMsg", "성공적으로 게시글이 신고되었습니다.");
+				return "redirect:marketList.bo";
+			}else {
+				model.addAttribute("errorMsg", "게시글 신고 실패");
+				return "common/errorPage";
+			}
+		}
+		
+		// 사용자 : 벼룩시장 댓글 신고하기 
+		@RequestMapping("marketReplyReport.bo")
+		public String BoardReplyReport(Report rp, HttpSession session, Model model) {
+				
+			int result = mkService.marketReport(rp);
+				
+			if(result>0) {
+				session.setAttribute("alertMsg", "성공적으로 댓글이 신고되었습니다.");
+				return "redirect:marketList.bo";
+			}else {
+				model.addAttribute("errorMsg", "댓글 신고 실패");
+				return "common/errorPage";
+			}
+		}
 	
 	
 	

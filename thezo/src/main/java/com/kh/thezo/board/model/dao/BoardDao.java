@@ -159,6 +159,16 @@ public class BoardDao {
 		return sqlSession.insert("boardMapper.insertReply", r);
 		}
 	
+	// 사용자 : 사내게시글, 댓글 신고
+	public int boardReport(SqlSessionTemplate sqlSession, Report rp) {
+		return sqlSession.insert("boardMapper.boardReport", rp);
+	}
+	
+	// 사용자 : 댓글 삭제
+	public int deleteBoardReply(SqlSessionTemplate sqlSession, int boardNo) {
+		return sqlSession.update("boardMapper.deleteBoardReply", boardNo);
+	}
+	
 	// ----------------------- 관리자 영역 ---------------------------
 	
 	// 신고관리 : 신고글 갯수 조회

@@ -220,7 +220,6 @@ public class MessageController {
 	    return new Gson().toJson(map);
 	}
 
-
 	/** 팝업창에서 부서에 따라서 동료 정보를 가져오는 Controller
 	 * @param keyword
 	 * @param currentPage
@@ -270,5 +269,43 @@ public class MessageController {
 	    return new Gson().toJson(map);
 	}
 	
+	
+	/** 쪽지 보내는 Controller 
+	 * @param memNo
+	 * @param msgStatus
+	 * @param contentStatus
+	 * @param msgContent
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="insert.msg", produces="application/json; charset=utf-8")
+	public String insertMsg(int RecipientMemNo,int senderMemNo, String msgStatus, String contentStatus, String msgContent) {
+		// 값들을 잘 넘어왔어 이제 HahMap에 담아서 넘겨주자!
+		// 해당 Message쪽에는 memNo이 없다 한행에 하나의 쪽지로 관리하기에 Vo클래스에 memNo필드추가는 적절치 않다. 
+		HashMap<Object, Object> msgInfo = new HashMap<Object, Object>();
+		msgInfo.put("RecipientMemNo", RecipientMemNo);		
+		msgInfo.put("senderMemNo", senderMemNo);
+		msgInfo.put("msgStatus", msgStatus);
+		msgInfo.put("contentStatus", contentStatus);
+		msgInfo.put("msgContent", msgContent);
+ 
+		System.out.println(msgInfo);
+		
+		int result = msgService.insertMsg(msgInfo);
+		if(result > 0) {
+			return new Gson().toJson("성공적으로 쪽지를 보냈습니다. 보낸쪽지함을 확인해 주세요.");			
+		}else {
+			return new Gson().toJson("쪽지가 보내진것처럼 보이지만 실패하였습니다. 개발자에게 문의 해주세요");			
+		}
+	}
+
+	
+	@ResponseBody
+	@RequestMapping(value="bringMem.msg", produces="application/json; charset=utf-8")
+	public String bringMemInfoByMsgNo(int msgNo) {
+		
+		HashMap<Object, Object> memInfo = msgService.bringMemInfoByMsgNo(msgNo);
+		return new Gson().toJson(memInfo);			
+	}
 
 }

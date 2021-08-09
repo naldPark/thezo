@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="author" content="Jaewon.s">
-<title>Insert title here</title>
+<title>쪽직 동료 찾기</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -62,7 +62,7 @@
         <p>▶ 항목으로 검색</p>
         <div class="department-list">
             <span>▷ 부서</span>
-            <select id="deptSelectForMsg" onChange="openRankSelect();">
+            <select id="deptSelectForChat" onChange="openRankSelect();">
                 <option value="" id="deptGuideOption">선택해주세요</option>
                 <option value="대표이사">대표이사</option>
                 <option value="경영관리본부">경영관리본부</option>
@@ -81,7 +81,7 @@
         </div>
         <div class="department-list">
             <span>▷ 직급</span>
-            <select id="rankSelectForMsg" disabled onChange="selectDeptAndRank();">
+            <select id="rankSelectForChat" disabled onChange="selectDeptAndRank();">
                 <option value="" id="rankGuideOption">선택해주세요</option>
                 <option value="사원">사원</option>
                 <option value="대리">대리</option>
@@ -139,11 +139,11 @@
         }
                 
         $(document).ready(function(){
-	       	$("#deptSelectForMsg").on('focus',function(){
+	       	$("#deptSelectForChat").on('focus',function(){
 	       		$("#deptGuideOption").hide();	       		
 	       	});
 
-	       	$("#rankSelectForMsg").on('focus',function(){
+	       	$("#rankSelectForChat").on('focus',function(){
 	       		$("#rankGuideOption").hide();	       		
 	       	});
         });
@@ -277,9 +277,9 @@
 			 			// 검색창 이름 초기화 시키기
 						$("#msg-mem-name").val("")
 		        		$("#msg-mem-name").attr("placeholder", "");
-		        		$("#deptSelectForMsg").val("").prop("selected", true);
-		        		$("#rankSelectForMsg").val("").prop("selected", true);
-		            	$("#rankSelectForMsg").prop("disabled", true);        		
+		        		$("#deptSelectForChat").val("").prop("selected", true);
+		        		$("#rankSelectForChat").val("").prop("selected", true);
+		            	$("#rankSelectForChat").prop("disabled", true);        		
 
 			 		//아래꺼가 success끝나는 곳 	
 			 		},error:function(){
@@ -292,21 +292,21 @@
         
         // 부서로 검색하는 스크립트 
         function openRankSelect(beforeKeyword ,page){
-        	if($("#deptSelectForMsg").val() == ""){
-        		$("#rankSelectForMsg").val("").prop("selected", true);
-            	$("#rankSelectForMsg").prop("disabled", true);
+        	if($("#deptSelectForChat").val() == ""){
+        		$("#rankSelectForChat").val("").prop("selected", true);
+            	$("#rankSelectForChat").prop("disabled", true);
             	// 여기서는 뿌려주는 테이블에 " 해당 조건에 대한 검색결과가 없다" 라고 알려줘야한다. 
         	}else{
         		$("#deptGuideOption").hide();
-            	$("#rankSelectForMsg").prop("disabled", false);        		
-        		$("#rankSelectForMsg").val("").prop("selected", true);
+            	$("#rankSelectForChat").prop("disabled", false);        		
+        		$("#rankSelectForChat").val("").prop("selected", true);
         	    // 여기서 부서만으로 검색해오는 ajax를 작성해줘야한다. 
         	    // 또한 !!! 페이징 처리도 동적으로 생성을 시켜줘야한다. 그래야 깜빡거림이 없다!!! 
 				var keyword;				
 	 			if(beforeKeyword != null){
 	 				keyword = beforeKeyword;
 	 			}else{
-					keyword = $("#deptSelectForMsg").val()
+					keyword = $("#deptSelectForChat").val()
 	 			}
 	 				 			
 	 			// ajax로 값을 가져오면서 paging처리 
@@ -439,8 +439,8 @@
         // 직급과 부서로 검색하는 스크립트 
         function selectDeptAndRank(deptKeyword, rankKeyword ,page){
 			
-        	var deptKeyword = $("#deptSelectForMsg").val()
-        	var rankKeyword = $("#rankSelectForMsg").val()
+        	var deptKeyword = $("#deptSelectForChat").val()
+        	var rankKeyword = $("#rankSelectForChat").val()
 			// 얘는! 따로 조건처리해줄 필요가없다. 이미 함수에서 한번 걸러진 상태이기 때문이다. 
         	// 페이지를 바꾸더라도! 해당값은 그대로 고정되어있을것이다. 
 			

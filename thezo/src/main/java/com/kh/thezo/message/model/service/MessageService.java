@@ -61,6 +61,11 @@ public interface MessageService {
 	// 팝업창 직급으로 맴버 검색 서비스
 	ArrayList<Member> searchMemListByRank(HashMap<Object, Object> mapForCount, PageInfo pi);		
 
+	// 쪽지 보내는 서비스 
+	int insertMsg(HashMap<Object, Object> msgInfo);
+	
+	// 쪽지 번호로 쪽지 보낸사람의 정보를 자져오는 서비스 
+	HashMap<Object, Object> bringMemInfoByMsgNo(int msgNo);
 }
 
 

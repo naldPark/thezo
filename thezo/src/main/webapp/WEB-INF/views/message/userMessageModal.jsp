@@ -108,9 +108,9 @@
 	   -moz-user-select: -moz-none;
 	   -khtml-user-select: none;
 	   -webkit-user-select: none;
-	   user-select: none;
- }
-
+	   user-select: none;}
+	#select-member-msg::placeholder{color: red;}
+	#sendMsg-footer>pre{font-family:'Noto Sans KR', sans-serif; color:rgb(130,130,130);}
 </style>
 </head>
 <body>
@@ -127,22 +127,23 @@
                         <tr>
                             <th id="senderType" style="display: none;">보낸사람</th>
                             <th id="receiverType" style="display: none;">받는사람</th>
-                            <td id="toFromPerson">김땡땡 과장</td>
+                            <td id="toFromPerson"></td>
                             <th>상태</th>
-                            <td id="detailMsgStatus">긴급</td>						
+                            <td id="detailMsgStatus"></td>						
                         </tr>
                         <tr>
                             <th id="receiveTime" style="display: none;">받은시간</th>
                             <th id="sendTime" style="display: none;">보낸시간</th>
-                            <td id="msgDetailTime">2021-07-30 [16:24]</td>
+                            <td id="msgDetailTime"></td>
                             <th>관련내용</th>
-                            <td id="detailMsgContentMsg">행사</td>						
+                            <td id="detailMsgContentMsg"></td>						
                         </tr>
                     </table>
                     <div>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <!-- 동적생성할때 ! 값을 넣어가는 ! 선언적 함수 호출 -->
-                        <button id="reply-btn" onclick="openReplyAndSendMsg(1);" type="button">답장</button>
+                        <!-- 답장 보낼때 넘기는 값은 ! msgNo이다!! 이미 스크립트에서 설정해서 msgNo를 넘겼다 -->
+                        <button id="reply-btn" type="button" onclick="">답장</button>
                     </div>
                 </div>
                 
@@ -485,39 +486,11 @@
     </div>
 
 <%-------------------------------------------휴지통 복구 모달 끝 (완료)---------------------------------------------------- --%>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<%-------------------------------------------여기 까지 끝난것---------------------------------------------------- --%>
-<%-------------------------------------------여기 까지 끝난것---------------------------------------------------- --%>
-
-
-
-
-
-
-
-
-
-
-
-
-
 <%-------------------------------------------답장하기 , 쪽지 쓰기 모달 시작---------------------------------------------------- --%>
      <script>
         function openReplyAndSendMsg(msgNo){
-        	//console.log(msgNo); 번호 잘넘어온다
-            if(msgNo != null){
+        	//console.log(msgNo); //번호 잘넘어온다
+            if(msgNo != null){// 답장하기 시에 ! 
                 $("#messageDetail").modal('hide');
 
                 // 여기서 이제 반복문 돌리면서 !!! 
@@ -532,9 +505,26 @@
                 for(var i=0; i<sd.length;i++){
                     $(sd[i]).css("display", "none");
                 }
+                
+                // 쪽지 번호 가지고 받는사람 정보 가져오는 ajax 
+                $.ajax({
+        	 		url:"bringMem.msg",
+        			data:{ msgNo: msgNo
+                	},
+        	 		success:function(memInfo){
+        	 			// 아래 두개의 값에 값 넣기 
+        	 			$("#select-reply-member-msg").val(memInfo.senderNameAndRank);
+        	 			$("#hidden-reply-member-number").val(memInfo.memNo); 
+        	 			$("#hidden-reply-member-number").val(memInfo.memNo); 
+						$("#sendMsg-footer>pre").html(memInfo.msgContent);
+        	 		},error:function(){
+        	 			console.log("ajax통신 실패");
+        	 		}				
+        	 	})
+                
             }
 
-            if(msgNo == null){
+            if(msgNo == null){// 일반 쪽지 쓰기 상태 
                 var rd = document.getElementsByClassName("reply-display");
                 for(var i=0; i<rd.length;i++){
                     $(rd[i]).css("display", "none");
@@ -544,9 +534,91 @@
                     $(sd[i]).css("display", "block");
                 }
             }
-
+			$("#onlyForReply").hide();
             $("#reply-send-message").modal();
         }
+        
+        // 글자수 제한 스크립트 시작 
+        $(document).ready(function() {
+            $('#sendingMsgContent').on('keyup', function() {
+                $('#msgContentLengthCount').html("("+$(this).val().length+" / 1000)");
+         
+                if($(this).val().length > 1000) {
+                    $(this).val($(this).val().substring(0, 1000));
+                    $('#msgContentLengthCount').html("(1000 / 1000)");
+                }
+            });
+        });
+        
+        $(function(){
+            $('#msgContentLengthCount').html("("+$("#sendingMsgContent").val().length+" / 1000)");
+        })
+        // 글자수 제한 스크립트 끝
+        
+        function sendingMsg(){// 쪽지 보내는 function 시작 
+        	// 일단 해줘야할게! 
+        	// #select-member-msg
+        	// #hidden-member-number
+        	// #sendingMsgContent 여기있는 값들 비어있는지 조건 검사부터 해줘야한다. 
+        	 
+        	if(($("#select-member-msg").val().trim() == "") && ($("#select-reply-member-msg").val() == "")){
+        		alert("쪽지를 받는 동료를 검색버튼을 통해 선택해주세요.");
+        		$("#select-member-msg").attr('placeholder', '검색해주세요!' );
+        	}else if(($("#hidden-member-number").val().trim() == "") && ($("#hidden-reply-member-number").val() == "")){
+        		//alert("쪽지를 받는 동료를 검색버튼을 통해 선택해주세요.");
+        	}else if($("#sendingMsgContent").val().trim() == ""){
+        		alert("쪽지내용을 작성해 주세요.");
+        		$("#sendingMsgContent").val("");
+        		$("#sendingMsgContent").attr('placeholder', '쪽지 내용이 비어있습니다. \n쪽지 내용을 입력해주세요.' );
+        	}else{// 모든값이 채워져있을때 (정상적인 상태)
+        		//여기서 ajax 통신한다. 중요한것은 ! 
+        		//1. 성공시에 해당 input요소 빈문자열로 되돌려줘야한다. 
+        		//2. 정상적으로 보내기가 완료되면 보낸쪽지함에 업데이트 되는지 봐야한다. (즉 보낸 쪽지함 클릭시 update 처리했었는지 확인해야한다)
+                var RecipientMemNo;
+				if( $("#sendMsg-title").css("display") != "none"){
+					RecipientMemNo = $("#hidden-member-number").val();     						
+				}else{
+					RecipientMemNo = $("#hidden-reply-member-number").val();     						        						
+				} 
+        		
+        		$.ajax({
+        	 		url:"insert.msg",
+        			data:{ RecipientMemNo: RecipientMemNo
+        				 , senderMemNo : ${ loginUser.memNo }
+        				 , msgStatus: $("#sendingMsgStatus").val()
+        				 , contentStatus: $("#sendingMsgContentStatus").val()
+        				 , msgContent: $("#sendingMsgContent").val()
+                	},
+        	 		success:function(result){
+        	 			alert(result);
+        	 			$("#select-member-msg").val("");
+        	 			$("#hidden-member-number").val(""); 
+        	 			$("#sendingMsgStatus").val("답변필요").prop("selected", true);
+        	 			$("#sendingMsgContentStatus").val("업무").prop("selected", true);
+        	 			$("#sendingMsgContent").val("");
+                		$("#sendingMsgContent").attr('placeholder', '쪽지 내용을 입력해주세요.' );
+
+        	 			
+        	 			$("#reply-send-message").modal('hide')
+        	 		},error:function(){
+        	 			console.log("ajax통신 실패");
+        	 		}				
+        	 	})
+        	}// 조건 검사 끝
+        }// 쪽지 보내는 function 끝 
+        
+        $(document).ready(function(){   
+	        $("#reply-send-message").on('hidden.bs.modal', function () {
+	 			$("#select-member-msg").val("");
+	 			$("#hidden-member-number").val(""); 
+	 			$("#select-reply-member-msg").val("");
+	 			$("#hidden-reply-member-number").val(""); 
+	 			$("#sendingMsgStatus").val("답변필요").prop("selected", true);
+	 			$("#sendingMsgContentStatus").val("업무").prop("selected", true);
+	 			$("#sendingMsgContent").val("");
+	    		$("#sendingMsgContent").attr('placeholder', '쪽지 내용을 입력해주세요.' );
+	       	})
+        })
     </script>
 
 
@@ -559,86 +631,75 @@
         <div class="modal-dialog">
             <div class="modal-content" >                
             <!-- Modal Header -->
-                <form action="" method="post">
-                    <div class="modal-header">
-                        <div>
-                            <p id="sendMsg-title" class="send-display">쪽지 쓰기</p>
-                            <p id="reply-title" class="reply-display">답장</p>
-                            <div>
-                                <span>받는 사람</span>
-                                <div>
-                                    <!-- 쪽지쓰기 -->
-                                    <input id="select-member-msg" class="send-display" type="text" readonly required>
-                                    <input id="hidden-member-number" type="hidden" name="" required>
+               <div class="modal-header">
+                   <div>
+                       <p id="sendMsg-title" class="send-display">쪽지 쓰기</p>
+                       <p id="reply-title" class="reply-display">답장</p>
+                       <div>
+                           <span>받는 사람</span>
+                           <div>
+                               <!-- 쪽지쓰기 -->
+                               <!-- AJAX 통신할거라서 또한 네이버도 웹소켓을 적용해놓지는 않았다.   -->
+                               <!-- 또한 ajax 통신이라 form태그로 묶지를 않아 javascript로다가 reuired처럼 구현해줘야한다. -->
+                               <input id="select-member-msg" class="send-display" type="text" readonly>
+                               <input id="hidden-member-number" type="hidden" name="">
 
-                                    <!-- ★★★★★ 여기서 윈도우창 호출이다! onclick으로 호출이다! 1을 넘겨줘야 내가원하는것으로 호출한다. -->
-                                    <button type="button" id="sendMsg-btn" class="send-display" onclick="openSearchMem(1);" style="background-color: rgb(52,152,219); color: white;"><i class="fas fa-search"></i></button>
-                                    <input type="hidden" name="" value="" >
-                                    <!-- 답장하기 -->
-                                    <input class="reply-display" type="text" name="" readonly required>
-                                    <button class="reply-display" type="button" disabled><i class="fas fa-search"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <table>
-                                <tr>
-                                    <th>상태</th>
-                                    <td>
-                                        <select name="">
-                                            <option value="">답변완료</option>
-                                            <option value="">답변필요</option>
-                                            <option value="">답변불필요</option>
-                                            <option value="">공지</option>
-                                            <option value="">긴급</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>관련내용</th>
-                                    <td>
-                                        <select name="">
-                                            <option value="">행사</option>
-                                            <option value="">업무</option>
-                                            <option value="">회의</option>
-                                            <option value="">기타</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <!-- 동적생성할때 ! 값을 넣어가는 ! 선언적 함수 호출 -->
-                            <button id="reply-send-btn" type="submit">보내기</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div class="writing-content-area">
-                            <textarea name="" required>생각보다 
-
-                                구현할 기능이 많구먼 ~~~~~~~
-                                
-                                할 수 있다.
-                                
-                                기존에 하던것의 연장선상이다. 
-                                
-                                다만 시간이 오래걸린다는 단점이 있다. </textarea>
-                        </div>
-                        <div>
-                            <span style="left: 0;font-weight: bold;" class="reply-display">↓ 받은 쪽지 내용</span>
-                            <span>57 / 1000 자</span>
-                        </div>
-                    </div>
-                </form>    
+                               <!-- ★★★★★ 여기서 윈도우창 호출이다! onclick으로 호출이다! 1을 넘겨줘야 내가원하는것으로 호출한다. 1이! Msg쪽에서 팝업창 연다는 의미로 넣은것! -->
+                               <button type="button" id="sendMsg-btn" class="send-display" onclick="openSearchMem(1);" style="background-color: rgb(52,152,219); color: white;"><i class="fas fa-search"></i></button>
+                               <!-- 답장하기 -->
+                               <input id="select-reply-member-msg" class="reply-display" type="text" name="" >
+                               <button id="hidden-reply-member-number" class="reply-display" type="button" disabled><i class="fas fa-search"></i></button>
+                           </div>
+                       </div>
+                   </div>
+                   <div>
+                       <table>
+                           <tr>
+                               <th>상태</th>
+                               <td>
+                                   <select id="sendingMsgStatus">
+                                       <option value="답변필요">답변필요</option>
+                                       <option id="onlyForReply" value="답변완료">답변완료</option>
+                                       <option value="답변불필요">답변불필요</option>
+                                       <option value="공지">공지</option>
+                                       <option value="긴급">긴급</option>
+                                   </select>
+                               </td>
+                           </tr>
+                           <tr>
+                               <th>관련내용</th>
+                               <td>
+                                   <select id="sendingMsgContentStatus">
+                                       <option value="업무">업무</option>
+                                       <option value="기타">기타</option>
+                                       <option value="긴급">행사</option>
+                                       <option value="회의">회의</option>
+                                   </select>
+                               </td>
+                           </tr>
+                       </table>
+                   </div>
+                   <div>
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+                       <!-- 동적생성할때 ! 값을 넣어가는 ! 선언적 함수 호출 -->
+                       <button id="reply-send-btn" type="button" onclick="sendingMsg();">보내기</button>
+                   </div>
+               </div>
+               
+               <!-- Modal body -->
+               <div class="modal-body">
+                   <div class="writing-content-area">
+                       <textarea  id="sendingMsgContent" placeholder="쪽지 내용을 입력해주세요."></textarea>
+                   </div>
+                   <div>
+                       <span style="left: 0;font-weight: bold;" class="reply-display">↓ 받은 쪽지 내용</span>
+                       <span id="msgContentLengthCount"></span>
+                   </div>
+               </div>
                 <!-- 답장하기-->
                 <!-- Modal footer -->
                 <div class="modal-footer reply-display" id="sendMsg-footer">
-                    <pre>쪽지 내용이 어쩌구 저쩌구 합니다 기분나빠서 오랜 고민끝에  
-                        신고합니다 처리 부탁드려요 ! 
-                    </pre>
+                    <pre></pre>
                 </div>
             </div>
         </div>

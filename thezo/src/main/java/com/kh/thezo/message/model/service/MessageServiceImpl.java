@@ -172,6 +172,20 @@ public class MessageServiceImpl implements MessageService{
 		return msgDao.searchMemListByRank(sqlSession, mapForCount, pi);
 	}
 
+	/** 쪽지 보내는 서비스 
+	 */
+	@Override
+	public int insertMsg(HashMap<Object, Object> msgInfo) {
+		return msgDao.insertMsg(sqlSession, msgInfo);
+	}
+
+	/** 쪽지 번호로 쪽지 보낸사람의 정보를 자져오는 서비스 
+	 */
+	@Override
+	public HashMap<Object, Object> bringMemInfoByMsgNo(int msgNo) {
+		return msgDao.bringMemInfoByMsgNo(sqlSession, msgNo);
+	}
+
 
 
 	

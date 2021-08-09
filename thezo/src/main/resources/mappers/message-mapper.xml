@@ -29,42 +29,13 @@
 	</resultMap>
 
 
-	<!-- @author Jaewon.s -->
-	<!-- 시간 많이 잡아먹은 .. sql문... 얘를 바탕으로 파생시키면된다. 받은 쪽지 목록 가져오는 sql문  -->
-	<!--<select id="ajaxSelectListNf" resultMap="messageResult">
-		select
-		       msg_no
-		     , recipient_no
-		     , sender_no
-		     , msg_status
-		     , content_status
-             ,case when (to_char(create_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
-                 then to_char(create_date, 'HH24:MI')
-                 when to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365 > 1 
-                 then round(to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365) || '년 전'  
-                 when (to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD'))) = 1
-                 then '어제'
-              else
-                   to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')) || '일전' 
-              end as receive_date   
-		     , msg_content
-		     , read_status
-		     , to_recycle_bin
-		     , from_recycle_bin
-		     , to_del_status
-		     , from_del_status
-             , mb.mem_name || ' ' || mb.rank as recipient_name_rank
-  	         , mb2.mem_name || ' ' || mb2.rank as sender_name_rank	     
-		  from message msg
-          join member mb on (msg.recipient_no = mb.mem_no )
-  	      join member mb2 on (msg.sender_no = mb2.mem_no )	  
-		 where recipient_no = #{ memNo }    
-		   and to_recycle_bin = 'Y'
-		   and to_del_status = 'Y' 
-		 order
-		    by create_date desc      
-	</select>-->
+	<resultMap id="memInfoResultMap" type="HashMap">
+		<result column="sender_no" property="memNo"/>
+		<result column="MSG_CONTENT" property="msgContent"/>		
+		<result column="sender_name_rank" property="senderNameAndRank"/>
+	</resultMap>
 
+	<!-- @author Jaewon.s -->
 	
 	<!-- 받은 쪽지 조회해오는 sql문 !!  -->
 	<select id="ajaxSelectReceiveMsgList" resultMap="messageResult">
@@ -384,5 +355,36 @@
             by dep_no, decode(rank, '대표이사', 1, '상무', 2, '부장', 3, '과장', 4, '대리', 5, 6) ,mem_name asc
 	 </select>
 	 
+	 <!-- 쪽지 보내는 sql문 -->
+	 <insert id="insertMsg">
+	 	insert 
+	 	  into Message
+	 	  (
+	 	  	msg_no
+	 	  , recipient_no	
+	      , sender_no
+	  	  , msg_status
+		  , content_status
+		  , msg_content
+	 	  )
+	 	  values
+	 	  (
+	 	    seq_msgno.nextval
+	 	  , #{ RecipientMemNo } 
+  	 	  , #{ senderMemNo } 
+  	 	  , #{ msgStatus } 
+  	 	  , #{ contentStatus } 
+  	 	  , #{ msgContent } 
+	 	  )
+	 </insert>
+	 
+	 <select id="bringMemInfoByMsgNo" resultMap="memInfoResultMap">
+	 	select sender_no
+	 		 , msg_content
+  	         , mb.mem_name || ' ' || mb.rank as sender_name_rank
+  	      from message msg
+  	      join member mb on (msg.sender_no = mb.mem_no)
+  	     where msg_no = #{ msgNo}      	     
+	 </select>	 
 	 
 </mapper>

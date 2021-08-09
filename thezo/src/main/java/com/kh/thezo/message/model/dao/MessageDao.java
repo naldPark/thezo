@@ -207,5 +207,18 @@ public class MessageDao {
 		return (ArrayList)sqlSession.selectList("messageMapper.searchMemListByRank", mapForCount, rowBounds);
 	}
 
+	/** 쪽지 보내는 Dao
+	 * @param sqlSession
+	 * @param msgInfo
+	 * @return
+	 */
+	public int insertMsg(SqlSessionTemplate sqlSession, HashMap<Object, Object> msgInfo) {
+		return sqlSession.insert("messageMapper.insertMsg", msgInfo);
+	}
+
+	public HashMap<Object, Object> bringMemInfoByMsgNo(SqlSessionTemplate sqlSession, int msgNo) {
+		return sqlSession.selectOne("messageMapper.bringMemInfoByMsgNo", msgNo);
+	}
+
 
 }

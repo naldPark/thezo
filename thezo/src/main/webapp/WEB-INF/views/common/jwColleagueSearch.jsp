@@ -54,7 +54,7 @@
     <div class="search-by-name">
         <span>▶ 이름으로 검색</span>
         <div>
-            <input type="text" id="chat-mem-name">
+            <input type="text" id="chat-mem-name" onKeypress="javascript:if(event.keyCode==13){selectMemInfoBySearch();}">
             <button type="button" onclick="selectMemInfoBySearch()"><i class="fas fa-search"></i></button>
         </div>
     </div>

@@ -13,6 +13,10 @@ import com.kh.thezo.message.model.vo.Message;
 import com.kh.thezo.message.model.vo.MsgReport;
 
 //@author Jaewon.s
+/**
+ * @author Jaewon.Shin
+ *
+ */
 @Repository //DB와 접근하는 클래스이다! 
 public class MessageDao {
 
@@ -237,6 +241,49 @@ public class MessageDao {
 	 */
 	public int ajaxWithdrawalReport(SqlSessionTemplate sqlSession, int msgReportNo) {
 		return sqlSession.delete("messageMapper.ajaxWithdrawalReport", msgReportNo);
-	}	
+	}
+
+	//-------------------------------------------------------------------------------------
+	//--------------------------- Admin 쪽지 신고 처리 시작 --------------------------------------
+	/** 미해결 된 신고 내용 갯수 구해오는 dao
+	 * @param sqlSession
+	 * @return
+	 */
+	public int unHandleReportCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("messageMapper.unHandleReportCount");
+	}
+
+	/** 해결 된 신고 내용 갯수 구해오는 dao
+	 * @param sqlSession
+	 * @return
+	 */
+	public int handleReportCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("messageMapper.handleReportCount");
+	}
+
+	/** 미해결 된 신고  쪽지 list 가져오는 Dao
+	 * @param sqlSession
+	 * @param pi
+	 * @return
+	 */
+	public ArrayList<MsgReport> ajaxUnhandledReportList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList)sqlSession.selectList("messageMapper.ajaxUnhandledReportList","", rowBounds);
+	}
+
+	/** 해결 된 신고  쪽지 list 가져오는 Dao
+	 * @param sqlSession
+	 * @param pi
+	 * @return
+	 */
+	public ArrayList<MsgReport> ajaxHandledReportList(SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage()-1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+
+		return (ArrayList)sqlSession.selectList("messageMapper.ajaxHandledReportList","", rowBounds);
+	}
+
 
 }

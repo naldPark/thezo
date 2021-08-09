@@ -23,6 +23,7 @@ public class MsgReport {
 	private String handleContent; // 신고 처리 내용 
 	private String resultStatus;  // (쪽지)기능제한 | 생각해보기 
 	private String senderNameAndRank; 
+	private String recipientNameAndRank;
 	private String contentStatus;   //상세보기 용
 	private String withdrawalStatus; // 철회 가능 상태를 비교하기 위한 필드
 }

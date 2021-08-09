@@ -205,6 +205,38 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 
+	//-------------------------------------------------------------------------------------
+	//--------------------------- Admin 쪽지 신고 처리 시작 --------------------------------------
+
+	/** 미해결 된 신고 내용 갯수 구해오는 서비스 
+	 */
+	@Override
+	public int unHandleReportCount() {
+		return msgDao.unHandleReportCount(sqlSession);
+	}
+
+	/** 해결 된 신고 내용 갯수 구해오는 서비스
+	 */
+	@Override
+	public int handleReportCount() {
+		return msgDao.handleReportCount(sqlSession);
+	}
+
+	/** 미해결 된 신고  쪽지 list 가져오는 서비스
+	 */
+	@Override
+	public ArrayList<MsgReport> ajaxUnhandledReportList(PageInfo pi) {
+		return msgDao.ajaxUnhandledReportList(sqlSession, pi);
+	}
+
+	/** 해결 된 신고  쪽지 list 가져오는 서비스 
+	 */
+	@Override
+	public ArrayList<MsgReport> ajaxHandledReportList(PageInfo pi) {
+		return msgDao.ajaxHandledReportList(sqlSession, pi);
+	}
+
+
 
 	
 

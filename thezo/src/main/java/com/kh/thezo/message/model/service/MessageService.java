@@ -77,6 +77,22 @@ public interface MessageService {
 	// 쪽지 신고철회하는 서비스
 	int ajaxWithdrawalReport(int msgReportNo);		
 
+	//-------------------------------------------------------------------------------------
+	//--------------------------- Admin 쪽지 신고 처리 시작 --------------------------------------
+	
+	// 미해결 된 신고 내용 갯수 구해오는 서비스 
+	int unHandleReportCount();
+
+	// 해결 된 신고 내용 갯수 구해오는 서비스 
+	int handleReportCount();
+
+	// 미해결 된 신고  쪽지 list 가져오는 서비스 
+	ArrayList<MsgReport> ajaxUnhandledReportList(PageInfo pi);		
+
+	// 해결 된 신고  쪽지 list 가져오는 서비스 
+	ArrayList<MsgReport> ajaxHandledReportList(PageInfo pi);		
+
+
 	
 }
 

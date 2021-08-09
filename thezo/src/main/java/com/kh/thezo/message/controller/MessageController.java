@@ -359,5 +359,48 @@ public class MessageController {
 		}
 	}
 
+	//--------------------------------------------------------------------------------------------------
+	//-------------------------------------- 관리자쪽 쪽지 신고 처리 -------------------------------------------
+	// ★ 중요하다 !!!! 2개로 각각 쪽지 해결된것지 아닌지    (상세조회때는 따로 만들어야 한다 !! )
+	/** 미해결 신고 쪽지 목록 가져오는 Controller 
+	 * @param currentPage
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="unhandledReport.admsg", produces="application/json; charset=utf-8")
+	public String ajaxUnhandledReportList(@RequestParam(value="currentPage", defaultValue="1") int currentPage) {		
+		// 일단 모든 ! 미해결 신고 쪽지 갯수 가져와야한다. 
+		int listCount = msgService.unHandleReportCount();
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 4);
+		ArrayList<MsgReport> list = msgService.ajaxUnhandledReportList(pi);		
+
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("unhandleList", list);
+		map.put("pi", pi);
+
+	    return new Gson().toJson(map);
+	}
+
+	
+	/** 해결된 신고 쪽지 목록 가져오는 Controller 
+	 * @param currentPage
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="handledReport.admsg", produces="application/json; charset=utf-8")
+	public String ajaxHandledReportList(@RequestParam(value="currentPage", defaultValue="1") int currentPage) {		
+		// 일단 모든 ! 미해결 신고 쪽지 갯수 가져와야한다. 
+		int listCount = msgService.handleReportCount();
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 4);
+		ArrayList<MsgReport> list = msgService.ajaxHandledReportList(pi);		
+		
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		map.put("handleList", list);
+		map.put("pi", pi);
+
+	    return new Gson().toJson(map);
+	}
+
+	
 	
 }

@@ -50,6 +50,7 @@
 		<result column="HANDLE_CONTENT" property="handleContent"/>
 		<result column="RESULT_STATUS" property="resultStatus"/>
 		<result column="sender_name_rank" property="senderNameAndRank"/>
+		<result column="recipient_name_rank" property="recipientNameAndRank"/>
 		<result column="CONTENT_STATUS" property="contentStatus"/>
 		<result column="withdrawal_status" property="withdrawalStatus"/>
 	</resultMap>
@@ -456,8 +457,7 @@
               
           from msg_report mr
           join member mb on (mr.reported_no = mb.mem_no )
-         where del_status = 'Y' 
-           and reporter_no = #{ memNo }        	 	
+         where reporter_no = #{ memNo }        	 	
 		 order
 		    by report_date desc      
 	 </select>
@@ -480,15 +480,73 @@
           from msg_report mr
           join member mb on (mr.reported_no = mb.mem_no )
           join message msg on (mr.msg_no = msg.msg_no)
-         where del_status = 'Y' 
-           and mr.msg_report_no = #{ msgReportNo }           
+         where mr.msg_report_no = #{ msgReportNo }           
 	 </select>
 	 
 	<!-- 쪽지 신고철회하는 SQL문 (delete 처리해버리는게 더 깔끔함.) -->
+	<!-- 후에 컬럼 없앶버려랴  del_status가 필요가없다 -->
 	<delete id="ajaxWithdrawalReport">
 		delete 
 		  from msg_report
 		 where msg_report_no = #{msgReportNo}
  	</delete>
+ 	
+ 	<!--   아레 부터 ============================== admin 영역 이다!  -->
+ 	<!-- 미해결 된 신고 내용 갯수 구해오는 sql문 -->
+ 	<select id="unHandleReportCount" resultType="_int">
+	 	select
+		       count(*)
+		  from msg_report
+         where handle_status = '처리중'	 
+           and to_date(to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') <![CDATA[>]]> (to_date(to_char(report_date,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') + (interval '24' hour))
+ 	</select>
+
+ 	<!-- 해결 된 신고 내용 갯수 구해오는 sql문  --> 	
+ 	<select id="handleReportCount" resultType="_int">
+ 		select
+		       count(*)
+		  from msg_report
+         where handle_status = '처리완료'	 
+ 	</select>
+ 	
+ 	<!-- 미해결 된 신고  쪽지 list 가져오는 sql문 --> 	
+ 	<select id="ajaxUnhandledReportList" resultMap="msgReportResult">
+		select msg_report_no
+	 	  	 , report_type
+	 	  	 <!-- 아래는 신고대상이다. -->
+	 	     , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	 	     , to_char(report_date, 'YYYY-MM-DD') as report_date
+	 	     <!-- 아래는 신고인이다.  -->
+			 , mb2.mem_name || ' ' || mb2.rank as recipient_name_rank
+          from msg_report mr
+          join member mb on (mr.reported_no = mb.mem_no )
+		  join member mb2 on (mr.reporter_no = mb2.mem_no )
+         where handle_status = '처리중'
+           and to_date(to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') <![CDATA[>]]> (to_date(to_char(report_date,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') + (interval '24' hour))
+         order
+            by msg_report_no desc
+ 	</select>
+ 	
+ 	<!-- 해결 된 신고  쪽지 list 가져오는 sql문  -->
+ 	<select id="ajaxHandledReportList" resultMap="msgReportResult">
+ 		select msg_report_no
+	 	  	 , report_type
+	 	  	 <!-- 아래는 신고대상이다. -->
+	 	     , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	 	     , to_char(report_date, 'YYYY-MM-DD') as report_date
+	 	     <!-- 아래는 신고인이다.  -->
+			 , mb2.mem_name || ' ' || mb2.rank as recipient_name_rank
+			 , result_status
+			 , to_char(handle_date, 'YYYY-MM-DD') as handle_date
+          from msg_report mr
+          join member mb on (mr.reported_no = mb.mem_no )
+		  join member mb2 on (mr.reporter_no = mb2.mem_no )
+         where handle_status = '처리완료'
+		 order
+            by msg_report_no desc
+ 	</select>
+ 	
+ 	
+ 	
 	 
 </mapper>

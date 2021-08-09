@@ -44,7 +44,6 @@ table {
 			<div class="innerOuter">
 				<h2><b>사내게시판</b></h2>
 				<br>
-				
 				<div align="right">
 					<a href="" data-toggle="modal" data-target="#reportForm">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<!--게시글 작성자만 보이도록-->
@@ -89,11 +88,10 @@ table {
 				<hr>
 				<br>
 	
-	            <!-- class="table-borderless"  -->
-				<table id="replyArea" border="1" align="center">
+				<table id="replyArea" class="table-borderless" align="center">
 					<thead>
 						<tr>
-							<td colspan="4">댓글 (<span id="rcount"></span>)
+							<td colspan="6">댓글 (<span id="rcount"></span>)
 							</td>
 						</tr>
 					</thead>
@@ -101,7 +99,7 @@ table {
 					</tbody>
 					<tfoot>
 						<tr>
-							<th colspan="3"><textarea class="form-control" id="content" cols="55" rows="2" style="resize: none; width: 100%"></textarea></th>
+							<th colspan="4"><textarea class="form-control" id="content" cols="55" rows="2" style="resize: none; width: 100%"></textarea></th>
 							<th colspan="2" style="vertical-align: middle">
 								&nbsp;&nbsp;<button class="btn btn-secondary" onclick="addReply();">등록하기</button>
 							</th>
@@ -115,6 +113,38 @@ table {
 		        		selectReplyList();
 		        	})
 		        	
+		        	// 댓글 작성
+		        	function addReply(){
+        		
+		        		if($("#content").val().trim().length != 0){ // 유효한 댓글 작성시 => insert요청 // trim: 공백제거
+		        			
+		        			$.ajax({
+								url:"rinsert.bo",
+								data:{
+									refNo:${b.boardNo},
+									memNo:${loginUser.memNo},
+									replyContent:$("#content").val(),
+									replyWriter:'${loginUser.memId}'
+								}, success:function(status){
+									
+									if(status == "success"){
+										selectReplyList();
+										$("#content").val("");
+									}
+									
+								}, error:function(){
+									console.log("댓글 작성용 ajax통신 실패");
+								}
+		        			}) 			
+		        			
+		        			
+		        		}else{
+		        			alertify.alert("댓글 작성후 등록 요청해주세요!");
+		        		}
+		        		
+		        	}
+		        	
+		        	// 댓글 조회
 		        	function selectReplyList(){
 		        		$.ajax({
 		        			url:"rlist.bo",
@@ -128,7 +158,7 @@ table {
 		        				for(var i in list){
 		        					value += "<tr>"
 				                              + "<th>" + list[i].replyWriter + "</th>"
-				                              + "<td>" + list[i].replyContent + "</td>"
+				                              + "<td colspan='2' style='width: 400px;'>" + list[i].replyContent + "</td>"
 				                              + "<td>" + list[i].createDate + "</td>"
 				                              + "<td>신고</td>"
 				                              + "<td>삭제</td>"
@@ -146,8 +176,7 @@ table {
 			
 	
 				<div align="center">
-					<!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
-					<a class="btn btn-secondary" href="">목록</a> 
+					<a class="btn btn-secondary" href="boardList.bo">목록</a> 
 					<c:if test="${ loginUser.memId eq b.boardWriter}">
                     	<a class="btn btn-secondary" onclick="postFormSubmit(1);">수정</a>
                     </c:if>

@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.vo.Market;
 
@@ -63,5 +64,15 @@ public class MarketDao {
 	public int updateMarket(SqlSessionTemplate sqlSession, Market mk) {
 		return sqlSession.update("marketMapper.updateMarket", mk);
 	} 
+	
+	// 사용자 : 벼룩시장 댓글 조회
+	public ArrayList<Reply> marketReplyList(SqlSessionTemplate sqlSession, int marketNo){
+		return (ArrayList)sqlSession.selectList("marketMapper.marketReplyList", marketNo);
+	}
+		
+	// 사용자 : 벼룩시장 댓글 작성
+	public int insertMarketReply(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.insert("marketMapper.insertMarketReply", r);
+	}
 		
 }

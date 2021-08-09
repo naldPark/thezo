@@ -18,6 +18,18 @@
 		<result column="change_name" property="changeName"/>
 	</resultMap>
 	
+	<resultMap id="replyResult" type="Reply">
+		<result column="reply_no" property="replyNo"/>
+		<result column="mem_no" property="memNo"/>
+		<result column="ref_section" property="refSection"/>
+		<result column="ref_no" property="refNo"/>
+		<result column="reply_content" property="replyContent"/>
+		<result column="reply_writer" property="replyWriter"/> 
+		<result column="create_date" property="createDate"/>
+		<result column="status" property="status"/>
+	</resultMap>
+	
+	
 	
 	<!-- 사용자 : 벼룩시장 글 총 갯수  -->
 	<select id="marketListCount" resultType="_int">
@@ -158,5 +170,39 @@
 		     , p_img = #{productImg}
 		 where market_no = #{marketNo}
 	</update>	
+	
+	
+		
+	<!-- 사용자 : 벼룩시장 댓글 조회 -->
+	<select id="marketReplyList" resultMap="replyResult">
+		select 
+		       reply_no
+		     , reply_content
+		     , reply_writer
+		     , to_char(create_date, 'YYYY-MM-DD') create_date
+		  from reply
+		 where status = 'Y'
+		   and ref_no = #{marketNo}    
+	</select>
+	
+	<!-- 사용자 : 벼룩시장 댓글 등록 -->
+	<insert id="insertMarketReply">
+		insert
+			  into reply
+			  values
+			  (
+			   	seq_rno.nextval
+	          , #{ memNo }
+	          , '벼룩'
+	          , #{refNo} 
+			  , #{replyContent}
+			  , #{replyWriter}
+			  , sysdate 
+	          , default
+			  )  
+	</insert>
+
+
+	
 
 </mapper>

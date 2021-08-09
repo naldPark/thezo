@@ -3,6 +3,7 @@ package com.kh.thezo.market.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.vo.Market;
 
@@ -28,5 +29,12 @@ public interface MarketService {
 	
 	// 6. 사용자 : 벼룩시장 수정
 	int updateMarket(Market mk);
+	
+	// 7. 사용자 : 벼룩시장 댓글 조회용
+	ArrayList<Reply> marketReplyList(int marketNo);
+			
+	// 8. 사용자 : 벼룩시장 댓글 작성용
+	int insertMarketReply(Reply r);
+			
 
 }

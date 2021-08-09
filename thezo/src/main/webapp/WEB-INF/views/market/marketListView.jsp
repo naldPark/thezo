@@ -66,9 +66,10 @@
 			</h2>
 
 			<div id="search-area" align="center">
-				<!-- 여기 부분 수정 (디자인적으로 별로...)   -->
-				<a href="">찜하기</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="">판매내역</a>
+				<div>
+					<img src="resources/images/heart.png" width="20" height="20">
+					<a href="" align="left" style="text-decoration:none;">찜 목록</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</div>
 				
 				<br><br>
 				

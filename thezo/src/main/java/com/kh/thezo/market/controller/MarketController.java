@@ -14,9 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.market.model.service.MarketService;
@@ -180,6 +183,27 @@ public class MarketController {
 	}
 	
 	
+	// 사용자 : 벼룩시장 댓글 조회
+	@ResponseBody
+	@RequestMapping(value="mkRlist.bo", produces="application/json; charset=utf-8")
+	public String marketReplyList(int bno){
+		
+		ArrayList<Reply> list = mkService.marketReplyList(bno);
+		//System.out.println(list);
+		return new Gson().toJson(list);
+		
+	}
+	
+	
+	// 사용자 : 벼룩시장 댓글 입력
+	@ResponseBody
+	@RequestMapping("marketReplyinsert.bo")
+	public String insertMarketReply(Reply r) {
+		
+		int result = mkService.insertMarketReply(r);
+		
+		return result>0?"success":"fail";
+	}
 	
 	
 	

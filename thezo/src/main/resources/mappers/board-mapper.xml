@@ -402,9 +402,7 @@
 		     , to_char(create_date, 'YYYY-MM-DD') create_date
 		  from reply
 		 where status = 'Y'
-		   and ref_no = #{boardNo}
-		 order
-		    by reply_no desc      
+		   and ref_no = #{boardNo}    
 	</select>
 	
 	<!-- 사용자 : 사내게시판 댓글 등록 -->

@@ -379,16 +379,17 @@ public class BoardController {
 		
 	}
 	
-	/*
+	
 	// 게시판 댓글 입력
 	@ResponseBody
 	@RequestMapping("rinsert.bo")
 	public String insertReply(Reply r) {
+		
 		int result = bService.insertReply(r);
 		
 		return result>0?"success":"fail";
 	}
-	*/
+	
 	
 	// ----------------------- 관리자 영역 --------------------------------------
 	// 게시판 신고관리(관리자)

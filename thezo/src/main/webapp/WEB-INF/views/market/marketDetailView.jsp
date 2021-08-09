@@ -68,39 +68,95 @@
             </div>
           	<br><br>
            
-           <!-- 댓글 신고하기 넣기  -->
-           <table id="replyArea" class="table-borderless" align="center">
-                <thead>
-                    <tr>
-                        <td colspan="3">댓글 (<span id="rcount">3</span>) </td> 
-                    </tr>
-                    <tr>
-                        <th>user02</th>
-                        <td>댓글입니다.너무웃기다앙</td>
-                        <td>2020-04-10</td>
-                    </tr>
-                    <tr>
-                        <th>user01</th>
-                        <td>많이봐주세용</td>
-                        <td>2020-04-08</td>
-                    </tr>
-                    <tr>
-                        <th>admin</th>
-                        <td>댓글입니다ㅋㅋㅋ</td>
-                        <td>2020-04-02</td>
-                    </tr>
-                </thead>
-                
-                <tbody>
-                    <tr>
-                        <th colspan="2">
-                            <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%"></textarea>
-                        </th>
-                        <th style="vertical-align: middle">&nbsp;&nbsp;<button class="btn btn-secondary">등록하기</button></th>
-                    </tr>
-                </tbody>
-            </table>
-            <br><br><br>
+			<table id="replyArea" class="table-borderless" align="center">
+				<thead>
+					<tr>
+						<td colspan="6">댓글 (<span id="rcount"></span>)
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+				<tfoot>
+					<tr>
+						<th colspan="4"><textarea class="form-control" id="content" cols="55" rows="2" style="resize: none; width: 100%"></textarea></th>
+						<th colspan="2" style="vertical-align: middle">
+							&nbsp;&nbsp;<button class="btn btn-secondary" onclick="addReply();">등록하기</button>
+						</th>
+					</tr>
+				</tfoot>
+			</table>
+			<br><br><br>	          
+			
+				
+			<script>
+		        $(function(){
+		        	selectReplyList();
+		        })
+		        	
+		        // 댓글 작성
+		        function addReply(){
+        		
+		        	if($("#content").val().trim().length != 0){ // 유효한 댓글 작성시 => insert요청 // trim: 공백제거
+		        			
+		        		$.ajax({
+							url:"marketReplyinsert.bo",
+							data:{
+								refNo:${mk.marketNo},
+								memNo:${loginUser.memNo},
+								replyContent:$("#content").val(),
+								replyWriter:'${loginUser.memId}'
+							}, success:function(status){
+									
+								if(status == "success"){
+									selectReplyList();
+									$("#content").val("");
+								}
+									
+							}, error:function(){
+								console.log("댓글 작성용 ajax통신 실패");
+							}
+		        		}) 			
+		        			
+		        			
+		        	}else{
+		        		alertify.alert("댓글 작성후 등록 요청해주세요!");
+		        	}
+		        		
+		        }
+		        	
+		        // 댓글 조회
+		        function selectReplyList(){
+		        	$.ajax({
+		        		url:"mkRlist.bo",
+		        		data:{bno:${ mk.marketNo }},
+		        		success:function(list){
+		        			console.log(list);
+		        				
+		        			$("#rcount").text(list.length);
+		        				
+		        			var value = "";
+		        			for(var i in list){
+		        				value += "<tr>"
+				                             + "<th>" + list[i].replyWriter + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>"
+				                             + "<td colspan='2' style='width: 400px;'>" + list[i].replyContent + "</td>"
+				                             + "<td>" + list[i].createDate + "</td>"
+				                             + "<td>신고</td>"
+				                             + "<td>삭제</td>"
+				                          + "</tr>";
+		        			}
+		        				
+		        			$("#replyArea tbody").html(value);
+		        				
+		        		},error:function(){
+		        			console.log("댓글 리스트 조회용 ajax 통신 실패");
+		        		}
+		        	})
+		        }
+		      </script>
+			
+	
+			
 
 
             <div align="center">

@@ -133,6 +133,9 @@
 			
 			<div class="table-bordered" id="scFilter" style="width:200px; margin-top: 10px; padding: 5px;">
 				<b>필터</b>
+				<!-- <br>
+				<input type="checkbox" id="전체" value="전체" checked>
+				<label for="개인">전체</label> -->
 				<br>
 				<input type="checkbox" id="개인" value="개인" checked> 
 				<label for="개인">개인 일정 <div class="scColorBox" style="background-color: #148CFF;"></div></label>
@@ -152,6 +155,20 @@
 			<script>
 				var scChk = $("#scFilter input[type=checkbox]");
 				var scTypeString = "개인부서회사";
+				/*
+				scChk.change(function(){
+					if($("input[type=checkbox][value=전체]:checked")){
+						scTypeString = "개인부서회사";
+						$("input[type=checkbox][value=개인]").attr("checked", true);
+						$("input[type=checkbox][value=부서]").attr("checked", true);
+						$("input[type=checkbox][value=회사]").attr("checked", true);
+					}
+					
+					if($("input[type=checkbox][value=전체]:checked")){
+						
+					}
+				})
+				*/
 			</script>
 			
 		</div>

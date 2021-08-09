@@ -13,6 +13,7 @@
 <style>
 	#hideRep, #showRep{color: grey;}
 	pre{font-family:'Noto Sans KR', sans-serif; font-size:15px;}
+	.scColorBox{width:15px; height: 15px; border-radius:5px; display: inline-block;}
 </style>
 </head>
 <body>
@@ -26,7 +27,19 @@
 			<tr>
 				<th width='120px'>일정 제목</th> 
 				<td width='300px'>${ sc.title }</td> 
-				<td>${ sc.scType }</td>
+				<td><b>${ sc.scType } 일정</b>
+					<c:choose>
+						<c:when test="${ sc.scType eq '개인' }">
+							<div class="scColorBox" style="background-color: #148CFF; margin-left:5px;"></div>
+						</c:when>
+						<c:when test="${ sc.scType eq '부서' }">
+							<div class="scColorBox" style="background-color: #7B68EE;"></div>
+						</c:when>
+						<c:otherwise>
+							<div class="scColorBox" style="background-color: #378006;"></div>
+						</c:otherwise>
+					</c:choose>
+				</td>
 			</tr> 
 			<tr> 
 				<th>일정 시간</th>
@@ -168,7 +181,7 @@
 			<script>
 				$(function(){
 					$("#updateSc").click(function(){
-						var option = "width = 680, height = 530, top = 100, left = 200, location = no";
+						var option = "width = 680, height = 800, top = 100, left = 200, location = no";
 						window.open("updateForm.sc?scNo=" + $("#scNo").val(), "일정수정", option);
 						self.close();
 					})

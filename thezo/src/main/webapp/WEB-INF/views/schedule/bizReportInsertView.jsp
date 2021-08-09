@@ -21,7 +21,7 @@
 	    <table id="repInfo" align="center">
 	 		<tr> 
 				<th width='120px'>제목</th> 
-				<td width='250px'><input type="text" name="reportTitle" placeholder="제목을 입력해주세요"></td> 
+				<td width='250px'><input type="text" name="reportTitle" placeholder="제목을 입력해주세요" required></td> 
 		    </tr> 
 		    <tr> 
 		 	  	<th>보고서 작성자</th> 
@@ -29,7 +29,7 @@
 		    <tr> 
  	 			<th>내용</th> 
 		 	  	<td>
-		 	  		<textarea name="reportContent" cols="45" rows="10" placeholder="내용을 입력해주세요" style="resize:none;"></textarea>
+		 	  		<textarea name="reportContent" cols="45" rows="10" placeholder="내용을 입력해주세요" style="resize:none;" required></textarea>
 		 	  	</td> 
 		    </tr> 
 		    <tr> 

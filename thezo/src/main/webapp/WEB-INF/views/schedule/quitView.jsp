@@ -8,9 +8,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<script>
-		opener.location.reload();
-		window.close();
-	</script>
+	<c:if test="${!empty alertMsg }">
+		<script>	
+			alert("${alertMsg}");
+			self.close();
+		</script>
+        <!-- 뭔가가 담겨있는 경우 -->	
+		<c:remove var="alertMsg" scope="session"/>	
+	</c:if>
 </body>
 </html>

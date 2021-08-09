@@ -68,6 +68,69 @@
 	            </td>
 	        </tr>
 	    </table>
+	    
+	    <br>
+		<div id="btn-area" align="right">
+			<button type="button" class="btn" id="hideRep">
+				업무 보고 접기 <i class='fas fa-angle-double-up' style='font-size: 15px'></i>
+			</button>
+			<button type="button" class="btn" id="showRep" hidden>
+				업무 보고 보기 <i class='fas fa-angle-double-down'
+					style='font-size: 15px'></i>
+			</button>
+		</div>
+		<script>
+	    	$(function(){
+	    		$("#hideRep").click(function(){
+	    			$("#bizRepInfo").hide();
+	    			$("#hideRep").prop("hidden", true);
+	    			$("#showRep").removeAttr("hidden");
+	    		})
+	    		$("#showRep").click(function(){
+	    			$("#bizRepInfo").show();
+	    			$("#showRep").prop("hidden", true);
+	    			$("#hideRep").removeAttr("hidden");
+	    		})
+	    	})
+	    </script>
+	    
+	    
+	    <!-- 보고서 영역 -->
+		<div id="bizRepInfo">
+			
+			<h4 class="modal-title">업무 보고</h4>
+			
+			<table id="repInfo" align="center">
+		 		<tr> 
+					<th width='120px'>제목</th> 
+					<td width='250px'><input type="text" value="${ sc.reportTitle }"></td> 
+			    </tr> 
+			    <tr> 
+			 	  	<th>보고서 작성자</th> 
+			 	  	<td><input type="text" value="${ sc.reportWriter }"></td> 
+				    <tr> 
+				 	   	<th>등록일</th> 
+				 	  	<td><input type="text" value="${ sc.createDate }"></td> 
+				    </tr> 
+				    <tr> 
+ 	 	 				<th>내용</th> 
+				 	  	<td>
+				 	  		<textarea cols="45" rows="10" style="resize: none;" required>${ sc.reportContent }</textarea>
+				 	  	</td> 
+				    </tr> 
+				    <tr> 
+				 	  	<th><label for="upfile">첨부파일</label></th>
+						<td>
+							<input type="file" id="upfile" class="form-control-file border" name="reupfile">
+								<b>현재 업로드된 파일</b> <br>
+							<a href="" download="" id="file1"></a>
+							<input type="hidden" name="originName" id="originName">
+							<input type="hidden" name="changeName" id="changeName">
+						</td>
+				    </tr> 
+			</table>
+	
+		</div>
 		    
 		<script>
 	    	// 시간설정 -> 기본을 체크로 두고, 체크해제시 시간설정 input을 hidden처리하고 입력받지않는다.

@@ -22,18 +22,18 @@
 		
 		      <!-- Modal body -->
 		      <div class="modal-body">
-		      	<input type="hidden" name="docWriter" value="${ loginUser.userId }">
+		      	<input type="hidden" name="docWriter" value="${ loginUser.memNo }">
 			    <table class="" align="center">
 			        <tr>
 			            <th width="120px">작성자</th>
 			            <td colspan="2">${ loginUser.userId }</td>
 			            <td>
 			                <select name="docCategory" id="docCategory">
-			                	<option value="공용">공용</option>
-			                    <option value="재무팀">재무팀</option>
-			                    <option value="영업팀">영업팀</option>
-			                    <option value="총무팀">총무팀</option>
-			                </select>
+								<option value='공용'>공용</option>
+								<c:forEach var="dc" begin="2" items="${ category }">
+									<option value='${ dc.depName }'>${ dc.depName }</option>
+								</c:forEach>
+							</select>
 			            </td>
 			        </tr>
 			        
@@ -50,7 +50,15 @@
 			    </table>
 			    
 		      </div>
-		
+		      
+		      
+				<script>
+	            	$(function(){
+	            		$("#docCategory option[value=${ docCategory }]").attr("selected", true);
+	            	})
+	            </script>
+	            
+	            
 		      <!-- Modal footer -->
 		      <div class="modal-footer center">
 			      <div class="button-area">

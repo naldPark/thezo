@@ -168,9 +168,11 @@ public class ScheduleController {
 	public String insertBizReport(Schedule sc, int memNo, HttpSession session, MultipartFile upfile) {
 		String reportWriter = String.valueOf(memNo);
 		sc.setReportWriter(reportWriter);
-		String changeName = saveFile(session, upfile);
-		sc.setOriginName(upfile.getOriginalFilename());
-		sc.setChangeName("resources/uploadFiles/" + changeName);
+		if(!upfile.isEmpty()) {
+			String changeName = saveFile(session, upfile);
+			sc.setOriginName(upfile.getOriginalFilename());
+			sc.setChangeName("resources/uploadFiles/" + changeName);
+		}
 		int result = scService.insertBizReport(sc);
 		if(result > 0) {
 			session.setAttribute("alertMsg", "업무 보고를 등록했습니다.");

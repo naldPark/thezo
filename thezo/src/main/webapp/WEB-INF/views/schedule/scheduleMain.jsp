@@ -14,6 +14,8 @@
 		if(path[2] = 'update.sc'){
 			self.close();
 		}
+		
+		var thisOpener = window.opener;
 	</script>
 	 
     <jsp:include page="../common/header.jsp"/>

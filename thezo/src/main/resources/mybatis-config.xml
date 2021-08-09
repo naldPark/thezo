@@ -28,6 +28,7 @@
 		<typeAlias type="com.kh.thezo.note.model.vo.Note" alias="Note"/>
 		<typeAlias type="com.kh.thezo.attendance.model.vo.Attendance" alias="Attendance"/>	
 		<typeAlias type="com.kh.thezo.mail.model.vo.Attachment" alias="Attachment"/>
+		<typeAlias type="com.kh.thezo.document.model.vo.DocCategory" alias="DocCategory"/>
 	</typeAliases>
 	
 	<mappers>

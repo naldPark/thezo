@@ -15,6 +15,11 @@
 		<result column="status" property="status"/>
 	</resultMap>
 	
+	<resultMap id="categoryResult" type="DocCategory">
+		<result column="dep_no" property="depNo"/>
+		<result column="dep_name" property="depName"/>
+	</resultMap>
+	
 	
 	<select id="selectListCount" resultType="_int">
 		select
@@ -47,27 +52,39 @@
 	<select id="selectDocument" resultMap="documentResult">
 		select 
 			   doc_no
-			 , doc_writer
+			 , mem_id as doc_writer
 			 , doc_content
 			 , doc_category
-			 , create_date
-			 , origin_name
-			 , change_name
-			 , status
-		  from document 
+			 , d.create_date
+			 , d.origin_name
+			 , d.change_name
+			 , d.status
+		  from document d 
+		  join member m on(doc_writer = mem_no)
 		 where doc_no = #{docNo}
-		   and status = 'Y'
+		   and d.status = 'Y'
 	</select>
 	
 	<select id="searchListCount" resultType="_int">
-		select
-			   count(*)
-		  from document
-		 where status = 'Y'
-		   and doc_category = #{docCategory}
-		   and
+		select count(*)
+		  from (select
+		               doc_no
+		             , department || ' ' || mem_name "DOC_WRITER"
+		             , doc_content
+		             , doc_category
+		             , create_date
+		             , d.origin_name
+		             , d.change_name
+		             , d.status
+		          from document d 
+		          join member m on (d.doc_writer = m.mem_no)
+		         where d.status = 'Y'
+		           and doc_category = #{docCategory}
+		         order
+		            by create_date desc) doc
+		 where
 		 <if test="condition=='writer'">
-		 	doc_writer like '%' || #{keyword} || '%'
+		 	"DOC_WRITER" like '%' || #{keyword} || '%'
 		 </if>
 		 <if test="condition=='content'">
 		 	doc_content like '%' || #{keyword} || '%'
@@ -88,7 +105,7 @@
 		          from document d 
 		          join member m on (d.doc_writer = m.mem_no)
 		         where d.status = 'Y'
-		           and doc_category = '공용'
+		           and doc_category = #{docCategory}
 		         order
 		            by create_date desc) doc
 		 where
@@ -98,6 +115,12 @@
 		 <if test="condition=='content'">
 		 	doc_content like '%' || #{keyword} || '%'
 		 </if>
+	</select>
+	
+	<select id="selectCategoryList" resultMap="categoryResult">
+		select dep_no
+			 , dep_name
+		  from department
 	</select>
 	
 	<insert id="insertDocument">

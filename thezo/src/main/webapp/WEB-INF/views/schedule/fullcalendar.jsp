@@ -22,44 +22,43 @@
 	    var infoSet = new Set();
 	    var infoArr = new Array();
 	    function removeEvents(re){
-    		infoSet.add(re);
+    		infoArr.push(re);
     		//infoSet = new Set(infoArr);
     	}
-	    var infoArr = Array.from(infoSet);
+	    //var infoArr = Array.from(infoSet);
 	    
 	   
 	    // 일정 출력 필터
 	    $(scChk).change(function(){
-	    	 $.each(calendar.getEvents(), function(index, value){
-	 	    	removeEvents(value);
-	 	    });
 	    	var scTypeString = "";
 	    	
 			$.each(scChk, function (index, value) {
 				if($(value).is(":checked")){
 					scTypeString += $(value).val();
+					//console.log(scTypeString);
 				}else{
 					scTypeString += "";
 				}
 			});
 			
-			/* if(calendar.getEvents().length === 0){
+			// 만약 캘린더에 남은 일정이 없다면 (모두 지워졌다면)
+			// 접근할 event가 없기 때문에 event를 저장해 두었던 infoArr에 접근하도록 한다
+			if(calendar.getEvents().length === 0){
 				$.each(infoArr, function(index, value){
 					//console.log(value);			
 					var scType = value._def.extendedProps.scType;
 					if(scTypeString.includes(scType)){
 						calendar.addEvent(value);
 					}
-						//console.log(value);
 				})
-			}else{ */
-				$.each(calendar.getEvents(), function(index, value){
+			}else{
+				$.each(calendar.getEvents(), function(index, value){ // 캘린더에 출력된 이벤트에 접근
 					//console.log(value);
 					var scType = value._def.extendedProps.scType
 					if(!scTypeString.includes(scType)){ 
 						// 메뉴바에서의 scType이 체크 해제 되었다면,
 						// 달력에서 출력되지 않게 한다.
-						removeEvents(value);
+						removeEvents(value); // 체크 해제 된 일정을 따로 저장하고 달력에서 지움
 						value.remove();
 					}else{
 						// 메뉴바에서 scType이 체크 되었다면,
@@ -73,7 +72,7 @@
 						})
 					}
 				});
-			
+			}
 			
 			
 			
@@ -94,7 +93,7 @@
 	        	// 이벤트 클릭했을 시 기능 설정
 	        	// 일정 내용과 보고서가 보여져야 함!!
 	        	var scNo = info.event._def.extendedProps.scNo;
-	        	var option = "width = 680, height = 530, top = 100, left = 200, location = no";
+	        	var option = "width = 680, height = 700, top = 100, left = 200, location = no";
 				window.open("detail.sc?scNo=" + scNo, "일정상세정보", option);
 	        },
 	    	

@@ -128,7 +128,7 @@
         </div>
         <span class="report-header-btn report-span">※ 신고 처리 내역</span>
         <button type="button" class="report-log-btn" onclick="moveToReportListArea();">신고 처리 내역</button>
-        <button type="button" class="report-header-btn" onclick="movebackToReportList();">뒤로가기</button>
+        <button type="button" class="report-header-btn" onclick="movebackToRecycleBin();">뒤로가기</button>
     </div>
 
     <div class="recycle-bin-content-area w3-animate-opacity">
@@ -209,50 +209,52 @@
                 $(" #for-rb-sent-checkbox input:checkbox[name=tossNo]").prop("checked", false);
             }
         }
-
-        //  신고처리 내역으로 넘어가기!!! 
-        function moveToReportListArea(){
-            $(".recycle-bin-content-area").hide();
-            $(".recycle-bin-del").hide();
-            $(".recycle-bin-restore").hide();
-            $(".report-log-btn").hide();
-            $(".report-list-area").show();
-            $(".report-header-btn").show();            
-        }
-
-        function movebackToReportList(){
-            $(".recycle-bin-content-area").show();
-            $(".recycle-bin-del").show();
-            $(".recycle-bin-restore").show();
-            $(".report-log-btn").show();
-            $(".report-list-area").hide();
-            $(".report-header-btn").hide();            
-        }
     </script>
 <%-- ------------------------------------------------------------------------------------------------- --%>
 <%-- ------------------------------------------------------------------------------------------------- --%>
 <%-- ----------------------------------------신고처리 내역 부분 시작 ------------------------------------------ --%>
    	<script>
-   		// ※ 정석적으로 report쪽으로 받아와야한다. 
-		/*function showReportMsg(){				
+    // 휴지통으로 돌아가기 
+	    function movebackToRecycleBin(){
+	        $(".recycle-bin-content-area").show();
+	        $(".recycle-bin-del").show();
+	        $(".recycle-bin-restore").show();
+	        $(".report-log-btn").show();
+	        $(".report-list-area").hide();
+	        $(".report-header-btn").hide();
+	        reloadReportList();
+	    }
+   	
+	    //  신고처리 내역으로 넘어가기!!! 
+	    function moveToReportListArea(){
+	        $(".recycle-bin-content-area").hide();
+	        $(".recycle-bin-del").hide();
+	        $(".recycle-bin-restore").hide();
+	        $(".report-log-btn").hide();
+	        $(".report-list-area").show();
+	        $(".report-header-btn").show();            
+	        reloadReportList();
+	    }
+
+	    function reloadReportList(){	    	
 		 	$.ajax({
 		 		url:"selectReportList.msg",
-				data:{memNo: "${sessionScope.loginUser.memNo}"},
+				data:{memNo: ${sessionScope.loginUser.memNo}},
 		 		success:function(reportList){
-
+		 			//console.log(reportList);
 		 			var value ="";
 		 			if(reportList.length != 0){
 			 			for(var i in reportList){
-			 				value += '<tr onclick="userTossReportNo('
-			 					   + reportList[i].msgNo	
+			 				value += '<tr onclick="openReportDetail('
+			 					   + reportList[i].msgReportNo	
 			 				       + ');"><td>'
 			 				       + reportList[i].senderNameAndRank
 			 				       + '</td><td>'
-			 				       + reportList[i].msgStatus
+			 				       + reportList[i].handleStatus
 			 				       + '</td><td>'
-			 				       + reportList[i].contentStatus
+			 				       + (reportList[i].resultStatus == null? '미정' : reportList[i].resultStatus)
 			 				       + '</td><td>'
-			 				       + reportList[i].createDate
+			 				       + (reportList[i].handleDate =='일전'? "미정" : reportList[i].handleDate)
 			 				       + '</td></tr>';
 			 			}
 		 			}else{
@@ -263,11 +265,8 @@
 		 			console.log("ajax통신 실패");
 		 		}				
 		 	})		 	
-		}
-		
-		$(function(){		
-			showReportMsg();
-		})*/
+	    }
+
 	</script>
     
     
@@ -298,27 +297,6 @@
             </table>
         </div>
     </div>
-
-    
-    <script>
-        function userTossReportNo(reportNo){
-            //신고번호 넘겨서 만들어놓은 ajax 활용하기 (재활용) 
-            //var tossedNo = $(reportNo).children(0).eq(0).text();
-            // 해당 전역변수 가지고 db가서 정보 조회해와서 ! 값동적으로 생성해서 보여주기  여기서 작업 해주면된다!
-            //console.log(reportNo);
-            //마지막에 만들어진 모달을 여는것으로 효율성 증대! 
-            $("#user-report-detail-modal").modal();
-        }
-
-        function cancelReportMsg(tossedMsgNo){
-            // 받은 번호 가지고 신고 철회하기! 
-            // 1. 우선적으로 ! 해당 신고 버튼을 !!! 신고 시간과 sysdate 비교해서 ! 
-            //    만약 하루가 지났다면 회색으로 바꾸고 disabled 주기!!! 
-
-            console.log(tossedMsgNo);
-            $("#user-report-detail-modal").modal('hide');
-        }
-    </script>
 <%-- ----------------------------------------신고처리 내역 부분 끝 ------------------------------------------ --%>
 </body>
 </html>

@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="author" content="Jaewon.s">
-<title>쪽지 모달들</title>
+<title>Message Modal</title>
 <style>
 	/* 받은 쪽지 상세 모달  */
     #messageDetail .modal-content{width: 630px; height: 315px; transform: translateY(150px);} 
@@ -111,13 +111,48 @@
 	   user-select: none;}
 	#select-member-msg::placeholder{color: red;}
 	#sendMsg-footer>pre{font-family:'Noto Sans KR', sans-serif; color:rgb(130,130,130);}
+	
+ 	/* 신고 모달창 css영역 */
+    #receive-msg-report-modal .modal-content{width: 360px; height: 445px; transform: translate(150px, 120px); background-color: rgb(250,250,250);}
+    #receive-msg-report-modal .modal-header{width: 100%; height: 55px; border-bottom: none;}
+    #receive-msg-report-modal .modal-header>p{color: rgb(167,89,182); font-size: 28px; font-weight: bold; transform: translateX(20px);}
+    #receive-msg-report-modal .modal-body{height: 340px;}
+    #receive-msg-report-modal .modal-body>div{padding-left: 10px; padding-bottom: 7px; vertical-align: middle;}
+    #receive-msg-report-modal .modal-body>div>span{width: 100px; font-size: 16px; font-weight: bold;}
+    #receive-msg-report-modal .modal-body>div>input, #receive-msg-report-modal .modal-body>div>select{width: 150px; height: 40px; padding: 5px; margin: 0px; vertical-align: middle; transform: translateX(1px);}
+    #receive-msg-report-modal .modal-body>div>textarea{width: 300px; height: 135px; resize: none; padding: 5px 10px 5px 10px; margin-left: 2px; transform: translateX(1px); white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;}
+    #receive-msg-report-modal .modal-body>div:nth-child(3){padding-bottom: 0px;}
+    #receive-msg-report-modal .modal-body>p{text-align: right; font-weight: normal; margin-right: 15px; margin-bottom: 3px;}
+    #receive-msg-report-modal .modal-body>div:last-child{padding: 0px;}
+    #receive-msg-report-modal .modal-body>div>p{color: red; font-size: 12px; font-weight: bold; letter-spacing: -0.3px; margin: 0px;}
+    #receive-msg-report-modal .modal-footer{height: 45px; padding: 0px; margin: 0px; border-top: none;}
+    #receive-msg-report-modal .modal-footer>button{width: 50%; height: 100%; font-size: 22px; border: none; border-radius: 0px; margin: 0px; margin-top: 3px; box-sizing: border-box;}
+    #receive-msg-report-modal .modal-footer>button:hover{font-size: 23px; font-weight: bold;}
+    #receive-msg-report-modal .modal-footer>button:first-child{color: rgb(51,51,51); background-color: rgb(224,224,224);}
+    #receive-msg-report-modal .modal-footer>button:last-child{color: white; transform: translateX(1px); background-color: rgb(155,89,182);}
+	
+    /* 신고 상세 내역 모달 css 영역 */
+    #user-report-detail-modal th{width: 80px;}
+    #user-report-detail-modal td{width: 200px;}
+    #user-report-detail-modal .modal-content{width: 635px; height: 410px;transform: translate(-18%, 35%); background-color :rgb(250,250,250);}
+    #user-report-detail-modal .modal-header{height: 90px; border-bottom: none;}
+    #user-report-detail-modal .modal-header-bottom{height: 30px;  border-bottom: 1px solid lightgrey; display: flex; justify-content: space-between;}
+    #user-report-detail-modal .modal-header-bottom>span{color: red; font-weight: bold; padding-left: 15px;}
+    #user-report-detail-modal .modal-header-bottom>button{width: 60px; height: 25px; color: white; font-size: 11px; letter-spacing: -0.3px; border: none; border-radius: 5px; margin-right: 10px; outline: none; background-color:rgb(52,152,219);}
+    .view-user-report-content{width: 635px; height: 225px; display: flex; justify-content: space-around; }
+    #user-report-detail-modal .modal-body{padding: 0px;}
+    #user-report-detail-modal .modal-footer{color: red; font-size: 14px; font-weight: bold; justify-content: flex-start;}
+    .left-content , .right-content{width: 305px;}	
+	.left-content>p, .right-content>p, .modal-footer>p{font-size: 18px; font-weight: bold ; margin: 0px; padding-left: 10px;}
+	.left-content>pre{width: 100%; height: 200px; color: rgb(106,102,97); padding: 8px ; border-radius: 5px ; background-color: rgb(190,190,190) ; letter-spacing: -0.5px; white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;}
+	.right-content>textarea{width: 100%; height: 200px; padding: 8px ; border-left: 1px solid rgb(133, 133, 133); border-radius: 5px; resize: none;}
 </style>
 </head>
 <body>
 <%-------------------------------------------(받은,보낸, 휴지통)쪽지 상세보기 모달 시작 (완료)---------------------------------------------------- --%>
-<!--  겁나 중요 하다 여기서 중요한것은 메소드로 해당 !모달을 호출할때에  인자값을 2개를 넘긴다 !이를 가지고  받은쪽지인지 보낸쪽지인지 휴지통에 있는 쪽지인지 판별 -->
-    <!-- 쪽지 상세보기모달인데 ! 상관관계상 ! header쪽에서 삽입함.  -->
-	<!-- 받은 쪽지 (답장버튼있음) 휴지통에서 받은 쪽지 보는곳 / 그리고 보낸 쪽지 보는것이 혼합 되어있는 복잡한 놈이다!!! 조심해서 다뤄주자! -->
+<%--  겁나 중요  여기서 중요한것은 메소드로 해당 !모달을 호출할때에  인자값을 2개를 넘긴다 !이를 가지고  받은쪽지인지 보낸쪽지인지 휴지통에 있는 쪽지인지 판별 --%>
+<%-- 쪽지 상세보기모달인데 ! 상관관계상 ! 스크립트를  header쪽에서 삽입함.  --%>
+<%-- 받은 쪽지 (답장버튼있음) 휴지통에서 받은 쪽지 보는곳 / 그리고 보낸 쪽지 보는것이 혼합 되어있는 복잡한 놈이다!!! 조심해서 다뤄주자! --%>
     <div class="modal fade" id="messageDetail">
         <div class="modal-dialog">
             <div class="modal-content" >                
@@ -150,15 +185,13 @@
                 <!-- Modal body -->
                 <div class="modal-body">
                     <div class="detail-modal-content">
-                        <pre>쪽지 내용이 어쩌구 저쩌구 합니다 기분나빠서 오랜 고민끝에  
-                            신고합니다 처리 부탁드려요 ! 
-                        </pre>
+                        <pre></pre>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-<%-------------------------------------------(받은,보낸, 휴지통)쪽지 상세보기 모달 끝 (완료)---------------------------------------------------- --%>
+<%-------------------------------------------(받은,보낸, 휴지통)쪽지 상세보기 모달 끝 (완료)-------------------------------------------------------------- --%>
 <%-------------------------------------------벋은 쪽지 삭제 모달 시작 (다른데서도 동일한 css가 쓰임 ) (완료)---------------------------------------------------- --%>
     <script>
         var rcMultiVal = []; 
@@ -208,34 +241,29 @@
     <div class="modal fade" id="receive-msg-delete-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-            
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <p class="modal-title">쪽지 삭제</p>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form action="" method="POST">                  
                     <!-- 넘어온 배열은 !!! 알아서 ,를 기준으로 싸그리 문자열로 들어간다! -->
                     <input type="hidden" id="multiSelectMsgNo" name="" value="">  
                     <!-- Modal body -->
                     <div class="modal-body">
                         선택하신 (<span id="deleteItemCount">갯수</span>)개 의 <br>
                         쪽지를 삭제하시겠습니까?
-                    </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">취소</button>
-                        <button type="button" onclick="rcMsgMoveToRB();">삭제</button>
-                    </div>
-                </form>
-                
+                 </div>
+                 <!-- Modal footer -->
+                 <div class="modal-footer">
+                     <button type="button" data-dismiss="modal">취소</button>
+                     <button type="button" onclick="rcMsgMoveToRB();">삭제</button>
+                 </div>
             </div>
         </div>
     </div>
 
 <%-------------------------------------------받은 쪽지 삭제 모달 끝 (다른데서도 동일한 css가 쓰임 ) (완료)---------------------------------------------------- --%>
-<%-------------------------------------------보낸 쪽지함 삭제 모달 시작  (완료) ---------------------------------------------------- --%>
+<%-------------------------------------------보낸 쪽지함 삭제 모달 시작  (완료) ---------------------------------------------------------------------- --%>
     <script>     
     var stMultiVal = []; 
     function openSentMsgDelete(){
@@ -288,35 +316,28 @@
                     <p class="modal-title">쪽지 삭제</p>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                <form action="" method="POST">                  
                     <!-- 넘어온 배열은 !!! 알아서 ,를 기준으로 싸그리 문자열로 들어간다! -->
                     <input type="hidden" id="sendSeMultiSentSelectMsgNo" name="" value="">  
                     <!-- Modal body -->
                     <div class="modal-body">
                         선택하신 (<span id="sendDeleteSentItemCount">갯수</span>)개 의 <br>
                         쪽지를 삭제하시겠습니까?
-                    </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">취소</button>
-                        <button type="button" onclick="stMsgMoveToRB();">삭제</button>
-                    </div>
-                </form>
-                
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal">취소</button>
+                    <button type="button" onclick="stMsgMoveToRB();">삭제</button>
+                </div>
             </div>
         </div>
     </div>
-
 <%-------------------------------------------보낸 쪽지함 삭제 모달 끝 (완료)---------------------------------------------------- --%>  
 <%-------------------------------------------휴지통 영구 삭제 모달 시작 (완료) ---------------------------------------------------- --%>
     <script>
         var delMultiRecieveMSGVal = []; // 휴지통에있는 받은 쪽지 번호들
         var delMultisentMSGVal = [];  // 휴지통에 있는 보낸 쪽지 번호들
-        
         function openRecycleBinDelete(){
             var  eachCheck = $("#recycle-bin-msg-table input:checkbox[name=tossNo]:checked");
-
             if(eachCheck.length == 0){
                 alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
             }else{
@@ -340,7 +361,6 @@
                 })
                 //console.log("삭제할 받은 쪽지번호" + delMultiRecieveMSGVal);
                 //console.log("삭제할 보낸 쪽지번호" + delMultisentMSGVal);
-
                 $("#recycle-bin-msg-delete-modal #receive-deleteItemCount").text(delMultiRecieveMSGVal.length);    
                 $("#recycle-bin-msg-delete-modal #sent-deleteItemCount").text(delMultisentMSGVal.length);    
                 $("#recycle-bin-msg-delete-modal").modal();
@@ -379,18 +399,18 @@
                     <p class="modal-title">쪽지 삭제</p>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        선택하신 (<span id="receive-deleteItemCount">갯수</span>)개 의 <span style="color:rgb(144, 144, 247); font-weight: bold;">받은쪽지</span>와<br>
-                        선택하신 (<span id="sent-deleteItemCount">갯수</span>)개 의 <span style="color: rgb(109, 230, 109); font-weight: bold; ">보낸쪽지</span>를<br>
-                        영구 삭제 하시겠습니까?
-                    </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">취소</button>
-                        <button type="button" onclick="MsgDeleteByStatus();">삭제</button>
-                    </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    선택하신 (<span id="receive-deleteItemCount">갯수</span>)개 의 <span style="color:rgb(144, 144, 247); font-weight: bold;">받은쪽지</span>와<br>
+                    선택하신 (<span id="sent-deleteItemCount">갯수</span>)개 의 <span style="color: rgb(109, 230, 109); font-weight: bold; ">보낸쪽지</span>를<br>
+                    영구 삭제 하시겠습니까?
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal">취소</button>
+                    <button type="button" onclick="MsgDeleteByStatus();">삭제</button>
+                </div>
             </div>
         </div>
     </div>
@@ -400,7 +420,6 @@
     <script>
         var multiRecieveMSGVal = []; // 휴지통에있는 받은 쪽지 번호들
         var multisentMSGVal = [];  // 휴지통에 있는 보낸 쪽지 번호들
-
         function openRecycleBinResorte(){
             var  eachCheck = $("#recycle-bin-msg-table input:checkbox[name=tossNo]:checked");
 
@@ -468,35 +487,33 @@
                     <p class="modal-title">쪽지 복구</p>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                    <!-- 넘어온 배열은 !!! 알아서 ,를 기준으로 싸그리 문자열로 들어간다! 배열 두개를 넘긴다 !! name 잘지정해줘 !  -->
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        선택하신 (<span id="rs-receive-deleteItemCount">갯수</span>)개 의 <span style="color:rgb(144, 144, 247); font-weight: bold;">받은쪽지</span>와<br>
-                        선택하신 (<span id="rs-sent-deleteItemCount">갯수</span>)개 의 <span style="color: rgb(109, 230, 109); font-weight: bold; ">보낸쪽지</span>를<br>
-                        쪽지함으로 복구 하시겠습니까?
-                    </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">취소</button>
-                        <button type="button" onclick="MsgReStoreToRcSt()">복구</button>
-                    </div>
+                <!-- 넘어온 배열은 !!! 알아서 ,를 기준으로 싸그리 문자열로 들어간다! 배열 두개를 넘긴다 !! name 잘지정해줘 !  -->
+                <!-- Modal body -->
+                <div class="modal-body">
+                    선택하신 (<span id="rs-receive-deleteItemCount">갯수</span>)개 의 <span style="color:rgb(144, 144, 247); font-weight: bold;">받은쪽지</span>와<br>
+                    선택하신 (<span id="rs-sent-deleteItemCount">갯수</span>)개 의 <span style="color: rgb(109, 230, 109); font-weight: bold; ">보낸쪽지</span>를<br>
+                    쪽지함으로 복구 하시겠습니까?
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal">취소</button>
+                    <button type="button" onclick="MsgReStoreToRcSt()">복구</button>
+                </div>
             </div>
         </div>
     </div>
 
 <%-------------------------------------------휴지통 복구 모달 끝 (완료)---------------------------------------------------- --%>
-<%-------------------------------------------답장하기 , 쪽지 쓰기 모달 시작---------------------------------------------------- --%>
+<%-------------------------------------------답장하기 , 쪽지 쓰기 모달 시작 (완료)---------------------------------------------------- --%>
      <script>
         function openReplyAndSendMsg(msgNo){
         	//console.log(msgNo); //번호 잘넘어온다
             if(msgNo != null){// 답장하기 시에 ! 
                 $("#messageDetail").modal('hide');
-
-                // 여기서 이제 반복문 돌리면서 !!! 
-                //reply쪽은 !!! block 처리를 해주고 
+    			$("#onlyForReply").show();
+                // 여기서 이제 반복문 돌리면서 !!! reply쪽은 !!! block 처리를 해주고 
                 //send 쪽은 class를 부여해줘야한다. 클래스명은  .send-display 이다!!! 
-
                 var rd = document.getElementsByClassName("reply-display");
                 for(var i=0; i<rd.length;i++){
                     $(rd[i]).css("display", "block");
@@ -515,16 +532,15 @@
         	 			// 아래 두개의 값에 값 넣기 
         	 			$("#select-reply-member-msg").val(memInfo.senderNameAndRank);
         	 			$("#hidden-reply-member-number").val(memInfo.memNo); 
-        	 			$("#hidden-reply-member-number").val(memInfo.memNo); 
 						$("#sendMsg-footer>pre").html(memInfo.msgContent);
         	 		},error:function(){
         	 			console.log("ajax통신 실패");
         	 		}				
         	 	})
-                
             }
 
             if(msgNo == null){// 일반 쪽지 쓰기 상태 
+    			$("#onlyForReply").hide();
                 var rd = document.getElementsByClassName("reply-display");
                 for(var i=0; i<rd.length;i++){
                     $(rd[i]).css("display", "none");
@@ -534,7 +550,8 @@
                     $(sd[i]).css("display", "block");
                 }
             }
-			$("#onlyForReply").hide();
+    	 	//다시한번 작성한 문자 숫자 초기화 시키기  
+            $('#msgContentLengthCount').html("("+$("#sendingMsgContent").val().length+" / 1000)");
             $("#reply-send-message").modal();
         }
         
@@ -560,7 +577,6 @@
         	// #select-member-msg
         	// #hidden-member-number
         	// #sendingMsgContent 여기있는 값들 비어있는지 조건 검사부터 해줘야한다. 
-        	 
         	if(($("#select-member-msg").val().trim() == "") && ($("#select-reply-member-msg").val() == "")){
         		alert("쪽지를 받는 동료를 검색버튼을 통해 선택해주세요.");
         		$("#select-member-msg").attr('placeholder', '검색해주세요!' );
@@ -597,8 +613,7 @@
         	 			$("#sendingMsgContentStatus").val("업무").prop("selected", true);
         	 			$("#sendingMsgContent").val("");
                 		$("#sendingMsgContent").attr('placeholder', '쪽지 내용을 입력해주세요.' );
-
-        	 			
+                    	showRcMsg();                        
         	 			$("#reply-send-message").modal('hide')
         	 		},error:function(){
         	 			console.log("ajax통신 실패");
@@ -621,12 +636,8 @@
         })
     </script>
 
-
-    <!-- 쪽지 상세보기모달인데 ! 상관관계상 ! header쪽에서 삽입함.  -->
-    <!-- 아주 단순하다!!! ajax로다가 값을 가져올때 !!! 자바스크립트로!!! 
-        답장인 경우 ! 해당 ! 요소 display none을 풀어주는 형식이면 된다. 
-        일단 만들때는!!!! 답장기준으로 만들고 그다음에 ! 쪽지 쓰기 모드로 주석바꿔가면서 진행하자.
-    -->
+    <%-- 아주 단순하다!!! ajax로다가 값을 가져올때 !!! 자바스크립트로!!!  답장인 경우 ! 해당 ! 요소 display none을 풀어주는 형식이면 된다. 
+        일단 만들때는!!!! 답장기준으로 만들고 그다음에 ! 쪽지 쓰기 모드로 주석바꿔가면서 진행하자.--%>
     <div class="modal fade" id="reply-send-message">
         <div class="modal-dialog">
             <div class="modal-content" >                
@@ -638,15 +649,15 @@
                        <div>
                            <span>받는 사람</span>
                            <div>
-                               <!-- 쪽지쓰기 -->
-                               <!-- AJAX 통신할거라서 또한 네이버도 웹소켓을 적용해놓지는 않았다.   -->
-                               <!-- 또한 ajax 통신이라 form태그로 묶지를 않아 javascript로다가 reuired처럼 구현해줘야한다. -->
+                               <%-- 쪽지쓰기 --%>
+                               <%-- AJAX 통신할거라서 또한 네이버도 웹소켓을 적용해놓지는 않았다.   --%>
+                               <%-- 또한 ajax 통신이라 form태그로 묶지를 않아 javascript로다가 reuired처럼 구현해줘야한다. --%>
                                <input id="select-member-msg" class="send-display" type="text" readonly>
                                <input id="hidden-member-number" type="hidden" name="">
 
-                               <!-- ★★★★★ 여기서 윈도우창 호출이다! onclick으로 호출이다! 1을 넘겨줘야 내가원하는것으로 호출한다. 1이! Msg쪽에서 팝업창 연다는 의미로 넣은것! -->
+                               <%-- ★★★★★ 여기서 윈도우창 호출이다! onclick으로 호출이다! 1을 넘겨줘야 내가원하는것으로 호출한다. 1이! Msg쪽에서 팝업창 연다는 의미로 넣은것! --%>
                                <button type="button" id="sendMsg-btn" class="send-display" onclick="openSearchMem(1);" style="background-color: rgb(52,152,219); color: white;"><i class="fas fa-search"></i></button>
-                               <!-- 답장하기 -->
+                               <%-- 답장하기 --%>
                                <input id="select-reply-member-msg" class="reply-display" type="text" name="" >
                                <button id="hidden-reply-member-number" class="reply-display" type="button" disabled><i class="fas fa-search"></i></button>
                            </div>
@@ -681,7 +692,7 @@
                    </div>
                    <div>
                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                       <!-- 동적생성할때 ! 값을 넣어가는 ! 선언적 함수 호출 -->
+                       <%-- 동적생성할때 ! 값을 넣어가는 ! 선언적 함수 호출 --%>
                        <button id="reply-send-btn" type="button" onclick="sendingMsg();">보내기</button>
                    </div>
                </div>
@@ -696,7 +707,7 @@
                        <span id="msgContentLengthCount"></span>
                    </div>
                </div>
-                <!-- 답장하기-->
+                <%-- 답장하기--%>
                 <!-- Modal footer -->
                 <div class="modal-footer reply-display" id="sendMsg-footer">
                     <pre></pre>
@@ -704,8 +715,8 @@
             </div>
         </div>
     </div>
-<%-------------------------------------------답장하기 , 쪽지 쓰기 모달 끝---------------------------------------------------- --%>
-<%-------------------------------------------신고 모달 시작 ---------------------------------------------------- --%>
+<%-------------------------------------------답장하기 , 쪽지 쓰기 모달 끝 (완료)---------------------------------------------------- --%>
+<%-------------------------------------------신고 모달 시작 (완료) ---------------------------------------------------- --%>
 
     <script>
             // // 전체 갯수
@@ -735,135 +746,84 @@
             // var  eachCheckCount = $("#received-msg-table input:checkbox[name=tossNo]:checked").length;
             // 개별 선택 요소 갯수! 
             var  eachCheck = $("#received-msg-table input:checkbox[name=tossNo]:checked");
-
             if(eachCheck.length == 0){
-                alert("해당 기능은 체크 박스를 선택 해야 이용가능합니다.");
+                alert("해당 기능은 하나의 쪽지를 선택 해야 이용가능합니다.");
             }else if(eachCheck.length != 1){
                 alert("신고기능은 오직 한개의 쪽지만 신고가 가능합니다.");
                 $("#rSelectAllCheckBox").prop("checked", false);
                 $(" #received-msg-table input:checkbox[name=tossNo]").prop("checked", false);
             }else{
-                $("#receive-msg-report-modal #tossedReportedMsgNo").val(eachCheck.val());
+            	$("#tossed-report-msg-no").val(eachCheck.val());
+               	// ajax 재사용으로 해당 쪽지의 신고대상의 정보를 가져와야한다.
+				// 쪽지 번호 가지고 받는사람 정보 가져오는 ajax 
+                $.ajax({
+        	 		url:"bringMem.msg",
+        			data:{ msgNo: eachCheck.val()
+                	},
+        	 		success:function(memInfo){
+        	 			// 아래 두개의 값에 값 넣기 
+        	 			$("#sending-reported-name").val(memInfo.senderNameAndRank);
+        	 			$("#sending-reported-no").val(memInfo.memNo); 
+        	 		},error:function(){
+        	 			console.log("ajax통신 실패");
+        	 		}				
+        	 	})
+        	 	//다시한번 작성한 문자 숫자 초기화 시키기  
+	            $('#report-content-length-count').html("("+$("#sending-report-content").val().length+" / 100)");
                 $("#receive-msg-report-modal").modal();
             }
         }
+        
+        // 여기가 신고처리하는 곳으로 여기서 유효성 검사를 진행해줘여한다. 
+        function insertMsgReport(){// 쪽지 신고하는 함수 시작 
+        	// 유효성 검사 
+	        if($("#sending-report-content").val().trim() == ""){
+        		alert("신고사유 없이 신고가 불가합니다 \n 신고사유를 작성해주세요");
+        		$("#sending-report-content").attr('placeholder', '신고사유를 작성해주세요');
+        		$("#sending-report-content").focus();
+	        }else{
+				// 여기서는 AJax 통신하고 나서 후에 받은쪽지함 보여지는 함수 한번더 호출을해줘야한다. 
+				$.ajax({
+	    	 		url:"insertReport.msg",
+	    			data:{ msgNo: $("#tossed-report-msg-no").val()
+	    				 , reporterNo: ${ loginUser.memNo }
+	    				 , reportedNo: $("#sending-reported-no").val()
+	    				 , reportType: $("#sending-report-status").val()
+	    				 , reportContent: $("#sending-report-content").val()	 
+	            	},
+	    	 		success:function(result){
+	    	 			alert(result);
+	    	 			showRcMsg();
+	    	 			$("#tossed-report-msg-no").val("");
+	    	 			$("#sending-reported-name").val("");
+	    	 			$("#sending-reported-no").val("");
+	    	 			$("#sending-report-content").val("");
+	    	 			$("sending-report-status").val("스팸").prop("selected", true);
+	    	 			$("#receive-msg-report-modal").modal('hide');
+	    	 		},error:function(){
+	    	 			console.log("ajax통신 실패");
+	    	 		}				
+	    	 	})// ajax 끝 
+	        }
+        }// 쪽지 신고하는 함수 끝 
+        
+        // 글자수 제한 스크립트 시작 
+        $(document).ready(function() {
+            $('#sending-report-content').on('keyup', function() {
+                $('#report-content-length-count').html("("+$(this).val().length+" / 100)");
+         
+                if($(this).val().length > 100) {
+                    $(this).val($(this).val().substring(0, 100));
+                    $('#report-content-length-count').html("(100 / 100)");
+                }
+            });
+        });
+        
+        $(function(){
+            $('#report-content-length-count').html("("+$("#sending-report-content").val().length+" / 100)");
+        })
+        // 글자수 제한 스크립트 끝
     </script>
-
-    <style>
-        #receive-msg-report-modal .modal-content{
-            width: 360px;
-            height: 445px;
-            transform: translate(150px, 120px);
-            background-color: rgb(250,250,250);
-        }
-
-        #receive-msg-report-modal .modal-header{
-            width: 100%;
-            height: 55px;
-            border-bottom: none;
-        }
-
-        #receive-msg-report-modal .modal-header>p{
-            font-size: 28px;
-            font-weight: bold;
-            color: rgb(167,89,182);
-            transform: translateX(20px);
-        }
-
-        #receive-msg-report-modal .modal-body{
-            height: 340px;
-        }
-
-        #receive-msg-report-modal .modal-body>div{
-            padding-left: 10px;
-            vertical-align: middle;
-            padding-bottom: 7px;
-        }
-
-        #receive-msg-report-modal .modal-body>div>span{
-            font-size: 16px;
-            font-weight: bold;
-            width: 100px;
-        }
-
-        #receive-msg-report-modal .modal-body>div>input, #receive-msg-report-modal .modal-body>div>select{
-            width: 150px;
-            height: 40px;
-            padding: 5px;
-            vertical-align: middle;
-            transform: translateX(1px);
-            margin: 0px;
-        }
-
-        #receive-msg-report-modal .modal-body>div>textarea{
-            resize: none;
-            width: 300px;
-            height: 135px;
-            padding: 5px 10px 5px 10px;
-            white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;
-            transform: translateX(1px);
-            margin-left: 2px;
-        }
-
-        #receive-msg-report-modal .modal-body>div:nth-child(3){
-            padding-bottom: 0px;
-        }
-
-        #receive-msg-report-modal .modal-body>p{
-            text-align: right;
-            margin-right: 15px;
-            font-weight: normal;
-            margin-bottom: 3px;
-        }
-
-        #receive-msg-report-modal .modal-body>div:last-child{
-            padding: 0px;
-        }
-
-
-        #receive-msg-report-modal .modal-body>div>p{
-            font-size: 12px;
-            color: red;
-            letter-spacing: -0.3px;
-            font-weight: bold;
-            margin: 0px;
-        }
-
-
-        #receive-msg-report-modal .modal-footer{
-            height: 45px;
-            border-top: none;
-            padding: 0px;
-            margin: 0px;
-            
-        }
-
-        #receive-msg-report-modal .modal-footer>button{
-            width: 50%;
-            height: 100%;
-            box-sizing: border-box;
-            font-size: 22px;
-            border-radius: 0px;
-            margin: 0px;
-            margin-top: 3px;
-            border: none;
-        }
-
-        #receive-msg-report-modal .modal-footer>button:hover{
-            font-size: 23px;
-            font-weight: bold;
-        }
-
-        #receive-msg-report-modal .modal-footer>button:first-child{
-            background-color: rgb(224,224,224);
-            color: rgb(51,51,51);
-        }
-        #receive-msg-report-modal .modal-footer>button:last-child{
-            background-color: rgb(155,89,182);
-            color: white;
-            transform: translateX(1px);
-        }
-    </style>
 
     <!-- The Modal -->
     <div class="modal fade" id="receive-msg-report-modal">
@@ -875,30 +835,28 @@
                     <p class="modal-title">쪽지 신고</p>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                
-                <form action="" method="post">
-                    <input type="hidden" id="tossedReportedMsgNo" name="" value="" required>
                     <!-- Modal body -->
                     <div class="modal-body">
                         <div>
+                            <input type="hidden" id="tossed-report-msg-no" value="">
                             <span>※ 신고대상</span>
-                            <input type="text" name="" value="이땡땡 개발자" required>
+                            <input type="text" id="sending-reported-name" value="">
+                            <input type="hidden" id="sending-reported-no" value="">
                         </div>
                         <div>
                             <span>※ 신고유형</span>
-                            <select name="" >
-                                <option value="">스팸</option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
-                                <option value=""></option>
+                            <select id="sending-report-status" >
+                                <option value="스팸">스팸</option>
+                                <option value="욕설">욕설</option>
+                                <option value="비방">비방</option>
+                                <option value="성희롱">성희롱</option>
                             </select>
                         </div>
                         <div>
                             <span>※ 신고 사유</span>
-                            <textarea name="" cols="30" rows="10" required></textarea>
+                            <textarea id="sending-report-content" cols="30" rows="10" placeholder="신고사유를 작성해주세요                                      사유는 100자까지만 입력가능합니다."></textarea>
                         </div>
-                        <p>60/100자</p>
+                        <p id="report-content-length-count"></p>
                         <div>
                             <p>※ 신고 철회는 휴지동 => 신고내역처리에서 가능합니다.</p>
                             <p>※ 신고 시간으로부터 하루가 지나면 신고 철회가 불가합니다.</p>
@@ -908,68 +866,70 @@
                     <!-- Modal footer -->
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal">취소</button>
-                        <button type="submit" data-dismiss="modal">신고</button>
+                        <button type="button" onclick="insertMsgReport();" >신고</button>
                     </div>
-                </form>
-                
             </div>
         </div>
     </div>
-<%-------------------------------------------신고 모달 끝 ---------------------------------------------------- --%>
+<%-------------------------------------------신고 모달 끝 (완료) --------------------------------------------------------------------------- --%>
+<%-----------------------------------------------------------유저 신고상세 모달 영역 시작 (완료)----------------------------------------------------------%>	
+<script>
+	// 넘기는 번호는 쪽지번호가 아니라 !! 쪽지 신고번호를 넘긴다 ! 
+    function openReportDetail(msgReportNo){
+		//console.log(msgReportNo);
+        //신고번호 넘겨서 만들어놓은 ajax 로 값 가져오자 
+    	$.ajax({
+   	 		url:"reportDetail.msg",
+   			data:{ msgReportNo: msgReportNo},
+   	 		success:function(reportDetail){
+   	 			
+   	 			$("#reportDetailmemName").html(reportDetail.senderNameAndRank);
+   	 			$("#reportDetailReportType").html(reportDetail.reportType);
+   	 			$("#reportDetailReportTime").html(reportDetail.reportDate);
+   	 			$("#reportDetailContentStatus").html(reportDetail.contentStatus);
+   	 			$("#reportDetailHandleStatus").html(reportDetail.handleStatus);
+   	 			$("#reportDetailReportContent").html(reportDetail.reportContent);
+   	 			
+   	 			if(reportDetail.handleContent == null){
+	   	 			$("#reportDetailHandleContent").html("신고를 처리중입니다... \n처리완료 상태가 되면 \n답변내용을 볼 수 있습니다.");   	 				   	 				
+   	 			}else{
+	   	 			$("#reportDetailHandleContent").html(reportDetail.handleContent);   	 				
+   	 			}
 
-<%-----------------------------------------------------------유저 신고상세 모달 영역 시작----------------------------------------------------------%>	
-<!-- 모달 jsp쪽으로 옮겨줘야해  -->
+   	 			if(reportDetail.withdrawalStatus == "철회가능"){
+	   	 			$("#reportDetailCancelBtn").attr("disabled", false);
+	   	 			$("#reportDetailCancelBtn").css("background", "rgb(52,152,219)");
+		   	 		$("#reportDetailCancelBtn").html("신고 철회");
+					$("#reportDetailCancelBtn").attr("onclick", "cancelReportMsg(" + reportDetail.msgReportNo + ");");
 
+   	 			}else{// 시간이 지나 철회가 불가 할때 
+	   	 			$("#reportDetailCancelBtn").attr("disabled", true);   	 				
+	   	 			$("#reportDetailCancelBtn").css("background", "darkgray");
+		   	 		$("#reportDetailCancelBtn").html("철회 불가");
+   	 			}
 
-<style>
-    /* 모달 영역 */
-    #user-report-detail-modal th{
-        width: 80px;
-    }
-    #user-report-detail-modal td{
-        width: 200px;
-    }
-    #user-report-detail-modal .modal-content{
-        width: 635px; height: 410px;transform: translate(-18%, 35%); background-color :rgb(250,250,250);
-    }
-    #user-report-detail-modal .modal-header{height: 90px; border-bottom: none;}
-    #user-report-detail-modal .modal-header-bottom{height: 30px;  border-bottom: 1px solid lightgrey; display: flex; justify-content: space-between;}
-    #user-report-detail-modal .modal-header-bottom>span{
-        color: red;
-        padding-left: 15px;
-        font-weight: bold;
-    }
-
-    #user-report-detail-modal .modal-header-bottom>button{
-        color: white;
-        font-size: 11px;
-        width: 60px;
-        height: 25px;
-        background-color:rgb(52,152,219);
-        outline: none;
-        border: none;
-        border-radius: 5px;
-        letter-spacing: -0.3px;
-        margin-right: 10px;
-    }
-    .view-user-report-content{width: 635px; height: 225px; display: flex; justify-content: space-around; }
-    
-    #user-report-detail-modal .modal-body{
-        padding: 0px;
-    }
-    #user-report-detail-modal .modal-footer{
-        justify-content: flex-start;
-        color: red;
-        font-weight: bold;
-        font-size: 14px;
+   	 		},error:function(){
+   	 			console.log("ajax통신 실패");
+   	 		}				
+   	 	})// ajax 끝 
+        $("#user-report-detail-modal").modal();
     }
 
-    .left-content , .right-content{width: 305px;}	
-	.left-content>p, .right-content>p, .modal-footer>p{font-size: 18px; font-weight: bold ; margin: 0px; padding-left: 10px;}
-	.left-content>pre{width: 100%; height: 200px; color: rgb(106,102,97); padding: 8px ; border-radius: 5px ; background-color: rgb(190,190,190) ; letter-spacing: -0.5px; white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;}
-	.right-content>textarea{width: 100%; height: 200px; padding: 8px ; border-left: 1px solid rgb(133, 133, 133); border-radius: 5px; resize: none;}
-
-</style>
+    function cancelReportMsg(msgReportNo){
+        //console.log(msgReportNo);
+        $.ajax({
+   	 		url:"withdrawalReport.msg",
+   			data:{ msgReportNo: msgReportNo},
+   	 		success:function(result){   	 			
+   	 			alert(result);
+				moveToReportListArea();        
+		        $("#user-report-detail-modal").modal('hide');
+   	 		},error:function(){
+   	 			console.log("ajax통신 실패");
+   	 		}				
+   	 	})// ajax 끝 
+    }
+</script>
 
 <!-- The Modal -->
 <div class="modal fade" id="user-report-detail-modal">
@@ -979,48 +939,43 @@
             <!-- Modal Header -->
             <div class="modal-header">
                 <table>
-                    <!-- 값 뿌려줄 영역 -->
                     <tr>
                         <th >신고대상</th>
-                        <td>김땡땡 과장</td>
+                        <td id="reportDetailmemName"></td>
                         <th>신고유형</th>
-                        <td>욕설</td>						
+                        <td id="reportDetailReportType"></td>						
                     </tr>
                     <tr>
                         <th>신고시간</th>
-                        <td>2021-07-30 [16:24]</td>
+                        <td id="reportDetailReportTime"></td>
                         <th>관련내용</th>
-                        <td>행사</td>						
+                        <td id="reportDetailContentStatus"></td>						
                     </tr>
                     <tr>
                         <th>처리상태</th>
-                        <td>처리중</td>
+                        <td id="reportDetailHandleStatus"></td>
                     </tr>
                 </table>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-header-bottom">
                 <span>※ 신고 시간으로부터 하루가 지나면 신고 철회가 불가합니다.</span>
-                <button type="button" onclick="cancelReportMsg(1);">신고 철회</button>
+                <button type="button" id="reportDetailCancelBtn" onclick="cancelReportMsg(1);">신고 철회</button>
             </div>
-
-            
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="view-user-report-content">
                     <div class="left-content">
                         <p>※ 신고내용</p>
                         <!-- 값뿌려주기-->
-                        <pre>쪽지 내용이 어쩌구 저쩌구 합니다 기분나빠서 오랜 고민끝에  신고합니다 처리 부탁드려요 ! 
-                        </pre>
+                        <pre id="reportDetailReportContent"></pre>
                     </div>
                     <div class="right-content">
                         <p class="text-purple">※ 답변내용</p>
-                        <textarea name="" readonly></textarea>
+                        <textarea id="reportDetailHandleContent" readonly></textarea>
                     </div>
                 </div>
             </div>
-            
             <!-- Modal footer -->
             <div class="modal-footer">
                 ※ 처리상태가 "처리중" 이외의 상태는 도와드리기 어렵습니다. <br>
@@ -1029,10 +984,7 @@
         </div>
     </div>
 </div>
-
-
-
-<%-----------------------------------------------------------유저 신고상세 모달 영역 끝----------------------------------------------------------%>	
+<%-----------------------------------------------------------유저 신고상세 모달 영역 끝 (완료)----------------------------------------------------------%>	
 
 </body>
 </html>

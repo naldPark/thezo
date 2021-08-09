@@ -70,12 +70,14 @@
         function moveToRecycleBin(){
 			showRcRecycleBin();
 			showStRecycleBin();
+            reloadReportList();
+            movebackToRecycleBin();
             $("#receive-message-page").hide();
             $("#sent-message-page").hide();
             $("#recycle-bin-page").show();
             $(".recycle-bin").css("color","rgb(41,128,185)").css("background","rgb(250,215,160)");
             $(".receive-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");
-            $(".sent-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");            
+            $(".sent-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");  
         }
 
         // 쪽지 상세 보기 쪽인데 !!! 여기서 ajax로 값 뿌려주면서 만들어줘야한다

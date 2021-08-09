@@ -22,4 +22,7 @@ public class MsgReport {
 	private String handleDate;    // 기본값없다 mapper에서 sysdate명시해줘야함 
 	private String handleContent; // 신고 처리 내용 
 	private String resultStatus;  // (쪽지)기능제한 | 생각해보기 
+	private String senderNameAndRank; 
+	private String contentStatus;   //상세보기 용
+	private String withdrawalStatus; // 철회 가능 상태를 비교하기 위한 필드
 }

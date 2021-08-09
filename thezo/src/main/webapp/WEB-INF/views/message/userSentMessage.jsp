@@ -38,9 +38,13 @@
 			 				       + '<td onclick="event.cancelBubble=true">' 
 			 				       + '<input type="checkbox" name="tossNo" value="'
 			 				       + sentList[i].msgNo
-			 				       + '"></td><td>'
-			 				       + sentList[i].recipientNameAndRank
-			 				       + '</td><td>'
+			 				       + '"></td><td>';
+			 				       if(sentList[i].recipientNo == ${sessionScope.loginUser.memNo}){
+				 				   		value += '내게 쓴 쪽지'
+			 				       }else{
+			 				    	    value +=  sentList[i].recipientNameAndRank 
+			 				       };
+			 				 value +=  '</td><td>'
 			 				       + sentList[i].msgStatus
 			 				       + '</td><td>'
 			 				       + sentList[i].contentStatus

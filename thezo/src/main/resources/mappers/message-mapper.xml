@@ -35,12 +35,34 @@
 		<result column="sender_name_rank" property="senderNameAndRank"/>
 	</resultMap>
 
+
+	<resultMap id="msgReportResult" type="MsgReport">
+		<result column="MSG_REPORT_NO" property="msgReportNo"/>
+		<result column="MSG_NO" property="msgNo"/>
+		<result column="REPORTER_NO" property="reporterNo"/>
+		<result column="REPORTED_NO" property="reportedNo"/>
+		<result column="REPORT_TYPE" property="reportType"/>
+		<result column="REPORT_CONTENT" property="reportContent"/>
+		<result column="REPORT_DATE" property="reportDate"/>
+		<result column="DEL_STATUS" property="delStatus"/>
+		<result column="HANDLE_STATUS" property="handleStatus"/>
+		<result column="HANDLE_DATE" property="handleDate"/>
+		<result column="HANDLE_CONTENT" property="handleContent"/>
+		<result column="RESULT_STATUS" property="resultStatus"/>
+		<result column="sender_name_rank" property="senderNameAndRank"/>
+		<result column="CONTENT_STATUS" property="contentStatus"/>
+		<result column="withdrawal_status" property="withdrawalStatus"/>
+	</resultMap>
+
+
 	<!-- @author Jaewon.s -->
 	
 	<!-- 받은 쪽지 조회해오는 sql문 !!  -->
 	<select id="ajaxSelectReceiveMsgList" resultMap="messageResult">
 		select
 		       msg_no
+		     , recipient_no
+		     , sender_no
 		     , msg_status
 		     , content_status
              ,case when (to_char(create_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
@@ -96,6 +118,8 @@
 	<select id="ajaxSelectSentMsgList" resultMap="messageResult">
 		select
 		       msg_no
+		     , recipient_no
+		     , sender_no
 		     , msg_status
 		     , content_status
              ,case when (to_char(create_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
@@ -284,12 +308,6 @@
 	       and recipient_no = ${memNo}
 	 </update>
 	 
-	 
- 	<!-- 
-	<select id="ajaxselectReportList" resultMap="messageResult">
-	</select>
-	 -->
-	 
 	 <!-- 키워드로 검색한 결과 갯수 조회하는 sql문  -->
 	 <select id="selectListCount" resultType="_int">
  		select
@@ -384,6 +402,7 @@
 	 	  )
 	 </insert>
 	 
+	 <!-- 쪽지번호로 보낸사람의 정보를 가쟈오는 sql문  -->
 	 <select id="bringMemInfoByMsgNo" resultMap="memInfoResultMap">
 	 	select sender_no
 	 		 , msg_content
@@ -392,5 +411,84 @@
   	      join member mb on (msg.sender_no = mb.mem_no)
   	     where msg_no = #{ msgNo}      	     
 	 </select>	 
+	 
+	 <!-- 쪽지 신고 접수 (insert) sql문  -->
+	 <insert id="insertMsgReport">
+	 	insert 
+	 	  into msg_report
+	 	  (
+	 	  	msg_report_no
+	 	  , msg_no
+	 	  , reporter_no
+	 	  , reported_no
+	 	  , report_type
+	 	  , report_content
+	 	  )
+	 	  values
+	 	  (
+	 	    seq_mreno.nextval
+	 	  , #{msgNo} 
+  	 	  , #{reporterNo}
+  	 	  , #{reportedNo}
+  	 	  , #{reportType}
+  	 	  , #{reportContent}
+	 	  )
+	 </insert>
+	 
+	 <!-- 내가 신고한 쪽지 목록 조회하는 sql문 -->
+	 <!-- handle_date가 null값이면 일전으로 뽑힌다. 이를 가지고 화면단가서 '일전이라면' 미정으로 띄우게 해주면 된다.-->
+	 <!-- resultType(조치냐용)은 관리자가 따로 정해두지 않았다면 null(undefind로 명시되지만 null비교다)로 뽑히고 handle_status(처리상태) 기본값인 '처리중'이 뽑힌다. -->
+	 <select id="ajaxselectReportList" resultMap="msgReportResult">
+	 	select msg_report_no
+	 	     , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	 	  	 , handle_status
+	 	  	 , result_status
+ 	         
+ 	         , case when (to_char(handle_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
+                 then to_char(handle_date, 'HH24:MI')
+                 when to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(handle_date, 'YYYYMMDD')))/365 > 1 
+                 then round(to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(handle_date, 'YYYYMMDD')))/365) || '년 전'  
+                 when (to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(handle_date, 'YYYYMMDD'))) = 1
+                 then '어제'
+              else
+                   to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(handle_date, 'YYYYMMDD')) || '일전' 
+              end as handle_date   
+              
+          from msg_report mr
+          join member mb on (mr.reported_no = mb.mem_no )
+         where del_status = 'Y' 
+           and reporter_no = #{ memNo }        	 	
+		 order
+		    by report_date desc      
+	 </select>
+	 
+	 <!-- 신고 상세 보기임 만약에 신고 시간이랑 오늘 잘짜 사이에서 하루가 지났을떄 상태를 담을 만한 필드가 필요하다.  -->
+	 <!-- 관련 내용 필드도 필요하다! content_status -->
+	 <select id="ajaxSelectReport" resultMap="msgReportResult" parameterType="_int">
+		select msg_report_no
+	 	     , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	 	  	 , report_type
+	 	     , to_char(report_date, 'YYYY-MM-DD [HH24:mi]') as report_date
+	 	  	 , msg.content_status
+	 	  	 , handle_status
+	 	  	 , report_content
+	 	  	 , handle_content	 	  	 
+	 	  	 ,  case when to_date(to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') <![CDATA[<]]> (to_date(to_char(report_date,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') + (interval '24' hour))
+	 	  	    then '철회가능'
+	 	  	    else '철회불가' 
+	 	  	    end as withdrawal_status
+          from msg_report mr
+          join member mb on (mr.reported_no = mb.mem_no )
+          join message msg on (mr.msg_no = msg.msg_no)
+         where del_status = 'Y' 
+           and mr.msg_report_no = #{ msgReportNo }           
+	 </select>
+	 
+	<!-- 쪽지 신고철회하는 SQL문 (delete 처리해버리는게 더 깔끔함.) -->
+	<delete id="ajaxWithdrawalReport">
+		delete 
+		  from msg_report
+		 where msg_report_no = #{msgReportNo}
+ 	</delete>
 	 
 </mapper>

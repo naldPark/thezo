@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.member.model.vo.Member;
 import com.kh.thezo.message.model.vo.Message;
+import com.kh.thezo.message.model.vo.MsgReport;
 
 //@author Jaewon.s
 public interface MessageService {
@@ -37,11 +38,6 @@ public interface MessageService {
 	// 휴지통에있는 쪽지들 영구 삭제 서비스
 	int ajaxDeleteMsg(HashMap<Object, Object> hm);
 	
-	
-	// 특이한놈으로 신고임에도 Message객체에 값을 담아오는 것으로 단순히 신고목록만을 가져오는  service
-	//ArrayList<Message> ajaxselectReportList(int memNo);
-	// 정석적으로 Report VO로 받아와야한다.
-
 	// 이름에 따른 전체 검색 결과 갯수 가져오는 서비스
 	int selectListCount(String keyword);
 	
@@ -66,6 +62,22 @@ public interface MessageService {
 	
 	// 쪽지 번호로 쪽지 보낸사람의 정보를 자져오는 서비스 
 	HashMap<Object, Object> bringMemInfoByMsgNo(int msgNo);
+	
+	//--------------------------------------------------------------------------------------
+	//-------------------------- 쪽지 신고 관련 -------------------------------------------------
+	// 쪽지 신고 접수 서비스 
+	int insertMsgReport(MsgReport mr);
+	
+	// 내가 신고한 쪽지 목록 조회하는 서비스 
+	ArrayList<MsgReport> ajaxselectReportList(int memNo);	
+	
+	// msgReportNo을 가지고 신고 상세조회하는 서비스 
+	MsgReport ajaxSelectReport(int msgReportNo);		
+
+	// 쪽지 신고철회하는 서비스
+	int ajaxWithdrawalReport(int msgReportNo);		
+
+	
 }
 
 

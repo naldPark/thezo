@@ -11,6 +11,7 @@ import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.member.model.vo.Member;
 import com.kh.thezo.message.model.dao.MessageDao;
 import com.kh.thezo.message.model.vo.Message;
+import com.kh.thezo.message.model.vo.MsgReport;
 
 //@author Jaewon.s
 
@@ -116,20 +117,6 @@ public class MessageServiceImpl implements MessageService{
 		}
 	}
 
-
-	
-	//-------------------------------------------------------------------------------------------------------------
-	//-------------------------------------------------------------------------------------------------------------
-	
-	
-	/**  특이한놈으로 신고임에도 Message객체에 값을 담아오는 것으로 단순히 신고목록만을 가져오는  service
-	 */
-	/*@Override
-	public ArrayList<Message> ajaxselectReportList(int memNo) {
-		return msgDao.ajaxselectReportList(sqlSession, memNo) ;
-	}*/
-	// 정석적으로 Report VO로 받아와야하나.
-	
 	/**	 이름에 따른 전체 검색 결과 갯수 가져오는 서비스
 	 */
 	@Override
@@ -184,6 +171,37 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public HashMap<Object, Object> bringMemInfoByMsgNo(int msgNo) {
 		return msgDao.bringMemInfoByMsgNo(sqlSession, msgNo);
+	}
+
+	
+	//--------------------------------------------------------------------------------------
+	//-------------------------- 쪽지 신고 관련 -------------------------------------------------	
+	/** 쪽지 신고 접수 서비스 
+	 */
+	@Override
+	public int insertMsgReport(MsgReport mr) {
+		return msgDao.insertMsgReport(sqlSession, mr);
+	}
+
+	/** 내가 신고한 쪽지 목록 조회하는 서비스 
+	 */
+	@Override
+	public ArrayList<MsgReport> ajaxselectReportList(int memNo) {
+		return msgDao.ajaxselectReportList(sqlSession, memNo);
+	}
+
+	/** msgReportNo을 가지고 신고 상세조회하는 서비스 
+	 */
+	@Override
+	public MsgReport ajaxSelectReport(int msgReportNo) {
+		return msgDao.ajaxSelectReport(sqlSession, msgReportNo);
+	}
+
+	/** 쪽지 신고철회하는 서비스
+	 */
+	@Override
+	public int ajaxWithdrawalReport(int msgReportNo) {
+		return msgDao.ajaxWithdrawalReport(sqlSession, msgReportNo);
 	}
 
 

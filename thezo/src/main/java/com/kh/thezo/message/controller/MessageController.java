@@ -17,7 +17,7 @@ import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.member.model.vo.Member;
 import com.kh.thezo.message.model.service.MessageService;
 import com.kh.thezo.message.model.vo.Message;
-import com.kh.thezo.notification.model.vo.Notification;
+import com.kh.thezo.message.model.vo.MsgReport;
 
 @Controller
 public class MessageController {
@@ -176,28 +176,11 @@ public class MessageController {
 		hm.put("memNo", memNo);
 		int result = msgService.ajaxDeleteMsg(hm);
 		if(result > 0) {
-			return new Gson().toJson("쪽지들을 영구적으로 삭제하였습니다. \n휴지통을 확인해 주세요.");			
+			return new Gson().toJson("쪽지들을 영구적으로 삭제하였습니다.");			
 		}else {
 			return new Gson().toJson("쪽지 삭제에 실패하였습니다. 개발자에게 문의해주세요");						
 		}
 	}
-	
-	
-
-	/** 특이한 경우로서 얘는 신고 관련이지만 단순히 화면에 뿌려주는 용도 이기에 Message객체에 담아서 올것이다. (sql에서 컬럼명을 바꿔서 값을 담는형식으로)
-	 * @param memNo
-	 * @return
-	 */
-	/*
-	@ResponseBody
-	@RequestMapping(value="selectReportList.msg", produces="application/json; charset=utf-8")
-	public String ajaxselectReportList(int memNo){
-		ArrayList<Message> list = msgService.ajaxselectReportList(memNo);		
-	    return new Gson().toJson(list);
-	}*/
-	// 정석적으로 Report VO로 받아와야한다.
-
-	//-----------------------------------------------------------------------------------------------------
 	
 	// 일단 팝업창에서 ! 이름 검색으로 가져오는 회원정보들 가져오는 controller
 	/** 팝업창 이름으로 검색해서 동료 정보 가져오는 Controller로 paging처리까지 같이 진행함 
@@ -289,7 +272,7 @@ public class MessageController {
 		msgInfo.put("contentStatus", contentStatus);
 		msgInfo.put("msgContent", msgContent);
  
-		System.out.println(msgInfo);
+		//System.out.println(msgInfo);
 		
 		int result = msgService.insertMsg(msgInfo);
 		if(result > 0) {
@@ -308,4 +291,73 @@ public class MessageController {
 		return new Gson().toJson(memInfo);			
 	}
 
+	//---------------------------------------------------------------------------------------------------------------
+	//-------------------------------------- 신고 관련  시작 -------------------------------------------------------------
+	
+	
+	/** 신고처리하는 Controller 
+	 * @param msgNo
+	 * @param reporterNo
+	 * @param reportedNo
+	 * @param reportType
+	 * @param reportContent
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="insertReport.msg", produces="application/json; charset=utf-8")
+	public String insertMsgReport(int msgNo, int reporterNo, int reportedNo, String reportType, String reportContent) {
+		MsgReport mr = new MsgReport();
+		mr.setMsgNo(msgNo);
+		mr.setReporterNo(reporterNo);
+		mr.setReportedNo(reportedNo);
+		mr.setReportType(reportType);
+		mr.setReportContent(reportContent);
+		// 정상적으로 값들 담겼다. 
+		int result = msgService.insertMsgReport(mr);
+		if(result > 0) {
+			return new Gson().toJson("신고를 접수하였습니다. \n휴지통의 신고처리내역에서 \n정상적으로 신고가 되었는지 확인해주세요.");			
+		}else {
+			return new Gson().toJson("신고가 접수된것처럼 보이지만 실패하였습니다. 개발자에게 문의 해주세요");			
+		}
+	}
+
+	/** 내가 신고한 목록 조회하는 controller (쪽지와는 다른 케이스이다. msg_report 테이블엑서 값을 뽑아와야한다)
+	 * @param memNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="selectReportList.msg", produces="application/json; charset=utf-8")
+	public String ajaxSelectReportList(int memNo){
+		ArrayList<MsgReport> list = msgService.ajaxselectReportList(memNo);		
+	    return new Gson().toJson(list);
+	}
+
+	/** 신고 상세보기용 Controller 
+	 * @param msgReportNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="reportDetail.msg", produces="application/json; charset=utf-8")
+	public String ajaxSelectReport(int msgReportNo){
+		MsgReport reportDetail = msgService.ajaxSelectReport(msgReportNo);		
+	    return new Gson().toJson(reportDetail);
+	}
+	
+	/** 신고 철회하는 Controller (delete 처리함  받은쪽지함에서 잘보이게 하기 위해서 )
+	 * @param msgReportNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="withdrawalReport.msg", produces="application/json; charset=utf-8")
+	public String ajaxWithdrawalReport(int msgReportNo){
+		// delete 처리하여서 alert를 잘띄워줘야함 
+		int result = msgService.ajaxWithdrawalReport(msgReportNo);		
+		if(result > 0) {// delete처리 완료 
+			return new Gson().toJson("성공적으로 신고철회를 하였습니다. \n받은쪽지함을 확인해주세요.");			
+		}else {
+			return new Gson().toJson("신고철회에 실패하였습니다. \n개발자에게 문의해주세요.");						
+		}
+	}
+
+	
 }

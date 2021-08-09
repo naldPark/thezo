@@ -10,6 +10,7 @@
 		<typeAlias type="com.kh.thezo.member.model.vo.Member" alias="Member"/>
 		<typeAlias type="com.kh.thezo.chatting.model.vo.Chatting" alias="Chatting"/>
 		<typeAlias type="com.kh.thezo.message.model.vo.Message" alias="Message"/>
+		<typeAlias type="com.kh.thezo.message.model.vo.MsgReport" alias="MsgReport"/>
 		<typeAlias type="com.kh.thezo.notification.model.vo.Notification" alias="Notification"/>
 		<typeAlias type="com.kh.thezo.notification.model.vo.NfCheck" alias="NfCheck"/>
 		<typeAlias type="com.kh.thezo.statistic.model.vo.Statistic" alias="Statistic"/>

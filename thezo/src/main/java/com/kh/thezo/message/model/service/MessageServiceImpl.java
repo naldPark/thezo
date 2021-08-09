@@ -52,8 +52,8 @@ public class MessageServiceImpl implements MessageService{
 	/** 휴지통으로 이동시킨 (보낸) 쪽지리스트 조회해오는 service
 	 */
 	@Override
-	public ArrayList<Message> ajaxSelectRcStList(int memNo) {
-		return msgDao.ajaxSelectRcStList(sqlSession, memNo) ;
+	public ArrayList<Message> ajaxSelectStRbList(int memNo) {
+		return msgDao.ajaxSelectStRbList(sqlSession, memNo) ;
 	}
 
 	/** 읽지 않은 쪽지 갯수 가져오는 서비스 

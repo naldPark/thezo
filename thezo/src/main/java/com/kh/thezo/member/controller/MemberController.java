@@ -72,6 +72,8 @@ public class MemberController {
 		}
 		
 		
+		// @Author: Jaewon.s 
+		// 읽지않은 알림 갯수 가져오는 용도 
 		int nfCount = nfService.ajaxCountUnreadedNf(loginUser.getMemNo());		
 		if(nfCount != 0) {
 			session.setAttribute("unreadNotification", nfCount);

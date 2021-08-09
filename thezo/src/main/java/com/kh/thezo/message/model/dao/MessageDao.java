@@ -61,8 +61,8 @@ public class MessageDao {
 	 * @param memNo
 	 * @return
 	 */
-	public ArrayList<Message> ajaxSelectRcStList(SqlSessionTemplate sqlSession, int memNo) {
-		return (ArrayList)sqlSession.selectList("messageMapper.ajaxSelectRcStList", memNo);
+	public ArrayList<Message> ajaxSelectStRbList(SqlSessionTemplate sqlSession, int memNo) {
+		return (ArrayList)sqlSession.selectList("messageMapper.ajaxSelectStRbList", memNo);
 	}
 
 	/** 읽지 않은 쪽지 갯수 가져오는 dao

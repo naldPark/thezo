@@ -82,7 +82,7 @@
 		// 휴지통 보낸 쪽지 목록 
 		function showStRecycleBin(){				
 		 	$.ajax({
-		 		url:"selectRcStList.msg",
+		 		url:"selectStRbList.msg",
 				data:{memNo: "${sessionScope.loginUser.memNo}"},
 		 		success:function(sentList){
 		 			var value ="";

@@ -23,7 +23,7 @@ public interface MessageService {
 	ArrayList<Message> ajaxSelectRcRbList(int memNo);
 
 	// 휴지통으로 이동시킨 (보낸) 쪽지리스트 조회해오는 service
-	ArrayList<Message> ajaxSelectRcStList(int memNo);
+	ArrayList<Message> ajaxSelectStRbList(int memNo);
 	
 	// 읽지 않은 쪽지 갯수 가져오는 서비스 
 	int ajaxCountUnreadedMsg(int memNo);

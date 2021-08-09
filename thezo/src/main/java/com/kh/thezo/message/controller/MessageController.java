@@ -107,9 +107,9 @@ public class MessageController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value="selectRcStList.msg", produces="application/json; charset=utf-8")
-	public String ajaxSelectRcStList(int memNo){
-		ArrayList<Message> list = msgService.ajaxSelectRcStList(memNo);		
+	@RequestMapping(value="selectStRbList.msg", produces="application/json; charset=utf-8")
+	public String ajaxSelectStRbList(int memNo){
+		ArrayList<Message> list = msgService.ajaxSelectStRbList(memNo);		
 	    return new Gson().toJson(list);
 	}
 

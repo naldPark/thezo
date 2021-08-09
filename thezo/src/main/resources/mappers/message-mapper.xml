@@ -59,6 +59,8 @@
 		 where recipient_no = #{ memNo }    
 		   and to_recycle_bin = 'Y'
 		   and to_del_status = 'Y' 
+   		   <!-- 아래의 구문 하나문 추가해주면 !! 신고처리된것은 해결할수가 있다! 얘는 !! 오직 받은 쪽지에서만 확인이 가능하다.   -->
+   		   and msg_no not in (select msg_no from msg_report)
 		 order
 		    by create_date desc      
 	</select>
@@ -115,7 +117,7 @@
 		    by create_date desc      
 	</select>
 
-	<!-- 받은 쪽지 조회해오는 sql문 !!  -->
+	<!-- 휴지통 받은 쪽지 조회해오는 sql문 !!  -->
 	<select id="ajaxSelectRcRbList" resultMap="messageResult">
 		select
 		       msg_no
@@ -136,12 +138,14 @@
 		 where recipient_no = #{ memNo }    
 		   and to_recycle_bin = 'N'
 		   and to_del_status = 'Y' 
+   		   <!-- 아래의 구문 하나문 추가해주면 !! 신고처리된것은 해결할수가 있다! 얘는 !! 오직 받은 쪽지에서만 확인이 가능하다.   -->
+   		   and msg_no not in (select msg_no from msg_report)
 		 order
 		    by create_date desc      
 	</select>
 
-	<!-- 보낸 쪽지 조회해오는 sql문 !!  -->
-	<select id="ajaxSelectRcStList" resultMap="messageResult">
+	<!-- 휴지통  보낸 쪽지 조회해오는 sql문 !!  명칭 바꿔줘여한다.  -->
+	<select id="ajaxSelectStRbList" resultMap="messageResult">
 		select
 		       msg_no
 		     , msg_status
@@ -173,6 +177,8 @@
 	 	   and read_status = 'N'	
 	 	   and to_recycle_bin = 'Y'
 	 	   and to_del_status = 'Y'
+	 	   <!-- 읽지 않은 쪽지 갯수 가져오는것인데 읽지않은 쪽지지만 신고 처리해버리면 count 않게 하기 위한 용도  -->
+	 	   and msg_no not in (select msg_no from msg_report)
 	 </select>
 	 
 	 <!-- 메세지 상세보기 정보 뽑아오는  동적 DAO임! (받은쪽지, 보낸쪽지 , 휴지통 ) ! -->

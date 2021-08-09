@@ -191,10 +191,37 @@ public class MemberController {
 	}
 	
 	
-	// 사용자 내 정보 수정 페이지 응답 - 이성경
+	// 사용자 : 내 정보 수정 페이지 응답 - 이성경
 	@RequestMapping("myPage.me")
 	public String myPage() {
 		return "member/memberMyPage";
+	}
+	
+	// 사용자 : 내 정보 수정하기 - 이성경
+	@RequestMapping("myPageUpdate.me")
+	public String updateMember(Member m, MultipartFile upfile,HttpSession session, Model model) {
+		
+		
+		
+		if(!upfile.getOriginalFilename().equals("")) {
+			
+			String changeName = saveFile(session, upfile); 
+			m.setOriginName("resources/uploadFiles/" + changeName);
+		}
+		
+		int result = mService.updateMember(m); // service, dao, sql문 작업
+		
+		if(result > 0) {
+			
+			session.setAttribute("loginUser", mService.loginMember(m));
+			session.setAttribute("alertMsg", "성공적으로 정보 수정되었습니다.");
+			
+			return "redirect:myPage.me";
+			
+		}else { 
+			model.addAttribute("errorMsg", "내 정보 수정 실패");
+			return "common/erroPage";
+		}
 	}
 	
 	// 관리자 : 사원등록 페이지 포워딩

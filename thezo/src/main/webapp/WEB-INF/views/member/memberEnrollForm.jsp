@@ -52,7 +52,8 @@
             <div id="content1">
 
                 <div align="center" class="d-flex justify-content-center">
-                    <form action="" id="enrollForm" method="post" enctype="multipart/form-data">
+                
+                    <form action="memberEnroll.me" id="enrollForm" method="post" enctype="multipart/form-data">
                         <div class="form-group d-flex justify-content-center">
                             <img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="resources/images/userProfile.png">
 				    		<input style="display: block;" type="file" id="input-image" name="upfile">

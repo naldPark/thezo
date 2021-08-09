@@ -36,6 +36,9 @@ public interface MemberService {
 	
 	// 5. 관리자 : 사원등록
 	int insertMember(Member m);
+	
+	// 6. 사용자 : 내 정보 수정하기 
+	int updateMember(Member m);
 
 	
 	

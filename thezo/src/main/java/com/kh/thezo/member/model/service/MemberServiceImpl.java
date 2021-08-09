@@ -93,6 +93,12 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.insertMember(sqlSession, m);
 	}
 
+	// 사용자 : 내 정보 수정하기 
+	@Override
+	public int updateMember(Member m) {
+		return mDao.updateMember(sqlSession, m);
+	}
+
 	
 
 }

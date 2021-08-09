@@ -241,4 +241,19 @@
  	</select>
  	
  	<!-- 사원 등록 : 관리자  -->
+ 	
+ 	<!-- 사용자 : 내 정보 수정  -->
+ 	<update id="updateMember">
+ 		update 
+ 		       member
+ 		   set mem_name = #{memName}
+ 		     , mem_pwd = #{memPwd}
+ 		     , phone = #{phone}
+ 		     , email = #{email}  
+ 		     , address = #{address}
+ 		     , birth = #{birth}
+ 		     , zip_code = #{zipCode}
+ 		     , address = #{address}
+ 		 where mem_no = #{memNo}      
+ 	</update>
 </mapper>

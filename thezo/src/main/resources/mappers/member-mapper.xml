@@ -239,4 +239,6 @@
  		  from member
  		 where mem_id = #{memId}      
  	</select>
+ 	
+ 	<!-- 사원 등록 : 관리자  -->
 </mapper>

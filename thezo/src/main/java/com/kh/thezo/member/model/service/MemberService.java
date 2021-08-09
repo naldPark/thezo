@@ -31,8 +31,11 @@ public interface MemberService {
 	public int memDeleteSearchListCount(HashMap<String, String> map);
 	public ArrayList<Member> deleteSearchList(PageInfo pi, HashMap<String, String> map);
 	
-	// 아이디 중복 체크용 서비스
+	// 4. 아이디 중복 체크용 서비스
 	int idCheck(String memId);
+	
+	// 5. 관리자 : 사원등록
+	int insertMember(Member m);
 
 	
 	

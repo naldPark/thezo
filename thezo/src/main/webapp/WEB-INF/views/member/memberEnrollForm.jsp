@@ -6,6 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <style>
    .innerOuter{
         width: 1000px;
@@ -18,7 +21,7 @@
         width:80%;
         margin:auto;
     }
-    #content , #address-area, #department{width:50%;}
+    #pwdcontent, #content , #address-area, #department{width:50%;}
 
     #department>table{width: 100%;}
 
@@ -26,7 +29,6 @@
     body{position:relative;}
 	.container{position:absolute; top:30%; left:20%;}
 	table tbody{cursor:pointer;}
-	#sPhoto{border-radius:50%; object-fit:cover;}
 </style>
 </head>
 <body>
@@ -52,43 +54,98 @@
                 <div align="center" class="d-flex justify-content-center">
                     <form action="" id="enrollForm" method="post" enctype="multipart/form-data">
                         <div class="form-group d-flex justify-content-center">
-                            <!-- 프로필 사진이 비어있지 않은 경우-->
-                            <input type="hidden" name="path" value="path">
-                            <input type="hidden" name="originName" value="origin">
-                            <!-- if( 사원정보 != null ){ 처리 }-->
-                            <input id="reUpfile" type="file" name="reUpfile" onchange="loadImg(this);">
-                            <img id="sPhoto" width="200" height="200" src="resources/images/userProfile.png">
+                            <img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="resources/images/userProfile.png">
+				    		<input style="display: block;" type="file" id="input-image" name="upfile">
                         </div>
+                        
+                        <script type="text/javascript">
+					        $(function(){
+					            
+					            $("#input-image").hide();
+					            $("#preview-image").click(function(){
+					                $("#input-image").click();
+					            })
+					        });
+				        
+					        function readImage(input) {
+					            // 인풋 태그에 파일이 있는 경우
+					            if(input.files && input.files[0]) {
+					                // 이미지 파일인지 검사 (생략)
+					                // FileReader 인스턴스 생성
+					                const reader = new FileReader()
+					                // 이미지가 로드가 된 경우
+					                reader.onload = e => {
+					                    const previewImage = document.getElementById("preview-image")
+					                    previewImage.src = e.target.result
+					                }
+					                // reader가 이미지 읽도록 하기
+					                reader.readAsDataURL(input.files[0])
+					            }
+					        }
+					        // input file에 change 이벤트 부여
+					        const inputImage = document.getElementById("input-image")
+					        inputImage.addEventListener("change", e => {
+					            readImage(e.target)
+					        })
+				        </script>
+                        
                         <div id="content" class="form-row">
-                        		<label for="memId">아이디</label>
-                            	<input type="text" class="form-control" id="memId" name="memId" required><br>
-                            	<div id="checkResult"  display:none"></div><br>
+                        	<label for="memId">아이디</label>
+                            <input type="text" class="form-control" id="memId" name="memId" required><br>
+                            <div id="checkResult"  display:none"></div><br>
                         </div>
                         	
                         <div id="content" class="form-row">
-                        	
                             <label for="memName">이름</label>
                             <input type="text" class="form-control" id="memName" name="memName" required><br>
-
-                            <label for="memPwd">비밀번호</label>
-                            <input type="text" class="form-control" id="memPwd" name="memPwd" required><br>
+						</div>
+						
+						<div id="pwdcontent" class="form-row">
+							<label for="memPwd">비밀번호</label>
+                            <input type="password" class="form-control" id="memPwd" name="memPwd"" required><br>
 
                             <label for="checkPwd">비밀번호 확인</label>
-                            <input type="password" class="form-control" id="checkPwd" required><br><br>
+                            <input type="password" class="form-control" id="checkPwd"" required><br>
                             
-                            <label for="gender">성별</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-check-inline">
-                                <label class="form-check-label">
-                                  <input type="radio" class="form-check-input" name="gender" id="Male" value="M">남자
-                                </label>
-                             </div>
-                            <div class="form-check-inline">
-                                <label class="form-check-label">
-                                  <input type="radio" class="form-check-input" name="gender" id="Female" value="F">여자
-                                </label><br>
-                            </div>
+                            <div id="checkPwdResult"  display:none"></div><br>
+						</div>
+						<script>
+						    $('#pwdcontent').focusout(function () {
+						        var pwd1 = $("#memPwd").val();
+						        var pwd2 = $("#checkPwd").val();
+						  
+						        if ( pwd1 != '' && pwd2 == '' ) {
+						            null;
+						        } else if (pwd1 != "" || pwd2 != "") {
+						            if (pwd1 == pwd2) {
+						            	$("#checkPwdResult").show();
+		    							$("#checkPwdResult").css("color", "green").text("비밀번호가 일치합니다.");  
+						            } else {
+						                // 비밀번호 불일치 이벤트 실행
+						            	$("#checkPwdResult").show();
+		    							$("#checkPwdResult").css("color", "red").text("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");  
+						            }
+						        }
+						    });   
+						</script>                            
+                       
+                       
+                       
+                       <div id="content" class="form-row">
+	                       	<label for="gender">성별</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	                        <div class="form-check-inline">
+	                             <label class="form-check-label">
+	                             	<input type="radio" class="form-check-input" name="gender" id="Male" value="M">남자
+	                             </label>
+	                        </div>
+	                        <div class="form-check-inline">
+	                             <label class="form-check-label">
+	                                <input type="radio" class="form-check-input" name="gender" id="Female" value="F">여자
+	                             </label><br>
+	                        </div>
+                       </div>  
+                         
                             
-                        </div>    
 
 							<!-- 여기가 문제...해결하기  -->
 						<div id="content" class="form-row">
@@ -109,9 +166,11 @@
                                 <input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" name="zipCode" placeholder="우편번호" required style="width: 100px;">
                                 <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="btn-address"  class="btn btn-primary mb-2">
                             </div>
+                            
                             <input type="text"  class="form-control" id="sample6_address" name="addressS" placeholder="주소" required>
                             <div id="div-name"></div>
-                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소" required>
+                            <input type="text"  class="form-control" id="sample6_extraAddress" name="addressExtra" placeholder="참고항목" required>
+                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetai" placeholder="상세주소" required>
                         </div>
 
                         <div class="form-row" id="content">
@@ -235,31 +294,6 @@
 		    	})
 		    </script>
             
-
-
-            <script>
-                $(function(){
-                   
-                    $("#reUpfile").hide();
-                    $("#sPhoto").click(function(){
-                        $("#reUpfile").click();
-                    })
-                });
-                function loadImg(inputFile){
-                    if(inputFile.files.length == 1){
-                        var reader = new FileReader();
-                        reader.readAsDataURL(inputFile.files[0])
-                        reader.onload = function(e){
-                            $("#sPhoto").attr("src", e.target.result).show();
-                        }
-                    } else {
-                        $("#sPhoto").attr("src", null);
-                    }
-                }
-            </script>
-
-        
-
             <script>
                 function sample6_execDaumPostcode() {
                     new daum.Postcode({

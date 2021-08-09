@@ -1,6 +1,10 @@
 package com.kh.thezo.member.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 //@author Jaewon.s
@@ -13,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.thezo.approval.model.service.ApprovalService;
@@ -192,12 +197,13 @@ public class MemberController {
 		return "member/memberMyPage";
 	}
 	
-	// 관리자 사원등록 페이지 
+	// 관리자 : 사원등록 페이지 포워딩
 	@RequestMapping("enrollForm.me")
 	public String memberEmrollForm() {
 		return "member/memberEnrollForm";
 	}
 	
+
 	// 관리자 사원등록 아이디 중복체크 - 이성경
 	@ResponseBody
 	@RequestMapping("idCheck.me")
@@ -208,4 +214,56 @@ public class MemberController {
 		return count > 0 ? "NNNNN" : "NNNNY";
 		
 	}
+	
+	/*
+	// 관리자 : 사원등록하기 - 이성경
+	@RequestMapping("memberEnroll.me")
+	public String insertMember(Member m, MultipartFile upfile, HttpSession session, Model model) {
+		
+		if(!upfile.getOriginalFilename().equals("")) {
+			
+			String changeName = saveFile(session, upfile); 
+			m.setOriginName(changeName);
+		}
+		
+		int result = mService.insertMember(m);
+		
+		if(result > 0 ) {
+			
+			session.setAttribute("alertMsg", "성공적으로 사원이 등록되었습니다.");
+			return "redirect:memberInfo.me";
+		}else { 
+			model.addAttribute("errorMsg", "사원 등록 실패");
+			return "common/errorPage";
+		}
+					
+	}
+	
+	*/
+	
+	
+
+	
+	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
+	public String saveFile(HttpSession session, MultipartFile upfile) {
+		// 경로
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/");
+							
+		String originName = upfile.getOriginalFilename();
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()); // Date : java.util import
+		int ranNum = (int)(Math.random() * 90000 + 10000);
+		String ext = originName.substring(originName.lastIndexOf("."));
+							
+		String changeName = currentTime + ranNum + ext;
+							
+		try {
+			upfile.transferTo(new File(savePath + changeName));   // File : java.io import
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+				
+		return changeName;
+	}
+		
+	
 }

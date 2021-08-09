@@ -471,6 +471,7 @@
 	 	     , to_char(report_date, 'YYYY-MM-DD [HH24:mi]') as report_date
 	 	  	 , msg.content_status
 	 	  	 , handle_status
+	 	  	 , result_status
 	 	  	 , report_content
 	 	  	 , handle_content	 	  	 
 	 	  	 ,  case when to_date(to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') <![CDATA[<]]> (to_date(to_char(report_date,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') + (interval '24' hour))
@@ -546,7 +547,27 @@
             by msg_report_no desc
  	</select>
  	
- 	
+ 	<!-- 쪽지 신고 상세 내역 가져오는 sql문 -->
+ 	<select id="ajaxSelectAdminReportDetail" resultMap="msgReportResult">
+ 		select msg_report_no
+	 	  	 <!-- 아래는 신고대상이다. -->
+	 	     , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	 	  	 , report_type
+	 	     , to_char(report_date, 'YYYY-MM-DD [HH24:mi]') as report_date
+			 , msg.content_status
+	 	     <!-- 아래는 신고인이다.  -->
+			 , mb2.mem_name || ' ' || mb2.rank as recipient_name_rank
+			 , handle_status
+			 , report_content
+			 , handle_content
+			 , reported_no
+			 , result_status
+          from msg_report mr
+          join member mb on (mr.reported_no = mb.mem_no )
+		  join member mb2 on (mr.reporter_no = mb2.mem_no )
+		  join message msg on (mr.msg_no = msg.msg_no)
+         where msg_report_no = #{ msgReportNo }
+ 	</select>
  	
 	 
 </mapper>

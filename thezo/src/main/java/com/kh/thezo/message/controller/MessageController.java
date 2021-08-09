@@ -401,6 +401,19 @@ public class MessageController {
 	    return new Gson().toJson(map);
 	}
 
+		
+	/** 관리자 페이지 쪽지 신고 상세 내역 조회해오는 Controller
+	 * @param msgReportNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="selectReport.admsg", produces="application/json; charset=utf-8")
+	public String ajaxSelectAdminReportDetail(int msgReportNo){
+		 
+		MsgReport reportDetail = msgService.ajaxSelectAdminReportDetail(msgReportNo);		
+			return new Gson().toJson(reportDetail);			
+	}
+
 	
 	
 }

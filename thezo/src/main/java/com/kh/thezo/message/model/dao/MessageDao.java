@@ -285,5 +285,14 @@ public class MessageDao {
 		return (ArrayList)sqlSession.selectList("messageMapper.ajaxHandledReportList","", rowBounds);
 	}
 
+	/** 관리자 페이지 쪽지 신고 상세 내역 조회해오는 Dao
+	 * @param sqlSession
+	 * @param msgReportNo
+	 * @return
+	 */
+	public MsgReport ajaxSelectAdminReportDetail(SqlSessionTemplate sqlSession, int msgReportNo) {
+		return sqlSession.selectOne("messageMapper.ajaxSelectAdminReportDetail", msgReportNo);
+	}
+
 
 }

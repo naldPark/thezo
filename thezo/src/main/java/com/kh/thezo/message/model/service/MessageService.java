@@ -92,6 +92,8 @@ public interface MessageService {
 	// 해결 된 신고  쪽지 list 가져오는 서비스 
 	ArrayList<MsgReport> ajaxHandledReportList(PageInfo pi);		
 
+	// 관리자 페이지 쪽지 신고 상세 내역 조회해오는 서비스
+	MsgReport ajaxSelectAdminReportDetail(int msgReportNo);		
 
 	
 }

@@ -70,7 +70,7 @@
 			 				       + '</td></tr>';
 			 			}
 		 			}else{
-		 				value += '<tr><td colspan="5">받은 쪽지가 없습니다!</td></tr>';
+		 				value += '<tr><td colspan="5">휴지통에 받은 쪽지가 없습니다!</td></tr>';
 		 			}
 		 			$("#for-rb-receive-checkbox").html(value);
 		 	        $("#rrbSelectAllCheckBox").prop("checked", false);
@@ -105,7 +105,7 @@
 			 				       + '</td></tr>';
 			 			}
 		 			}else{
-		 				value += '<tr><td colspan="5">받은 쪽지가 없습니다!</td></tr>';
+		 				value += '<tr><td colspan="5">휴지통에 보낸 쪽지가 없습니다!</td></tr>';
 		 			}
 			 			$("#for-rb-sent-checkbox").html(value);
 			 	        $("#srbSelectAllCheckBox").prop("checked", false);
@@ -148,18 +148,6 @@
                     </tr>                
                 </thead>
                 <tbody id="for-rb-receive-checkbox">
-                    <!-- 쪽지번호와 받은 쪽지인지 넘긴다. -->
-                    <tr onclick="openDetailMSG(1,'rrb');">
-                        <td onclick="event.cancelBubble=true">
-                            <!-- 체크박스 value값은 !!! 쪽지번호다!!!  -->
-                            <input type="checkbox" name="tossNo" value="1,rm">
-                        </td>
-                        <td>이땡떙 대리</td>
-                        <!-- 여기서는 css로다가 하나 스타일 뺴놓고 만약 ajax해왔을떄 긴급이면 해당 td에다가 class부여하는것으로 진행 -->
-                        <td>긴급</td>
-                        <td>회의</td>
-                        <td>11:10</td>
-                    </tr>
                 </tbody>
                 <thead>
                     <tr>
@@ -176,18 +164,6 @@
                     </tr>                
                 </thead>
                 <tbody id="for-rb-sent-checkbox">
-                    <!-- 쪽지번호를 넘긴다. -->
-                    <tr onclick="openDetailMSG(1,'srb');">
-                        <td onclick="event.cancelBubble=true">
-                            <!-- 체크박스 value값은 !!! 쪽지번호다!!!  -->
-                            <input type="checkbox" name="tossNo" value="1,sm">
-                        </td>
-                        <td>이땡떙 대리</td>
-                        <!-- 여기서는 css로다가 하나 스타일 뺴놓고 만약 ajax해왔을떄 긴급이면 해당 td에다가 class부여하는것으로 진행 -->
-                        <td>긴급</td>
-                        <td>회의</td>
-                        <td>11:10</td>
-                    </tr>
                 </tbody>
         </table>
     </div>
@@ -284,15 +260,6 @@
                     </tr>                
                 </thead>
                 <tbody>
-                    <!-- 동적으로 생성 될때 !!! 이때 !자바스크립트로 색상 바꿔주면 된다!!!  -->
-                    <!-- 신고번호를 넘긴다. -->
-                    <tr onclick="userTossReportNo(1);" >
-                        <td>나쁜 xx</td>
-                        <!-- 여기서는 css로다가 하나 스타일 뺴놓고 만약 ajax해왔을떄 긴급이면 해당 td에다가 class부여하는것으로 진행 -->
-                        <td>처리완료</td>
-                        <td>기능제한</td>
-                        <td>11:10</td>
-                    </tr>
                 </tbody>
             </table>
         </div>

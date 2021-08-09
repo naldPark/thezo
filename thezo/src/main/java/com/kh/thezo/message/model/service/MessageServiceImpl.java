@@ -236,6 +236,13 @@ public class MessageServiceImpl implements MessageService{
 		return msgDao.ajaxHandledReportList(sqlSession, pi);
 	}
 
+	/** 관리자 페이지 쪽지 신고 상세 내역 조회해오는 서비스
+	 */
+	@Override
+	public MsgReport ajaxSelectAdminReportDetail(int msgReportNo) {
+		return msgDao.ajaxSelectAdminReportDetail(sqlSession, msgReportNo);
+	}
+
 
 
 	

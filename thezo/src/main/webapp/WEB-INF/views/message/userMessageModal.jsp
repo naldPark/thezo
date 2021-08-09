@@ -145,7 +145,7 @@
     .left-content , .right-content{width: 305px;}	
 	.left-content>p, .right-content>p, .modal-footer>p{font-size: 18px; font-weight: bold ; margin: 0px; padding-left: 10px;}
 	.left-content>pre{width: 100%; height: 200px; color: rgb(106,102,97); padding: 8px ; border-radius: 5px ; background-color: rgb(190,190,190) ; letter-spacing: -0.5px; white-space:pre-wrap;  word-break:keep-all; text-overflow:clip;}
-	.right-content>textarea{width: 100%; height: 200px; padding: 8px ; border-left: 1px solid rgb(133, 133, 133); border-radius: 5px; resize: none;}
+	.right-content>textarea{width: 100%; height: 200px; padding: 8px ; border-left: 1px solid rgb(133, 133, 133); border-radius: 5px; resize: none; font-size:14px;}
 </style>
 </head>
 <body>
@@ -228,8 +228,8 @@
 		 		success:function(result){
 		 			alert(result);
 		 			showRcMsg();
-		 			ajaxBringUnreadedMsgCount()
-		 			$("#receive-msg-delete-modal").modal('hide')
+		 			ajaxBringUnreadedMsgCount();
+		 			$("#receive-msg-delete-modal").modal('hide');
 		 		},error:function(){
 		 			console.log("ajax통신 실패");
 		 		}				
@@ -893,8 +893,10 @@
    	 			if(reportDetail.handleContent == null){
 	   	 			$("#reportDetailHandleContent").html("신고를 처리중입니다... \n처리완료 상태가 되면 \n답변내용을 볼 수 있습니다.");   	 				   	 				
    	 			}else{
-	   	 			$("#reportDetailHandleContent").html(reportDetail.handleContent);   	 				
-   	 			}
+	   	 			$("#reportDetailHandleContent").html("정직 또는 징계위원회의 조치는 \n신고대상자에게 OffLine으로 통보됩니다."
+	   	 					                               + "\n\n" + "※ 조치내용 : " + reportDetail.resultStatus  
+	   	 					                               + "\n\n※ 답변 내용\n: " + reportDetail.handleContent);   	 				
+   	 			}      
 
    	 			if(reportDetail.withdrawalStatus == "철회가능"){
 	   	 			$("#reportDetailCancelBtn").attr("disabled", false);

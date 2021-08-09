@@ -77,7 +77,7 @@
 		 		data:{currentPage: page
 		 		},
 		 		success:function(list){
-		 			console.log(list);
+		 			//console.log(list);
 		 			mainValue= "";
 		 			pagingValue = "";
 		 			if(list.unhandleList.length != 0){// 조회결과가 있을때
@@ -204,7 +204,7 @@
 		 		data:{currentPage: page
 		 		},
 		 		success:function(list){
-		 			console.log(list);
+		 			//console.log(list);
 		 			mainValue= "";
 		 			pagingValue = "";
 		 			if(list.handleList.length != 0){// 조회결과가 있을때
@@ -370,10 +370,6 @@
 
 					<!-- 나중에  jstl로다가! 조건문 반복문으로 처리해줘야해~  -->
 					<div align="center" class="paging-area second-pagingbar" id="adminReportbottomPagingArea">
-						<button onclick="location.href='';">&lt;</button>
-						<button onclick="location.href='';">1</button>
-						<button id="dis-btn" disabled>2</button>
-						<button onclick="location.href='';">&gt;</button>
 					</div>
 				</div>
 			</div>
@@ -381,28 +377,99 @@
 	</section>
 <%----------------------------------------------------------- 스크립트영역 시작 ----------------------------------------------------------%>	
 	<script>
+		// 아쉬운게 화면단 만들때 애초에 2개로 만들어버렸다. 하나로 퉁칠수도 있었는데 음 ... 
+		// 일단 2개로 만들어놨으니 그대로 진행하자 단 !!! controller단에서 가져오는것은 동일하다 !!!! success시에 실행될 내용만 달리 해주면 된다. 
 		// 신고처리 버튼 클릭시 신고번호 모달로 넘기는 스크립트 
 		function openHandleReportModal(msgReportNo){
 			//신고번호 넘겨서 만들어놓은 ajax 활용하기 (재활용) 
-			// 해당 전역변수 가지고 db가서 정보 조회해와서 ! 값동적으로 생성해서 보여주기 여기서 작업 해주면된다! 
-			
-			console.log(msgReportNo);
-			
-			//마지막에 만들어진 모달을 여는것으로 효율성 증대! 
-			$("#report-handel-modal").modal();
-		}
+			//console.log(msgReportNo);
+            $.ajax({
+		 		url:"selectReport.admsg",
+				data:{msgReportNo :msgReportNo},
+		 		success:function(reportDetail){
+		 			//console.log(reportDetail);
+		 			$("#ad-msg-handle-msgReportNo").html(reportDetail.msgReportNo );
+		 			$("#ad-msg-handle-reported").html(reportDetail.senderNameAndRank );
+		 			$("#ad-msg-handle-report-type").html(reportDetail.reportType );
+		 			$("#ad-msg-handle-report-date").html(reportDetail.reportDate );
+		 			$("#ad-msg-handle-content-status").html(reportDetail.contentStatus );
+		 			$("#ad-msg-handle-reporter").html(reportDetail.recipientNameAndRank );
+		 			$("#ad-msg-handle-handle-status").html(reportDetail.handleStatus );
+		 			$("#ad-msg-handle-report-content").html(reportDetail.reportContent );
+		 			$("#ad-msg-handle-handle-content").html(reportDetail.handleContent );
+		 			$("#ad-msg-handle-reported-name").val(reportDetail.senderNameAndRank );
+		 			$("#ad-msg-handle-reported-no").val(reportDetail.reportedNo );
+		 			
+					$("#update-handle-msg-Report-btn").attr("onclick", "updateHandleMsgReport(" + reportDetail.msgReportNo + ");");
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})
 
+			$("#report-handel-modal").modal();
+		}		
+		
+		
 		// 신고 사항 상세보기이다. 이는 !!! 미해결이든 해결이든 동일하다 
 		// 즉 ! ★ 해결 신고 내역을 기준으로 조회해와라 ! 
 		function opendetailHandledReportModal(msgReportNo){
-			//신고번호 넘겨서 만들어놓은 ajax 활용하기 (재활용) 
-			// 해당 전역변수 가지고 db가서 정보 조회해와서 ! 값동적으로 생성해서 보여주기  여기서 작업 해주면된다!
-
-			console.log(msgReportNo);
-
-			//마지막에 만들어진 모달을 여는것으로 효율성 증대! 
+			//console.log(msgReportNo);
+			
+            $.ajax({
+		 		url:"selectReport.admsg",
+				data:{msgReportNo :msgReportNo},
+		 		success:function(reportDetail){
+		 			console.log(reportDetail);
+		 			$("#ad-msg-detail-reported").html(reportDetail.senderNameAndRank );
+		 			$("#ad-msg-detail-report-type").html(reportDetail.reportType );
+		 			$("#ad-msg-detail-report-date").html(reportDetail.reportDate );
+		 			$("#ad-msg-detail-content-status").html(reportDetail.contentStatus );
+		 			$("#ad-msg-detail-reporter").html(reportDetail.recipientNameAndRank );
+		 			$("#ad-msg-detail-handle-status").html(reportDetail.handleStatus );
+		 			$("#ad-msg-detail-report-content").html(reportDetail.reportContent );
+		 			if(reportDetail.handleContent == null){
+		 				$("#ad-msg-detail-handle-content").html("신고처리 전입니다. \n신고처리를 해주세요.");
+		 			}else{
+			 			$("#ad-msg-detail-handle-content").html(reportDetail.handleContent );
+		 			}
+		 			$("#ad-msg-detail-reported-name").val(reportDetail.senderNameAndRank );
+		 			var varResultStatus;
+		 			if(reportDetail.resultStatus == null){
+		 				varResultStatus = "미정"; 
+		 			}else{
+		 				varResultStatus = reportDetail.resultStatus;
+		 			}
+		 			$("#ad-msg-detail-result-status").val(varResultStatus).prop("selected", true);
+		 			$("#ad-msg-detail-handle-status-bottom").val(reportDetail.handleStatus).prop("selected", true);
+		 			
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})
 			$("#report-detail-modal").modal();
 		}
+		
+		
+		// ★ 8/10 눈뜨면 여기서 부터 진행하면 된다. 
+		function updateHandleMsgReport(msgReportNo){
+			// 1.  ★★★★ 일단 !!! 유효성 검사 먼저해줘야한다!!!! 
+			
+			// 2. ★★★★ 그 후에 update는 할 수 있는데!!! 
+			// service까지 들고가는 resultStatus를 조건검사하여 ! 만약에 update가 잘되고 났다면 ! reported_no 가지고 
+			// 쪽지 기능 이용못하게 해야한다. 
+			// 다만 이때 어찌 해야할지 생각을 해보자 뭔가 member쪽에 column하나 더 있으면 좋긴한데 
+			// 고민좀 해보고 일단은 그리고 나서 쪽지 쪽에서 member에 있는 것읋 바탕으로 조건검사하는 형식으로 진행 을 해줘야한다. 
+			
+			
+			// 신고처리 성공하묜 아래의 2개의 함수를 실행해줘야한다. 
+			selectUnhandledReportList();
+			selectHandledReportList();
+			
+			console.log("열리긴함");
+			$("#report-handel-modal").modal('hide');
+
+		}
+
 	</script>
 <%----------------------------------------------------------- 스크립트영역 끝 ----------------------------------------------------------%>	
 <%----------------------------------------------------------- 신고처리 모달 영역 시작----------------------------------------------------------%>	
@@ -415,24 +482,25 @@
 			<div class="modal-content" >
 				<!-- Modal Header -->
 				<div class="modal-header">
+					<input type="hidden" id="ad-msg-handle-msgReportNo">
 					<table>
 						<tr>
 							<th class="text-red">신고대상</th>
-							<td>김땡땡 과장</td>
+							<td id="ad-msg-handle-reported"></td>
 							<th>신고유형</th>
-							<td>욕설</td>						
+							<td id="ad-msg-handle-report-type"></td>						
 						</tr>
 						<tr>
 							<th>신고시간</th>
-							<td>2021-07-30 [16:24]</td>
+							<td id="ad-msg-handle-report-date"></td>
 							<th>관련내용</th>
-							<td>행사</td>						
+							<td id="ad-msg-handle-content-status"></td>						
 						</tr>
 						<tr>
 							<th class="text-blue">신고인</th>
-							<td>땡땡땡 사원</td>
+							<td id="ad-msg-handle-reporter"></td>
 							<th>처리상태</th>
-							<td class="text-purple">처리중</td>						
+							<td class="text-purple" id="ad-msg-handle-handle-status"></td>						
 						</tr>
 					</table>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -444,12 +512,11 @@
 						<div class="left-content">
 							<p>※ 신고내용</p>
 							<!-- 값뿌려주기-->
-							<pre>쪽지 내용이 어쩌구 저쩌구 합니다 기분나빠서 오랜 고민끝에  신고합니다 처리 부탁드려요 ! 
-							</pre>
+							<pre id="ad-msg-handle-report-content"></pre>
 						</div>
 						<div class="right-content">
 							<p class="text-purple">※ 답변내용</p>
-							<textarea name="" required></textarea>
+							<textarea id="ad-msg-handle-handle-content"></textarea>
 						</div>
 					</div>
 				</div>
@@ -460,21 +527,24 @@
 					<div>
 						<!--값들 가져와서 뿌려야함-->
 						<span>신고대상</span>
-						<input type="text" name="" required>  
+						<input type="text" id="ad-msg-handle-reported-name" readonly>
+						<input type="hidden" id="ad-msg-handle-reported-no" value="">  
 						<span>징계정도</span>
-						<select name="">
-							<option value="">기능제한</option>
-							<option value="">정직</option>
-							<option value="">쪽지기능제한</option>
+						<select id="ad-msg-handle-result-status">
+							<option value="반려">반려</option>
+							<option value="3일 쪽지기능제한">3일 쪽지기능제한</option>
+							<option value="영구 쪽지기능제한">영구 쪽지기능제한</option>
+							<option value="정직">정직</option>
+							<option value="징계위원회">징계위원회</option>
 						</select>
 					</div>
 					<div>
 						<span>처리상태</span>
-						<select name="" >
-							<option value="">처리중</option>
-							<option value="">처리완료</option>
+						<select id="ad-msg-handle-handle-status-bottom">
+							<option value="처리완료">처리완료</option>
 						</select>
-						<button type="submit" class="handel-btn" onclick="">신고 처리하기</button>
+						<!-- 아래의 버튼은  스크립트로 onclick 부여하자  -->
+						<button type="button" id="update-handle-msg-Report-btn" class="handel-btn">신고 처리하기</button>
 						<button type="button" data-dismiss="modal">취소</button>
 					</div>
 				</div>
@@ -488,28 +558,27 @@
 	<div class="modal fade" id="report-detail-modal">
 		<div class="modal-dialog">
 			<div class="modal-content" >
-			
 				<!-- Modal Header -->
 				<div class="modal-header">
 					<table>
 						<!-- 값 뿌려줄 영역 -->
 						<tr>
 							<th class="text-red">신고대상</th>
-							<td>김땡땡 과장</td>
+							<td id="ad-msg-detail-reported"></td>
 							<th>신고유형</th>
-							<td>욕설</td>						
+							<td id="ad-msg-detail-report-type"></td>						
 						</tr>
 						<tr>
 							<th>신고시간</th>
-							<td>2021-07-30 [16:24]</td>
+							<td id="ad-msg-detail-report-date"></td>
 							<th>관련내용</th>
-							<td>행사</td>						
+							<td id="ad-msg-detail-content-status"></td>						
 						</tr>
 						<tr>
 							<th class="text-blue">신고인</th>
-							<td>땡땡땡 사원</td>
+							<td id="ad-msg-detail-reporter"></td>
 							<th>처리상태</th>
-							<td class="text-purple">처리중</td>						
+							<td class="text-purple" id="ad-msg-detail-handle-status"></td>						
 						</tr>
 					</table>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -521,12 +590,11 @@
 						<div class="left-content">
 							<p>※ 신고내용</p>
 							<!-- 값뿌려주기-->
-							<pre>쪽지 내용이 어쩌구 저쩌구 합니다 기분나빠서 오랜 고민끝에  신고합니다 처리 부탁드려요 ! 
-							</pre>
+							<pre id="ad-msg-detail-report-content"></pre>
 						</div>
 						<div class="right-content">
 							<p class="text-purple">※ 답변내용</p>
-							<textarea name="" disabled></textarea>
+							<textarea id="ad-msg-detail-handle-content" disabled></textarea>
 						</div>
 					</div>
 				</div>
@@ -537,19 +605,22 @@
 					<div>
 						<!--값들 가져와서 뿌려야함-->
 						<span>신고대상</span>
-						<input type="text" name="" disabled>  
+						<input type="text" id="ad-msg-detail-reported-name" disabled>  
 						<span>징계정도</span>
-						<select name="" disabled>
-							<option value="">기능제한</option>
-							<option value="">정직</option>
-							<option value="">쪽지기능제한</option>
+						<select id="ad-msg-detail-result-status" disabled>
+							<option value="미정">미정</option>
+							<option value="반려">반려</option>
+							<option value="3일 쪽지기능제한">3일 쪽지기능제한</option>
+							<option value="영구 쪽지기능제한">영구 쪽지기능제한</option>
+							<option value="정직">정직</option>
+							<option value="징계위원회">징계위원회</option>
 						</select>
 					</div>
 					<div>
 						<span>처리상태</span>
-						<select name=""  disabled>
-							<option value="">처리중</option>
-							<option value="">처리완료</option>
+						<select id="ad-msg-detail-handle-status-bottom" disabled>
+							<option value="처리중">처리중</option>
+							<option value="처리완료">처리완료</option>
 						</select>
 						<button type="button" data-dismiss="modal">뒤로가기</button>
 					</div>

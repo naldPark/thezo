@@ -219,7 +219,7 @@ table {
 								<form action="memBoardReport.bo" method="post">
 									<!-- 신고할 내용 입력 -->
 									<input type="hidden" name="rpId" value="${ loginUser.memId }"> 
-									<input type="hidden" name="rpNo" value="${ b.boardNo}">
+									<input type="hidden" name="rpNo" value="${ b.boardNo }">
 									<input type="hidden" name="boardType" value="1">
 									<input type="hidden" name="rpType" value="1"> 
 									<b>신고구분</b><br><br>

@@ -82,6 +82,12 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.deleteSearchList(sqlSession, pi, map);
 	}
 
+	// 아이디 중복체크용 
+	@Override
+	public int idCheck(String memId) {
+		return mDao.idCheck(sqlSession, memId);
+	}
+
 	
 
 }

@@ -12,10 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.kh.thezo.approval.model.service.ApprovalService;
 import com.kh.thezo.attendance.model.service.AttendanceService;
 import com.kh.thezo.attendance.model.vo.Attendance;
-import com.kh.thezo.approval.model.service.ApprovalService;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.member.model.service.MemberService;
@@ -194,5 +196,16 @@ public class MemberController {
 	@RequestMapping("enrollForm.me")
 	public String memberEmrollForm() {
 		return "member/memberEnrollForm";
+	}
+	
+	// 관리자 사원등록 아이디 중복체크 - 이성경
+	@ResponseBody
+	@RequestMapping("idCheck.me")
+	public String ajaxIdCheck(String checkId) {
+		
+		int count = mService.idCheck(checkId);
+		
+		return count > 0 ? "NNNNN" : "NNNNY";
+		
 	}
 }

@@ -77,4 +77,9 @@ public class MemberDao {
 		
 		return (ArrayList)sqlSession.selectList("memberMapper.deleteSearchList", map, rowBounds);
 	}
+	
+	// 아이디 중복체크 
+	public int idCheck(SqlSessionTemplate sqlSession, String memId) {
+		return sqlSession.selectOne("memberMapper.idCheck", memId);
+	}
 }

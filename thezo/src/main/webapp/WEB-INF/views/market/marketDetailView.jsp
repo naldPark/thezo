@@ -127,6 +127,8 @@
 		        	
 		        // 댓글 조회
 		        function selectReplyList(){
+		        	
+		        		
 		        	$.ajax({
 		        		url:"mkRlist.bo",
 		        		data:{bno:${ mk.marketNo }},
@@ -231,7 +233,7 @@
 			<div class="modal" id="mReplyReportForm">
 				<div class="modal-dialog">
 					<div class="modal-content">
-	
+						
 						<!-- Modal Header -->
 						<div class="modal-header">
 							<h4 class="modal-title">댓글 신고하기</h4>
@@ -243,7 +245,7 @@
 							<form action="marketReplyReport.bo" method="post">
 								<!-- 신고할 내용 입력 -->
 								<input type="hidden" name="rpId" value="${ loginUser.memId }"> 
-								<input type="hidden" name="rpNo" value="${ mk.marketNo}">
+								<input type="hidden" name="rpNo" value="">
 								<input type="hidden" name="boardType" value="2">
 								<input type="hidden" name="rpType" value="2"> 
 								<b>신고구분</b><br><br>

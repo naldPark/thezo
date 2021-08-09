@@ -50,7 +50,7 @@
             <div id="content1">
 
                 <div align="center" class="d-flex justify-content-center">
-                    <form action="" method="post" enctype="multipart/form-data">
+                    <form action="" id="enrollForm" method="post" enctype="multipart/form-data">
                         <div class="form-group d-flex justify-content-center">
                             <!-- 프로필 사진이 비어있지 않은 경우-->
                             <input type="hidden" name="path" value="path">
@@ -60,9 +60,13 @@
                             <img id="sPhoto" width="200" height="200" src="resources/images/userProfile.png">
                         </div>
                         <div id="content" class="form-row">
-                            <label for="memId">아이디</label>
-                            <input type="text" class="form-control" id="memId" name="memId" required><br>
-
+                        		<label for="memId">아이디</label>
+                            	<input type="text" class="form-control" id="memId" name="memId" required><br>
+                            	<div id="checkResult"  display:none"></div><br>
+                        </div>
+                        	
+                        <div id="content" class="form-row">
+                        	
                             <label for="memName">이름</label>
                             <input type="text" class="form-control" id="memName" name="memName" required><br>
 
@@ -77,24 +81,28 @@
                                 <label class="form-check-label">
                                   <input type="radio" class="form-check-input" name="gender" id="Male" value="M">남자
                                 </label>
-                              </div>
-                              <div class="form-check-inline">
+                             </div>
+                            <div class="form-check-inline">
                                 <label class="form-check-label">
                                   <input type="radio" class="form-check-input" name="gender" id="Female" value="F">여자
-                                </label>
+                                </label><br>
                             </div>
+                            
+                        </div>    
 
 							<!-- 여기가 문제...해결하기  -->
-                            <label for="phone">전화번호</label>
+						<div id="content" class="form-row">
+							<label for="phone">전화번호</label>
                             <input type="text" class="form-control" id="phone" name="phone" required><br>
-
+                            	
                             <label for="email">이메일</label>
                             <input type="text" class="form-control" id="email" name="email" required><br>
                             
                             <label for="birth">생년월일</label>
                             <input type="date" class="form-control" id="birth" name="birth" required><br>
-                        </div>    
-
+                           
+						</div>
+                           
                         <div id="address-area">
                             <label for="address"  class="form-row" align="left">&nbsp;주소</label>
                             <div id="zip_code" class="form-inline">
@@ -117,16 +125,16 @@
                                     <td colspan="2">
                                         <div class="form-group" class="form-row" align="left">
                                             <label for="sel1" align="left">부서</label>
-                                            <select class="form-control" id="sel1" required>
-                                              <option>인사팀</option>
-                                              <option>총무팀</option>
-                                              <option>회계팀</option>
-                                              <option>개발1팀</option>
-                                              <option>개발2팀</option>
-                                              <option>인프라팀</option>
-                                              <option>운영팀</option>
-                                              <option>영업팀</option>
-                                              <option>구매팀</option>
+                                            <select class="form-control" name="department" id="sel1" required>
+                                              <option value="인사팀"'>인사팀</option>
+                                              <option value="총무팀">총무팀</option>
+                                              <option value="회계팀">회계팀</option>
+                                              <option value="개발1팀">개발1팀</option>
+                                              <option value="개발2팀">개발2팀</option>
+                                              <option value="인프라팀">인프라팀</option>
+                                              <option value="운영팀">운영팀</option>
+                                              <option value="영업팀">영업팀</option>
+                                              <option value="구매팀">구매팀</option>
                                             </select>
                                         </div>
                                     </td>
@@ -135,24 +143,24 @@
                                     <td><!--직책을 따로..? 만들어야하나..?-->
                                         <div class="form-group" class="form-row" align="left">
                                             <label for="sel1">직책</label>
-                                            <select class="form-control" id="sel1" style="width: 90%;" align="center">
-                                                <option>팀원</option>
-                                                <option>팀장</option>
-                                                <option>본부장</option>
-                                                <option>대표이사</option>
+                                            <select class="form-control" name="job" id="sel1" style="width: 90%;" align="center">
+                                                <option>-</option>
+                                                <option value="팀장">팀장</option>
+                                                <option value="본부장">본부장</option>
+                                                <option value="대표이사">대표이사</option>
                                             </select>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group" class="form-row" align="left">
                                             <label for="sel1" align="left">직급</label>
-                                            <select class="form-control" id="sel1" style="width: 90%;" align="center">
-                                                <option>사원</option>
-                                                <option>대리</option>
-                                                <option>과장</option>
-                                                <option>부장</option>
-                                                <option>상무</option>
-                                                <option>대표이사</option>
+                                            <select class="form-control" name="rank" id="sel1" style="width: 90%;" align="center">
+                                                <option value="사원">사원</option>
+                                                <option value="대리">대리</option>
+                                                <option value="과장">과장</option>
+                                                <option value="부장">부장</option>
+                                                <option value="상무">상무</option>
+                                                <option value="대표이사">대표이사</option>
                                             </select>
                                         </div>
                                     </td>
@@ -160,7 +168,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <label for="extensionNo">내선번호</label>
-                                        <input type="text" class="form-control" id="extensionNo" name="extensionNo"><br>
+                                        <input type="number" class="form-control" id="extensionNo" name="extensionNo"><br>
                                     </td>
                                 </tr>
                             </table>
@@ -170,7 +178,7 @@
                         <br><br>
                                     
                         <div align="center">
-                            <button type="submit" class="btn btn-primary">등록</button>
+                            <button type="submit" class="btn btn-primary" disabled>등록</button>
                             <button type="reset" class="btn btn-secondary"> 초기화</button>
                         </div>
                                     
@@ -178,6 +186,55 @@
 
                 </div>
             </div>
+            
+            <script>
+		    	$(function(){
+		    		// 아이디 입력하는 input요소객체
+		    		var $idInput = $("#enrollForm input[name=memId]");
+		    		
+		    		$idInput.keyup(function(){
+		    			//console.log($idInput.val());
+		    			
+		    			// 우선 최소 5글자 이상으로 입력했을때만 ajax요청해서 중복체크 하도록
+		    			if($idInput.val().length >= 5){
+		    				
+		    				$.ajax({
+		    					url:"idCheck.me",
+		    					data:{checkId:$idInput.val()},
+		    					success:function(result){
+		    						
+		    						if(result == "NNNNN"){ // 사용불가능
+		    							// => 빨간색 메세지(사용불가능) 출력
+		    							$("#checkResult").show();
+		    							$("#checkResult").css("color", "red").text("중복된 아이디가 존재합니다. 다시 입력해주세요.");    							
+		    							// => 버튼 비활성화
+		    							$("#enrollForm :submit").attr("disabled", true);
+		    							
+		    						}else{ // 사용가능
+		    							// => 초록색 메세지(사용가능) 출력
+		    							$("#checkResult").show();
+		    							$("#checkResult").css("color", "green").text("사용가능한 아이디입니다.");
+		    							// => 버튼 활성화
+		    							$("#enrollForm :submit").removeAttr("disabled");
+		    						}
+		    						
+		    					},error:function(){
+		    						console.log("아이디 중복체크용 ajax 통신 실패");
+		    					}
+		    				}); 				
+		    				
+		    				
+		    			}else{
+		    				// 메세지 보여지지 않고, 버튼 비활성화
+		    				$("#checkResult").hide();
+		    				$("#enrollForm :submit").attr("disabled", true);
+		    			}
+		    			
+		    		})
+		    		
+		    	})
+		    </script>
+            
 
 
             <script>

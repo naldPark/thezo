@@ -144,9 +144,9 @@
                         </li>
 
                         <%-- 연락처 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
-                        <li><a href="">연락처</a>
+                        <li><a href="contactInfo.me">연락처</a>
                             <ul>
-                                <li><a href="">직원 연락처</a></li>
+                                <li><a href="contactInfo.me">직원 연락처</a></li>
                                 <li><a href="">조직도</a></li>
                                 <li><a href="company.info">회사정보</a></li>
                             </ul>

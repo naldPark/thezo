@@ -281,6 +281,11 @@ public class MemberController {
 	*/
 	
 	
+	// 사용자 : 조직도(연락처) 화면 포워딩
+	@RequestMapping("contactInfo.me")
+	public String memberContactInfo() {
+		return "member/memberContactInfo";
+	}
 
 	
 	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성

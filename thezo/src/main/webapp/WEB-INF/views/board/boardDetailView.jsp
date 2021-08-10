@@ -159,10 +159,14 @@ table {
 		        				for(var i in list){
 		        					value += "<tr>"
 				                              + "<th>" + list[i].replyWriter +"</th>"
-				                              + "<td colspan='2' style='width: 400px;'>" + list[i].replyContent + "</td>"
+				                              + "<td><form id='postform' action='' method='post'>"
+				                                +"<input type='text' name='replyNo' id='replyNo' value='"
+				                                + list[i].replyNo +
+				                                + "'></form></td>"
+				                              + "<td style='width: 400px;'>" + list[i].replyContent + "</td>"
 				                              + "<td>" + list[i].createDate + "</td>"
 				                              + "<td><a href='' data-toggle='modal' data-target='#bReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
-				                              + "<td><a href='deleteReply.bo?replyNo=" + list[i].replyNo + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
+				                              + "<td><a href='deleteReply.bo?replyNo=" + list[i].replyNo + "&bno=" + ${ b.boardNo } + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
 				                           + "</tr>";
 		        				}
 		        				

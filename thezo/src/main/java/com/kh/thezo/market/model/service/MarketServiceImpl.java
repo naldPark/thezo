@@ -94,6 +94,12 @@ public class MarketServiceImpl implements MarketService {
 		return mkDao.marketReport(sqlSession, rp);
 	}
 
+	// 사용자 : 벼룩시장 댓글 삭제 
+	@Override
+	public int deleteMarketReply(int replyNo) {
+		return mkDao.deleteMarketReply(sqlSession, replyNo);
+	}
+
 	
 
 	

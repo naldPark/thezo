@@ -144,7 +144,7 @@
 				                             + "<td colspan='2' style='width: 400px;'>" + list[i].replyContent + "</td>"
 				                             + "<td>" + list[i].createDate + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
 				                             + "<td><a href='' data-toggle='modal' data-target='#mReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
-				                             + "<td><a href='deleteReply.mk?replyNo=" + list[i].replyNo + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
+				                             + "<td><a href='deleteReply.mk?replyNo=" + list[i].replyNo + "&mkno=" + ${ mk.marketNo } + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
 				                          + "</tr>";
 		        			}
 		        				
@@ -156,10 +156,7 @@
 		        	})
 		        }
 		      </script>
-			
-	
-			
-
+		      
 
             <div align="center">
                 <!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->

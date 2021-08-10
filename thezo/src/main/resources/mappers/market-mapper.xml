@@ -214,6 +214,13 @@
 			  )  
 	</insert>
 
+	<!-- 사용자 : 벼룩시장 댓글 삭제 -->
+	<update id="deleteMarketReply">
+		update
+		       reply
+		   set status = 'N'
+		 where reply_no = #{replyNo} 
+	</update>
 
 	<!-- 사용자 : 벼룩시장 신고하기 -->
 	<insert id="marketReport">

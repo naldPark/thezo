@@ -41,7 +41,7 @@ public interface MarketService {
 	int marketReport(Report rp);
 	
 	// 10. 사용자 : 벼룩시장 댓글 삭제 
-	int deleteBoardReply(int replyNo);
+	int deleteMarketReply(int replyNo);
 			
 
 }

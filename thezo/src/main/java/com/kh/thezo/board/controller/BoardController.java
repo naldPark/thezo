@@ -423,15 +423,15 @@ public class BoardController {
 	
 	// 사용자 : 댓글 삭제
 	@RequestMapping("deleteReply.bo")
-	public String deleteBoardReply(int replyNo, Model model, HttpSession session) {
+	public String deleteBoardReply(int replyNo, int bno, Model model, HttpSession session) {
 		
 		int result = bService.deleteBoardReply(replyNo);
 		
 		if(result > 0) {
 			
 			session.setAttribute("alertMsg", "성공적으로 댓글이 삭제되었습니다.");
-			return "redirect:boardList.bo;";
-			//return "redirect:boardDetail.bo?bno=" + b.getBoardNo();
+			//return "redirect:boardList.bo;";
+			return "redirect:boardDetail.bo?bno=" + bno;
 			
 		}else {
 			model.addAttribute("errorPage", "댓글삭제 실패");

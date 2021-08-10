@@ -81,5 +81,9 @@ public class MarketDao {
 		return sqlSession.insert("marketMapper.marketReport", rp);
 	}
 	
+	// 사용자 : 벼룩시장 댓글 삭제
+	public int deleteMarketReply(SqlSessionTemplate sqlSession, int replyNo) {
+		return sqlSession.update("marketMapper.deleteMarketReply", replyNo);
+	}
 	
 }

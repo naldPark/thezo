@@ -222,20 +222,39 @@ public class MarketController {
 			}
 		}
 		
-		// 사용자 : 벼룩시장 댓글 신고하기 
-		@RequestMapping("marketReplyReport.bo")
-		public String BoardReplyReport(Report rp, HttpSession session, Model model) {
+	// 사용자 : 벼룩시장 댓글 신고하기 
+	@RequestMapping("marketReplyReport.bo")
+	public String BoardReplyReport(Report rp, HttpSession session, Model model) {
 				
-			int result = mkService.marketReport(rp);
+		int result = mkService.marketReport(rp);
 				
-			if(result>0) {
-				session.setAttribute("alertMsg", "성공적으로 댓글이 신고되었습니다.");
-				return "redirect:marketList.bo";
-			}else {
-				model.addAttribute("errorMsg", "댓글 신고 실패");
-				return "common/errorPage";
-			}
+		if(result>0) {
+			session.setAttribute("alertMsg", "성공적으로 댓글이 신고되었습니다.");
+			return "redirect:marketList.bo";
+		}else {
+			model.addAttribute("errorMsg", "댓글 신고 실패");
+			return "common/errorPage";
 		}
+	}
+	
+
+	// 사용자 : 댓글 삭제
+	@RequestMapping("deleteReply.mk")
+	public String deleteMarketReply(int replyNo, int mkno,  Model model, HttpSession session) {
+		
+		int result = mkService.deleteMarketReply(replyNo);
+		
+		if(result > 0) {
+			
+			session.setAttribute("alertMsg", "성공적으로 댓글이 삭제되었습니다.");
+			//return "redirect:marketList.bo;";
+			return "redirect:marketDetail.bo?mkno=" + mkno;
+			
+		}else {
+			model.addAttribute("errorPage", "댓글삭제 실패");
+			return "common/errorPage";
+		}
+	}
 	
 	
 	

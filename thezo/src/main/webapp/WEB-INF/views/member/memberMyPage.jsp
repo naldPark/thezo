@@ -55,13 +55,13 @@
                     <form action="myPageUpdate.me" method="post" enctype="multipart/form-data">
 						<div class="form-group d-flex justify-content-center">
 							<c:choose>
-								<c:when test="${ empty loginUser.originName }">
+								<c:when test="${ loginUser.originName == null }">
 	                        		<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="resources/images/userProfile.png">
-	                        		<input style="display: block;" type="file" id="input-image" name="upfile">
+	                        		<input style="display: block;" type="file" id="input-image" name="reupfile">
 	                        	</c:when>
 	                        	<c:otherwise>
 	                        		<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="${loginUser.originName}">
-	                        		<input style="display: block;" type="file" id="input-image" name="upfile">
+	                        		<input style="display: block;" type="file" id="input-image" name="reupfile">
 	                        	</c:otherwise>
 	                        </c:choose>	
                         </div>
@@ -155,11 +155,11 @@
                                 <input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" name="zipCode" value="${ loginUser.zipCode }" required style="width: 100px;">
                                 <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="btn-address"  class="btn btn-primary mb-2">
                             </div>
-                            <input type="text"  class="form-control" id="sample6_address" name="address1" placeholder="주소" value="${ loginUser.address }" required>
+                            <input type="text"  class="form-control" id="sample6_address" name="add1" placeholder="주소" value="${ loginUser.address }" required>
                             <div id="div-name"></div>
-                            <input type="text"  class="form-control" id="sample6_extraAddress" name="address1" placeholder="참고항목" required>
-                            <input type="text" class="form-control" id="sample6_detailAddress" name="address1" placeholder="상세주소" required>
-                            <input type="text" id="address" name="address" value="">
+                            <input type="text"  class="form-control" id="sample6_extraAddress" name="add2" placeholder="참고항목" required>
+                            <input type="text" class="form-control" id="sample6_detailAddress" name="add3" placeholder="상세주소" required>
+                   
                    			
                    			<!-- 
                    			<script>

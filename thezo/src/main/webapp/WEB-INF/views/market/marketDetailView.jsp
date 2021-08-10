@@ -144,7 +144,7 @@
 				                             + "<td colspan='2' style='width: 400px;'>" + list[i].replyContent + "</td>"
 				                             + "<td>" + list[i].createDate + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
 				                             + "<td><a href='' data-toggle='modal' data-target='#mReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
-				                             + "<td><a href='deleteReply.mk' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
+				                             + "<td><a href='deleteReply.mk?replyNo=" + list[i].replyNo + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
 				                          + "</tr>";
 		        			}
 		        				

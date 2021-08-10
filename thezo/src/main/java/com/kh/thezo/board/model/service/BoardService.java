@@ -78,7 +78,7 @@ public interface BoardService {
 		int boardReport(Report rp);
 		
 		// 9. 사용자 : 댓글 삭제
-		int deleteBoardReply(int boardNo);
+		int deleteBoardReply(int replyNo);
 		
 		// -------------------------관리자영역 ------------------------------
 

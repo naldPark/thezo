@@ -420,24 +420,25 @@ public class BoardController {
 		}
 	}
 	
-	/*
+	
 	// 사용자 : 댓글 삭제
 	@RequestMapping("deleteReply.bo")
-	public String deleteBoardReply(int replyNo,int bno, String filePath, Model model, HttpSession session) {
+	public String deleteBoardReply(int replyNo, Model model, HttpSession session) {
 		
 		int result = bService.deleteBoardReply(replyNo);
 		
-		if(result > 0) { // 성공 => 리스트 페이지
+		if(result > 0) {
 			
 			session.setAttribute("alertMsg", "성공적으로 댓글이 삭제되었습니다.");
-			return "redirect:boardDetail.bo?bno=" + bno;
+			return "redirect:boardList.bo;";
+			//return "redirect:boardDetail.bo?bno=" + b.getBoardNo();
 			
-		}else { // 실패
+		}else {
 			model.addAttribute("errorPage", "댓글삭제 실패");
 			return "common/errorPage";
 		}
 	}
-	*/
+	
 	
 	// ----------------------- 관리자 영역 --------------------------------------
 	// 게시판 신고관리(관리자)

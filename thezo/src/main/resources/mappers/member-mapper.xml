@@ -250,7 +250,6 @@
  		     , mem_pwd = #{memPwd}
  		     , phone = #{phone}
  		     , email = #{email}  
- 		     , address = #{address}
  		     , birth = #{birth}
  		     , zip_code = #{zipCode}
  		     , address = #{address}

@@ -162,7 +162,7 @@ table {
 				                              + "<td colspan='2' style='width: 400px;'>" + list[i].replyContent + "</td>"
 				                              + "<td>" + list[i].createDate + "</td>"
 				                              + "<td><a href='' data-toggle='modal' data-target='#bReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
-				                              + "<td><a href='deleteReply.bo' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
+				                              + "<td><a href='deleteReply.bo?replyNo=" + list[i].replyNo + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
 				                           + "</tr>";
 		        				}
 		        				
@@ -175,7 +175,6 @@ table {
 		        	}
 		        </script>
 			
-	
 				<div align="center">
 					<a class="btn btn-secondary" href="boardList.bo">목록</a> 
 					<c:if test="${ loginUser.memId eq b.boardWriter}">
@@ -296,3 +295,4 @@ table {
 	</section>
 </body>
 </html>
+	

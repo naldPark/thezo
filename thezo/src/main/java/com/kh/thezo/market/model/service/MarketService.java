@@ -39,6 +39,9 @@ public interface MarketService {
 	
 	// 9. 사용자 : 벼룩시장 게시글, 댓글 신고용
 	int marketReport(Report rp);
+	
+	// 10. 사용자 : 벼룩시장 댓글 삭제 
+	int deleteBoardReply(int replyNo);
 			
 
 }

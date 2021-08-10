@@ -189,8 +189,8 @@ public class BoardServiceImpl implements BoardService{
 
 	// 사용자 : 댓글 삭제
 	@Override
-	public int deleteBoardReply(int boardNo) {
-		return bDao.deleteBoardReply(sqlSession, boardNo);
+	public int deleteBoardReply(int replyNo) {
+		return bDao.deleteBoardReply(sqlSession, replyNo);
 	}
 
 	

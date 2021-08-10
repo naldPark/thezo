@@ -165,8 +165,8 @@ public class BoardDao {
 	}
 	
 	// 사용자 : 댓글 삭제
-	public int deleteBoardReply(SqlSessionTemplate sqlSession, int boardNo) {
-		return sqlSession.update("boardMapper.deleteBoardReply", boardNo);
+	public int deleteBoardReply(SqlSessionTemplate sqlSession, int replyNo) {
+		return sqlSession.update("boardMapper.deleteBoardReply", replyNo);
 	}
 	
 	// ----------------------- 관리자 영역 ---------------------------

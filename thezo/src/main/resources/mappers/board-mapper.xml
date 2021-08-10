@@ -424,6 +424,15 @@
 	          , default
 			  )  
 	</insert>
+	
+	
+	<!-- 사용자 : 사내게시판 댓글 삭제 -->
+	<update id="deleteBoardReply">
+		update
+		       reply
+		   set status = 'N'
+		 where reply_no = #{replyNo} 
+	</update>
 
 	<!-- 사용자 : 사내게시판 신고하기 -->
 	<insert id="boardReport">
@@ -450,17 +459,6 @@
 			  )  
 	</insert>
               
-    <!-- 사용자 : 공지사항, 사내게시판 글 삭제 -->
-	<update id="deleteBoardReply">
-			update
-				  report
-			  set status = 'N'
-			where rp_no = #{boardNo}  		
-	</update>          
-              
-
-
-
 	<!-- 관리자 영역 -->
 		
 	

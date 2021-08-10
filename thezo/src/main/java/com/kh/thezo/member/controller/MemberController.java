@@ -199,17 +199,29 @@ public class MemberController {
 	
 	// 사용자 : 내 정보 수정하기 - 이성경
 	@RequestMapping("myPageUpdate.me")
-	public String updateMember(Member m, MultipartFile upfile,HttpSession session, Model model) {
+	public String updateMember(String add1, String add2, String add3, Member m, MultipartFile reupfile,HttpSession session, Model model) {
 		
+		String address = add1 + add2 + add3;
+		m.setAddress(address);
 		
+		String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
+		m.setMemPwd(encPwd);
 		
-		if(!upfile.getOriginalFilename().equals("")) {
-			
-			String changeName = saveFile(session, upfile); 
-			m.setOriginName("resources/uploadFiles/" + changeName);
+		// 새로 넘어온 첨부파일이 있을 경우
+		if(!reupfile.getOriginalFilename().equals("")) {
+			// 기본에 첨부파일이 있었을 경우 => 기존의 첨부파일 지우기
+			if(m.getOriginName() != null) {
+				new File(session.getServletContext().getRealPath(m.getOriginName())).delete();
+				// 새로 넘어온 첨부파일 서버 업로드 시키기
+				String changeName = saveFile(session, reupfile); 
+				m.setOriginName("resources/uploadFiles/" + changeName);
+			}else {
+				String changeName = saveFile(session, reupfile); 
+				m.setOriginName("resources/uploadFiles/" + changeName);
+			}
 		}
-		
-		int result = mService.updateMember(m); // service, dao, sql문 작업
+	
+		int result = mService.updateMember(m);
 		
 		if(result > 0) {
 			

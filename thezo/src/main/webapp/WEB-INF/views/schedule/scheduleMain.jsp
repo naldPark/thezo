@@ -36,6 +36,7 @@
             </div>
         </div>
             <script>
+            	
                 function w3_open() {
                     document.getElementById("main").style.marginLeft = "200px";
                     document.getElementById("mySidebar").style.width = "200px";
@@ -44,6 +45,7 @@
                 }
                 function w3_close() {
                     document.getElementById("main").style.marginLeft = "0%";
+                    document.getElementById("calendar").width = "100%";
                     document.getElementById("mySidebar").style.display = "none";
                     document.getElementById("openNav").style.display = "inline-block";
                 }

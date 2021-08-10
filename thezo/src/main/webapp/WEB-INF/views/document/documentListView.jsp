@@ -40,7 +40,6 @@
 				
 				function countChange(){
 					var para = document.location.href.split("?"); // 현재 파라미터 값 가져오기
-					//console.log(para);
 					$("#dCount>option").removeAttr("selected");
 					if(para.length>=2){ 
 						// 파라미터 값 까지 넘겨서 새로고침
@@ -52,17 +51,19 @@
 							// 검색어가 있다면 search.doc로 검색어 + dCount 전달
 							if(para[1].indexOf("dCount") == -1){
 								location.href = "search.doc?" + para[1]
-												+ "&dCount=" + $("#dCount").val();
+												+ "&dCount=" + $("#dCount").val()
+												+ "&docCategory=" + '${ docCategory }';
 							}else{ 
 								// 이미 dCount를 넘겨주었다면, 값을 지우고 다시 전달
 								var cut = para[1].split("&dCount");
 								location.href = "search.doc?" + cut[0]
-												+ "&dCount=" + $("#dCount").val();
+												+ "&dCount=" + $("#dCount").val()
+												+ "&docCategory=" + '${ docCategory }';
 									
 							}
 						}
 					}else{
-						location.href = "list.doc?docCategory='${ docCategory }'&dCount=" + $("#dCount").val();
+						location.href = "list.doc?dCount=" + $("#dCount").val() + "&docCategory=" + '${ docCategory }';
 					}
 				}
 			</script>

@@ -10,6 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body>
 	<form action="update.sc" method="post" style="font-family:'Noto Sans KR', sans-serif;" >
@@ -45,10 +46,10 @@
 	            <th>시작일</th>
 	            <td width="350px">
 	            	<input type="date" name="start" id="startDate" value="${ sc.start }"> 
-	            	<input type="time" name="start" id="startTime" value="${ sc.start }">
+	            	<input type="time" name="start" id="startTime" value="${ sc.start }" hidden>
 	            </td>
 	            <td rowspan="2">
-					<input type="checkbox" id="timeCheck" checked>
+					<input type="checkbox" id="timeCheck">
 					<input type="hidden" id="allday" name="allday" value="${ sc.allday }">
 					<label for="timeCheck">시간설정</label>
 				</td>
@@ -58,7 +59,7 @@
 	            <th>종료일</th>
 	            <td>
 		            <input type="date" name="end" id="endDate" value=${ sc.end }> 
-		            <input type="time" name="end" id="endTime" value=${ sc.end }>
+		            <input type="time" name="end" id="endTime" value=${ sc.end } hidden>
 	            </td>
 	        </tr>
 	        <tr>
@@ -99,7 +100,7 @@
 		<div id="bizRepInfo">
 			
 			<h4 class="modal-title">업무 보고</h4>
-			
+			<hr>
 			<table id="repInfo" align="center">
 		 		<tr> 
 					<th width='120px'>제목</th> 

@@ -48,7 +48,7 @@
 					<td>${ sc.start }</td> 
 				</c:when>
 				<c:otherwise>
-					<td>${ sc.start } &nbsp; ~ &nbsp; ${ sc.end }</td>
+					<td>${ sc.start } ~ ${ sc.end }</td>
 				</c:otherwise>
 				</c:choose> 
 			</tr> 
@@ -61,15 +61,24 @@
 				<td><pre>${ sc.scContent }</pre></td> 
 			</tr> 
 		</table>
-	
+		
+		<script>
+			// 일정 시간에서 'T'없애주기
+			$(function(){
+				var start = ${ sc.start };
+				var end = ${ sc.end };
+				//start.replace("T", " ");
+				console.log(start + ", " + end);
+			})
+		</script>
+		
 		<br>
 		<div id="btn-area" align="right">
 			<button type="button" class="btn" id="hideRep">
 				업무 보고 접기 <i class='fas fa-angle-double-up' style='font-size: 15px'></i>
 			</button>
 			<button type="button" class="btn" id="showRep" hidden>
-				업무 보고 보기 <i class='fas fa-angle-double-down'
-					style='font-size: 15px'></i>
+				업무 보고 보기 <i class='fas fa-angle-double-down' style='font-size: 15px'></i>
 			</button>
 		</div>
 		<script>

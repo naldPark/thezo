@@ -96,20 +96,19 @@
 	        	var option = "width = 680, height = 700, top = 100, left = 200, location = no";
 				window.open("detail.sc?scNo=" + scNo, "일정상세정보", option);
 	        },
-	    	
 	      	headerToolbar: { // 헤더설정
 				left: 'prevYear,prev,next,nextYear today',
 				center: 'title',
 				right: 'dayGridMonth,dayGridWeek,dayGridDay'
 	        },
+	        handleWindowResize: true,
 	        navLinks: true, // can click day/week names to navigate views
-	       	editable: true, // 편집가능
+	       	//editable: true, // 편집가능
 	        dayMaxEvents: true, // allow "more" link when too many events
 	        locale: 'ko', // 한국어 설정
 	        themeSystem: 'bootstrap', // 테마 설정
 	        eventSources:[
         		{
-        		id: 'es',
 				events: [ // ajax로 일정 불러오기
 					// 1. 개인 일정
 					$.ajax({
@@ -173,6 +172,10 @@
 	        
 	        
 		});
+	    
+	    function resize(){
+	    	calendar.updateSize();
+	    }
 	    
 	    calendar.render();
 	});

@@ -5,6 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+	<!-- 풀캘린더  -->
+	<link href='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/main.css' rel='stylesheet' />
+	<script src='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/main.js'></script>
+	<!-- 한국어설정 -->
+	<script src='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/locales/ko.js'></script>
 <style>
 	#nav button{margin: 10px;}
 	#nav ul{list-style-type: none; padding-left: 20px;}
@@ -13,6 +18,7 @@
 	.slide_menu>a:hover{color: rgb(243,156,18);}
 	.btn>b{font-size: 18px; margin: 10px;}
 	.scColorBox{width:15px; height: 15px; border-radius:5px; display: inline-block;}
+	#todayCalendar{width:200px; height:200px;}
 </style>
 <script>
 	$(function(){
@@ -59,6 +65,100 @@
 		})
 	})
 </script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	    var calendarEl = document.getElementById('todayScCalendar');
+	    var todayScCalendar = new FullCalendar.Calendar(calendarEl, {
+    	
+	    	eventClick: function(info) {
+	        	// 이벤트 클릭했을 시 기능 설정
+	        	// 일정 내용과 보고서가 보여져야 함!!
+	        	var scNo = info.event._def.extendedProps.scNo;
+	        	var option = "width = 680, height = 700, top = 100, left = 200, location = no";
+				window.open("detail.sc?scNo=" + scNo, "일정상세정보", option);
+	        },
+	    	
+	      	headerToolbar: { // 헤더설정
+				left: '',
+				center: '',
+				right: ''
+	        },
+	        initialView: 'listDay',
+	        locale: 'ko', // 한국어 설정
+	        themeSystem: 'bootstrap', // 테마 설정
+	        eventSources:[
+        		{
+				events: [ // ajax로 일정 불러오기
+					// 1. 개인 일정
+					$.ajax({
+						url :'list.sc',
+						data : {scType:"개인", memNo:${loginUser.memNo}},
+						cache: false,
+						success:function(list){
+							var scList = Object.values(JSON.parse(list));
+							for(var i=0; i<scList.length; i++){
+								scList[i].color = '#148CFF';
+								if(scTypeString.includes('개인')){
+									todayScCalendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								}
+							}
+						},error: function(){
+							console.log("일정 조회용 ajax 통신 실패");
+						}
+					})
+				],
+        		 
+     	        events: [
+     	        	// 2. 회사 일정
+     	        	$.ajax({
+     	        		url :'list.sc',
+	     				data : {scType: "회사", memNo:${loginUser.memNo}},
+	     				cache: false,
+	     				success:function(list){
+	     					var scList = Object.values(JSON.parse(list));
+	     					for(var i=0; i<scList.length; i++){
+	     						scList[i].color = '#378006';
+								if(scTypeString.includes('회사')){
+									todayScCalendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								}
+	     					}
+	     				},error: function(){
+	     					console.log("일정 조회용 ajax 통신 실패");
+	     				}
+     	        	})
+     	        ], 
+     	        events: [
+     	        	// 3. 부서 일정
+     	        	$.ajax({
+     	        		url :'list.sc',
+	     				data : {scType: "부서", memNo:${loginUser.memNo}},
+	     				cache: false,
+	     				success:function(list){
+	     					var scList = Object.values(JSON.parse(list));
+	     					for(var i=0; i<scList.length; i++){
+	     						scList[i].color = '#7B68EE';
+								if(scTypeString.includes('부서')){
+									todayScCalendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								}
+	     					}
+	     				},error: function(){
+	     					console.log("일정 조회용 ajax 통신 실패");
+	     				}
+     	        	})
+     	        ]
+	        }]
+		});
+	    
+	    todayScCalendar.render();
+	});
+	
+	
+</script>
+<style>
+	#todayScCalendar{width:200px;}
+	.fc-list-event{font-size:10px;}
+</style>
 </head>
 <body>
 	<div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="display:none">
@@ -76,34 +176,22 @@
 				일정 추가
 			</button>
 			<hr>
-			<button class="w3-button w3-block w3-left-align" onclick="todaySc()">
-				<i class="fa fa-caret-down"></i> 오늘 일정 &nbsp; <b><span id="todayDate"></span></b>
-			</button>
-			<div id="todaySc" class="w3-hide w3-white w3-card">
-				<br>
-				<ul id="todaySchedule" style="list-style-type: square; margin-left:5px;">
-					<!-- 오늘일정 수만큼 li태그가 반복되는 반복문 -->
-				</ul>
-				<br>
+			
+			
+			<%-- 오늘 일정 뜨게 하는 영역 -----------------------------------------------------------------%>
+			<div style="margin-left:30px;">
+				<b>오늘 일정 <br>
+				<span id="todayDate"></span></b>
 			</div>
+			
+			<!-- <ul id="todaySchedule" style="list-style-type: square; margin-left:5px;"></ul> -->
+			<div id="todayScCalendar"></div>
+			
+			
 
-			<script>
-				function todaySc() {
-					var x = document.getElementById("todaySc");
-					if (x.className.indexOf("w3-show") == -1) {
-						x.className += " w3-show";
-						x.previousElementSibling.className += " w3-gray";
-					} else { 
-						x.className = x.className.replace("w3-show", "");
-						x.previousElementSibling.className = 
-						x.previousElementSibling.className.replace("w3-gray", "");
-					}
-				}
-
-			</script>
 			
 			<hr>
-			<button class="w3-button w3-block w3-left-align" onclick="menu()">
+			<button class="w3-button w3-block w3-left-align" onclick="menu();">
 				<i class="fa fa-caret-down"></i> 메뉴 바로가기 
 			</button>
 			<div id="menu" class="w3-hide w3-white w3-card">

@@ -14,6 +14,7 @@
     var calendarEl = document.getElementById('calendar');
     
     var calendar = new FullCalendar.Calendar(calendarEl, {
+    	schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
     	initialView: 'timeGridWeek',
         initialDate: '2021-07-13',
         navLinks: true, // can click day/week names to navigate views

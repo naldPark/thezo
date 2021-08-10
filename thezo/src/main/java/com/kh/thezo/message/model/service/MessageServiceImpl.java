@@ -243,6 +243,18 @@ public class MessageServiceImpl implements MessageService{
 		return msgDao.ajaxSelectAdminReportDetail(sqlSession, msgReportNo);
 	}
 
+	/** 관리자 신고처리하는 서비스
+	 */
+	@Override
+	public int ajaxHandleReport(MsgReport mr) {
+		//if()
+		System.out.println(mr.getResultStatus());
+		System.out.println(mr.getResultStatus().equals("반려"));
+
+		//return msgDao.ajaxSelectAdminReportDetail(sqlSession, mr);
+		return 0;
+	}
+
 
 
 	

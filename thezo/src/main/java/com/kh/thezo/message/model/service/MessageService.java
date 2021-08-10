@@ -64,7 +64,7 @@ public interface MessageService {
 	HashMap<Object, Object> bringMemInfoByMsgNo(int msgNo);
 	
 	//--------------------------------------------------------------------------------------
-	//-------------------------- 쪽지 신고 관련 -------------------------------------------------
+	//-------------------------- 사용자 쪽지 신고 관련 ---------------------------------------------
 	// 쪽지 신고 접수 서비스 
 	int insertMsgReport(MsgReport mr);
 	
@@ -95,7 +95,9 @@ public interface MessageService {
 	// 관리자 페이지 쪽지 신고 상세 내역 조회해오는 서비스
 	MsgReport ajaxSelectAdminReportDetail(int msgReportNo);		
 
-	
+	// 관리자 신고처리하는 서비스
+	int ajaxHandleReport(MsgReport mr);
+
 }
 
 

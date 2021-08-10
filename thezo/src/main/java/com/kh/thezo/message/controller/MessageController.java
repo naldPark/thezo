@@ -414,6 +414,31 @@ public class MessageController {
 			return new Gson().toJson(reportDetail);			
 	}
 
+	/** 신고된쪽지 처리하는 Controller 
+	 * @param msgReportNo
+	 * @param handleContent
+	 * @param reportedNo
+	 * @param handleStatus
+	 * @param resultStatus
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="handleReport.admsg", produces="application/json; charset=utf-8")
+	public String ajaxHandleReport(int msgReportNo, String handleContent, int reportedNo, String handleStatus, String resultStatus){
+		MsgReport mr = new MsgReport();
+		mr.setMsgReportNo(msgReportNo);
+		mr.setHandleContent(handleContent);
+		mr.setReportedNo(reportedNo);
+		mr.setHandleStatus(handleStatus);
+		mr.setResultStatus(resultStatus);
+		
+		int result = msgService.ajaxHandleReport(mr);
+		if(result > 0) {
+			return new Gson().toJson("신고처리를 완료하였습니다. 해결 신고내역을 확인해주세요.");			
+		}else {
+			return new Gson().toJson("신고처리에 실패하였습니다. 개발자에게 문의해주세요.");			
+		}
+	}
 	
 	
 }

@@ -449,27 +449,67 @@
 			$("#report-detail-modal").modal();
 		}
 		
-		
-		// ★ 8/10 눈뜨면 여기서 부터 진행하면 된다. 
 		function updateHandleMsgReport(msgReportNo){
-			// 1.  ★★★★ 일단 !!! 유효성 검사 먼저해줘야한다!!!! 
-			
-			// 2. ★★★★ 그 후에 update는 할 수 있는데!!! 
-			// service까지 들고가는 resultStatus를 조건검사하여 ! 만약에 update가 잘되고 났다면 ! reported_no 가지고 
-			// 쪽지 기능 이용못하게 해야한다. 
-			// 다만 이때 어찌 해야할지 생각을 해보자 뭔가 member쪽에 column하나 더 있으면 좋긴한데 
-			// 고민좀 해보고 일단은 그리고 나서 쪽지 쪽에서 member에 있는 것읋 바탕으로 조건검사하는 형식으로 진행 을 해줘야한다. 
-			
-			
-			// 신고처리 성공하묜 아래의 2개의 함수를 실행해줘야한다. 
-			selectUnhandledReportList();
-			selectHandledReportList();
-			
-			console.log("열리긴함");
-			$("#report-handel-modal").modal('hide');
+			// 유효성 검사
+			if($("#ad-msg-handle-handle-content").val() == ""){
+				alert("답변내용은 필수입니다. \n신고처리 답변 내용을 작성해주세요");
+				$("#ad-msg-handle-handle-content").attr("placeholder","신고처리 답변 내용을 \n작성해주세요!");
+				$("#ad-msg-handle-handle-content").focus();
+			}else if($("#ad-msg-handle-result-status").val() == ""){
+				alert("징계정도를 선택해주세요!");
+			}else if($("#ad-msg-handle-reported-no").val() == ""){
+				alert("현재 신고처리가 불가합니다. 개발자에게 문의해 주세요");
+				$("#report-handel-modal").modal('hide');
+			}else{// 여기가 유효성 검사가 끝난 시점이다. ajax로 update 처리해주고 나서 modal 닫기 전에 해당 부분들 초기화 시켜줘야함 
+	            $.ajax({
+			 		url:"handleReport.admsg",
+					data:{msgReportNo: msgReportNo
+						, handleContent: $("#ad-msg-handle-handle-content").val()
+						, reportedNo: $("#ad-msg-handle-reported-no").val()
+						, handleStatus: $("#ad-msg-handle-handle-status-bottom").val() 
+						, resultStatus: $("#ad-msg-handle-result-status").val()
+					},
+			 		success:function(result){
+						// 2. ★★★★ 그 후에 update는 할 수 있는데!!! 
+						// service까지 들고가는 resultStatus를 조건검사하여 ! 만약에 update가 잘되고 났다면 ! reported_no 가지고 
+						// 쪽지 기능 이용못하게 해야한다. 
+						// 다만 이때 어찌 해야할지 생각을 해보자 뭔가 member쪽에 column하나 더 있으면 좋긴한데 
+						// 고민좀 해보고 일단은 그리고 나서 쪽지 쪽에서 member에 있는 것읋 바탕으로 조건검사하는 형식으로 진행 을 해줘야한다. 
+						
+						//console.log("열리긴함");
+						//$("#report-handel-modal").modal('hide');
+						
+						// 신고처리 성공하묜 아래의 2개의 함수를 실행해줘야한다. 
+			 			
+			 			alert(result);
+						selectUnhandledReportList();
+						selectHandledReportList();
+						
+						$("#ad-msg-handle-handle-content").attr("placeholder","답변을 작성해주세요");
+						$("#ad-msg-handle-handle-content").val("");
+						$("#ad-msg-handle-result-status").val("").prop("selected", true);
+						
+						$("#report-handel-modal").modal('hide');
 
+			 		},error:function(){
+			 			console.log("ajax통신 실패");
+			 		}				
+			 	})// ajax끝
+			}//유효성 검사 끝
 		}
-
+		
+        $(document).ready(function(){
+	       	$("#ad-msg-handle-result-status").on('focus',function(){
+	       		$("#ad-msg-handle-empty-value").hide();	       		
+	       	});
+	       	
+	        $("#report-handel-modal").on('hidden.bs.modal', function () {
+				$("#ad-msg-handle-handle-content").attr("placeholder","신고처리는 예민한 사항이기에 \n수정이 불가합니다. \n신중히 작성해주세요.");
+				$("#ad-msg-handle-handle-content").val("");
+				$("#ad-msg-handle-result-status").val("").prop("selected", true);
+	       	});
+        });
+		
 	</script>
 <%----------------------------------------------------------- 스크립트영역 끝 ----------------------------------------------------------%>	
 <%----------------------------------------------------------- 신고처리 모달 영역 시작----------------------------------------------------------%>	
@@ -516,7 +556,7 @@
 						</div>
 						<div class="right-content">
 							<p class="text-purple">※ 답변내용</p>
-							<textarea id="ad-msg-handle-handle-content"></textarea>
+							<textarea id="ad-msg-handle-handle-content" placeholder="신고처리는 예민한 사항이기에                    수정이 불가합니다.                               신중히 작성해주세요."></textarea>
 						</div>
 					</div>
 				</div>
@@ -531,6 +571,7 @@
 						<input type="hidden" id="ad-msg-handle-reported-no" value="">  
 						<span>징계정도</span>
 						<select id="ad-msg-handle-result-status">
+							<option id="ad-msg-handle-empty-value" value="">선택하기</option>
 							<option value="반려">반려</option>
 							<option value="3일 쪽지기능제한">3일 쪽지기능제한</option>
 							<option value="영구 쪽지기능제한">영구 쪽지기능제한</option>

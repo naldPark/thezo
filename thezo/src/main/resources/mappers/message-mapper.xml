@@ -579,23 +579,36 @@
 	     where msg_report_no = #{ msgReportNo } 	
  	</update>
 
+ 	<!-- 기존에 이미 신고를 한번 당했는지 알아보는 sql문  반환은 String형으로 날짜가 넘어간다.-->
+ 	<select id="beforeHandleReportCheck" resultType="string">
+ 		select to_char(msg_restrict,'YYYY-MM-DD HH24:MI:SS') as msg_restrict
+ 		  from member 
+ 		 where mem_no = #{reportedNo} 
+ 	</select>
+
  	<!-- 관리자 페이지에서 일단 신고처리를 하는 sql문 -->
  	<update id="restrictMsgFunc">
 		update member
 		   set msg_restrict = 
 		   (select 
-		   <if test="resultStatus == '3일 쪽지기능제한'">		   
+		   <if test="handleDate != null and resultStatus == '3일 쪽지제한'">
+				to_date('${ handleDate }','YYYY-MM-DD HH24:MI:SS') + (interval '3' day)	   
+		   </if>
+		   <if test="handleDate != null and resultStatus == '영구 쪽지제한'">
+				to_date('${ handleDate }','YYYY-MM-DD HH24:MI:SS') + (interval '50' year)	   
+		   </if>
+		   <if test="handleDate == null and resultStatus == '3일 쪽지제한'">		   
 		           handle_date + (interval '3' day)
 		   </if>
-		   <if test="resultStatus == '영구 쪽지기능제한'">
+		   <if test="handleDate == null and resultStatus == '영구 쪽지제한'">
 		           handle_date + (interval '50' year)
 		   </if>
 		      from msg_report 
 		     where msg_report_no = #{ msgReportNo }
 		   )
 	     where mem_no = #{ reportedNo } 	
- 	
  	</update>
+ 	
  	
 	 
 </mapper>

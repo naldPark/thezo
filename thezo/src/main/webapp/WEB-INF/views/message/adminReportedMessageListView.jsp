@@ -419,7 +419,7 @@
 		 		url:"selectReport.admsg",
 				data:{msgReportNo :msgReportNo},
 		 		success:function(reportDetail){
-		 			console.log(reportDetail);
+		 			//console.log(reportDetail);
 		 			$("#ad-msg-detail-reported").html(reportDetail.senderNameAndRank );
 		 			$("#ad-msg-detail-report-type").html(reportDetail.reportType );
 		 			$("#ad-msg-detail-report-date").html(reportDetail.reportDate );
@@ -470,27 +470,17 @@
 						, resultStatus: $("#ad-msg-handle-result-status").val()
 					},
 			 		success:function(result){
-						// 2. ★★★★ 그 후에 update는 할 수 있는데!!! 
-						// service까지 들고가는 resultStatus를 조건검사하여 ! 만약에 update가 잘되고 났다면 ! reported_no 가지고 
-						// 쪽지 기능 이용못하게 해야한다. 
-						// 다만 이때 어찌 해야할지 생각을 해보자 뭔가 member쪽에 column하나 더 있으면 좋긴한데 
-						// 고민좀 해보고 일단은 그리고 나서 쪽지 쪽에서 member에 있는 것읋 바탕으로 조건검사하는 형식으로 진행 을 해줘야한다. 
-						
-						//console.log("열리긴함");
-						//$("#report-handel-modal").modal('hide');
-						
-						// 신고처리 성공하묜 아래의 2개의 함수를 실행해줘야한다. 
-			 			
+						// 처리는 끝났다 .
+						// 1. 유효성검사 => 2. 기존에 신고 받았던 사람인지 확인 => 2-1 기존에 신고받았는데 만약 기능제한 시간이 남았다면 그시간에 +로 추가되는형식
+						// 2-2 만약 신고받은 전적이 있는데 현재 날짜에서 지났다면 부여한 기능제한 날자 만큼만 들어가게 
+						// 3 만약 신고받은적이 없다면 그냥 부여한 날짜만큼만 기능제한 
 			 			alert(result);
 						selectUnhandledReportList();
 						selectHandledReportList();
-						
 						$("#ad-msg-handle-handle-content").attr("placeholder","답변을 작성해주세요");
 						$("#ad-msg-handle-handle-content").val("");
 						$("#ad-msg-handle-result-status").val("").prop("selected", true);
-						
 						$("#report-handel-modal").modal('hide');
-
 			 		},error:function(){
 			 			console.log("ajax통신 실패");
 			 		}				
@@ -573,8 +563,8 @@
 						<select id="ad-msg-handle-result-status">
 							<option id="ad-msg-handle-empty-value" value="">선택하기</option>
 							<option value="반려">반려</option>
-							<option value="3일 쪽지기능제한">3일 쪽지기능제한</option>
-							<option value="영구 쪽지기능제한">영구 쪽지기능제한</option>
+							<option value="3일 쪽지제한">3일 쪽지기능제한</option>
+							<option value="영구 쪽지제한">영구 쪽지기능제한</option>
 							<option value="정직">정직</option>
 							<option value="징계위원회">징계위원회</option>
 						</select>
@@ -651,8 +641,8 @@
 						<select id="ad-msg-detail-result-status" disabled>
 							<option value="미정">미정</option>
 							<option value="반려">반려</option>
-							<option value="3일 쪽지기능제한">3일 쪽지기능제한</option>
-							<option value="영구 쪽지기능제한">영구 쪽지기능제한</option>
+							<option value="3일 쪽지제한">3일 쪽지기능제한</option>
+							<option value="영구 쪽지제한">영구 쪽지기능제한</option>
 							<option value="정직">정직</option>
 							<option value="징계위원회">징계위원회</option>
 						</select>

@@ -48,36 +48,82 @@
     <!-- 각각의 스크립트에서 ! 일단 값을 뽑아서 !!! 값들 뿌려주고 호출이다!  -->
     <script>
         function moveToReceive(){
-        	showRcMsg();                        
-            $("#receive-message-page").show();
-            $("#sent-message-page").hide();
-            $("#recycle-bin-page").hide();
-            $(".receive-message").css("color","rgb(41,128,185)").css("background","rgb(250,215,160)");
-            $(".sent-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");
-            $(".recycle-bin").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");            
+           	var restrictDate = new Date("${loginUser.msgRestrict}");
+           	var now = new Date();           	
+        	if(${loginUser.msgRestrict != null} && now.getTime() < restrictDate.getTime()){ // 신고처리를 당하고 현재 날짜가 쪽지기능제한 시간 범위안에 있을때      		
+            	showRcMsg();                        
+                $("#receive-message-page").show();
+                $("#sent-message-page").hide();
+                $("#recycle-bin-page").hide();
+                $(".receive-message").css("color","rgb(41,128,185)").css("background","rgb(250,215,160)");
+                $(".sent-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");
+                $(".recycle-bin").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");            
+				$(".receive-del").prop("disabled", true);
+				$(".receive-del").css("background","darkgray");
+				$(".receive-report").prop("disabled", true);
+				$(".receive-report").css("background","darkgray");
+				$(".sendign-MSG").prop("disabled", true);
+				$(".sendign-MSG").css("background","darkgray");
+				$("#reply-btn").prop("disabled", true);
+				$("#reply-btn").css("background","darkgray");
+        	}else{// 신고 당하지 않았거나 현재 날짜가 쪽지기능제한 시간을 넘겼을때 
+            	showRcMsg();                        
+                $("#receive-message-page").show();
+                $("#sent-message-page").hide();
+                $("#recycle-bin-page").hide();
+                $(".receive-message").css("color","rgb(41,128,185)").css("background","rgb(250,215,160)");
+                $(".sent-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");
+                $(".recycle-bin").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");                    	
+				$(".receive-del").prop("disabled", false);
+				$(".receive-del").css("background","rgb(236,112,99)");
+				$(".receive-report").prop("disabled", false);
+				$(".receive-report").css("background","rgb(188,144,206)");
+				$(".sendign-MSG").prop("disabled", false);
+				$(".sendign-MSG").css("background","rgb(95,160,203)");
+				$("#reply-btn").prop("disabled", false);
+				$("#reply-btn").css("background","rgb(52,152,219)");
+        	}
         }
 
-        function moveToSent(){
-        	showStMsg();
-            $("#receive-message-page").hide();
-            $("#sent-message-page").show();
-            $("#recycle-bin-page").hide();
-            $(".sent-message").css("color","rgb(41,128,185)").css("background","rgb(250,215,160)");
-            $(".receive-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");
-            $(".recycle-bin").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");            
+        function moveToSent(){ // 신고처리를 당하고 현재 날짜가 쪽지기능제한 시간 범위안에 있을때
+           	var restrictDate = new Date("${loginUser.msgRestrict}");
+           	var now = new Date();
+        	if(${loginUser.msgRestrict != null} && now.getTime() < restrictDate.getTime() ){        		
+            	var gap = parseInt((restrictDate.getTime() - now.getTime())/1000/60);
+            	var restrictTimeText = "쪽지기능제한 해제까지 " + (parseInt(gap/60/24) + "일 ") + (parseInt(gap/60%24) + "시간 ") + ((gap%60) + "분 남았습니다.")
+            	alert("${loginUser.memName}" + "님은 쪽지 신고조치로 인하여\n" 
+            			+ "오직 받은쪽지만 확인 가능합니다.\n" + restrictTimeText);
+        	}else{// 신고 당하지 않았거나 현재 날짜가 쪽지기능제한 시간을 넘겼을때 
+	        	showStMsg();
+	            $("#receive-message-page").hide();
+	            $("#sent-message-page").show();
+	            $("#recycle-bin-page").hide();
+	            $(".sent-message").css("color","rgb(41,128,185)").css("background","rgb(250,215,160)");
+	            $(".receive-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");
+	            $(".recycle-bin").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");            
+        	};
         }
 
-        function moveToRecycleBin(){
-			showRcRecycleBin();
-			showStRecycleBin();
-            reloadReportList();
-            movebackToRecycleBin();
-            $("#receive-message-page").hide();
-            $("#sent-message-page").hide();
-            $("#recycle-bin-page").show();
-            $(".recycle-bin").css("color","rgb(41,128,185)").css("background","rgb(250,215,160)");
-            $(".receive-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");
-            $(".sent-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");  
+        function moveToRecycleBin(){// 신고처리를 당하고 현재 날짜가 쪽지기능제한 시간 범위안에 있을때
+           	var restrictDate = new Date("${loginUser.msgRestrict}");
+           	var now = new Date();
+        	if(${loginUser.msgRestrict != null} && now.getTime() < restrictDate.getTime()){
+            	var gap = parseInt((restrictDate.getTime() - now.getTime())/1000/60);
+            	var restrictTimeText = "쪽지기능제한 해제까지 " + (parseInt(gap/60/24) + "일 ") + (parseInt(gap/60%24) + "시간 ") + ((gap%60) + "분 남았습니다.")
+            	alert("${loginUser.memName}" + "님은 쪽지 신고조치로 인하여\n" 
+            			+ "오직 받은쪽지만 확인 가능합니다.\n" + restrictTimeText);
+        	}else{// 신고 당하지 않았거나 현재 날짜가 쪽지기능제한 시간을 넘겼을때 
+    			showRcRecycleBin();
+    			showStRecycleBin();
+                reloadReportList();
+                movebackToRecycleBin();
+                $("#receive-message-page").hide();
+                $("#sent-message-page").hide();
+                $("#recycle-bin-page").show();
+                $(".recycle-bin").css("color","rgb(41,128,185)").css("background","rgb(250,215,160)");
+                $(".receive-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");
+                $(".sent-message").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");  
+        	};
         }
 
         // 쪽지 상세 보기 쪽인데 !!! 여기서 ajax로 값 뿌려주면서 만들어줘야한다
@@ -132,7 +178,6 @@
     		 		},
     		 		success:function(msgDetail){
     		 			//console.log(msgDetail);
-    		 			
     		 			$("#toFromPerson").html(msgDetail.recipientNameAndRank);
     		 			$("#detailMsgStatus").html(msgDetail.msgStatus);
     		 			$("#msgDetailTime").html(msgDetail.createDate);

@@ -1,7 +1,9 @@
 package com.kh.thezo.message.model.service;
 
-import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -248,14 +250,45 @@ public class MessageServiceImpl implements MessageService{
 	 */
 	@Override
 	public int ajaxHandleReport(MsgReport mr) {
-		if(mr.getResultStatus().equals("3일 쪽지기능제한") || mr.getResultStatus().equals("영구 쪽지기능제한")) {
-			if(msgDao.ajaxHandleReport(sqlSession, mr) > 0) {
-				return msgDao.restrictMsgFunc(sqlSession, mr);
-			}else {
-				return 0;
+		if(mr.getResultStatus().equals("3일 쪽지제한") || mr.getResultStatus().equals("영구 쪽지제한")) {
+			// 만약 member테이블 조회시에 msgRestrict가 존재한다면 ! 해당 날자를 가져와서 가져온 날짜를 기반으로 
+			// 처리 끝났다 이미 신고 먹었는데 또먹으면 기간이 늘어나는 것으로 처리함 
+			String restrictDate = msgDao.beforeHandleReportCheck(sqlSession, mr);
+			// 여기서 한번더 조건 검사해줘야한다. 오늘 날짜보다 restrictDate가 예전이라면 else가 실행되어야한다. 
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+			Date now = new Date();
+			Date rd=null;
+			try {
+				if(restrictDate == null) {// null처리 
+					//어제 날짜로 넘겨서 아래 처리부분에서 else로다가 처리되겠금 진행 
+					rd = new Date(now.getTime()+(1000*60*60*24*-1));
+				}else {
+					rd = sdf.parse(restrictDate);
+				}
+			} catch (ParseException e) { // 얘외처리해주고 
+				e.printStackTrace();
+			}
+			
+			int compare = now.compareTo(rd); // -1 나옴 즉 현재날짜가 더 작다는 것이다. 
+			// now < rd보다 작다는것  System.out.println(compare);
+
+			// 이제 처리하는 것 ! 
+			if(restrictDate != null && compare < 0) {// 이미 신고로 인해서 한번 제한 처분받았을때 ! 
+				mr.setHandleDate(restrictDate);
+				if(msgDao.ajaxHandleReport(sqlSession, mr) > 0) {
+					return msgDao.restrictMsgFunc(sqlSession, mr);
+				}else {
+					return 0;
+				}
+			}else {// 신고처리를 당한적 없는 경우 
+				if(msgDao.ajaxHandleReport(sqlSession, mr) > 0) {
+					return msgDao.restrictMsgFunc(sqlSession, mr);
+				}else {
+					return 0;
+				}
 			}
 		}else {
-			return msgDao.ajaxHandleReport(sqlSession, mr);	
+			return msgDao.ajaxHandleReport(sqlSession, mr);
 		}
 	}
 

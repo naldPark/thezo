@@ -303,6 +303,15 @@ public class MessageDao {
 		return sqlSession.update("messageMapper.ajaxHandleReport", mr);
 	}
 
+	/** 신고처리 전에 조건검사로 기존에 만약 이미 한번 신고 당해서 쪽지기능 제한 일자가 걸려있는 경우 msgRestrict값 조회해오는 Dao
+	 * @param sqlSession
+	 * @param mr
+	 * @return
+	 */
+	public String beforeHandleReportCheck(SqlSessionTemplate sqlSession, MsgReport mr) {
+		return sqlSession.selectOne("messageMapper.beforeHandleReportCheck", mr);
+	}
+	
 	/** 신고처리후에 성공했다면  3일짜리냐 혹은 영구냐에 따라서 쪽지 기능 제한 시키는 Dao
 	 * @param sqlSession
 	 * @param mr
@@ -311,6 +320,7 @@ public class MessageDao {
 	public int restrictMsgFunc(SqlSessionTemplate sqlSession, MsgReport mr) {
 		return sqlSession.update("messageMapper.restrictMsgFunc", mr);
 	}
+
 
 
 }

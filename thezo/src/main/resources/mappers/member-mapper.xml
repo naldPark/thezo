@@ -26,6 +26,7 @@
 		<result column="path" property="path"/> 
 		<result column="notice_auth" property="noticeAuth"/> 
 		<result column="status" property="status"/>
+		<result column="msg_restrict" property="msgRestrict"/> 
 	</resultMap>
 
 

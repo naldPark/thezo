@@ -362,16 +362,16 @@
             }
 
             function moveToMessage(){
-                $("#userChatMain").hide();
-                $("#userMessageMain").show();
-                $("#userNotificationMain").hide();
-                $(".message-menu").css("color","rgb(41,128,185)");
-                $(".message-menu>div").css("color","white").css("background","rgb(41,128,185)");
-                $(".chat-menu").css("color","white");
-                $(".chat-menu>div").css("color","orangered").css("background","white");
-                $(".notification-menu").css("color","white");
-                $("#chatting-outer").show();
-                $("#open-chat-Room").hide();
+	                $("#userChatMain").hide();
+	                $("#userMessageMain").show();
+	                $("#userNotificationMain").hide();
+	                $(".message-menu").css("color","rgb(41,128,185)");
+	                $(".message-menu>div").css("color","white").css("background","rgb(41,128,185)");
+	                $(".chat-menu").css("color","white");
+	                $(".chat-menu>div").css("color","orangered").css("background","white");
+	                $(".notification-menu").css("color","white");
+	                $("#chatting-outer").show();
+	                $("#open-chat-Room").hide();
             }
 
             function moveToNotification(){

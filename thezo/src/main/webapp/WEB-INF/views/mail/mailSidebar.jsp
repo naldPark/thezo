@@ -17,11 +17,11 @@
     <a type="button" href="enrollForm.mail" class="btn btn-primary">메일쓰기</a>
     <button type="button" class="btn btn-primary">내게쓰기</button>
     <br><br>
-    <a href="main.mail" class="w3-bar-item w3-button w3-padding"><i class="fas fa-envelope"></i> 받은편지함</a>
-    <a href="send.mail" class="w3-bar-item w3-button w3-padding"><i class="fas fa-paper-plane"></i> 보낸편지함</a>
-    <a href="temp.mail" class="w3-bar-item w3-button w3-padding"><i class="fas fa-inbox"></i> 임시보관함</a>
-    <a href="spam.mail" class="w3-bar-item w3-button w3-padding"><i class="fas fa-ban"></i> 스팸메일함</a>
-    <a href="trash.mail" class="w3-bar-item w3-button w3-padding"><i class="fas fa-trash-alt"></i> 휴지통</a>
+    <a href='main.mail?folder=받은' class="w3-bar-item w3-button w3-padding"><i class="fas fa-envelope"></i> 받은편지함</a>
+    <a href="sendInbox.mail" class="w3-bar-item w3-button w3-padding"><i class="fas fa-paper-plane"></i> 보낸편지함</a>
+    <a href="main.mail?folder=임시" class="w3-bar-item w3-button w3-padding"><i class="fas fa-inbox"></i> 임시보관함</a>
+    <a href="main.mail?folder=스팸" class="w3-bar-item w3-button w3-padding"><i class="fas fa-ban"></i> 스팸메일함</a>
+    <a href="main.mail?folder=휴지" class="w3-bar-item w3-button w3-padding"><i class="fas fa-trash-alt"></i> 휴지통</a>
     <a class="w3-bar-item w3-button w3-padding" onclick="extend('receiveDocu')"><i class="far fa-caret-square-down"></i>  개인보관함</a>
     <div id="receiveDocu" class="w3-bar-block w3-hide w3-show">
       <a href="#" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"> </i> &nbsp;&nbsp;개인보관1</a>
@@ -29,10 +29,7 @@
     </div>
   
     <hr>
-    <small>전체 10GB중 7GB 사용 했습니다.</small><br><br>
-    <div class="progress" style="width:80%">
-      <div class="progress-bar" style="width:70%">70%</div>
-    </div>
+    
   </div>
 </nav>
 

@@ -4,14 +4,29 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.Flags;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-//@author YI
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,39 +44,168 @@ import com.kh.thezo.member.model.vo.Member;
 @Controller
 public class MailController {
 	
-	
 	@Autowired
 	private MailService mmService;
-	
+	@Autowired
+	private CheckInbox chkInbox;
 
 	@RequestMapping("main.mail")
-	public ModelAndView selectMailMain(ModelAndView mv,HttpSession session, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+	public ModelAndView selectMailMain(ModelAndView mv, HttpSession session
+			, @RequestParam(value = "folder", defaultValue = "받은") String folder, 
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+		Member m = (Member) session.getAttribute("loginUser");
+		if (m != null) {
+			Mail mm = new Mail();
+			mm.setMemNo(((Member) session.getAttribute("loginUser")).getMemNo());
+			mm.setFolder(folder);
+			ArrayList<Mail> mList = new ArrayList<>();
+			
+			// 받은편지함만 해당
+			if (folder.equals("받은")) {
+
+				// 해당 두 계정만 서버와 연동시켰기 때문에 조건처리했습니다.
+				if (m.getEmail().equals("user05@thezo.site") || m.getEmail().equals("user06@thezo.site")) {
+					try {
+						// 외부에 새로들어온 메일이 있는지 체크
+						mList = mailReceivecheck(m.getMemNo(), m.getEmail(), session);
+						if (mList != null) {
+							int result = mmService.insertPopList(mList);
+							deletePopMail(m.getEmail());
+						}
+					} catch (MessagingException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			// 받은편지함만 해당 끝
+
+			int listCount = mmService.selectMailListCount(mm);
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+			ArrayList<Mail> list = mmService.selectMailList(mm, pi);
+
+			mv.addObject("list", list).addObject("pi", pi).addObject("folder", folder).setViewName("mail/mailMain");
+		} else {
+			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+	
+	@RequestMapping("sendInbox.mail")
+	public ModelAndView selectSendMail(ModelAndView mv, HttpSession session
+			,@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+		Member m = (Member) session.getAttribute("loginUser");
+		if (m != null) {
+			int memNo = m.getMemNo();
+
+			int listCount = mmService.selectSendListCount(memNo);
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+			ArrayList<Mail> list = mmService.selectSendList(memNo, pi);
+
+			mv.addObject("list", list).addObject("pi", pi).setViewName("mail/sendInbox");
+		} else {
+			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
+	}
+
+	// 메인 메일페이지 접속시 실행되는 메소드 : 실제 mail서버에 있는 받은편지를 받아옴
+	public ArrayList<Mail> mailReceivecheck(int memNo, String email, HttpSession session) throws MessagingException {
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/mail/");
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		ArrayList<Mail> mList = chkInbox.receiveMailAttachedFile(savePath, memNo, email, currentTime);
+		return mList;
+
+	}
+
+	// 메인페이지 접속시 서버에 있는 메일을 가져 온 후 가져온 메일을 서버에서 삭제
+	public void deletePopMail(String user) {
+
+		// host, id, pwd 설정
+		String host = "pop.daum.net";
+		String password = "skfem11!";
+		
+			// Properties를 통한 pop3 연결
+			Properties prop = new Properties();
+			prop.put("mail.pop3.host", host);
+			prop.put("mail.pop3.port", 995);
+			prop.put("mail.pop3.starttls.enable", "true");
+			Session emailSession = Session.getDefaultInstance(prop);
+			try {
+				
+				Store store = emailSession.getStore("pop3s");
+				store.connect(host, user, password);
+				// 받은편지함 메일을 불러온다
+				Folder emailFolder = store.getFolder("INBOX");
+				emailFolder.open(Folder.READ_WRITE);
+				Message[] arrayMessages = emailFolder.getMessages();
+				// 새로운 편지가 있다면
+				if (arrayMessages != null) {
+					
+					// 이미 list에 담았기 때문에 휴지통으로 이동
+					for (int i = 0; i < arrayMessages.length; i++) {
+						Message message = arrayMessages[i];
+						message.setFlag(Flags.Flag.DELETED, true);
+					}
+				}
+				emailFolder.close(true);
+				store.close();
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	@RequestMapping("mainBtn.mail")
+	public ModelAndView MainBtn(HttpSession session, ModelAndView mv, String[] mailNo, String btnType) {
 		
 		Member m = (Member) session.getAttribute("loginUser");
+		if (m != null) {
+			ArrayList<String> mailNoAry = new ArrayList<>(Arrays.asList(mailNo));
+			int result = 0;
+			switch (btnType) {
+				case "readBtn":	result = mmService.updateReadMail(mailNoAry);	break;
+				case "spamBtn": result = mmService.updateSpamMail(mailNoAry); break;
+				case "deleteBtn": result = mmService.updateDeleteMail(mailNoAry); break;
+				case "sendDeleteBtn": result = mmService.updateDeleteSendMail(mailNoAry); break;
+			}
 
-		// 페이징 확인
-		m.setMemNo(m.getMemNo());
-//		mm.setApprFolder(apprFolder);
-		int listCount = mmService.selectReceiveCount(m);
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		ArrayList<Mail> list = mmService.selectReceive(m, pi);
-		System.out.println(list);
-		
-		mv.addObject("list", list)
-		  .addObject("pi", pi)
-		  .setViewName("mail/mailMain");
+			if (result > 0) { // 성공
+				session.setAttribute("alertMsg", "성공적으로 처리 되었습니다.");
+				mv.setViewName("redirect:main.mail");
+			} else {
+				// 실패하면 첨부도 지우자
+				mv.addObject("errorMsg", "처리에 실패했습니다");
+				mv.setViewName("common/errorPage");
+			}
+		} else {
+			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
+			mv.setViewName("common/errorPage");
+		}
 		return mv;
+	
 	}
 	
+	
+	// 메인페이지 관련기능 끝
+	
+	
+	// 글쓰기로 넘어감 (가면서 전사원리스트 조회함)
 	@RequestMapping("enrollForm.mail")
-	public ModelAndView enrollMail(ModelAndView mv) {
-		ArrayList<Member> empList = mmService.employeeList();
-		mv.addObject("empList", empList) // 전사원 리스트 
-		  .setViewName("mail/mailEnrollForm");
+	public ModelAndView enrollMail(HttpSession session, ModelAndView mv) {
+		Member m = (Member) session.getAttribute("loginUser");
+		if (m != null) {
+			ArrayList<Member> empList = mmService.employeeList();
+			mv.addObject("empList", empList) // 전사원 리스트
+					.setViewName("mail/mailEnrollForm");
+		} else {
+			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
+			mv.setViewName("common/errorPage");
+		}
 		return mv;
 	}
-	
+
 	// 첨부파일 저장을 위한 메소드 모듈화
 	public String saveFile(HttpSession session, MultipartFile upfile) {
 		
@@ -71,7 +215,6 @@ public class MailController {
 		int ranNum = (int)(Math.random() * 90000 + 10000);
 		String ext = originName.substring(originName.lastIndexOf("."));
 		String changeName = currentTime + ranNum + ext;
-		
 		try {
 			upfile.transferTo(new File(savePath + changeName));
 		} catch (IllegalStateException | IOException e) {
@@ -80,55 +223,207 @@ public class MailController {
 		return changeName;
 	}
 	
+	// 메일 발송시 인설트 및 서버에 전송(sendMailSmtp()) 처리
 	@RequestMapping("send.mail")
-	public ModelAndView sendMail(ModelAndView mv, HttpSession session, MultipartFile[] upfile, Mail mm) {
+	public ModelAndView sendMail(HttpServletRequest request,ModelAndView mv, HttpSession session, MultipartFile[] upfile, Mail mm) {
 		Member m = (Member) session.getAttribute("loginUser");
-		mm.setMemNo(m.getMemNo());
-		mm.setSender(m.getEmail());
-		mm.setReceiver(String.join(",", mm.getReceiveAry()));
+		if (m != null) {
+			mm.setMemNo(m.getMemNo());
+			mm.setSender(m.getEmail());
+			mm.setReceiver(String.join(", ", mm.getReceiveAry()));
+			mm.setRefReceiver(String.join(", ", mm.getRefReceiveAry()));
+
 			if (!upfile[0].getOriginalFilename().equals("")) {
 				ArrayList<Attachment> list = new ArrayList<>();
-	
+
 				for (int i = 0; i < upfile.length; i++) {
 					Attachment at = new Attachment();
-					String changeName = saveFile(session, upfile[i]); 
+					at.setChangeName(saveFile(session, upfile[i]));
 					at.setOriginName(upfile[i].getOriginalFilename());
-					at.setFileUrl("resources/uploadFiles/mail/" + changeName);
-					at.setFileLevel(i+1);
+					at.setFileUrl("resources/uploadFiles/mail/" + at.getChangeName());
+					at.setFileLevel(i + 1);
+					at.setFileType("보낸메일");
 					list.add(at);
 				}
 				mm.setAt(list);
-				//섬머노트 첨부를 오칼까나
 			}
-			System.out.println(mm);
+			// 해당 두 계정만 서버와 연동시켰기 때문에 조건처리했습니다.
+			if (m.getEmail().equals("user05@thezo.site") || m.getEmail().equals("user06@thezo.site")) {
+				sendMailSmtp(mm, request);
+			}
 			int result = mmService.sendMail(mm);
-			if(result > 0) { // 성공
+
+			if (result > 0) { // 성공
 				session.setAttribute("alertMsg", "성공적으로 발송 되었습니다.");
 				mv.setViewName("redirect:main.mail");
-			}else {
-				//실패하면 첨부도 지우자
+			} else {
+				// 실패하면 첨부도 지우자
 				mv.addObject("errorMsg", "작성에 실패했습니다");
 				mv.setViewName("common/errorPage");
 			}
-			return mv;
+		} else {
+			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
 	}
+	
 
-	@RequestMapping("temp.mail")
-	public String selectTempMail() {
-		return "mail/tempMail";
+	
+	// 메일 서버에서 발송하는 기능
+	public void sendMailSmtp(Mail mm,HttpServletRequest request) {
+		String host = "smtp.daum.net";
+		String user = mm.getSender();
+		String password = "skfem11!";
+		Properties props = new Properties();
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.port", 465);
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.ssl.enable", "true");
+		props.put("mail.smtp.ssl.trust", host);
+		
+		 // SSL setting
+		props.setProperty("mail.imap.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+		props.setProperty("mail.imap.socketFactory.fallback", "false");
+		props.setProperty("mail.imap.socketFactory.port",
+                String.valueOf(993));
+
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(user, password);
+			}
+		});
+		try {
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(user));
+			
+			// 수신 및 참조			
+			String receiver= setReceiversFunction(mm.getReceiver());
+			String[] receiverAry = receiver.split(",");
+			
+			InternetAddress[] toAddr = new InternetAddress[receiverAry.length];
+			for (int i = 0; i < toAddr.length; i++) {
+				toAddr[i] = new InternetAddress (receiverAry[i]);
+			}
+			message.setRecipients(Message.RecipientType.TO, toAddr);
+			
+			if (!mm.getRefReceiver().equals("")) {
+
+				String refReceiver = setReceiversFunction(mm.getRefReceiver());
+				String[] refReceiverAry = refReceiver.split(",");
+
+				InternetAddress[] refAddr = new InternetAddress[refReceiverAry.length];
+				for (int i = 0; i < refAddr.length; i++) {
+					refAddr[i] = new InternetAddress(refReceiverAry[i]);
+				}
+				message.setRecipients(Message.RecipientType.CC, refAddr);
+			}
+			// 메일 제목
+			message.setSubject(mm.getMailTitle(), "utf-8");
+			// 메일 내용
+			
+			
+			String realPath =request.getSession().getServletContext().getRealPath("/resources/uploadFiles/mail/");
+			
+			MimeBodyPart mbp1 = new MimeBodyPart();
+			Multipart mp = new MimeMultipart();
+			// summernote내 내용을 담고 캐릭터셋 설정
+			mbp1.setContent(mm.getMailContent(), "text/html;charset=euc-kr");
+			mp.addBodyPart(mbp1);
+			
+			
+			// 첨부파일 발송을 위한 세팅
+			MimeBodyPart mbp2 = null;
+			
+			if (mm.getAt()!=null) {
+				FileDataSource fds = new FileDataSource(realPath+mm.getAt().get(0).getChangeName());
+            	for (int i = 0; i < mm.getAt().size(); i++) {
+                	mbp2 = new MimeBodyPart();
+                	mbp2.setDataHandler(new DataHandler(new FileDataSource(realPath+mm.getAt().get(i).getChangeName())));
+                	mbp2.setFileName(mm.getAt().get(i).getOriginName());
+                	mp.addBodyPart(mbp2);
+                }
+            	mp.addBodyPart(mbp2);
+            }
+			
+			message.setContent(mp);
+			// 메일발송
+			Transport.send(message);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+
+		
 	}
 	
-	@RequestMapping("spam.mail")
-	public String selectSpamMail() {
-		return "mail/spamMail";
+	@RequestMapping("mailDetail.mail")
+	public ModelAndView selectDetailMail(int mno, HttpSession session, ModelAndView mv) {
+		Member m = (Member) session.getAttribute("loginUser");
+		if (m != null) {
+			int memNo = m.getMemNo();
+
+			Mail mm = mmService.selectDetailMail(mno);
+			ArrayList<Attachment> atList = mmService.selectDetailMailAt(mm);
+			mm.setAt(atList);
+			mm.setReceiver(setReceiversFunction(mm.getReceiver()));
+			if (mm.getRefReceiver()!=null) {
+				mm.setRefReceiver(setReceiversFunction(mm.getRefReceiver()));
+			}
+			if (mm.getMemNo() == memNo) {
+				mmService.updateReadMailOne(mno);
+				mv.addObject("mm", mm);
+				mv.setViewName("mail/mailDetail");
+			} else {
+				mv.addObject("errorMsg", "오류가 발생했습니다");
+				mv.setViewName("common/errorPage");
+			}
+		} else {
+			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
 	}
 	
-	@RequestMapping("trash.mail")
-	public String selectTrashMail() {
-		return "mail/trashMail";
+	@RequestMapping("sendDetail.mail")
+	public ModelAndView selectSendDetailMail(int mno, HttpSession session, ModelAndView mv) {
+		Member m = (Member) session.getAttribute("loginUser");
+		if (m != null) {
+			int memNo = m.getMemNo();
+			Mail mm = mmService.selectSendDetailMail(mno);
+			ArrayList<Attachment> atList = mmService.selectDetailMailAt(mm);
+			mm.setAt(atList);
+			mm.setReceiver(setReceiversFunction(mm.getReceiver()));
+			if (mm.getRefReceiver()!=null) {
+				mm.setRefReceiver(setReceiversFunction(mm.getRefReceiver()));
+			}
+			if (mm.getMemNo() == memNo) {
+				mv.addObject("mm", mm);
+				mv.setViewName("mail/mailDetail");
+			} else {
+				mv.addObject("errorMsg", "오류가 발생했습니다");
+				mv.setViewName("common/errorPage");
+			}
+		} else {
+			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;
 	}
 	
 	
-	
+	// db에 여러 수신,참조자가 컴마로 둘러싸여있는데 빈칸 및 맨 앞 ,제거하는 메소드
+	public String setReceiversFunction(String receiver) {
+		receiver = receiver.replace(" ","");
+		if(receiver.substring(0, 1).matches(",")) {
+			receiver=receiver.substring(1);
+		}		
+		if(receiver.substring(receiver.length()-1, receiver.length()).matches(",")) {
+			receiver=receiver.substring(0,receiver.length()-1);
+		}
+		return receiver;
+		
+	}
 	
 }

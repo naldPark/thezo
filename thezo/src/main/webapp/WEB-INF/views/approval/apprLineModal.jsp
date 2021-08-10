@@ -119,7 +119,7 @@
                 <div class="p-3" style="border:1px solid lightgrey; width:400px; min-height: 500px;">
 
                   <ul id="apprOrgTree">
-                    <li class="eachPerson" id="ceoCheck"></li></span>
+                    <li class="eachPerson" id="ceoCheck"></li>
                     <ul>
                       <li class="departmentLevel">
                         <span class="box">경영관리본부</span>

@@ -105,7 +105,7 @@
                   </div>
                   <div class="w3-dropdown-click" style="width:700px">
                     <div class="empListDiv w3-dropdown-content w3-bar-block w3-light-grey" id="referListDiv">
-                      <input type="text" class="form-control empListInput"  id="referListInput" placeholder="(선택사항)이름을 입력하세요" onkeyup="filterFunction()">
+                      <input type="text" class="form-control empListInput" name="refReceiveAry" id="referListInput" placeholder="(선택사항)이름을 입력하세요" onkeyup="filterFunction()">
                       <!-- 동적문구 -->
                         <a class="w3-bar-item w3-button" id="refKeyupInput" style="display: none;"></a>
                       <input type="hidden" value="" style="display: none;">
@@ -270,7 +270,7 @@
               var inputCate = ['', ''];
               // 수신인지 참조인지 확인
               if($(this).parent().attr("id")=='referListDiv'){
-                inputCate = ['refAry', 'referSpan'];
+                inputCate = ['refReceiveAry', 'referSpan'];
               } else {
                 inputCate = ['receiveAry', 'receiveSpan'];
               }
@@ -303,9 +303,9 @@
     $(function(){
       <c:forEach var="p" items="${ empList }" varStatus="status">
         $("<a class='w3-bar-item w3-button'>${p.memName} ${p.rank} "
-          +"<c:if test='${!empty p.job }'>(${p.job}) </c:if>/ ${p.department} / ${p.email}</a><input type='hidden' value='${p.memName}/${p.email}'>").appendTo("#referListDiv");
+          +"<c:if test='${!empty p.job }'>(${p.job}) </c:if>/ ${p.department} / ${p.email}</a><input type='hidden' value='${p.email}'>").appendTo("#referListDiv");
           $("<a class='w3-bar-item w3-button'>${p.memName} ${p.rank} "
-          +"<c:if test='${!empty p.job }'>(${p.job}) </c:if>/ ${p.department} / ${p.email}</a><input type='hidden' value='${p.memName}/${p.email}'>").appendTo("#receiveListDiv");
+          +"<c:if test='${!empty p.job }'>(${p.job}) </c:if>/ ${p.department} / ${p.email}</a><input type='hidden' value='${p.email}'>").appendTo("#receiveListDiv");
       </c:forEach>
     
         var x = document.getElementById("referListDiv");

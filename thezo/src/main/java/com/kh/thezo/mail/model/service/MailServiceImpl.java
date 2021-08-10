@@ -13,6 +13,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.kh.thezo.approval.model.dao.ApprovalDao;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.mail.model.dao.MailDao;
+import com.kh.thezo.mail.model.vo.Attachment;
 import com.kh.thezo.mail.model.vo.Mail;
 import com.kh.thezo.member.model.vo.Member;
 
@@ -31,18 +32,41 @@ public class MailServiceImpl implements MailService {
 	
 	
 	@Override
-	public int selectReceiveCount(Member m) {
-		return mmDao.selectReceiveCount(m, sqlSession);
+	public int selectMailListCount(Mail mm) {
+		return mmDao.selectMailListCount(mm, sqlSession);
 	}
 
 	@Override
-	public ArrayList<Mail> selectReceive(Member m, PageInfo pi) {
-		return mmDao.selectReceive(m, pi, sqlSession);
+	public ArrayList<Mail> selectMailList(Mail mm, PageInfo pi) {
+		return mmDao.selectMailList(mm, pi, sqlSession);
+	}
+	
+	@Override
+	public int selectSendListCount(int memNo) {
+		return mmDao.selectSendListCount(memNo, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Mail> selectSendList(int memNo, PageInfo pi) {
+		return mmDao.selectSendList(memNo, pi, sqlSession);
 	}
 	
 	@Override
 	public ArrayList<Member> employeeList() {
 		return aDao.employeeList(sqlSession);
+	}
+	
+	@Override
+	public int insertPopList(ArrayList<Mail> mList) {
+		
+		int result=0;
+		for (int i = 0; i < mList.size(); i++) {
+			mmDao.insertPopList(sqlSession, mList.get(i));
+			if(mList.get(i).getAt()!=null) {
+			mmDao.insertMailAttachment(sqlSession, mList.get(i));
+			}
+		}
+		return result;
 	}
 	
 	@Override
@@ -64,6 +88,46 @@ public class MailServiceImpl implements MailService {
 			transactionManager.rollback(status);
 		}
 		return result;
+	}
+	
+	@Override
+	public Mail selectDetailMail(int mno) {
+		return mmDao.selectDetailMail(sqlSession, mno);
+	}
+	
+	@Override
+	public ArrayList<Attachment> selectDetailMailAt(Mail mm){
+		return mmDao.selectDetailMailAt(sqlSession, mm);
+	}
+	
+	@Override
+	public int updateReadMailOne(int mno) {
+		return mmDao.updateReadMailOne(sqlSession, mno);
+	}
+	
+	@Override
+	public int updateReadMail(ArrayList<String> reMailNoAry) {
+		return mmDao.updateReadMail(sqlSession, reMailNoAry);
+	}
+	
+	@Override
+	public int updateSpamMail(ArrayList<String> reMailNoAry) {
+		return mmDao.updateSpamMail(sqlSession, reMailNoAry);
+	}
+	
+	@Override
+	public int updateDeleteMail(ArrayList<String> reMailNoAry) {
+		return mmDao.updateDeleteMail(sqlSession, reMailNoAry);
+	}
+	
+	@Override
+	public int updateDeleteSendMail(ArrayList<String> seMailNoAry) {
+		return mmDao.updateDeleteSendMail(sqlSession, seMailNoAry);
+	}
+	
+	@Override
+	public Mail selectSendDetailMail(int mno) {
+		return mmDao.selectSendDetailMail(sqlSession, mno);
 	}
 	
 }

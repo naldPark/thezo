@@ -2,34 +2,81 @@ package com.kh.thezo.mail.model.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.mail.model.vo.Attachment;
 import com.kh.thezo.mail.model.vo.Mail;
-import com.kh.thezo.member.model.vo.Member;
 
 @Repository
 public class MailDao {
 	
-	public int selectReceiveCount(Member m, SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("mailMapper.selectReceiveCount",m);
+	public int selectMailListCount(Mail mm, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("mailMapper.selectMailListCount", mm);
+	}
+
+	public ArrayList<Mail> selectMailList(Mail mm, PageInfo pi, SqlSessionTemplate sqlSession) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList) sqlSession.selectList("mailMapper.selectMailList", mm, rowBounds);
 	}
 	
-	public ArrayList<Mail> selectReceive(Member m, PageInfo pi, SqlSessionTemplate sqlSession) {
-		System.out.println(m.getMemNo());
-		return (ArrayList)sqlSession.selectList("mailMapper.selectReceive",m);
+	public int selectSendListCount(int memNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("mailMapper.selectSendListCount", memNo);
 	}
-	
+
+	public ArrayList<Mail> selectSendList(int memNo, PageInfo pi, SqlSessionTemplate sqlSession) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList) sqlSession.selectList("mailMapper.selectSendList", memNo, rowBounds);
+	}
+
+	// 서버에 있는 받은 메일함 db로 옮기기
+	public int insertPopList(SqlSessionTemplate sqlSession, Mail mm) {
+		return sqlSession.insert("mailMapper.insertPop", mm);
+	}
+
 	public int sendMail(SqlSessionTemplate sqlSession, Mail mm) {
-		
-		return sqlSession.insert("mailMapper.sendMail",mm);
+
+		return sqlSession.insert("mailMapper.sendMail", mm);
 	}
-	
 
 	public int insertMailAttachment(SqlSessionTemplate sqlSession, Mail mm) {
-		System.out.println(mm.getAt());
-		return sqlSession.insert("mailMapper.insertMailAttachment",mm);
+		return sqlSession.insert("mailMapper.insertMailAttachment", mm);
+	}
+
+	public Mail selectDetailMail(SqlSessionTemplate sqlSession, int mno) {
+		return sqlSession.selectOne("mailMapper.selectDetailMail", mno);
+	}
+	
+	public ArrayList<Attachment> selectDetailMailAt(SqlSessionTemplate sqlSession,Mail mm) {
+		return (ArrayList)sqlSession.selectList("mailMapper.selectDetailMailAt", mm);
+	}
+
+	public int updateReadMailOne(SqlSessionTemplate sqlSession, int mno) {
+		return sqlSession.update("mailMapper.updateReadMailOne", mno);
+	}
+
+	public int updateReadMail(SqlSessionTemplate sqlSession, ArrayList<String> reMailNoAry) {
+		return sqlSession.update("mailMapper.updateReadMail", reMailNoAry);
+	}
+
+	public int updateSpamMail(SqlSessionTemplate sqlSession, ArrayList<String> reMailNoAry) {
+		return sqlSession.update("mailMapper.updateSpamMail", reMailNoAry);
+	}
+
+	public int updateDeleteMail(SqlSessionTemplate sqlSession, ArrayList<String> reMailNoAry) {
+		return sqlSession.update("mailMapper.updateDeleteMail", reMailNoAry);
+	}
+	
+	public int updateDeleteSendMail(SqlSessionTemplate sqlSession, ArrayList<String> seMailNoAry) {
+		return sqlSession.update("mailMapper.updateDeleteSendMail", seMailNoAry);
+	}
+	
+	public Mail selectSendDetailMail(SqlSessionTemplate sqlSession, int mno) {
+		return sqlSession.selectOne("mailMapper.selectSendDetailMail", mno);
 	}
 
 }

@@ -17,9 +17,7 @@
       
           <div class="mailOuter">
             <div align="left">
-              <button type="button" id="readBtn" class="mainBtn btn btn-sm btn-secondary">읽음처리</button>
-              <button type="button" id="spamBtn" class="mainBtn btn btn-sm btn-secondary">스팸처리</button>
-              <button type="button" id="deleteBtn" class="mainBtn btn btn-sm btn-secondary">삭제</button>
+              <button type="button" id="sendDeleteBtn" class="mainBtn btn btn-sm btn-secondary">삭제</button>
             </div>
             <br>
             <form action="mainBtn.mail" method="post" id="mainBtnForm">
@@ -28,29 +26,16 @@
                   <input type="hidden" id="btnType" name="btnType" value="">
                   <tr class="table-primary">
                     <th><input type="checkbox" class="bigCheckbox" id="allCheck"></th>
-                    <th>읽음</th>
                     <th>발신자</th>
                     <th style="width:500px">제목</th>
-      
                     <th>일시</th>
                   </tr>
                 </thead>
                 <tbody>
                   <c:forEach var="m" items="${ list }">
-      
-                    <tr <c:if test="${m.read eq 'N'}">class="font-weight-bold"</c:if>>
-                      <td hidden>${m.reMailNo}</td>
-                      <th><input type="checkbox" class="bigCheckbox" name="mailNo" value="${m.reMailNo}"></th>
-                      <td>
-                        <c:choose>
-                          <c:when test="${m.read eq 'N'}">
-                            <i class="far fa-envelope"></i>
-                          </c:when>
-                          <c:otherwise>
-                            <i class="far fa-envelope-open"></i>
-                          </c:otherwise>
-                        </c:choose>
-                      </td>
+                    <tr>
+                      <td hidden>${m.seMailNo}</td>
+                      <th><input type="checkbox" class="bigCheckbox" name="reMailNo" value="${m.reMailNo}"></th>
                       <td>${m.sender}</td>
                       <!--발신자가 외부면 메일, 내부면 이름?-->
                       <td>
@@ -59,8 +44,9 @@
                           &nbsp;<i class="fas fa-paperclip"></i>
                         </c:if>
                       </td>
-                      <td>${m.receiveDate}</td>
+                      <td>${m.sendDate}</td>
                     </tr>
+                    <!--첨부파일 여부-->
                   </c:forEach>
       
                 </tbody>
@@ -74,26 +60,28 @@
               <ul class="pagination">
                 <c:if test="${ pi.currentPage ne 1 }">
                   <li class="page-item"><a class="page-link"
-                      href="main.mail?currentPage=${ pi.currentPage-1 }&folder=${folder}">이전</a></li>
+                      href="sendInbox.mail?currentPage=${ pi.currentPage-1 }">이전</a></li>
                 </c:if>
       
                 <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
                   <c:choose>
                     <c:when test="${ pi.currentPage eq p }">
                       <li class="page-item"><a class="page-link" style="background-color: lightsteelblue"
-                          href="main.mail?currentPage=${ p }&folder=${folder}">${ p }</a></li>
+                          href="sendInbox.mail?currentPage=${ p }">${ p }</a></li>
                     </c:when>
                     <c:otherwise>
                       <li class="page-item"><a class="page-link"
-                          href="main.mail?currentPage=${ p }&folder=${folder}">${ p }</a></li>
+                          href="sendInbox.mail?currentPage=${ p }">${ p }</a></li>
                     </c:otherwise>
                   </c:choose>
                 </c:forEach>
       
                 <c:if test="${ pi.currentPage ne pi.maxPage }">
                   <li class="page-item"><a class="page-link"
-                      href="main.mail?currentPage=${ pi.currentPage+1 }&folder=${folder}">다음</a></li>
+                      href="sendInbox.mail?currentPage=${ pi.currentPage+1 }">다음</a></li>
                 </c:if>
+      
+      
               </ul>
             </div>
             <!--페이징 처리 끝-->
@@ -108,7 +96,7 @@
     	$(function () {
           $(".table>tbody>tr>td").click(function () {
             var mno = $(this).parent().children().eq(0).text();
-            location.href = 'mailDetail.mail?mno=' + mno;
+            location.href = 'sendDetail.mail?mno=' + mno;
           })
         })
 

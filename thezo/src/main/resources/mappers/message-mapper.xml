@@ -569,5 +569,33 @@
          where msg_report_no = #{ msgReportNo }
  	</select>
  	
+ 	<!-- 관리자 페이지에서 일단 신고처리를 하는 sql문 -->
+ 	<update id="ajaxHandleReport">
+		update msg_report
+		   set handle_content = #{ handleContent }
+		     , handle_status = #{ handleStatus }
+		     , result_status = #{ resultStatus }
+		     , handle_date = sysdate
+	     where msg_report_no = #{ msgReportNo } 	
+ 	</update>
+
+ 	<!-- 관리자 페이지에서 일단 신고처리를 하는 sql문 -->
+ 	<update id="restrictMsgFunc">
+		update member
+		   set msg_restrict = 
+		   (select 
+		   <if test="resultStatus == '3일 쪽지기능제한'">		   
+		           handle_date + (interval '3' day)
+		   </if>
+		   <if test="resultStatus == '영구 쪽지기능제한'">
+		           handle_date + (interval '50' year)
+		   </if>
+		      from msg_report 
+		     where msg_report_no = #{ msgReportNo }
+		   )
+	     where mem_no = #{ reportedNo } 	
+ 	
+ 	</update>
+ 	
 	 
 </mapper>

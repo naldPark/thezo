@@ -294,5 +294,23 @@ public class MessageDao {
 		return sqlSession.selectOne("messageMapper.ajaxSelectAdminReportDetail", msgReportNo);
 	}
 
+	/** 관리자 페이지에서 일단 신고처리를 하는 Dao
+	 * @param sqlSession
+	 * @param mr
+	 * @return
+	 */
+	public int ajaxHandleReport(SqlSessionTemplate sqlSession, MsgReport mr) {
+		return sqlSession.update("messageMapper.ajaxHandleReport", mr);
+	}
+
+	/** 신고처리후에 성공했다면  3일짜리냐 혹은 영구냐에 따라서 쪽지 기능 제한 시키는 Dao
+	 * @param sqlSession
+	 * @param mr
+	 * @return
+	 */
+	public int restrictMsgFunc(SqlSessionTemplate sqlSession, MsgReport mr) {
+		return sqlSession.update("messageMapper.restrictMsgFunc", mr);
+	}
+
 
 }

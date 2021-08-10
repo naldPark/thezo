@@ -38,7 +38,7 @@ public class Member {
 	private int memVacDate;
 	private int memUsedDate;
 	private int memTotalDate;
-	private String messageFunc;
+	private String msgRestrict;
 	private String noticeAuth;
 	private String status;
 	

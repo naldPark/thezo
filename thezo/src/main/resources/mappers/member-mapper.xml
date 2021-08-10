@@ -54,7 +54,7 @@
 			, MEM_VAC_DATE
 			, MEM_USED_DATE
 			, MEM_TOTAL_DATE
-			, MESSAGE_FUNC
+			, MSG_RESTRICT
 			, NOTICE_AUTH
 			, status
 		  from member

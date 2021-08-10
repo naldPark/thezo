@@ -1,5 +1,6 @@
 package com.kh.thezo.message.model.service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -247,16 +248,15 @@ public class MessageServiceImpl implements MessageService{
 	 */
 	@Override
 	public int ajaxHandleReport(MsgReport mr) {
-		//if()
-		System.out.println(mr.getResultStatus());
-		System.out.println(mr.getResultStatus().equals("반려"));
-
-		//return msgDao.ajaxSelectAdminReportDetail(sqlSession, mr);
-		return 0;
+		if(mr.getResultStatus().equals("3일 쪽지기능제한") || mr.getResultStatus().equals("영구 쪽지기능제한")) {
+			if(msgDao.ajaxHandleReport(sqlSession, mr) > 0) {
+				return msgDao.restrictMsgFunc(sqlSession, mr);
+			}else {
+				return 0;
+			}
+		}else {
+			return msgDao.ajaxHandleReport(sqlSession, mr);	
+		}
 	}
-
-
-
-	
 
 }

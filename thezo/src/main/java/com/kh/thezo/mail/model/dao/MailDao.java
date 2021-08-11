@@ -1,6 +1,7 @@
 package com.kh.thezo.mail.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -87,7 +88,23 @@ public class MailDao {
 	}
 
 	public int updateDeleteMail(SqlSessionTemplate sqlSession, ArrayList<String> reMailNoAry) {
-		return sqlSession.update("mailMapper.updateDeleteMail", reMailNoAry);
+		return sqlSession.delete("mailMapper.updateDeleteMail", reMailNoAry);
+	}
+	
+	public int updateDeleteAllMail(SqlSessionTemplate sqlSession, ArrayList<String> reMailNoAry) {
+		return sqlSession.update("mailMapper.updateDeleteAllMail", reMailNoAry);
+	}
+	
+	public int updateDeleteAllSendMail(SqlSessionTemplate sqlSession, ArrayList<String> seMailNoAry) {
+		return sqlSession.update("mailMapper.updateDeleteAllSendMail", seMailNoAry);
+	}
+	
+	public ArrayList<Attachment> selectDeleteAllMailAt(SqlSessionTemplate sqlSession, HashMap<String,String> hs){
+		return (ArrayList)sqlSession.selectList("mailMapper.selectDeleteAllMailAt", hs);
+	}
+	
+	public int updateDeleteAllMailAt(SqlSessionTemplate sqlSession, HashMap<String,String> hs) {
+		return sqlSession.delete("mailMapper.updateDeleteAllMailAt", hs);
 	}
 	
 	public int updateDeleteSendMail(SqlSessionTemplate sqlSession, ArrayList<String> seMailNoAry) {

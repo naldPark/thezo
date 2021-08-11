@@ -6,18 +6,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
-import javax.mail.Flags;
-import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
-import javax.mail.Store;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -90,6 +88,7 @@ public class MailController {
 				pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 				list = mmService.selectMailList(mm, pi);
 			}
+//			System.out.println(list);
 			mv.addObject("list", list)
 			.addObject("pi", pi)
 			.addObject("folder", folder)
@@ -113,10 +112,11 @@ public class MailController {
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 			ArrayList<Mail> list = mmService.selectSendList(memNo, pi);
 
-			mv.addObject("list", list).addObject("pi", pi).setViewName("mail/sendInbox");
+			mv.addObject("list", list).addObject("pi", pi).addObject("folder", "보낸").setViewName("mail/sendInbox");
 		} else {
-			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
-			mv.setViewName("common/errorPage");
+			mv.addObject("errorMsg", "로그인 후 이용 해 주세요")
+			  
+			  .setViewName("common/errorPage");
 		}
 		return mv;
 	}
@@ -134,27 +134,39 @@ public class MailController {
 	@RequestMapping("mainBtn.mail")
 	public ModelAndView MainBtn(HttpSession session, ModelAndView mv, String[] mailNo, String btnType) {
 		
+		int result = 0;
 		Member m = (Member) session.getAttribute("loginUser");
 		if (m != null) {
 			ArrayList<String> mailNoAry = new ArrayList<>(Arrays.asList(mailNo));
-			int result = 0;
+//			String savePath = session.getServletContext().getRealPath("/webapp/");
+//			System.out.println(savePath);
+			mv.setViewName("redirect:main.mail");
 			switch (btnType) {
-				case "readBtn":	result = mmService.updateReadMail(mailNoAry); break;
-				case "spamBtn": result = mmService.updateSpamMail(mailNoAry); break;
-				case "unSpamBtn": result = mmService.updateUnSpamMail(mailNoAry); break;
-				case "deleteBtn": result = mmService.updateDeleteMail(mailNoAry); break;
-				case "sendDeleteBtn": result = mmService.updateDeleteSendMail(mailNoAry); break;
+			case "readBtn": result = mmService.updateReadMail(mailNoAry); break;
+			case "spamBtn": result = mmService.updateSpamMail(mailNoAry); break;
+			case "unSpamBtn": result = mmService.updateUnSpamMail(mailNoAry);
+				mv.setViewName("redirect:main.mail?folder=스팸"); break;
+			case "deleteBtn": result = mmService.updateDeleteMail(mailNoAry); break;
+			case "sendDeleteBtn": result = mmService.updateDeleteAllSendMail(mailNoAry);
+
+				if (result > 0) {
+					result = updateDeleteAllMailAt(session, mailNo, "보낸메일");
+					mv.setViewName("redirect:sendInbox.mail");
+				} break;
+			case "deleteAllBtn": result = mmService.updateDeleteAllMail(mailNoAry);
+				if (result > 0) {
+					result = updateDeleteAllMailAt(session, mailNo, "받은메일");
+					mv.setViewName("redirect:main.mail?folder=휴지");
+				} break;
 			}
+			
+			// 메일 항목에 변동이 있었기 때문에 세션값 재수정
 			session.setAttribute("mainMailCount", mmService.mainMailCount(m.getMemNo()));
 
 			if (result > 0) { // 성공
 				session.setAttribute("alertMsg", "성공적으로 처리 되었습니다.");
-				mv.setViewName("redirect:main.mail");
 			} else {
-				// 실패하면 첨부도 지우자
 				mv.addObject("alertMsg", "처리할 항목이 없습니다");
-				//바꿔야하지않을까 싶..
-				mv.setViewName("redirect:main.mail");
 			}
 		} else {
 			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
@@ -163,19 +175,43 @@ public class MailController {
 		return mv;
 	
 	}
-	
-	
+
+	// 첨부파일 완전 삭제 및 db delete실행 모듈화
+	public int updateDeleteAllMailAt(HttpSession session, String[] mailNo, String folder) {
+		String docNo = String.join(",", mailNo);
+		int result = 1;
+		// 셀렉트 해서 fileUrl을 먼저 가져와야하고
+		HashMap<String, String> hs = new HashMap<>();
+		hs.put("docNo", docNo);
+		hs.put("folder", folder);
+		
+		// url값을 먼저 가지고 온다
+		ArrayList<Attachment> fileUrlList = mmService.selectDeleteAllMailAt(hs);
+		
+		// 가져온 값을 server에서 삭제
+		for (int i = 0; i < fileUrlList.size(); i++) {
+			new File(session.getServletContext().getRealPath(fileUrlList.get(i).getFileUrl())).delete();
+		}
+		// db에도 삭제처리
+		if(fileUrlList!=null) {
+			result = mmService.updateDeleteAllMailAt(hs);
+		}
+		return result;
+	}
+
 	// 메인페이지 관련기능 끝
 	
 	
 	// 글쓰기로 넘어감 (가면서 전사원리스트 조회함)
 	@RequestMapping("enrollForm.mail")
-	public ModelAndView enrollMail(HttpSession session, ModelAndView mv) {
+	public ModelAndView enrollMail(HttpSession session, ModelAndView mv, Mail mm) {
 		Member m = (Member) session.getAttribute("loginUser");
 		if (m != null) {
 			ArrayList<Member> empList = mmService.employeeList();
+			
 			mv.addObject("empList", empList) // 전사원 리스트
-					.setViewName("mail/mailEnrollForm");
+			  .addObject("mm", mm) 
+			  .setViewName("mail/mailEnrollForm");
 		} else {
 			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
 			mv.setViewName("common/errorPage");

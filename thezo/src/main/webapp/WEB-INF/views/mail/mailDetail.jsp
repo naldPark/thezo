@@ -8,83 +8,107 @@
 <meta charset="UTF-8">
 <title>The Zo</title>
   <style>
-    .note-modal-content, .note-modal-content:before, .note-modal-content:after{box-sizing: unset!important;}
-    .note-modal-footer,.note-modal-footer:before, .note-modal-footer:after{box-sizing: unset!important;}
-    .mailOuter .input-group-text{width:80px; }
-    .mailOuter .form-control:disabled,.sideOuter .form-control[readonly]{ background: white!important; }
-    a{ text-decoration:none !important; cursor: pointer; }
-    a:hover{ text-decoration:none !important; cursor: pointer; color: black !important;}
+    table a{ text-decoration:none !important; cursor: pointer; color: rgb(25, 99, 148)!important;}
+    table a:hover{ text-decoration:underline !important; cursor: pointer; }
+    table th{text-align: center;}
+    table td{width: 800px !important;; border-top:0;border-bottom: 0;}
+   .table-bordered td{border: 0px !important; border-top: 1px solid #dee2e6!important; }
+   .expandEmpBtn{font-weight: normal!important;}
+    /* *{border:1px solid red} */
   </style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
     <section>
-        <div class="outer">    
-          <p class="pageTitle">  e-mail <b> 전자메일</b></p>
-          <jsp:include page="mailSidebar.jsp"/>
-          <div class="mailOuter row">
-            <div align="left">
-            <c:if test="${mm.seMailNo eq 0}"> 
+      <div class="outer">
+        <p class="pageTitle"> e-mail <b> 전자메일</b></p>
+        <jsp:include page="mailSidebar.jsp" />
+        <div class="mailOuter">
+          <div align="left">
+            <input type="hidden" name="mail" value='${mm}'/>
+            <c:if test="${mm.seMailNo eq 0}">
+            <!-- 답장: 보낸사람을 받는사람으로 세팅, ------------origin message ---------추가 -->
               <button type="button" id="replyBtn" class="enrollBtn btn btn-sm btn-secondary">답장</button>
-              <button type="button" id="forwardBtn" class="enrollBtn btn btn-sm btn-secondary">전달</button>
-              <button type="button" id="deleteBtn" class="mainBtn btn btn-sm btn-secondary">삭제</button>
-              <button type="button" id="spamBtn" class="mainBtn btn btn-sm btn-secondary">스팸</button>
             </c:if>
-            
+             <!-- 전달:  ------------origin message ---------추가 -->
+            <button type="button" id="forwardBtn" class="enrollBtn btn btn-sm btn-secondary">전달</button>
+            <c:if test="${mm.seMailNo eq 0}">
+            <button type="button" id="deleteBtn" class="mainBtn btn btn-sm btn-secondary">삭제</button>
+            <button type="button" id="spamBtn" class="mainBtn btn btn-sm btn-secondary">스팸</button>
+            </c:if>
           </div>
-          <br><br>
-            <div class="card" style="margin-bottom: 5rem; width:100%">
-              <div class="card-body">
+          <br>
+    
+          <table class="table table-bordered" style="word-break: break-all;">
+            <tr>
+              <th style="width:200px!important">보낸사람</th>
+              <td>${mm.sender}</td>
+            </tr>
+            <tr>
+              <th>받는사람</th>
+              <td style="display:block; width: 800px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
+                <span><button id="receiveEmp" class="expandEmpBtn w3-button w3-white w3-border w3-padding-small w3-small">펼치기</button>&nbsp;${mm.receiver}</span>
+              </td>
+            </tr>
+            <tr>
+              <th>참조자</th>
+              <td style="display:block; width: 800px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
+                  <span><button id="referEmp" class="expandEmpBtn w3-button w3-white w3-border w3-padding-small w3-small">펼치기</button>&nbsp;${mm.refReceiver}</span>
+              </td>
+            </tr>
+            <tr>
+              <th>제목</th>
+              <td>${mm.mailTitle}</td>
+            </tr>
+            <tr>
+              <th>파일첨부</th>
+              <td>
+                <c:forEach var="at" items="${ mm.at }">
+                  <a href="${at.fileUrl}">${at.originName}</a><br>
+                </c:forEach>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" style="width: 100% !important;">${mm.mailContent}</td>
+            </tr>
+          </table>
+          <script>
+            $(function(){
+              $(function(){
+              var refWidth = ($("#referEmp").parent().innerWidth());
+              var receiveWidth = ($("#receiveEmp").parent().innerWidth());
 
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white w3-round-small">보낸사람</span>
-                      </div>&nbsp;
-                      <span class="input-group-text bg-white border-0">${mm.sender}</span>
-                    </div>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white w3-round-small">참조자</span>
-                      </div>&nbsp;
-                      <span class="input-group-text bg-white border-0">${mm.receiver}</span>
-                    </div>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white w3-round-small">제목</span>
-                      </div>&nbsp;
-                      <span class="input-group-text bg-white border-0">${mm.mailTitle}</span>
-                    </div>
-                 
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white w3-round-small">파일첨부</span>
-                      </div>&nbsp;
-                      <span style="padding-left:10px">
-                        <c:forEach var="at" items="${ mm.at }">
-                          <a href="${at.fileUrl}">${at.originName}</a><br>
-                        </c:forEach>
-                      </span>
-                     
-                     
-                    </div>
-                  
-                    <div class="form-group" style="overflow:auto">
-                        <hr>
-                        <div style="min-height:500px; padding:20px">
-                          ${mm.mailContent}
-                        </div>
-                    </div><br>
-                    <hr>
-                    <div class="row justify-content-center">
-                      <a type="button" href="main.mail" class="btn btn-primary">목록으로</a> &nbsp;
-                      <c:if test="${mm.reMailNo eq 0}"> 
-                        <button type="button" id="sendDeleteBtn" class="mainBtn btn btn-secondary">삭제</button>
-                      </c:if>
-                    </div>
-                </div>
-              </div>
-            </div>
-    	</div>
+              if(refWidth < 790){
+                $("#referEmp").hide()
+              }
+              if(receiveWidth < 790){
+                $("#receiveEmp").hide();
+              }
+            })
+            })
+            $(".expandEmpBtn").click(function(){
+
+              if($(this).parent().parent().css("white-space")=="nowrap"){
+                $(this).html("접기")
+                // $(this).next().html("<br>"+$(this.next().html()));
+                $(this).parent().parent().css("white-space","normal");
+              }else{
+                $(this).parent().parent().css("white-space","nowrap");
+                $(this).html("펼치기")
+              }
+              
+            })
+          </script>
+        
+          <div class="row justify-content-center">
+            <a type="button" href="main.mail" class="btn btn-primary">목록으로</a> &nbsp;
+            <c:if test="${mm.reMailNo eq 0}">
+              <button type="button" id="sendDeleteBtn" class="mainBtn btn btn-secondary">완전삭제</button>
+            </c:if>
+          </div>
+          <br>
+        </div>
+      </div>
     </section>
 
 
@@ -100,6 +124,15 @@
           }
           
         }
+      })
+
+
+      $(".mainBtn").click(function () {
+        var message = $(this).text();
+
+        var = ${mm.mailContent}
+          }
+
       })
 </script>
 

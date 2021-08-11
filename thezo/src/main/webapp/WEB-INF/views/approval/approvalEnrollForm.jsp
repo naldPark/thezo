@@ -96,8 +96,6 @@
                       <span><input type="hidden" value="-1"></span>
                     </div>
                   </div>
-              
-                  
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text bg-white border-0">파일첨부</span>

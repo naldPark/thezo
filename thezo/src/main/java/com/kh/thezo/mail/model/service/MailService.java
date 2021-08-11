@@ -1,6 +1,7 @@
 package com.kh.thezo.mail.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -61,8 +62,20 @@ public interface MailService {
 	// 메일리스트에서 버튼을 통해 스팸해제 처리
 	int updateUnSpamMail(ArrayList<String> reMailNoAry);
 
-	// 메일리스트에서 버튼을 통해 삭제 처리
+	// 메일리스트에서 버튼을 통해 삭제 처리(휴지통으로 이동)
 	int updateDeleteMail(ArrayList<String> reMailNoAry);
+	
+	// 휴지통에서 삭제 처리
+	int updateDeleteAllMail(ArrayList<String> reMailNoAry);
+	
+	// 보낸메일리스트에서  삭제 처리
+	int updateDeleteAllSendMail(ArrayList<String> seMailNoAry);
+	
+	// 메일리스트에서 버튼을 통해 첨부 완전삭제 처리할 문서 url select
+	ArrayList<Attachment> selectDeleteAllMailAt(HashMap<String,String> hs);
+	
+	// 메일리스트에서 버튼을 통해 첨부 완전삭제 처리(delete문)
+	int updateDeleteAllMailAt(HashMap<String,String> hs);
 	
 	// 발신 메일리스트에서 버튼을 통해 삭제 처리
 	int updateDeleteSendMail(ArrayList<String> seMailNoAry);

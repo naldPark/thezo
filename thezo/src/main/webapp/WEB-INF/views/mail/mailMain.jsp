@@ -26,7 +26,15 @@
                   <button type="button" id="spamBtn" class="mainBtn btn btn-sm btn-secondary">스팸처리</button>
                 </c:otherwise>
               </c:choose>
-              <button type="button" id="deleteBtn" class="mainBtn btn btn-sm btn-secondary">삭제</button>
+              <c:choose>
+                <c:when test="${ folder eq '휴지' }">
+                  <button type="button" id="deleteAllBtn" class="mainBtn btn btn-sm btn-secondary">완전삭제</button>
+                </c:when>
+                <c:otherwise>
+                  <button type="button" id="deleteBtn" class="mainBtn btn btn-sm btn-secondary">삭제</button>
+                </c:otherwise>
+              </c:choose>
+              
             </div>
             <br>
             <form action="mainBtn.mail" method="post" id="mainBtnForm">

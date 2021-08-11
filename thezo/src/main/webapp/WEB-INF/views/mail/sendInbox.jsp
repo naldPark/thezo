@@ -17,7 +17,7 @@
       
           <div class="mailOuter">
             <div align="left">
-              <button type="button" id="sendDeleteBtn" class="mainBtn btn btn-sm btn-secondary">삭제</button>
+              <button type="button" id="sendDeleteBtn" class="mainBtn btn btn-sm btn-secondary">완전삭제</button>
             </div>
             <br>
             <form action="mainBtn.mail" method="post" id="mainBtnForm">
@@ -35,7 +35,7 @@
                   <c:forEach var="m" items="${ list }">
                     <tr>
                       <td hidden>${m.seMailNo}</td>
-                      <th><input type="checkbox" class="bigCheckbox" name="reMailNo" value="${m.reMailNo}"></th>
+                      <th><input type="checkbox" class="bigCheckbox" name="mailNo" value="${m.seMailNo}"></th>
                       <td>${m.sender}</td>
                       <!--발신자가 외부면 메일, 내부면 이름?-->
                       <td>

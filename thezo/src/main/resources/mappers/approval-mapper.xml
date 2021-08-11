@@ -77,8 +77,6 @@
                 where ref_no =#{memNo}
                 and read ='N') referRead
             from dual
-           
-	
 	</select>
 	
 	
@@ -137,8 +135,6 @@
 		            order by APPR_level)
 		        WHERE RANK=1
 		        ) CURRENT_LEVEL ON(A.DOC_NO = CURRENT_LEVEL.DOC_NO)
-            
-           
             join(
                 -- 관련 문서 전체 조회시 사용
                 SELECT doc_no,  ','||LISTAGG(mem_no||',',',') WITHIN GROUP (ORDER BY mem_no) AS mem_no
@@ -505,11 +501,22 @@
 	
 	<!-- 문서세부결재라인조회 -->
 	<select id="detailApprovalLine" resultMap="apprAcceptResult">
-		select doc_no, mem_no, MEM_NAME, JOB, RANK, department, appr_level, type||aa.status STATUS, read, appr_date, APPR_MEMO
-			from appr_accept aa
-			join member m using(mem_no)
-			where doc_no=#{docNo}
-			order by appr_level
+		select 
+			doc_no
+			, mem_no
+			, MEM_NAME
+			, JOB
+			, RANK
+			, department
+			, appr_level
+			, type||aa.status STATUS
+			, read
+			, appr_date
+			, APPR_MEMO
+				from appr_accept aa
+				join member m using(mem_no)
+				where doc_no=#{docNo}
+				order by appr_level
 	</select>
 	
 	<!-- 전자결재 승인 -->
@@ -546,8 +553,4 @@
              and MEM_NO = #{memNo} 
 	</update>
 	
-	
-	
-
-
 </mapper>

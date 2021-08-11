@@ -1,6 +1,7 @@
 package com.kh.thezo.mail.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,6 +142,27 @@ public class MailServiceImpl implements MailService {
 	public int updateDeleteMail(ArrayList<String> reMailNoAry) {
 		return mmDao.updateDeleteMail(sqlSession, reMailNoAry);
 	}
+	
+	@Override
+	public int updateDeleteAllMail(ArrayList<String> reMailNoAry) {
+		return mmDao.updateDeleteAllMail(sqlSession, reMailNoAry);
+	}
+	
+	@Override
+	public int updateDeleteAllSendMail(ArrayList<String> seMailNoAry) {
+		return mmDao.updateDeleteAllSendMail(sqlSession, seMailNoAry);
+	}
+	
+	@Override
+	public ArrayList<Attachment> selectDeleteAllMailAt(HashMap<String,String> hs){
+		return mmDao.selectDeleteAllMailAt(sqlSession, hs);
+	}
+	
+	@Override
+	public int updateDeleteAllMailAt(HashMap<String,String> hs) {
+		return mmDao.updateDeleteAllMailAt(sqlSession, hs);
+	}
+	
 	
 	@Override
 	public int updateDeleteSendMail(ArrayList<String> seMailNoAry) {

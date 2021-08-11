@@ -53,6 +53,7 @@
 				and read = 'N'
 		        and folder='받은'
 		        and spam='N'
+		        and status='N'
 	</select>
 	
 	<!-- 폴더 내 메일 조회 카운트-->	
@@ -64,6 +65,7 @@
 		where mem_no =#{memNo}
 		and folder like '%' || #{folder} || '%'
 		and spam='N'
+		and status='N'
 	</select>
 	
 	<!-- 폴더 내 메일 조회 -->
@@ -87,6 +89,7 @@
 		where mem_no = #{memNo}
 			and folder like '%' || #{folder} || '%'
 			and spam='N'
+			and status='N'
 			order by RECEIVE_DATE desc
 		
 	</select>
@@ -99,6 +102,7 @@
 		from mail_receiver
 		where mem_no =#{memNo}
 		and spam='Y'
+		and status='N'
 	</select>
 	
 	<!-- 스팸 메일 조회 -->
@@ -120,6 +124,7 @@
 	        full join ( select distinct 'ATTACH' "ATTACH", doc_no from MA_ATTACH where file_type='받은메일') on(RE_MAIL_NO = doc_NO)
 		where mem_no = #{memNo}
 			and spam='Y'
+			and status='N'
 			order by RECEIVE_DATE desc
 		
 	</select>
@@ -217,6 +222,8 @@
 		</foreach> ) A
 	</update>
 	
+	
+	<!-- 서버에서 받아온 메일 insert -->
 	<insert id="insertPop">
 	insert INTO mail_receiver
 			     (
@@ -253,13 +260,14 @@
 	<!-- 메일 상세조회  -->
 	<select id="selectDetailMail" resultMap="mailResult">
 
-		select 
+			select 
 		      RE_MAIL_NO
 		    , MEM_NO
 		    , MAIL_TITLE
 		    , MAIL_CONTENT
 		    , SENDER
 		    , RECEIVER
+            , ref_receiver
 		    , RECEIVE_DATE
 		    , READ
 		    , STATUS
@@ -267,6 +275,7 @@
 		    , FOLDER
 		from mail_receiver
 		where RE_MAIL_NO =#{mno}
+		and status='N'
 		
 	</select>
 	
@@ -292,7 +301,7 @@
 		 </foreach>
 	</update>
 	
-	<!-- 메일 삭제 처리-->
+	<!-- 메일 삭제 처리 휴지통으로 이동-->
 	<update id="updateDeleteMail">
 		update MAIL_RECEIVER
 							set
@@ -303,6 +312,48 @@
 				#{item}
 			 </foreach>
 	</update>
+	
+	
+	<!-- 메일 휴지통에서 삭제 처리--> 
+	<update id="updateDeleteAllMail">
+		update MAIL_RECEIVER
+							set
+						status='Y'
+						where RE_MAIL_NO IN 
+			<foreach item="item" index="index" collection="list"
+		      open="(" separator="," close=")">
+				#{item}
+			 </foreach>
+	</update>
+	
+	<!-- 보낸메일에서 완전 삭제 처리--> 
+	<update id="updateDeleteAllSendMail">
+		update MAIL_SENDER
+							set
+						status='Y'
+					where SE_MAIL_NO IN 
+			<foreach item="item" index="index" collection="list"
+		      open="(" separator="," close=")">
+				#{item}
+			 </foreach>
+	</update>
+	
+	<!--  메일 첨부 완전삭제 처리를 위한  url조회-->
+	<select id="selectDeleteAllMailAt"  resultMap="attachmentResult">
+
+		select file_url
+	       from ma_attach
+	       where doc_no IN(#{docNo})
+	       and file_Type=#{folder}
+		
+	</select>
+	
+	<!-- 메일 첨부 완전삭제 처리-->
+	<delete id="updateDeleteAllMailAt" >
+		delete from ma_attach
+						where doc_no IN(#{docNo})
+						and file_Type=#{folder}
+	</delete>
 	
 	<!-- 메일 스팸 처리-->
 	<update id="updateSpamMail">
@@ -361,6 +412,7 @@
 			where SE_MAIL_NO=#{mno}
 		
 	</select>
+	
 	
 	<select id="selectDetailMailAt" resultMap="attachmentResult">
 		select 

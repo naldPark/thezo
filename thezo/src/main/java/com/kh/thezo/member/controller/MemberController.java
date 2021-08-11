@@ -221,10 +221,10 @@ public class MemberController {
 				new File(session.getServletContext().getRealPath(m.getOriginName())).delete();
 				// 새로 넘어온 첨부파일 서버 업로드 시키기
 				String changeName = saveFile(session, reupfile); 
-				m.setOriginName("resources/uploadFiles/" + changeName);
+				m.setOriginName(changeName);
 			}else {
 				String changeName = saveFile(session, reupfile); 
-				m.setOriginName("resources/uploadFiles/" + changeName);
+				m.setOriginName(changeName);
 			}
 		}
 	

@@ -60,7 +60,7 @@
 	                        		<input style="display: block;" type="file" id="input-image" name="reupfile">
 	                        	</c:when>
 	                        	<c:otherwise>
-	                        		<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="${loginUser.originName}">
+	                        		<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="resources/uploadFiles/${ loginUser.originName }">
 	                        		<input style="display: block;" type="file" id="input-image" name="reupfile">
 	                        	</c:otherwise>
 	                        </c:choose>	
@@ -143,7 +143,7 @@
                             <input type="text" class="form-control" id="phone" name="phone" value="${ loginUser.phone }"><br>
 
                             <label for="email">이메일</label>
-                            <input type="text" class="form-control" id="email" name="email" value="${ loginUser.email })"><br>
+                            <input type="text" class="form-control" id="email" name="email" value="${ loginUser.email }"><br>
                             
                             <label for="birth">생년월일</label>
                             <input type="date" class="form-control" id="birth" name="birth" value="${ loginUser.birth }"><br>	

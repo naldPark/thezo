@@ -254,6 +254,7 @@
  		     , birth = #{birth}
  		     , zip_code = #{zipCode}
  		     , address = #{address}
+ 		     , origin_name = #{originName}
  		 where mem_no = #{memNo}      
  	</update>
 </mapper>

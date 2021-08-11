@@ -27,6 +27,7 @@
 		<typeAlias type="com.kh.thezo.note.model.vo.Note" alias="Note"/>
 		<typeAlias type="com.kh.thezo.attendance.model.vo.Attendance" alias="Attendance"/>	
 		<typeAlias type="com.kh.thezo.mail.model.vo.Attachment" alias="Attachment"/>
+		<typeAlias type="com.kh.thezo.department.model.vo.Department" alias="Department"/>
 	</typeAliases>
 	
 	<mappers>
@@ -45,6 +46,7 @@
 		<mapper resource="/mappers/company-mapper.xml"/>
 		<mapper resource="/mappers/note-mapper.xml"/>
 		<mapper resource="/mappers/attendance-mapper.xml"/>
+		<mapper resource="/mappers/department-mapper.xml"/>
 	</mappers>
 
 </configuration>

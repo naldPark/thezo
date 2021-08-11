@@ -31,7 +31,7 @@
     #dept-table th{background-color: lightgray;}
     #deletebtn{float: left; margin-left: 15%; margin-top: 20%;}
     #createbtn{float: right; margin-right: 15%; margin-top: 20%;}
-    .modal-lg{max-width: 350px !important; overflow: hidden;}
+    .modal-lg{max-width: 320px !important; overflow: hidden;}
     .modal-body{max-height: calc(100vh - 200px); overflow-y: auto;}
 
     .dept-modal{color:black; text-decoration: none;}
@@ -41,8 +41,13 @@
         font-weight: bold;
         width: 100%;
     }
+    #no_check{height: 23px;}
+    #dept-form td input[type="text"], #dept-form td input[type="number"]{text-align: right;}
+    #codeUse, #codecUse{font-size: 13px;}
 
-    .modal-footer{font-size: 13px; }
+	#dept_add, #cancel{border: none; background-color:transparent;}
+	#dept_add:hover, #cancel:hover{font-weight: bold;}
+    .modal-footer{font-size: 13px;}
     .modal-footer>a:hover{text-decoration: none; font-weight: bold;}
 </style>
 </head>
@@ -68,35 +73,36 @@
                     <table id="dept-table">
                         <thead>
                             <tr>
-                                <th width="100" height="40"><input type="checkbox" class="form-check-input" name="dept" value="selectall" onclick="selectAll(this)"></th>
-                                <th width="150">부서코드</th>
-                                <th width="150">부서명</th>
-                                <th width="100">부서순위</th>
-                                <th width="100">사용구분</th>
+                                <th width="5%" height="40"><input type="checkbox" class="form-check-input" name="dept" value="selectall" onclick="selectAll(this)"></th>
+                                <th width="17%">부서코드</th>
+                                <th width="17%">부서명</th>
+                                <th width="17%">부서순위</th>
+                                <th width="17%">상위부서</th>
+                                <th width="17%">상위부서순위</th>
+                                <th width="10%">사용구분</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><input type="checkbox" class="form-check-input" name="dept"></td>
-                                <td style="text-align: center;"><a class="dept-code" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#deptcode-modal">D0100</a></td>
-                                <td style="text-align: center;">총무팀</td>
-                                <td>1</td>
-                                <td>사용</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="form-check-input" name="dept"></td>
-                                <td style="text-align: center;"><a >D0200</a></td>
-                                <td style="text-align: center;">경리팀</td>
-                                <td>2</td>
-                                <td>미사용</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="form-check-input" name="dept"></td>
-                                <td style="text-align: center;"><a href="">D0300</a></td>
-                                <td style="text-align: center;">인사팀</td>
-                                <td>3</td>
-                                <td>사용</td>
-                            </tr>
+                        	<c:forEach var="d" items="${ list }">
+	                            <tr>
+	                                <td><input type="checkbox" class="form-check-input" name="dept"></td>
+	                                <td style="text-align: center;"><a class="dept-code" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#deptcode-modal">${ d.depNo }</a></td>
+	                                <td style="text-align: center;">${ d.depName }</td>
+	                                <td>${ d.depClass }</td>
+	                                <td>${ d.parentDep }</td>
+	                                <td>${ d.parDepclass }</td>
+	                                <td>
+	                                	<c:choose>
+	                                		<c:when test="${ d.depStatus == 'Y' }">
+	                                			사용
+	                                		</c:when>
+	                                		<c:otherwise>
+	                                			미사용
+	                                		</c:otherwise>
+	                                	</c:choose>
+	                                </td>
+	                            </tr>
+	                        </c:forEach>
                         </tbody>
                     </table>
                     <button id="deletebtn" class="btn btn-outline-secondary">선택삭제</button>
@@ -111,7 +117,6 @@
                         })
                     }
                 </script>
-                
             </div>
         </div>
     </section>
@@ -122,35 +127,53 @@
                 <div class="modal-header" id="myModalheader">
                     <div class="modal-title" id="myModalLabel"><i class="fas fa-bars"></i> 부서 등록</div>
                 </div>
-                <div class="modal-body">
-                    <form>
-                        <div id="dept-form">
-                            <table>
-                                <tr>
-                                    <th width="100">부서 코드</th>
-                                    <td width="75%">
-                                        <div class="input-group mb-3" style="margin-bottom: 0% !important;">
-                                            <input type="text" class="form-control form-control-sm" aria-label="Recipient's username" aria-describedby="button-addon2">
-                                            <button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon2">중복여부</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>부서명</th>
-                                    <td><input type="text" class="form-control form-control-sm"></td>
-                                </tr>
-                                <tr>
-                                    <td>부서순위</td>
-                                    <td><input type="text" class="form-control form-control-sm"></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <a href="" style="color: rgb(94,94,94);">등록</a>&nbsp;
-                    <a href="#" data-dismiss="modal" style="color: lightslategray;">취소하기</a>
-                </div>
+                    <form action="deptAdd.dept" method="post" id="deptAdd">
+						<div class="modal-body">
+					        <div id="dept-form">
+					            <table>
+					                <tr>
+					                    <th width="130px">부서 코드</th>
+					                    <td width="180px">
+					                        <div class="input-group mb-3" style="margin-bottom: 0% !important;">
+					                            <input type="text" name="depNo" id="depNo" class="form-control form-control-sm" required>
+					                            <button class="btn btn-outline-secondary btn-sm" type="button" id="button-addon2" onclick="noCheck();">중복여부</button>
+					                        </div>
+											<span id="no_check"></span>                                        
+					                    </td>
+					             	</tr>
+			                      	<tr>
+			                          	<th>부서명</th>
+			                          	<td><input type="text" name="depName" class="form-control form-control-sm" required></td>
+				                    </tr>
+			                      	<tr>
+			                          	<th>부서순위</th>
+			                          	<td><input type="number" name="depClass" class="form-control form-control-sm" required></td>
+			                      	</tr>
+			                      	<tr>
+			                          	<th>상위부서</th>
+			                          	<td><input type="text" name="parentDep" class="form-control form-control-sm"></td>
+			                      	</tr>
+			                      	<tr>
+	                          			<th>상위부서순위</th>
+			                          	<td><input type="number" name="parDepclass" class="form-control form-control-sm"></td>
+				                      </tr>
+				                      <tr>
+			                          	<th>사용여부</th>
+			                          	<td>
+				                           	<select id="codeUse" class="form-select" name="depStatus">
+				                           		<option value="used" selected>사용</option>
+					                           	<option value="unused">미사용</option>
+				                           	</select>
+			                          	</td>
+			                      	</tr>
+			                  </table>
+			              </div>
+				      </div>
+				      <div class="modal-footer">
+				          <button type="submit" id="dept_add">등록</button>&nbsp;
+				          <button type="button" id="cancel" data-dismiss="modal" style="color: lightslategray;">취소하기</button>
+					</div>
+                </form>
             </div>
         </div>
     </div>
@@ -164,20 +187,37 @@
                 <div class="modal-body">
                     <form>
                         <div id="dept-form">
-                            <table>
+                        	<table>
                                 <tr>
-                                    <th width="100">부서 코드</th>
-                                    <td width="75%">
-                                        <input type="text" class="form-control form-control-sm" value="D0100" disabled>
+                                    <th width="130px">부서 코드</th>
+                                    <td width="150px">
+                                    	<input type="text" name="depNo" class="form-control form-control-sm" value="${ d.depNo }" disabled>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>부서명</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="총무팀"></td>
+                                    <td><input type="text" name="depName" class="form-control form-control-sm" value="총무팀"></td>
                                 </tr>
                                 <tr>
                                     <th>부서순위</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="1"></td>
+                                    <td><input type="number" name="depClass" class="form-control form-control-sm" value="1"></td>
+                                </tr>
+                                <tr>
+                                    <th>상위부서</th>
+                                    <td><input type="text" name="depClass" class="form-control form-control-sm"></td>
+                                </tr>
+                                <tr>
+                                    <th>상위부서순위</th>
+                                    <td><input type="number" name="depClass" class="form-control form-control-sm"></td>
+                                </tr>
+                                <tr>
+                                    <th>사용여부</th>
+                                    <td>
+	                                    <select id="codecUse" class="form-select" name="depcStatus">
+	                                    	<option value="used" selected>사용</option>
+	                                    	<option value="unused">미사용</option>
+	                                    </select>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -200,6 +240,37 @@
                 "handle":".modal-header"
             });
         });
+              
+        //부서 코드 중복 조회 기능
+        function noCheck(){
+        	
+        	var depNo = $("#depNo").val();
+        	$.ajax({
+        		url:"noCheck.dep",
+        		type:"post",
+        		data: {"depNo":depNo},
+        		success:function(checkNo){
+        			if(checkNo == 0){ // 사용가능
+        				$("#no_check").css("margin-bottom", "16px");
+        				$("#no_check").css("font-size", "12px");
+        				$("#no_check").css("color", "#7BC379");
+        				$("#no_check").text("사용가능한 부서번호입니다.");
+        				$("#dept_add").removeAttr("disabled");
+        				$("#dept_add").attr("href","javascript:$('#deptAdd').submit();");
+        			}else{  	     // 사용불가능
+        				$("#no_check").css("margin-bottom", "16px");
+        				$("#no_check").css("font-size", "12px");        			
+        				$("#no_check").css("color", "red");
+        				$("#no_check").text("사용중인 부서코드입니다.");
+        				$("#dept_add").attr("disabled", "true");
+        				$("#dept_add").removeAttr("href");
+        			}
+        		},error:function(){
+        			console.log("부서코드중복체크용 ajax 통신실패");
+        		}
+        	});
+        }
+        
     </script>
 		
 		

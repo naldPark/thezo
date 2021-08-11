@@ -51,7 +51,6 @@ public class MemberController {
 		
 		Member loginUser = mService.loginMember(m);
 		Attendance attData = atService.attendanceData2(m); //메인화면 출퇴근 조회용
-		String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
 		
 		if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) { // 로그인 성공
 			loginUser.setUserId(loginUser.getMemId()); //userId임시로 넣은 jsp오류방지용

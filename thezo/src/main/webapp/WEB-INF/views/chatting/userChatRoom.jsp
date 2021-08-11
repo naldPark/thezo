@@ -8,6 +8,9 @@
 <meta charset="UTF-8">
 <meta name="author" content="Jaewon.s">
 <title>Insert title here</title>
+<!--  sockjs CDN으로다가 해당 cdn이 있어야 이 자바스크립트 안에있는 메소드 가져다 쓸수가 있다.-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
+
 <style>
     #chat-room{width: 300px; height: 470px;margin: auto; background-color: rgb(213,214,228);}
     .personal-chat-header, .group-chat-header{height: 62px; font-family:'Noto Sans KR', sans-serif; padding-left: 5px; margin-top: 5px; display: flex; align-items: center; justify-content: space-between; background-color: rgb(41,128,185);
@@ -209,7 +212,7 @@
         <div id="chat-typing-area">
             <textarea id="writeChatContent" name=""></textarea>
             <div class="chat-btn-area">
-                <button type="button" onclick="">전송</button>
+                <button type="button" id="chatSend" value="submit" >전송</button>
                 <button type="button" onclick="">+</button>
             </div>
         </div>
@@ -244,6 +247,61 @@
         //     } 
         // });
 
+        
+        
+        //------------------------------------------------------------------------------------------
+ 
+		
+	    //★★★★★★★ 소켓 부분 이다 ★★★★★★★★★★★★★★★★
+	    // 헤딩 버튼 클릭하여 타고 들어갔을때!! 
+	   	// 생성자의 매개변수에는 자신의 url과 EchoHandler를 맵핑한 주소를 적어주면된다. 
+		let sock = new SockJS("http://localhost:8888/thezo/echo/");// 소켓을 생성한것이다. 
+		// 다른 함수에서도 쓸수 있게 전역변수로 만든것이다. 
+		
+		
+		// 아래의 코드는 websocket 서버에서 메세지를 보내면 자동으로 실행된다는것이다.
+		// 아래는 ! 데이터가 나한테 전달 되었을때 자동으로 실행되는 function이라는것이다. 
+		sock.onmessage = onMessage;
+		
+        // 아래와 같이 활용도 가능한듯하다. 
+        // onmessage : message를 받았을 때의 callback
+        //sock.onmessage = function (e) {
+        //    var content = JSON.parse(e.data);
+        //    chatBox.append('<li>' + content.message + '(' + content.writer + ')</li>')
+        //}
+		
+		
+		// websocket과 연결을 끊고 싶을때 실행하는 메소드 이다. 
+		sock.onclose = onClose;		
+		//접속만 해주는것이다. 
+	    //★★★★★★★ 소켓 부분 이다 ★★★★★★★★★★★★★★★★
+	    
+   		$("#chatSend").click(function() {
+			sendMessage(); // 아래의 sendMessage함수 실행하라는것이고   
+			$('#writeChatContent').val('') // 얘는 채팅창 비우라는것이다. 
+		});
+	
+		// 클라이언트가 메시지 전송할때  (소켓으로 보내겠다는 것이다. )
+		function sendMessage() {
+			// append 혹은 += 를 활용해서 값을 넣어줘야한다,. 
+			
+			sock.send($("#writeChatContent").val());
+			// sock에 send라는 메소드를 이용해서 보내라는 것이다.
+			
+			// 반대로 서버가 데이터를 뽑아줄때가 좀 중요하다. 
+		}
+		
+		// 서버로부터 메시지를 받았을 때
+	    //msg 파라미터는 웹소켓을 보내준 데이터다.(자동으로 들어옴)(즉 서버쪽에서 알아서 보내준게 들어가있는것이다.)
+		function onMessage(msg) {
+			var data = msg.data;// 해당 메세지 데이터!가 담긴것이다.
+			$("#chat-content-body").append(data + "<br/>");
+		}
+		// 서버와 연결을 끊었을 때
+		function onClose(evt) {
+			$("#chat-content-body").append("연결 끊김");
+	
+		}
         
 
     </script>

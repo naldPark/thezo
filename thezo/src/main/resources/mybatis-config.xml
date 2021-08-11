@@ -8,7 +8,10 @@
 	
 	<typeAliases>
 		<typeAlias type="com.kh.thezo.member.model.vo.Member" alias="Member"/>
-		<typeAlias type="com.kh.thezo.chatting.model.vo.Chatting" alias="Chatting"/>
+		<typeAlias type="com.kh.thezo.chatting.model.vo.Colleague" alias="Colleague"/>
+		<typeAlias type="com.kh.thezo.chatting.model.vo.ChatRoom" alias="ChatRoom"/>
+		<typeAlias type="com.kh.thezo.chatting.model.vo.ChatConnect" alias="ChatConnect"/>
+		<typeAlias type="com.kh.thezo.chatting.model.vo.ChatLog" alias="ChatLog"/>
 		<typeAlias type="com.kh.thezo.message.model.vo.Message" alias="Message"/>
 		<typeAlias type="com.kh.thezo.message.model.vo.MsgReport" alias="MsgReport"/>
 		<typeAlias type="com.kh.thezo.notification.model.vo.Notification" alias="Notification"/>

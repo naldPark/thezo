@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
-import com.kh.thezo.member.model.vo.Member;
 import com.kh.thezo.notification.model.service.NotificationService;
 import com.kh.thezo.notification.model.vo.Notification;
 

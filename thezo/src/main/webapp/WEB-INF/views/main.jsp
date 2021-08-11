@@ -236,7 +236,7 @@
             </div>
             <div class="outer-wrap" style="width:23%">
                 <div class="wrap">
-                    <div class="boxTitle">캘린더<button type="button" class="btn badge-secondary btn-sm more">more</button></div>
+                    <div class="boxTitle">캘린더<a href="main.sc" type="button" class="btn badge-secondary btn-sm more">more</a></div>
                     <div style="padding: 20px; text-align: center;">
                         <table id="calendar" border="0" align="center" width="230" height="230" style="font-size:12pt;">
                             <tr>
@@ -257,11 +257,9 @@
                     </div>
                 </div>
                 <div class="wrap">
-                    <div class="boxTitle">일정<button type="button" class="btn badge-secondary btn-sm more">more</button></div>
+                    <div class="boxTitle">일정<a href="main.sc" type="button" class="btn badge-secondary btn-sm more">more</a></div>
                     <div class="m-3 text-left">
-                        <div class="shadow-sm p-3 mb-3 bg-light">2021-06-01 <br>나는 일정이야</div>
-                        <div class="shadow-sm p-3 mb-3 bg-light">2021-06-01 <br>나는 일정이야</div>
-                        <div class="shadow-sm p-3 mb-3 bg-light">2021-06-01 <br>나는 일정이야</div>
+                        <jsp:include page="schedule/todayScView.jsp"/>
                     </div>
                     
                 </div>

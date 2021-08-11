@@ -18,6 +18,7 @@ public interface ScheduleService {
 	
 	// 일정 수정
 	int updateSchedule(Schedule sc);
+	int updateBizReport(Schedule sc);
 	
 	// 일정 삭제
 	int deleteSchedule(int scNo);

@@ -48,4 +48,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return scDao.insertBizReport(sqlSession, sc);
 	}
 
+	@Override
+	public int updateBizReport(Schedule sc) {
+		return scDao.updateBizReport(sqlSession, sc);
+	}
+
 }

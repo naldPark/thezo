@@ -10,11 +10,17 @@
 <body>
 	<c:if test="${!empty alertMsg }">
 		<script>	
-			alert("${alertMsg}");
-			self.close();
+			alert("${ alertMsg }");
+			if(location.href.includes("update") || location.href.includes("insert")){
+				self.close();
+			}else{
+				opener.location.reload();
+				self.close();
+			}
 		</script>
         <!-- 뭔가가 담겨있는 경우 -->	
 		<c:remove var="alertMsg" scope="session"/>	
 	</c:if>
+	
 </body>
 </html>

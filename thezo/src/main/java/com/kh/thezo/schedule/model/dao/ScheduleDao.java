@@ -31,6 +31,10 @@ public class ScheduleDao {
 		return sqlSession.update("scheduleMapper.updateSchedule", sc);
 	}
 	
+	public int updateBizReport(SqlSession sqlSession, Schedule sc) {
+		return sqlSession.update("scheduleMapper.updateBizReport", sc);
+	}
+	
 	public int insertBizReport(SqlSession sqlSession, Schedule sc) {
 		return sqlSession.insert("scheduleMapper.insertBizReport", sc);
 	}

@@ -47,6 +47,12 @@ public class NoteController {
 	@RequestMapping("detail.note")
 	public String selectNoteDetail(int noteNo, Model model) {
 		Note nt = ntService.selectNote(noteNo);
+		Schedule sc = scService.selectScheduleDetail(nt.getScNo());
+		
+		sc.setStart(sc.getStart().replace("T"," "));
+		sc.setEnd(sc.getEnd().replace("T"," "));
+		
+		model.addAttribute("sc", sc);
 		model.addAttribute("nt", nt);
 		return "schedule/note/noteDetailView";
 	}
@@ -60,7 +66,9 @@ public class NoteController {
 		int scWriter = Integer.parseInt(memNo);
 		map.put("memNo", memNo);
 		ArrayList<Schedule> scList = scService.selectScheduleList(map);
-		for(int i=0; i>scList.size(); i++) {
+		for(int i=0; i<scList.size(); i++) {
+			scList.get(i).setStart(scList.get(i).getStart().replace("T"," "));
+			scList.get(i).setEnd(scList.get(i).getEnd().replace("T"," "));
 		}
 		model.addAttribute("scList", scList);
 		return "schedule/note/noteInsertView";

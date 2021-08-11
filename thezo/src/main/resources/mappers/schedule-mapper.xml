@@ -65,15 +65,6 @@
 		  join member on (b.report_writer = m.mem_no)
 	</select>
 	
-	<select id="selectScheduleData" resultMap="scheduleResult">
-		select
-		       sc_title
-		     , sc_start
-		     , sc_end
-		     , allday
-		  from schedule
-	</select>
-	
 	<select id="selectScheduleDetail" resultMap="scheduleResult">
 		select
 			   sc_no
@@ -169,6 +160,18 @@
 		     , sc_end = #{end}
 		     , allday = #{allday}
 		 where sc_no = #{scNo}
+	</update>
+	
+	<update id="updateBizReport">
+		update biz_report
+		   set
+		   	   report_writer = #{reportWriter}
+		   	 , report_title = #{reportTitle}
+		   	 , report_content = #{reportContent}
+		   	 , origin_name = #{originName}
+		   	 , change_name = #{changeName}
+		   	 , create_date = #{createDate}
+		 where sc_no = #{scNo}		   	 
 	</update>
 	
 </mapper>

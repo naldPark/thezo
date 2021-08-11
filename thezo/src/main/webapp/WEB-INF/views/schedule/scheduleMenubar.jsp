@@ -22,54 +22,16 @@
 </style>
 <script>
 	$(function(){
-		// 오늘 날짜 구하기
-		var today = new Date();
-		var dd = today.getDate();
-		var mm = today.getMonth() + 1;
-		var yyyy = today.getFullYear();
-	 	var week = new Array('일', '월', '화', '수', '목', '금', '토');
-	    var day = week[today.getDay()];
-		if (dd < 10) {
-		  dd = '0' + dd;
-		}
-		if (mm < 10) {
-		  mm = '0' + mm;
-		}
-		var today = mm + '/' + dd + '(' + day + ')'; 
-		$("#todayDate").text(today);
-		
-		var td = yyyy + '-' + mm + '-' + dd;
-		// 오늘 일정 구하기
-		$.ajax({
-			url: 'list.sc',
-			data: {scType:"all", memNo:${loginUser.memNo}},
-			cache: false,
-			success: function(list){
-				var scList = Object.values(JSON.parse(list));
-				var value = "";
-				for(var i=0; i<scList.length; i++){
-					var start = "";
-					var end = "";
-					start = scList[i].start.substring(0, 10);
-					end = scList[i].end.substring(0, 10);
-					if(td == start || td == end){
-						 value += "<li>"
-									+ scList[i].title + " (" + scList[i].scType + " 일정)"  
-								+ "</li>";
-					}
-				}
-				$("#todaySchedule").html(value);
-			},error: function(){
-				console.log("오늘일정 표시용 ajax 통신 실패");
-			}
-		})
+		$("#todayScCalendar .fc-toolbar-title").css('font-size', '15px');
+		$("#todayScCalendar .fc-header-toolbar").css('margin', '0');
+		$("#todayScCalendar .btn").addClass("btn-sm");
 	})
 </script>
 
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
-	    var calendarEl = document.getElementById('todayScCalendar');
-	    var todayScCalendar = new FullCalendar.Calendar(calendarEl, {
+	    var tdCalendar = document.getElementById('todayScCalendar');
+	    var todayScCalendar = new FullCalendar.Calendar(tdCalendar, {
     	
 	    	eventClick: function(info) {
 	        	// 이벤트 클릭했을 시 기능 설정
@@ -80,79 +42,47 @@
 	        },
 	    	
 	      	headerToolbar: { // 헤더설정
-				left: '',
-				center: '',
-				right: ''
+				left: 'prev',
+				center: 'title',
+				right: 'next'
 	        },
+	        titleFormat: {
+	            month: 'long',
+	            day: 'numeric'
+	         },
+	        lazyFetching : 'false',
 	        initialView: 'listDay',
 	        locale: 'ko', // 한국어 설정
 	        themeSystem: 'bootstrap', // 테마 설정
 	        eventSources:[
         		{
 				events: [ // ajax로 일정 불러오기
-					// 1. 개인 일정
 					$.ajax({
 						url :'list.sc',
-						data : {scType:"개인", memNo:${loginUser.memNo}},
+						data : {scType:"all", memNo:${loginUser.memNo}},
 						cache: false,
 						success:function(list){
 							var scList = Object.values(JSON.parse(list));
 							for(var i=0; i<scList.length; i++){
-								scList[i].color = '#148CFF';
-								if(scTypeString.includes('개인')){
-									todayScCalendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								if(scList[i].scType == '개인'){
+									scList[i].color = '#148CFF';
+								}else if(scList[i].scType == '회사'){
+									scList[i].color = '#378006';
+								}else{
+									scList[i].color = '#7B68EE';
 								}
+								todayScCalendar.addEvent(scList[i]);
 							}
 						},error: function(){
 							console.log("일정 조회용 ajax 통신 실패");
 						}
 					})
-				],
-        		 
-     	        events: [
-     	        	// 2. 회사 일정
-     	        	$.ajax({
-     	        		url :'list.sc',
-	     				data : {scType: "회사", memNo:${loginUser.memNo}},
-	     				cache: false,
-	     				success:function(list){
-	     					var scList = Object.values(JSON.parse(list));
-	     					for(var i=0; i<scList.length; i++){
-	     						scList[i].color = '#378006';
-								if(scTypeString.includes('회사')){
-									todayScCalendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
-								}
-	     					}
-	     				},error: function(){
-	     					console.log("일정 조회용 ajax 통신 실패");
-	     				}
-     	        	})
-     	        ], 
-     	        events: [
-     	        	// 3. 부서 일정
-     	        	$.ajax({
-     	        		url :'list.sc',
-	     				data : {scType: "부서", memNo:${loginUser.memNo}},
-	     				cache: false,
-	     				success:function(list){
-	     					var scList = Object.values(JSON.parse(list));
-	     					for(var i=0; i<scList.length; i++){
-	     						scList[i].color = '#7B68EE';
-								if(scTypeString.includes('부서')){
-									todayScCalendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
-								}
-	     					}
-	     				},error: function(){
-	     					console.log("일정 조회용 ajax 통신 실패");
-	     				}
-     	        	})
-     	        ]
+				]
 	        }]
 		});
 	    
 	    todayScCalendar.render();
 	});
-	
 	
 </script>
 <style>
@@ -180,15 +110,11 @@
 			
 			<%-- 오늘 일정 뜨게 하는 영역 -----------------------------------------------------------------%>
 			<div style="margin-left:30px;">
-				<b>오늘 일정 <br>
+				<b>오늘 일정 &nbsp;
 				<span id="todayDate"></span></b>
 			</div>
-			
 			<!-- <ul id="todaySchedule" style="list-style-type: square; margin-left:5px;"></ul> -->
 			<div id="todayScCalendar"></div>
-			
-			
-
 			
 			<hr>
 			<button class="w3-button w3-block w3-left-align" onclick="menu();">
@@ -243,20 +169,6 @@
 			<script>
 				var scChk = $("#scFilter input[type=checkbox]");
 				var scTypeString = "개인부서회사";
-				/*
-				scChk.change(function(){
-					if($("input[type=checkbox][value=전체]:checked")){
-						scTypeString = "개인부서회사";
-						$("input[type=checkbox][value=개인]").attr("checked", true);
-						$("input[type=checkbox][value=부서]").attr("checked", true);
-						$("input[type=checkbox][value=회사]").attr("checked", true);
-					}
-					
-					if($("input[type=checkbox][value=전체]:checked")){
-						
-					}
-				})
-				*/
 			</script>
 			
 		</div>

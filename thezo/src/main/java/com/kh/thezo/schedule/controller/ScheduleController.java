@@ -45,10 +45,8 @@ public class ScheduleController {
 			map.put("scWriter", scWriter);
 		}
 		ArrayList<Schedule> list = scService.selectScheduleList(map);
-		//System.out.println(list);
 		response.setContentType("text/html; charset=utf-8");
 		String result = new Gson().toJson(list);
-		//System.out.println(result);
 		response.getWriter().print(result);
 	}
 	
@@ -58,7 +56,6 @@ public class ScheduleController {
 	 */
 	@RequestMapping("insert.sc")
 	public String insertSchedule(Schedule sc, HttpSession session) {
-		System.out.println(sc);
 		if(sc.getStart().contains(":")) { 
 			// 날짜에 시간이 포함되어있다면 => 풀캘린더식의 하나의 문자열로 합쳐줌
 			String[] startArr = sc.getStart().split(",");
@@ -115,9 +112,9 @@ public class ScheduleController {
 		int result = scService.deleteSchedule(scNo);
 		if(result > 0) {
 			session.setAttribute("alertMsg", "해당 일정이 삭제되었습니다.");
-			return "schedule/scheduleMain";
+			return "schedule/quitView";
 		} else {
-			return "schedule/scheduleMain";
+			return "schedule/quitView";
 		}
 		
 	}
@@ -141,14 +138,15 @@ public class ScheduleController {
 			sc.setStart(sc.getStart().replace(",", ""));
 			sc.setEnd(sc.getEnd().replace(",", ""));
 		}
-		int result = scService.updateSchedule(sc);
+		int result1 = scService.updateSchedule(sc);
+		int result2 = scService.updateBizReport(sc);
 		
-		if(result > 0) {
+		if(result1 > 0) {
 			session.setAttribute("alertMsg", "일정을 수정했습니다.");
-			return "schedule/scheduleMain";
+			return "schedule/quitView";
 		}else {
 			session.setAttribute("alertMsg", "일정 수정에 실패했습니다. 다시 시도해주세요.");
-			return "schedule/scheduleMain";
+			return "schedule/quitView";
 		}
 	}
 	

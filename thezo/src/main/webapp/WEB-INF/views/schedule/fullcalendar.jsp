@@ -31,7 +31,6 @@
 	    // 일정 출력 필터
 	    $(scChk).change(function(){
 	    	var scTypeString = "";
-	    	
 			$.each(scChk, function (index, value) {
 				if($(value).is(":checked")){
 					scTypeString += $(value).val();
@@ -40,6 +39,7 @@
 					scTypeString += "";
 				}
 			});
+			//console.log(calendar.getEvents());
 			
 			// 만약 캘린더에 남은 일정이 없다면 (모두 지워졌다면)
 			// 접근할 event가 없기 때문에 event를 저장해 두었던 infoArr에 접근하도록 한다
@@ -93,7 +93,7 @@
 	        	// 이벤트 클릭했을 시 기능 설정
 	        	// 일정 내용과 보고서가 보여져야 함!!
 	        	var scNo = info.event._def.extendedProps.scNo;
-	        	var option = "width = 680, height = 700, top = 100, left = 200, location = no";
+	        	var option = "width = 700, height = 700, top = 100, left = 200, location = no";
 				window.open("detail.sc?scNo=" + scNo, "일정상세정보", option);
 	        },
 	      	headerToolbar: { // 헤더설정

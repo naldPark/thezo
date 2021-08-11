@@ -14,6 +14,7 @@
     .button-area{text-align: center;}
     .backNt{color:rgb(110, 110, 110); margin: 10px; padding: 10px;}
     .noteTitle{font-weight: bold; font-size: large;}
+    .sc-area{font-size:18px;}
 </style>
 <script>
 	function w3_open() {
@@ -51,11 +52,33 @@
 	                        <input class="noteTitle w3-input w3-animate-input" name="noteTitle" style="width:70%" type="text" value="${ nt.noteTitle }">
 	                        <br>
 							<textarea class="w3-input w3-border w3-animate-input" name="noteContent" style="width:100%; height: 400px; resize: none;" placeholder="내용을 입력하세요">${ nt.noteContent }</textarea>
-	                        <br>
-	                        <hr>
-	                        <br>
-	                        <b>관련일정</b> <a href=""> >>바로가기 </a>
-	                        <p class="noteSc">${ nt.noteSc }</p>
+	                        <br><hr><br>
+	                        
+	                        
+	                        <div class="sc-area">
+	                        	<b>관련일정 상세보기</b>
+		                        <br>
+		                        <c:choose>
+		                        	<c:when test="${ !empty nt.noteSc }">
+		                        		<a id="noteSc" onclick="noteSc();" class="noteSc" style="cursor:pointer;">
+		                        			<b>${ sc.start } &nbsp; ~ &nbsp; ${ sc.end } &nbsp; ${ sc.title }</b>
+		                        		</a>
+		                        	</c:when>
+		                        	<c:otherwise>
+		                        		<b>선택안함</b>
+		                        	</c:otherwise>
+		                        </c:choose>
+	                        </div>
+	                        
+	                        
+	                        
+	                        <script>
+	                        	function noteSc(){
+	                        		var option = "width = 700, height = 700, top = 100, left = 200, location = no";
+			        				window.open("detail.sc?scNo=" + '${ nt.scNo }', "일정상세정보", option);
+	                        	}
+	                        </script>
+	                        
 	
 	                        <br>
 	                        <div class="button-area">

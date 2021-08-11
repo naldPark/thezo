@@ -43,7 +43,7 @@
 			            <th>시작일</th>
 			            <td width="350px">
 			            	<input type="date" name="start" id="startDate"> 
-			            	<input type="time" name="start" id="startTime" required hidden>
+			            	<input type="time" name="start" id="startTime" hidden>
 			            </td>
 			            <td rowspan="2">
 							<input type="checkbox" id="timeCheck">
@@ -57,7 +57,7 @@
 			            <th>종료일</th>
 			            <td>
 				            <input type="date" name="end" id="endDate"> 
-				            <input type="time" name="end" id="endTime" required hidden>
+				            <input type="time" name="end" id="endTime" hidden>
 			            </td>
 			        </tr>
 			        <tr>

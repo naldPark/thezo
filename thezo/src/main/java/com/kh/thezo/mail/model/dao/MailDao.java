@@ -13,6 +13,10 @@ import com.kh.thezo.mail.model.vo.Mail;
 @Repository
 public class MailDao {
 	
+	public int mainMailCount(int memNo, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("mailMapper.mainMailCount", memNo);
+	}
+	
 	public int selectMailListCount(Mail mm, SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("mailMapper.selectMailListCount", mm);
 	}
@@ -22,6 +26,17 @@ public class MailDao {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList) sqlSession.selectList("mailMapper.selectMailList", mm, rowBounds);
 	}
+	
+	public int selectSpamMailListCount(Mail mm, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("mailMapper.selectSpamMailListCount", mm);
+	}
+
+	public ArrayList<Mail> selectSpamMailList(Mail mm, PageInfo pi, SqlSessionTemplate sqlSession) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList) sqlSession.selectList("mailMapper.selectSpamMailList", mm, rowBounds);
+	}
+	
 	
 	public int selectSendListCount(int memNo, SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("mailMapper.selectSendListCount", memNo);
@@ -65,6 +80,10 @@ public class MailDao {
 
 	public int updateSpamMail(SqlSessionTemplate sqlSession, ArrayList<String> reMailNoAry) {
 		return sqlSession.update("mailMapper.updateSpamMail", reMailNoAry);
+	}
+	
+	public int updateUnSpamMail(SqlSessionTemplate sqlSession, ArrayList<String> reMailNoAry) {
+		return sqlSession.update("mailMapper.updateUnSpamMail", reMailNoAry);
 	}
 
 	public int updateDeleteMail(SqlSessionTemplate sqlSession, ArrayList<String> reMailNoAry) {

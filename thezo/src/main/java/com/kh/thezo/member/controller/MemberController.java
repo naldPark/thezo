@@ -25,6 +25,7 @@ import com.kh.thezo.attendance.model.service.AttendanceService;
 import com.kh.thezo.attendance.model.vo.Attendance;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
+import com.kh.thezo.mail.model.service.MailService;
 import com.kh.thezo.member.model.service.MemberService;
 import com.kh.thezo.member.model.vo.Member;
 import com.kh.thezo.message.model.service.MessageService;
@@ -35,6 +36,8 @@ public class MemberController {
 	
 	@Autowired
 	private ApprovalService apprService;
+	@Autowired
+	private MailService mailService;
 	@Autowired
 	private MemberService mService;
 	@Autowired
@@ -65,11 +68,15 @@ public class MemberController {
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("attData", attData);
 			
-			// 전자결재 파트 시작
-			HashMap<String, Integer> mainApprCount= apprService.mainApprCount(loginUser.getMemNo());
-			session.setAttribute("mainApprCount", mainApprCount);
-			System.out.println(mainApprCount);
+			// 전자결재 파트 시작 (DB 확정되고 테스트 단계에서 주석 지우겠습니다)
+	//			HashMap<String, Integer> mainApprCount= apprService.mainApprCount(loginUser.getMemNo());
+	//			session.setAttribute("mainApprCount", mainApprCount);
 			// 전자결재 파트 끝
+			
+			// 이메일 파트 시작 (DB 확정되고 테스트 단계에서 주석 지우겠습니다)
+	//			int mainMailCount= mailService.mainMailCount(loginUser.getMemNo());
+	//			session.setAttribute("mainMailCount", mainMailCount);
+			// 이메일 파트 끝
 
 			mv.setViewName("redirect:/");
 			

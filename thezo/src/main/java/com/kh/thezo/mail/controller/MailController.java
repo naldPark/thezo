@@ -70,7 +70,6 @@ public class MailController {
 						mList = mailReceivecheck(m.getMemNo(), m.getEmail(), session);
 						if (mList != null) {
 							int result = mmService.insertPopList(mList);
-							deletePopMail(m.getEmail());
 						}
 					} catch (MessagingException e) {
 						e.printStackTrace();
@@ -78,12 +77,23 @@ public class MailController {
 				}
 			}
 			// 받은편지함만 해당 끝
-
-			int listCount = mmService.selectMailListCount(mm);
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
-			ArrayList<Mail> list = mmService.selectMailList(mm, pi);
-
-			mv.addObject("list", list).addObject("pi", pi).addObject("folder", folder).setViewName("mail/mailMain");
+			
+			ArrayList<Mail> list = new ArrayList<>();
+			PageInfo pi = new PageInfo();
+			
+			if (folder.equals("스팸")) {
+				int listCount = mmService.selectSpamMailListCount(mm);
+				pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+				list = mmService.selectSpamMailList(mm, pi);
+			} else {
+				int listCount = mmService.selectMailListCount(mm);
+				pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+				list = mmService.selectMailList(mm, pi);
+			}
+			mv.addObject("list", list)
+			.addObject("pi", pi)
+			.addObject("folder", folder)
+			.setViewName("mail/mailMain");
 		} else {
 			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
 			mv.setViewName("common/errorPage");
@@ -120,42 +130,6 @@ public class MailController {
 
 	}
 
-	// 메인페이지 접속시 서버에 있는 메일을 가져 온 후 가져온 메일을 서버에서 삭제
-	public void deletePopMail(String user) {
-
-		// host, id, pwd 설정
-		String host = "pop.daum.net";
-		String password = "skfem11!";
-		
-			// Properties를 통한 pop3 연결
-			Properties prop = new Properties();
-			prop.put("mail.pop3.host", host);
-			prop.put("mail.pop3.port", 995);
-			prop.put("mail.pop3.starttls.enable", "true");
-			Session emailSession = Session.getDefaultInstance(prop);
-			try {
-				
-				Store store = emailSession.getStore("pop3s");
-				store.connect(host, user, password);
-				// 받은편지함 메일을 불러온다
-				Folder emailFolder = store.getFolder("INBOX");
-				emailFolder.open(Folder.READ_WRITE);
-				Message[] arrayMessages = emailFolder.getMessages();
-				// 새로운 편지가 있다면
-				if (arrayMessages != null) {
-					
-					// 이미 list에 담았기 때문에 휴지통으로 이동
-					for (int i = 0; i < arrayMessages.length; i++) {
-						Message message = arrayMessages[i];
-						message.setFlag(Flags.Flag.DELETED, true);
-					}
-				}
-				emailFolder.close(true);
-				store.close();
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
-	}
 	
 	@RequestMapping("mainBtn.mail")
 	public ModelAndView MainBtn(HttpSession session, ModelAndView mv, String[] mailNo, String btnType) {
@@ -165,19 +139,22 @@ public class MailController {
 			ArrayList<String> mailNoAry = new ArrayList<>(Arrays.asList(mailNo));
 			int result = 0;
 			switch (btnType) {
-				case "readBtn":	result = mmService.updateReadMail(mailNoAry);	break;
+				case "readBtn":	result = mmService.updateReadMail(mailNoAry); break;
 				case "spamBtn": result = mmService.updateSpamMail(mailNoAry); break;
+				case "unSpamBtn": result = mmService.updateUnSpamMail(mailNoAry); break;
 				case "deleteBtn": result = mmService.updateDeleteMail(mailNoAry); break;
 				case "sendDeleteBtn": result = mmService.updateDeleteSendMail(mailNoAry); break;
 			}
+			session.setAttribute("mainMailCount", mmService.mainMailCount(m.getMemNo()));
 
 			if (result > 0) { // 성공
 				session.setAttribute("alertMsg", "성공적으로 처리 되었습니다.");
 				mv.setViewName("redirect:main.mail");
 			} else {
 				// 실패하면 첨부도 지우자
-				mv.addObject("errorMsg", "처리에 실패했습니다");
-				mv.setViewName("common/errorPage");
+				mv.addObject("alertMsg", "처리할 항목이 없습니다");
+				//바꿔야하지않을까 싶..
+				mv.setViewName("redirect:main.mail");
 			}
 		} else {
 			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
@@ -373,6 +350,7 @@ public class MailController {
 			}
 			if (mm.getMemNo() == memNo) {
 				mmService.updateReadMailOne(mno);
+				session.setAttribute("mainMailCount", mmService.mainMailCount(m.getMemNo()));
 				mv.addObject("mm", mm);
 				mv.setViewName("mail/mailDetail");
 			} else {

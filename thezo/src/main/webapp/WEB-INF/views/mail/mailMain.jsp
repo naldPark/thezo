@@ -18,7 +18,14 @@
           <div class="mailOuter">
             <div align="left">
               <button type="button" id="readBtn" class="mainBtn btn btn-sm btn-secondary">읽음처리</button>
-              <button type="button" id="spamBtn" class="mainBtn btn btn-sm btn-secondary">스팸처리</button>
+              <c:choose>
+                <c:when test="${ folder eq '스팸' }">
+                  <button type="button" id="unSpamBtn" class="mainBtn btn btn-sm btn-secondary">스팸해제</button>
+                </c:when>
+                <c:otherwise>
+                  <button type="button" id="spamBtn" class="mainBtn btn btn-sm btn-secondary">스팸처리</button>
+                </c:otherwise>
+              </c:choose>
               <button type="button" id="deleteBtn" class="mainBtn btn btn-sm btn-secondary">삭제</button>
             </div>
             <br>

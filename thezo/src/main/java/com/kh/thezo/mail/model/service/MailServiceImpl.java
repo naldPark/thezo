@@ -31,6 +31,12 @@ public class MailServiceImpl implements MailService {
 	private DataSourceTransactionManager transactionManager;
 	
 	
+	// 메인페이지 안읽은 메일 갯수 조회
+	@Override
+	public int mainMailCount(int memNo) {
+		return mmDao.mainMailCount(memNo, sqlSession);
+	}
+	
 	@Override
 	public int selectMailListCount(Mail mm) {
 		return mmDao.selectMailListCount(mm, sqlSession);
@@ -39,6 +45,16 @@ public class MailServiceImpl implements MailService {
 	@Override
 	public ArrayList<Mail> selectMailList(Mail mm, PageInfo pi) {
 		return mmDao.selectMailList(mm, pi, sqlSession);
+	}
+	
+	@Override
+	public int selectSpamMailListCount(Mail mm) {
+		return mmDao.selectSpamMailListCount(mm, sqlSession);
+	}
+
+	@Override
+	public ArrayList<Mail> selectSpamMailList(Mail mm, PageInfo pi) {
+		return mmDao.selectSpamMailList(mm, pi, sqlSession);
 	}
 	
 	@Override
@@ -114,6 +130,12 @@ public class MailServiceImpl implements MailService {
 	public int updateSpamMail(ArrayList<String> reMailNoAry) {
 		return mmDao.updateSpamMail(sqlSession, reMailNoAry);
 	}
+	
+	@Override
+	public int updateUnSpamMail(ArrayList<String> reMailNoAry) {
+		return mmDao.updateUnSpamMail(sqlSession, reMailNoAry);
+	}
+	
 	
 	@Override
 	public int updateDeleteMail(ArrayList<String> reMailNoAry) {

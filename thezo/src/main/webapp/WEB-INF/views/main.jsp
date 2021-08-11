@@ -95,7 +95,11 @@
                                 <i class="fas fa-envelope fa-lg"></i>
                             </div>
                             <div class="col text-left">
-                                <span>새 메일 2건 <i class="fas fa-exclamation-circle" style="color:red"></i></span>
+                                <a href='main.mail?folder=받은'>새 메일 ${mainMailCount}건 
+                                    <c:if test="${mainMailCount ne 0 }">
+                                        <i class="fas fa-exclamation-circle" style="color:red"></i>
+                                    </c:if>
+                                </a>
                             </div>
                         </div>
                         <div class="row mt-3">

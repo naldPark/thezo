@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.Address;
 import javax.mail.AuthenticationFailedException;
+import javax.mail.Flags;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -49,7 +50,7 @@ public class CheckInbox {
             
             // 받은편지함을 INBOX 라고 한다.
             Folder inbox = store.getFolder("INBOX");
-            inbox.open(Folder.READ_ONLY);
+            inbox.open(Folder.READ_WRITE);
 
             Message[] arrayMessages = inbox.getMessages();
             
@@ -191,6 +192,7 @@ public class CheckInbox {
                 }
                 mm.setMailContent(messageContent);
                 mList.add(mm);
+                msg.setFlag(Flags.Flag.DELETED, true);
             }
 
             // disconnect
@@ -206,6 +208,7 @@ public class CheckInbox {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
+        
         return mList;
         
     }

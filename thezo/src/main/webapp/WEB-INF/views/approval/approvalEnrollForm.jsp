@@ -53,6 +53,7 @@
           margin-left: 80px;
           width: 100%;
           text-align: left!important;
+          font-size: 15pt;
           /* border: 1px solid lightgray;
           overflow: auto; */
 
@@ -91,12 +92,10 @@
                         <input type="text" class="form-control"  placeholder="(선택사항)이름을 입력하세요" id="referListInput" onkeyup="filterFunction()">
                       </div>
                     </div>
-                    <div id="referListSpan" class="refer-zone" style="text-align: center; font-size: 15pt;">
+                    <div id="referListSpan" class="refer-zone">
                       <span><input type="hidden" value="-1"></span>
                     </div>
                   </div>
-              
-                  
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text bg-white border-0">파일첨부</span>
@@ -161,26 +160,6 @@
       </section>
 
        
-      <!-- <script>
-          function tempSave(){
-            if($("#docName").val()=="") {
-              alert("제목은 반드시 입력하셔야합니다");
-              return false;
-            } else if($("#summernote").val() == "") {
-              alert("내용은 반드시 입력하셔야합니다");
-              return false;
-            } else {
-              if (confirm("정말로 제출하시겠습니까?\n기안 후엔 수정이 불가능합니다.")) {
-                $("#tempStatus").val("임시");
-                $("#form").submit();
-              }
-            }
-           
-          }
-
-      </script> -->
-
-
       <script>
 
         $(function () {
@@ -302,18 +281,15 @@
                 if(match==memNo&&$("#referListSpan input").length!=2){
                       addCheck++;
                 }
-                $("#referListInput").nextAll().css("display","none");
-                $("#referListInput").val("");
-                })
+              
+             })
 
                 if(addCheck==0){
                       $("<span class='btn-sm btn-light referSpan disabled'><input type='hidden' name='refMemNoAry' value='"+memNo+"'>"
-                      +strArray[0]+" "+strArray[1]+" <button type='button' class='deleteRefer badge badge-light'> &times;</button></span>").appendTo("#referListSpan");
-                      $("#referListInput").nextAll().css("display","none");
-                      $("#referListInput").val("");
-                      // return false;  
-
+                      +strArray[0]+" "+strArray[1]+" <button type='button' class='deleteRefer badge badge-light'> &times;</button></span>").appendTo("#referListSpan"); 
                 }
+                $("#referListInput").nextAll().css("display","none");
+                $("#referListInput").val("");
               
           })
       

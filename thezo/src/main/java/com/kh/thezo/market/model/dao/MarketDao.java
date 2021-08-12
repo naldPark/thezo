@@ -7,6 +7,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.thezo.board.model.vo.Reply;
+import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.vo.Market;
 
@@ -48,4 +50,40 @@ public class MarketDao {
 	public Market selectMarket(SqlSessionTemplate sqlSession, int marketNo) {
 		return sqlSession.selectOne("marketMapper.selectMarket", marketNo);
 	}
+	
+	// 사용자 : 벼룩시장 글 등록 
+	public int insertMarket(SqlSessionTemplate sqlSession, Market mk) {
+		return sqlSession.insert("marketMapper.insertMarket", mk);
+	}
+		
+	// 사용자 : 벼룩시장 삭제
+	public int deleteMarket(SqlSessionTemplate sqlSession, int marketNo) {
+		return sqlSession.update("marketMapper.deleteMarket", marketNo);
+	}
+	
+	// 사용자 : 벼룩시장 수정
+	public int updateMarket(SqlSessionTemplate sqlSession, Market mk) {
+		return sqlSession.update("marketMapper.updateMarket", mk);
+	} 
+	
+	// 사용자 : 벼룩시장 댓글 조회
+	public ArrayList<Reply> marketReplyList(SqlSessionTemplate sqlSession, int marketNo){
+		return (ArrayList)sqlSession.selectList("marketMapper.marketReplyList", marketNo);
+	}
+		
+	// 사용자 : 벼룩시장 댓글 작성
+	public int insertMarketReply(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.insert("marketMapper.insertMarketReply", r);
+	}
+	
+	// 사용자 : 벼룩시장, 댓글 신고
+	public int marketReport(SqlSessionTemplate sqlSession, Report rp) {
+		return sqlSession.insert("marketMapper.marketReport", rp);
+	}
+	
+	// 사용자 : 벼룩시장 댓글 삭제
+	public int deleteMarketReply(SqlSessionTemplate sqlSession, int replyNo) {
+		return sqlSession.update("marketMapper.deleteMarketReply", replyNo);
+	}
+	
 }

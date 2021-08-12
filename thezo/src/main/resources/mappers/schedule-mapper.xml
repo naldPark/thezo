@@ -23,7 +23,7 @@
 	<select id="selectScheduleList" resultMap="scheduleResult">
 		select 
 		       sc_no
-		     , sc_writer
+		     , mem_name as sc_writer
 		     , sc_title
 		     , sc_content
 		     , sc_type
@@ -31,30 +31,44 @@
 		     , sc_end
 		     , allday
 		     , s.status
-		     , report_title
-		     , report_writer
+		  from schedule s
+		  join member m on (s.sc_writer = m.mem_no)
+		 where s.status = 'Y'
+		   <if test="scType=='개인'">
+		   		and sc_writer = #{scWriter}
+		   		and sc_type like '%' || #{scType} || '%'
+		   </if>
+		   <if test="scType=='회사'">
+		   		and sc_type like '%' || #{scType} || '%'
+		   </if>
+		   <if test="scType=='부서'">
+		   		and sc_type like '%' || #{scType} || '%'
+		   </if>
+		   <if test="scType=='all'">
+		   		and sc_writer = #{scWriter}
+		   		 or sc_type = '회사'
+		   		 or sc_type = '부서'
+		   </if>
+		   
+	</select>
+	
+	<select id="selectBizReport" resultMap="scheduleResult">
+		select
+			   sc_no
+			 , report_title
+		     , mem_name as report_writer
 		     , report_content
 		     , origin_name
 		     , change_name
 		     , create_date
-		  from schedule s
-		  left join biz_report using (sc_no)
-		 where s.status = 'Y'
-	</select>
-	
-	<select id="selectScheduleData" resultMap="scheduleResult">
-		select
-		       sc_title
-		     , sc_start
-		     , sc_end
-		     , allday
-		  from schedule
+		  from biz_report b
+		  join member on (b.report_writer = m.mem_no)
 	</select>
 	
 	<select id="selectScheduleDetail" resultMap="scheduleResult">
 		select
 			   sc_no
-		     , sc_writer
+		     , mem_name as sc_writer
 		     , sc_title
 		     , sc_content
 		     , sc_type
@@ -63,13 +77,14 @@
 		     , allday
 		     , s.status
 		     , report_title
-		     , report_writer
+		     , mem_name as report_writer
 		     , report_content
-		     , origin_name
-		     , change_name
-		     , create_date
+		     , b.origin_name
+		     , b.change_name
+		     , b.create_date
 		  from schedule s
-		  left join biz_report using (sc_no)
+		  left join biz_report b using (sc_no)
+		  join member m on (sc_writer=mem_no)
 		 where s.status = 'Y'
 		   and sc_no = #{scNo} 
 	</select>
@@ -102,6 +117,32 @@
 		 )
 	</insert>
 	
+	<insert id="insertBizReport">
+		insert
+		  into biz_report
+		  	   (
+		  	   	 sc_no
+		  	   , report_writer
+		  	   , report_title
+		  	   , report_content
+		  	   , origin_name
+		  	   , change_name
+		  	   , create_date
+		  	   , status
+		  	   )
+		 values
+		 	   (
+		 	     #{scNo}
+		 	   , #{reportWriter}
+		 	   , #{reportTitle}
+		 	   , #{reportContent}
+		 	   , #{originName}
+		 	   , #{changeName}
+		 	   , sysdate
+		 	   , 'Y'
+		 	   )
+	</insert>
+	
 	<delete id="deleteSchedule">
 		delete
 		  from schedule
@@ -119,6 +160,18 @@
 		     , sc_end = #{end}
 		     , allday = #{allday}
 		 where sc_no = #{scNo}
+	</update>
+	
+	<update id="updateBizReport">
+		update biz_report
+		   set
+		   	   report_writer = #{reportWriter}
+		   	 , report_title = #{reportTitle}
+		   	 , report_content = #{reportContent}
+		   	 , origin_name = #{originName}
+		   	 , change_name = #{changeName}
+		   	 , create_date = #{createDate}
+		 where sc_no = #{scNo}		   	 
 	</update>
 	
 </mapper>

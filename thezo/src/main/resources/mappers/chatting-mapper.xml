@@ -24,4 +24,11 @@
 	<delete>
 	</delete>
  	-->
+ 	
+ 	<insert id="InsertChatContent">
+ 	
+ 	
+ 	</insert>
+ 	
+ 	
 </mapper>

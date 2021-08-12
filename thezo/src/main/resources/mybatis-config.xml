@@ -8,8 +8,12 @@
 	
 	<typeAliases>
 		<typeAlias type="com.kh.thezo.member.model.vo.Member" alias="Member"/>
-		<typeAlias type="com.kh.thezo.chatting.model.vo.Chatting" alias="Chatting"/>
+		<typeAlias type="com.kh.thezo.chatting.model.vo.Colleague" alias="Colleague"/>
+		<typeAlias type="com.kh.thezo.chatting.model.vo.ChatRoom" alias="ChatRoom"/>
+		<typeAlias type="com.kh.thezo.chatting.model.vo.ChatConnect" alias="ChatConnect"/>
+		<typeAlias type="com.kh.thezo.chatting.model.vo.ChatLog" alias="ChatLog"/>
 		<typeAlias type="com.kh.thezo.message.model.vo.Message" alias="Message"/>
+		<typeAlias type="com.kh.thezo.message.model.vo.MsgReport" alias="MsgReport"/>
 		<typeAlias type="com.kh.thezo.notification.model.vo.Notification" alias="Notification"/>
 		<typeAlias type="com.kh.thezo.notification.model.vo.NfCheck" alias="NfCheck"/>
 		<typeAlias type="com.kh.thezo.statistic.model.vo.Statistic" alias="Statistic"/>
@@ -28,6 +32,7 @@
 		<typeAlias type="com.kh.thezo.attendance.model.vo.Attendance" alias="Attendance"/>	
 		<typeAlias type="com.kh.thezo.mail.model.vo.Attachment" alias="Attachment"/>
 		<typeAlias type="com.kh.thezo.department.model.vo.Department" alias="Department"/>
+		<typeAlias type="com.kh.thezo.document.model.vo.DocCategory" alias="DocCategory"/>
 	</typeAliases>
 	
 	<mappers>

@@ -18,51 +18,52 @@
 		<result column="FROM_DEL_STATUS" property="fromDelStatus"/>
 		<result column="recipient_name_rank" property="recipientNameAndRank"/>
 		<result column="sender_name_rank" property="senderNameAndRank"/>
-		
 	</resultMap>
+
+	<resultMap id="memberResult" type="Member">
+		<result column="mem_no" property="memNo"/>
+		<result column="mem_name" property="memName"/>
+		<result column="mem_id" property="memId"/>
+		<result column="department" property="department"/>
+		<result column="rank" property="rank"/>
+	</resultMap>
+
+
+	<resultMap id="memInfoResultMap" type="HashMap">
+		<result column="sender_no" property="memNo"/>
+		<result column="MSG_CONTENT" property="msgContent"/>		
+		<result column="sender_name_rank" property="senderNameAndRank"/>
+	</resultMap>
+
+
+	<resultMap id="msgReportResult" type="MsgReport">
+		<result column="MSG_REPORT_NO" property="msgReportNo"/>
+		<result column="MSG_NO" property="msgNo"/>
+		<result column="REPORTER_NO" property="reporterNo"/>
+		<result column="REPORTED_NO" property="reportedNo"/>
+		<result column="REPORT_TYPE" property="reportType"/>
+		<result column="REPORT_CONTENT" property="reportContent"/>
+		<result column="REPORT_DATE" property="reportDate"/>
+		<result column="DEL_STATUS" property="delStatus"/>
+		<result column="HANDLE_STATUS" property="handleStatus"/>
+		<result column="HANDLE_DATE" property="handleDate"/>
+		<result column="HANDLE_CONTENT" property="handleContent"/>
+		<result column="RESULT_STATUS" property="resultStatus"/>
+		<result column="sender_name_rank" property="senderNameAndRank"/>
+		<result column="recipient_name_rank" property="recipientNameAndRank"/>
+		<result column="CONTENT_STATUS" property="contentStatus"/>
+		<result column="withdrawal_status" property="withdrawalStatus"/>
+	</resultMap>
+
 
 	<!-- @author Jaewon.s -->
 	
-	<!-- 시간 많이 잡아먹은 .. sql문... 얘를 바탕으로 파생시키면된다. 받은 쪽지 목록 가져오는 sql문  -->
-	<!--<select id="ajaxSelectListNf" resultMap="messageResult">
-		select
-		       msg_no
-		     , recipient_no
-		     , sender_no
-		     , msg_status
-		     , content_status
-             ,case when (to_char(create_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
-                 then to_char(create_date, 'HH24:MI')
-                 when to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365 > 1 
-                 then round(to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')))/365) || '년 전'  
-                 when (to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD'))) = 1
-                 then '어제'
-              else
-                   to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(create_date, 'YYYYMMDD')) || '일전' 
-              end as receive_date   
-		     , msg_content
-		     , read_status
-		     , to_recycle_bin
-		     , from_recycle_bin
-		     , to_del_status
-		     , from_del_status
-             , mb.mem_name || ' ' || mb.rank as recipient_name_rank
-  	         , mb2.mem_name || ' ' || mb2.rank as sender_name_rank	     
-		  from message msg
-          join member mb on (msg.recipient_no = mb.mem_no )
-  	      join member mb2 on (msg.sender_no = mb2.mem_no )	  
-		 where recipient_no = #{ memNo }    
-		   and to_recycle_bin = 'Y'
-		   and to_del_status = 'Y' 
-		 order
-		    by create_date desc      
-	</select>-->
-
-
 	<!-- 받은 쪽지 조회해오는 sql문 !!  -->
 	<select id="ajaxSelectReceiveMsgList" resultMap="messageResult">
 		select
 		       msg_no
+		     , recipient_no
+		     , sender_no
 		     , msg_status
 		     , content_status
              ,case when (to_char(create_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
@@ -81,6 +82,8 @@
 		 where recipient_no = #{ memNo }    
 		   and to_recycle_bin = 'Y'
 		   and to_del_status = 'Y' 
+   		   <!-- 아래의 구문 하나문 추가해주면 !! 신고처리된것은 해결할수가 있다! 얘는 !! 오직 받은 쪽지에서만 확인이 가능하다.   -->
+   		   and msg_no not in (select msg_no from msg_report)
 		 order
 		    by create_date desc      
 	</select>
@@ -116,6 +119,8 @@
 	<select id="ajaxSelectSentMsgList" resultMap="messageResult">
 		select
 		       msg_no
+		     , recipient_no
+		     , sender_no
 		     , msg_status
 		     , content_status
              ,case when (to_char(create_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
@@ -137,9 +142,7 @@
 		    by create_date desc      
 	</select>
 
-
-
-	<!-- 받은 쪽지 조회해오는 sql문 !!  -->
+	<!-- 휴지통 받은 쪽지 조회해오는 sql문 !!  -->
 	<select id="ajaxSelectRcRbList" resultMap="messageResult">
 		select
 		       msg_no
@@ -160,13 +163,14 @@
 		 where recipient_no = #{ memNo }    
 		   and to_recycle_bin = 'N'
 		   and to_del_status = 'Y' 
+   		   <!-- 아래의 구문 하나문 추가해주면 !! 신고처리된것은 해결할수가 있다! 얘는 !! 오직 받은 쪽지에서만 확인이 가능하다.   -->
+   		   and msg_no not in (select msg_no from msg_report)
 		 order
 		    by create_date desc      
 	</select>
 
-
-	<!-- 보낸 쪽지 조회해오는 sql문 !!  -->
-	<select id="ajaxSelectRcStList" resultMap="messageResult">
+	<!-- 휴지통  보낸 쪽지 조회해오는 sql문 !!  명칭 바꿔줘여한다.  -->
+	<select id="ajaxSelectStRbList" resultMap="messageResult">
 		select
 		       msg_no
 		     , msg_status
@@ -190,11 +194,7 @@
 		    by create_date desc      
 	</select>
 
-	<!-- 
-	<select id="ajaxselectReportList" resultMap="messageResult">
-	</select>
-	 -->
-	 
+	 <!-- 읽지 않은 쪽지 갯수 가져오는 sql문 -->
 	 <select id="ajaxCountUnreadedMsg" resultType="_int">
 	 	select count(*)
 	 	  from message
@@ -202,9 +202,11 @@
 	 	   and read_status = 'N'	
 	 	   and to_recycle_bin = 'Y'
 	 	   and to_del_status = 'Y'
+	 	   <!-- 읽지 않은 쪽지 갯수 가져오는것인데 읽지않은 쪽지지만 신고 처리해버리면 count 않게 하기 위한 용도  -->
+	 	   and msg_no not in (select msg_no from msg_report)
 	 </select>
 	 
-	 <!-- 어짜피 넘어오는 값은 고정된 쪽지 번호가 넘어온다.  해당 쪽지 번호로 조회를 해오는것이기에 조건 검사를 까다롭게 하지 않아도 된다! -->
+	 <!-- 메세지 상세보기 정보 뽑아오는  동적 DAO임! (받은쪽지, 보낸쪽지 , 휴지통 ) ! -->
 	 <select id="ajaxSelectDetailMsg" parameterType="hashMap" resultMap="messageResult">
 		select
 		       msg_no
@@ -244,4 +246,369 @@
 		 order
 		    by create_date desc      
 	 </select>
+	 
+	 <!-- 휴지통에서 받은 쪽지를 복구하는 sql문 -->
+	<update id="ajaxRestoreToRc" parameterType="hashMap">
+		update
+		       message
+				   set to_recycle_bin = 'Y'
+		 where msg_no in ( 
+			<foreach item="msgNo" index="index" collection="rcMultiMsgNo" separator=",">
+				${msgNo}
+			</foreach>
+			)
+	       and recipient_no = ${memNo}
+	</update>	 	 
+	 
+ 	 <!-- 휴지통에서 보낸 쪽지를 복구하는 sql문 -->
+	<update id="ajaxRestoreToSt" parameterType="hashMap">
+		update
+		       message
+				   set from_recycle_bin = 'Y'
+		 where msg_no in ( 
+			<foreach item="msgNo" index="index" collection="stMultiMsgNo" separator=",">
+				${msgNo}
+			</foreach>
+			)
+	       and sender_no = ${memNo}
+	
+	</update>	 	 
+	
+	<!-- 받은 쪽지 영구 삭제  sql문 -->
+	<update id="ajaxDeleteRcMsg" parameterType="hashMap">
+		update
+		       message
+				   set to_del_status = 'N'
+		 where msg_no in ( 
+			<foreach item="msgNo" index="index" collection="rcMultiMsgNo" separator=",">
+				${msgNo}
+			</foreach>
+			)
+	       and recipient_no = ${memNo}
+	</update>	 	 
+	
+	<!-- 보낸 쪽지 영구 삭제  sql문 -->
+ 	<update id="ajaxDeleteStMsg" parameterType="hashMap">
+		update
+		       message
+				   set from_del_status = 'N'
+		 where msg_no in ( 
+			<foreach item="msgNo" index="index" collection="stMultiMsgNo" separator=",">
+				${msgNo}
+			</foreach>
+			)
+	       and sender_no = ${memNo}
+	</update>	 	 
+	 
+ 	<!-- 받은 쪽지에서 오직 상세보기시만 read_status update하는 sql문 -->	 
+	 <update id="ajaxUpdateReadStatusMsg" parameterType="hashMap">
+ 		update
+		       message
+				   set read_status = 'Y'
+		 where msg_no = ${msgNo}
+	       and recipient_no = ${memNo}
+	 </update>
+	 
+	 <!-- 키워드로 검색한 결과 갯수 조회하는 sql문  -->
+	 <select id="selectListCount" resultType="_int">
+ 		select
+		       count(*)
+		  from member
+         where mem_name like '%' || #{ keyword } || '%'	 
+           and status in ('Y', 'A')      
+	 </select>
+	 
+	 <!-- 키워드로 검색한 결과를 rowBound 사용하여 조회하는 sql문  -->	 
+	 <select id="searchMemListByName" resultMap="memberResult">
+	 	select mem_no
+             , mem_name
+             , mem_id
+             , department
+             , rank
+          from member
+         where mem_name like '%' || #{ keyword } || '%'	 
+           and status in ('Y', 'A')      
+         order
+            by dep_no, decode(rank, '대표이사', 1, '상무', 2, '부장', 3, '과장', 4, '대리', 5, 6) ,mem_name asc
+	 </select>
+	 
+	 <!-- 부서명으로 검색한 결과 갯수 조회하는 sql문  -->
+	 <select id="selectListCountByDept" resultType="_int">
+ 		select
+		       count(*)
+		  from member
+         where department like '%' || #{ keyword } || '%'	 
+           and status in ('Y', 'A')      
+	 </select>
+	 
+	 <!-- 부서명로 검색한 결과를 rowBound 사용하여 조회하는 sql문  -->	 
+	 <select id="searchMemListByDept" resultMap="memberResult">
+	 	select mem_no
+             , mem_name
+             , mem_id
+             , department
+             , rank
+          from member
+         where department like '%' || #{ keyword } || '%'	 
+           and status in ('Y', 'A')      
+         order
+            by dep_no, decode(rank, '대표이사', 1, '상무', 2, '부장', 3, '과장', 4, '대리', 5, 6) ,mem_name asc
+	 </select>
+	 
+	 <!-- 직급과 부서명으로 검색한 결과 갯수 조회하는 sql문  -->
+	 <select id="selectListCountByRank" resultType="_int" parameterType="hashMap">
+ 		select
+		       count(*)
+		  from member
+         where department like '%' || #{ deptKeyword } || '%'	 
+           and rank like '%' || #{ rankKeyword } || '%'
+           and status in ('Y', 'A')      
+	 </select>
+	 
+	 <!-- 직급과  부서명로 검색한 결과를 rowBound 사용하여 조회하는 sql문  -->	 
+	 <select id="searchMemListByRank" resultMap="memberResult">
+	 	select mem_no
+             , mem_name
+             , mem_id
+             , department
+             , rank
+          from member
+         where department like '%' || #{ deptKeyword } || '%'	 
+           and rank like '%' || #{ rankKeyword } || '%'
+           and status in ('Y', 'A')      
+         order
+            by dep_no, decode(rank, '대표이사', 1, '상무', 2, '부장', 3, '과장', 4, '대리', 5, 6) ,mem_name asc
+	 </select>
+	 
+	 <!-- 쪽지 보내는 sql문 -->
+	 <insert id="insertMsg">
+	 	insert 
+	 	  into Message
+	 	  (
+	 	  	msg_no
+	 	  , recipient_no	
+	      , sender_no
+	  	  , msg_status
+		  , content_status
+		  , msg_content
+	 	  )
+	 	  values
+	 	  (
+	 	    seq_msgno.nextval
+	 	  , #{ RecipientMemNo } 
+  	 	  , #{ senderMemNo } 
+  	 	  , #{ msgStatus } 
+  	 	  , #{ contentStatus } 
+  	 	  , #{ msgContent } 
+	 	  )
+	 </insert>
+	 
+	 <!-- 쪽지번호로 보낸사람의 정보를 가쟈오는 sql문  -->
+	 <select id="bringMemInfoByMsgNo" resultMap="memInfoResultMap">
+	 	select sender_no
+	 		 , msg_content
+  	         , mb.mem_name || ' ' || mb.rank as sender_name_rank
+  	      from message msg
+  	      join member mb on (msg.sender_no = mb.mem_no)
+  	     where msg_no = #{ msgNo}      	     
+	 </select>	 
+	 
+	 <!-- 쪽지 신고 접수 (insert) sql문  -->
+	 <insert id="insertMsgReport">
+	 	insert 
+	 	  into msg_report
+	 	  (
+	 	  	msg_report_no
+	 	  , msg_no
+	 	  , reporter_no
+	 	  , reported_no
+	 	  , report_type
+	 	  , report_content
+	 	  )
+	 	  values
+	 	  (
+	 	    seq_mreno.nextval
+	 	  , #{msgNo} 
+  	 	  , #{reporterNo}
+  	 	  , #{reportedNo}
+  	 	  , #{reportType}
+  	 	  , #{reportContent}
+	 	  )
+	 </insert>
+	 
+	 <!-- 내가 신고한 쪽지 목록 조회하는 sql문 -->
+	 <!-- handle_date가 null값이면 일전으로 뽑힌다. 이를 가지고 화면단가서 '일전이라면' 미정으로 띄우게 해주면 된다.-->
+	 <!-- resultType(조치냐용)은 관리자가 따로 정해두지 않았다면 null(undefind로 명시되지만 null비교다)로 뽑히고 handle_status(처리상태) 기본값인 '처리중'이 뽑힌다. -->
+	 <select id="ajaxselectReportList" resultMap="msgReportResult">
+	 	select msg_report_no
+	 	     , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	 	  	 , handle_status
+	 	  	 , result_status
+ 	         
+ 	         , case when (to_char(handle_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
+                 then to_char(handle_date, 'HH24:MI')
+                 when to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(handle_date, 'YYYYMMDD')))/365 > 1 
+                 then round(to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(handle_date, 'YYYYMMDD')))/365) || '년 전'  
+                 when (to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(handle_date, 'YYYYMMDD'))) = 1
+                 then '어제'
+              else
+                   to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(handle_date, 'YYYYMMDD')) || '일전' 
+              end as handle_date   
+              
+          from msg_report mr
+          join member mb on (mr.reported_no = mb.mem_no )
+         where reporter_no = #{ memNo }        	 	
+		 order
+		    by report_date desc      
+	 </select>
+	 
+	 <!-- 신고 상세 보기임 만약에 신고 시간이랑 오늘 잘짜 사이에서 하루가 지났을떄 상태를 담을 만한 필드가 필요하다.  -->
+	 <!-- 관련 내용 필드도 필요하다! content_status -->
+	 <select id="ajaxSelectReport" resultMap="msgReportResult" parameterType="_int">
+		select msg_report_no
+	 	     , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	 	  	 , report_type
+	 	     , to_char(report_date, 'YYYY-MM-DD [HH24:mi]') as report_date
+	 	  	 , msg.content_status
+	 	  	 , handle_status
+	 	  	 , result_status
+	 	  	 , report_content
+	 	  	 , handle_content	 	  	 
+	 	  	 ,  case when to_date(to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') <![CDATA[<]]> (to_date(to_char(report_date,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') + (interval '24' hour))
+	 	  	    then '철회가능'
+	 	  	    else '철회불가' 
+	 	  	    end as withdrawal_status
+          from msg_report mr
+          join member mb on (mr.reported_no = mb.mem_no )
+          join message msg on (mr.msg_no = msg.msg_no)
+         where mr.msg_report_no = #{ msgReportNo }           
+	 </select>
+	 
+	<!-- 쪽지 신고철회하는 SQL문 (delete 처리해버리는게 더 깔끔함.) -->
+	<!-- 후에 컬럼 없앶버려랴  del_status가 필요가없다 -->
+	<delete id="ajaxWithdrawalReport">
+		delete 
+		  from msg_report
+		 where msg_report_no = #{msgReportNo}
+ 	</delete>
+ 	
+ 	<!--   아레 부터 ============================== admin 영역 이다!  -->
+ 	<!-- 미해결 된 신고 내용 갯수 구해오는 sql문 -->
+ 	<select id="unHandleReportCount" resultType="_int">
+	 	select
+		       count(*)
+		  from msg_report
+         where handle_status = '처리중'	 
+           and to_date(to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') <![CDATA[>]]> (to_date(to_char(report_date,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') + (interval '24' hour))
+ 	</select>
+
+ 	<!-- 해결 된 신고 내용 갯수 구해오는 sql문  --> 	
+ 	<select id="handleReportCount" resultType="_int">
+ 		select
+		       count(*)
+		  from msg_report
+         where handle_status = '처리완료'	 
+ 	</select>
+ 	
+ 	<!-- 미해결 된 신고  쪽지 list 가져오는 sql문 --> 	
+ 	<select id="ajaxUnhandledReportList" resultMap="msgReportResult">
+		select msg_report_no
+	 	  	 , report_type
+	 	  	 <!-- 아래는 신고대상이다. -->
+	 	     , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	 	     , to_char(report_date, 'YYYY-MM-DD') as report_date
+	 	     <!-- 아래는 신고인이다.  -->
+			 , mb2.mem_name || ' ' || mb2.rank as recipient_name_rank
+          from msg_report mr
+          join member mb on (mr.reported_no = mb.mem_no )
+		  join member mb2 on (mr.reporter_no = mb2.mem_no )
+         where handle_status = '처리중'
+           and to_date(to_char(sysdate,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') <![CDATA[>]]> (to_date(to_char(report_date,'YYYY-MM-DD HH24:MI:SS'), 'YYYY-MM-DD HH24:MI:SS') + (interval '24' hour))
+         order
+            by msg_report_no desc
+ 	</select>
+ 	
+ 	<!-- 해결 된 신고  쪽지 list 가져오는 sql문  -->
+ 	<select id="ajaxHandledReportList" resultMap="msgReportResult">
+ 		select msg_report_no
+	 	  	 , report_type
+	 	  	 <!-- 아래는 신고대상이다. -->
+	 	     , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	 	     , to_char(report_date, 'YYYY-MM-DD') as report_date
+	 	     <!-- 아래는 신고인이다.  -->
+			 , mb2.mem_name || ' ' || mb2.rank as recipient_name_rank
+			 , result_status
+			 , to_char(handle_date, 'YYYY-MM-DD') as handle_date
+          from msg_report mr
+          join member mb on (mr.reported_no = mb.mem_no )
+		  join member mb2 on (mr.reporter_no = mb2.mem_no )
+         where handle_status = '처리완료'
+		 order
+            by msg_report_no desc
+ 	</select>
+ 	
+ 	<!-- 쪽지 신고 상세 내역 가져오는 sql문 -->
+ 	<select id="ajaxSelectAdminReportDetail" resultMap="msgReportResult">
+ 		select msg_report_no
+	 	  	 <!-- 아래는 신고대상이다. -->
+	 	     , mb.mem_name || ' ' || mb.rank as sender_name_rank
+	 	  	 , report_type
+	 	     , to_char(report_date, 'YYYY-MM-DD [HH24:mi]') as report_date
+			 , msg.content_status
+	 	     <!-- 아래는 신고인이다.  -->
+			 , mb2.mem_name || ' ' || mb2.rank as recipient_name_rank
+			 , handle_status
+			 , report_content
+			 , handle_content
+			 , reported_no
+			 , result_status
+          from msg_report mr
+          join member mb on (mr.reported_no = mb.mem_no )
+		  join member mb2 on (mr.reporter_no = mb2.mem_no )
+		  join message msg on (mr.msg_no = msg.msg_no)
+         where msg_report_no = #{ msgReportNo }
+ 	</select>
+ 	
+ 	<!-- 관리자 페이지에서 일단 신고처리를 하는 sql문 -->
+ 	<update id="ajaxHandleReport">
+		update msg_report
+		   set handle_content = #{ handleContent }
+		     , handle_status = #{ handleStatus }
+		     , result_status = #{ resultStatus }
+		     , handle_date = sysdate
+	     where msg_report_no = #{ msgReportNo } 	
+ 	</update>
+
+ 	<!-- 기존에 이미 신고를 한번 당했는지 알아보는 sql문  반환은 String형으로 날짜가 넘어간다.-->
+ 	<select id="beforeHandleReportCheck" resultType="string">
+ 		select to_char(msg_restrict,'YYYY-MM-DD HH24:MI:SS') as msg_restrict
+ 		  from member 
+ 		 where mem_no = #{reportedNo} 
+ 	</select>
+
+ 	<!-- 관리자 페이지에서 일단 신고처리를 하는 sql문 -->
+ 	<update id="restrictMsgFunc">
+		update member
+		   set msg_restrict = 
+		   (select 
+		   <if test="handleDate != null and resultStatus == '3일 쪽지제한'">
+				to_date('${ handleDate }','YYYY-MM-DD HH24:MI:SS') + (interval '3' day)	   
+		   </if>
+		   <if test="handleDate != null and resultStatus == '영구 쪽지제한'">
+				to_date('${ handleDate }','YYYY-MM-DD HH24:MI:SS') + (interval '50' year)	   
+		   </if>
+		   <if test="handleDate == null and resultStatus == '3일 쪽지제한'">		   
+		           handle_date + (interval '3' day)
+		   </if>
+		   <if test="handleDate == null and resultStatus == '영구 쪽지제한'">
+		           handle_date + (interval '50' year)
+		   </if>
+		      from msg_report 
+		     where msg_report_no = #{ msgReportNo }
+		   )
+	     where mem_no = #{ reportedNo } 	
+ 	</update>
+ 	
+ 	
+	 
 </mapper>

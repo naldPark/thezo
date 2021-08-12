@@ -20,11 +20,10 @@
         width:80%;
         margin:auto;
     }
-    #content, #address-area{width:50%;}   
+    #pwdcontent, #content, #address-area{width:50%;}   
     body{position:relative;}
 	.container{position:absolute; top:30%; left:20%;}
 	table tbody{cursor:pointer;}
-	#sPhoto{border-radius:50%; object-fit:cover;}
     
 
 </style>
@@ -53,52 +52,115 @@
 
             <div id="content1">
                 <div align="center" class="d-flex justify-content-center">
-                    <form action="" method="post" enctype="multipart/form-data">
+                    <form action="myPageUpdate.me" method="post" enctype="multipart/form-data">
 						<div class="form-group d-flex justify-content-center">
-                            <!-- 프로필 사진이 비어있지 않은 경우-->
-                            <input type="hidden" name="path" value="path">
-                            <input type="hidden" name="originName" value="origin">
-                            <!-- if( 사원정보 != null ){ 처리 }-->
-                            <input id="reUpfile" type="file" name="reUpfile" onchange="loadImg(this);">
-                            <img id="sPhoto" width="200" height="200" src="resources/images/userProfile.png">
+							<c:choose>
+								<c:when test="${ loginUser.originName == null }">
+	                        		<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="resources/images/userProfile.png">
+	                        		<input style="display: block;" type="file" id="input-image" name="reupfile">
+	                        	</c:when>
+	                        	<c:otherwise>
+	                        		<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="resources/uploadFiles/${ loginUser.originName }">
+	                        		<input style="display: block;" type="file" id="input-image" name="reupfile">
+	                        	</c:otherwise>
+	                        </c:choose>	
                         </div>
+                        
+                        <script type="text/javascript">
+					        $(function(){
+					            
+					            $("#input-image").hide();
+					            $("#preview-image").click(function(){
+					                $("#input-image").click();
+					            })
+					        });
+				        
+					        function readImage(input) {
+					            // 인풋 태그에 파일이 있는 경우
+					            if(input.files && input.files[0]) {
+					                // 이미지 파일인지 검사 (생략)
+					                // FileReader 인스턴스 생성
+					                const reader = new FileReader()
+					                // 이미지가 로드가 된 경우
+					                reader.onload = e => {
+					                    const previewImage = document.getElementById("preview-image")
+					                    previewImage.src = e.target.result
+					                }
+					                // reader가 이미지 읽도록 하기
+					                reader.readAsDataURL(input.files[0])
+					            }
+					        }
+					        // input file에 change 이벤트 부여
+					        const inputImage = document.getElementById("input-image")
+					        inputImage.addEventListener("change", e => {
+					            readImage(e.target)
+					        })
+				        </script>
+				        
                         <div id="content" class="form-row">
                             <label for="memNo" align="left">사원번호</label>
-                            <input type="text" class="form-control" id="memNo" name="memNo" value="101" readonly><br>
+                            <input type="text" class="form-control" id="memNo" name="memNo" value="${ loginUser.memNo }" readonly><br>
 
                             <label for="memId">아이디</label>
-                            <input type="text" class="form-control" id="memId" name="memId" value="user02" readonly><br>
+                            <input type="text" class="form-control" id="memId" name="memId" value="${ loginUser.memId }" readonly><br>
 
                             <label for="memName">이름</label>
-                            <input type="text" class="form-control" id="memName" name="memName" value="김춘식" readonly><br>
-
-                            <label for="memPwd">비밀번호</label>
-                            <input type="text" class="form-control" id="memPwd" name="memPwd" value="" ><br>
-
-                            <label for="checkPwd">비밀번호 확인</label>
-                            <input type="password" class="form-control" id="checkPwd" required><br>
+                            <input type="text" class="form-control" id="memName" name="memName" value="${ loginUser.memName }"><br>
+						</div>
                             
-                            <label for="phone">전화번호</label>
-                            <input type="text" class="form-control" id="phone" name="phone" value="010-1111-2222"><br>
+						<div id="pwdcontent" class="form-row">
+							<label for="memPwd">비밀번호</label>
+	                        <input type="password" class="form-control" id="memPwd" name="memPwd" required><br>
+	
+	                        <label for="checkPwd">비밀번호 확인</label>
+	                        <input type="password" class="form-control" id="checkPwd" required><br>
+	                            
+	                        <div id="checkPwdResult"  display:none"></div><br>
+						</div>
+						<script>
+							 $('#pwdcontent').focusout(function () {
+							       var pwd1 = $("#memPwd").val();
+							       var pwd2 = $("#checkPwd").val();
+							  
+							       if ( pwd1 != '' && pwd2 == '' ) {
+							            null;
+							        } else if (pwd1 != "" || pwd2 != "") {
+							            if (pwd1 == pwd2) {
+							            	$("#checkPwdResult").show();
+			    							$("#checkPwdResult").css("color", "green").text("비밀번호가 일치합니다.");  
+							            } else {
+							                // 비밀번호 불일치 이벤트 실행
+							            	$("#checkPwdResult").show();
+			    							$("#checkPwdResult").css("color", "red").text("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");  
+							            }
+							        }
+							    });   
+						</script>                            
+	                       
+                       
+                       	<div id="content" class="form-row">
+                       		<label for="phone">전화번호</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="${ loginUser.phone }"><br>
 
                             <label for="email">이메일</label>
-                            <input type="text" class="form-control" id="email" name="email" value="user02@thezo.com"><br>
+                            <input type="text" class="form-control" id="email" name="email" value="${ loginUser.email }"><br>
                             
                             <label for="birth">생년월일</label>
-                            <input type="date" class="form-control" id="birth" name="birth" value="1980-11-11"><br>
-                        </div>    
-
-                        
-                        <div id="address-area">
+                            <input type="text" class="form-control" id="birth" placeholder="ex)1990-01-01" name="birth" value="${ loginUser.birth }"><br>	
+                       	</div>
+                       	
+                       <div id="address-area">
                             <label for="address"  class="form-row" align="left">&nbsp;주소</label>
                             <div id="zip_code" class="form-inline">
-                                <input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" name="zipCode" placeholder="우편번호" required style="width: 100px;">
+                                <input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" name="zipCode" value="${ loginUser.zipCode }" required style="width: 100px;">
                                 <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="btn-address"  class="btn btn-primary mb-2">
                             </div>
-                            <input type="text"  class="form-control" id="sample6_address" name="addressS" placeholder="주소" required>
+                            <input type="text"  class="form-control" id="sample6_address" name="address" placeholder="주소" value="${ loginUser.address }" required>
                             <div id="div-name"></div>
-                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소" required>
-                                
+                            <input type="text"  class="form-control" id="sample6_extraAddress" name="addressExtra" placeholder="참고항목" value="${ loginUser.addressExtra }">
+                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소" value="${ loginUser.addressDetail }" >
+                   
+                   		
                         </div>
                         
 
@@ -114,29 +176,6 @@
                 </div>
             </div>
 
-
-            <script>
-                $(function(){
-                   
-                    $("#reUpfile").hide();
-                    $("#sPhoto").click(function(){
-                        $("#reUpfile").click();
-                    })
-                });
-                function loadImg(inputFile){
-                    if(inputFile.files.length == 1){
-                        var reader = new FileReader();
-                        reader.readAsDataURL(inputFile.files[0])
-                        reader.onload = function(e){
-                            $("#sPhoto").attr("src", e.target.result).show();
-                        }
-                    } else {
-                        $("#sPhoto").attr("src", null);
-                    }
-                }
-            </script>
-
-        
 
             <script>
                 function sample6_execDaumPostcode() {

@@ -15,12 +15,17 @@ import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.note.model.service.NoteService;
 import com.kh.thezo.note.model.vo.Note;
+import com.kh.thezo.schedule.model.service.ScheduleService;
+import com.kh.thezo.schedule.model.vo.Schedule;
 
 @Controller
 public class NoteController {
 	
 	@Autowired
 	private NoteService ntService; 
+	
+	@Autowired
+	private ScheduleService scService;
 	
 	/**
 	 *  노트 리스트 목록 조회
@@ -42,6 +47,12 @@ public class NoteController {
 	@RequestMapping("detail.note")
 	public String selectNoteDetail(int noteNo, Model model) {
 		Note nt = ntService.selectNote(noteNo);
+		Schedule sc = scService.selectScheduleDetail(nt.getScNo());
+		
+		sc.setStart(sc.getStart().replace("T"," "));
+		sc.setEnd(sc.getEnd().replace("T"," "));
+		
+		model.addAttribute("sc", sc);
 		model.addAttribute("nt", nt);
 		return "schedule/note/noteDetailView";
 	}
@@ -50,7 +61,16 @@ public class NoteController {
 	 * 노트작성 양식 화면
 	 */
 	@RequestMapping("insertForm.note")
-	public String noteInsertForm() {
+	public String noteInsertForm(String memNo, Model model) {
+		HashMap map = new HashMap();
+		int scWriter = Integer.parseInt(memNo);
+		map.put("memNo", memNo);
+		ArrayList<Schedule> scList = scService.selectScheduleList(map);
+		for(int i=0; i<scList.size(); i++) {
+			scList.get(i).setStart(scList.get(i).getStart().replace("T"," "));
+			scList.get(i).setEnd(scList.get(i).getEnd().replace("T"," "));
+		}
+		model.addAttribute("scList", scList);
 		return "schedule/note/noteInsertView";
 	}
 	
@@ -62,10 +82,10 @@ public class NoteController {
 		int result = ntService.insertNote(nt);
 		if(result > 0) {
 			session.setAttribute("alertMsg", "노트 작성이 완료되었습니다");
-			return "schedule/note/noteListView";
+			return "redirect:/list.note?memNo=" + nt.getNoteWriter();
 		}else {
 			session.setAttribute("alertMsg", "노트 작성 실패! 다시 시도해주세요.");
-			return "schedule/note/noteListView";
+			return "redirect:/list.note?memNo=" + nt.getNoteWriter();
 		}
 	}
 	

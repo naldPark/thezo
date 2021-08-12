@@ -3,19 +3,436 @@
 <mapper namespace="mailMapper">
 
 	
-	<!-- 
-	<select id=" resultXXXX="">
+	<resultMap id="mailResult" type="Mail">
+		<result column="SE_MAIL_NO" property="seMailNo"/>
+		<result column="RE_MAIL_NO" property="reMailNo"/>
+		<result column="MAIL_TITLE" property="mailTitle"/>
+		<result column="MAIL_CONTENT" property="mailContent"/>
+		<result column="SENDER" property="sender"/>
+		<result column="RECEIVER" property="receiver"/>
+		<result column="REF_RECEIVER" property="refReceiver"/>
+		<result column="read" property="read"/>
+		<result column="SEND_DATE" property="sendDate"/>
+		<result column="RECEIVE_DATE" property="receiveDate"/>
+		<result column="TEMP_SAVE" property="tempSave"/>
+		<result column="STATUS" property="status"/>
+		<result column="ATTACH" property="attach"/>
+		<result column="SPAM" property="spam"/>
+		<result column="FOLDER" property="folder"/>
+		<result column="mem_no" property="memNo"/>
+	</resultMap>
 	
+	<resultMap id="memberResult" type="Member">
+		<result column="mem_no" property="memNo"/>
+		<result column="mem_name" property="memName"/>
+		<result column="mem_id" property="memId"/>
+		<result column="email" property="email"/>
+		<result column="gender" property="gender"/>
+		<result column="department" property="department"/>
+		<result column="job" property="job"/>
+		<result column="rank" property="rank"/>
+		<result column="MEM_VAC_DATE" property="memVacDate"/>
+		<result column="MEM_TOTAL_DATE" property="memTotalDate"/>
+	</resultMap>
 	
+	<resultMap id="attachmentResult" type="Attachment">
+		<result column="file_no" property="fileNo"/>
+		<result column="doc_no" property="docNo"/>
+		<result column="FILE_TYPE" property="fileType"/>
+		<result column="ORIGIN_NAME" property="originName"/>
+		<result column="FILE_URL" property="fileUrl"/>
+		<result column="FILE_LEVEL" property="fileLevel"/>
+	</resultMap>
+	
+	<!-- 메인페이지 안읽은 메일 조회 카운트-->	
+	<select id="mainMailCount" resultType="_int">
+			select 
+				   count(*)
+				from mail_receiver
+				where mem_no =#{memNo}
+				and read = 'N'
+		        and folder='받은'
+		        and spam='N'
+		        and status='N'
 	</select>
-
-	<insert>
+	
+	<!-- 폴더 내 메일 조회 카운트-->	
+	<select id="selectMailListCount" resultType="_int">
+		
+		select 
+		   count(*)
+		from mail_receiver
+		where mem_no =#{memNo}
+		and folder like '%' || #{folder} || '%'
+		and spam='N'
+		and status='N'
+	</select>
+	
+	<!-- 폴더 내 메일 조회 -->
+	<select id="selectMailList" resultMap="mailResult">
+		
+		select 
+		      RE_MAIL_NO
+		    , MEM_NO
+		    , MAIL_TITLE
+		    , SENDER
+		    , RECEIVER
+		    , REF_RECEIVER
+		    , RECEIVE_DATE
+		    , READ
+		    , STATUS
+		    , SPAM
+		    , FOLDER
+            , ATTACH
+		from mail_receiver
+	        full join ( select distinct 'ATTACH' "ATTACH", doc_no from MA_ATTACH where file_type='받은메일') on(RE_MAIL_NO = doc_NO)
+		where mem_no = #{memNo}
+			and folder like '%' || #{folder} || '%'
+			and spam='N'
+			and status='N'
+			order by RECEIVE_DATE desc
+		
+	</select>
+	
+	<!-- 스팸 메일 조회 카운트-->	
+	<select id="selectSpamMailListCount" resultType="_int">
+		
+		select 
+		   count(*)
+		from mail_receiver
+		where mem_no =#{memNo}
+		and spam='Y'
+		and status='N'
+	</select>
+	
+	<!-- 스팸 메일 조회 -->
+	<select id="selectSpamMailList" resultMap="mailResult">
+		select 
+		      RE_MAIL_NO
+		    , MEM_NO
+		    , MAIL_TITLE
+		    , SENDER
+		    , RECEIVER
+		    , REF_RECEIVER
+		    , RECEIVE_DATE
+		    , READ
+		    , STATUS
+		    , SPAM
+		    , FOLDER
+            , ATTACH
+		from mail_receiver
+	        full join ( select distinct 'ATTACH' "ATTACH", doc_no from MA_ATTACH where file_type='받은메일') on(RE_MAIL_NO = doc_NO)
+		where mem_no = #{memNo}
+			and spam='Y'
+			and status='N'
+			order by RECEIVE_DATE desc
+		
+	</select>
+	
+	<!-- 발송 메일 조회 카운트-->	
+	<select id="selectSendListCount" resultType="_int">
+		
+		select 
+		   count(*)
+		from mail_sender ms
+		join member on(email=sender)
+		where mem_no=#{memNo}
+		and ms.status='N'
+	</select>
+	
+	<!-- 발송 메일 조회 -->
+	<select id="selectSendList" resultMap="mailResult">
+			select 
+			     mem_no
+			    , SE_MAIL_NO
+			    , MAIL_TITLE
+			    , MAIL_CONTENT
+			    , SENDER
+			    , RECEIVER
+			    , SEND_DATE
+			    , TEMP_SAVE
+			    , a.STATUS
+			    , REF_RECEIVER
+			    , ATTACH
+			from mail_sender a
+			full join ( select distinct 'ATTACH' "ATTACH", doc_no from MA_ATTACH where file_type='보낸메일') on(SE_MAIL_NO = doc_NO)
+			join member on(email=sender)
+			where mem_no=#{memNo}
+			and a.status='N'
+	</select>
+	
+	<!-- 메일발송 -->
+	<insert id="sendMail">
+		INSERT
+			  INTO MAIL_SENDER
+			  (
+			    SE_MAIL_NO
+				, MAIL_TITLE
+				, MAIL_CONTENT
+				, SENDER
+				, RECEIVER
+				, REF_RECEIVER
+				, SEND_DATE
+				, TEMP_SAVE
+			  )
+			  VALUES
+			  (
+			    SEQ_SMNO.NEXTVAL
+			  , #{mailTitle}
+			  , #{mailContent}
+			  , #{sender}
+			  , #{receiver}
+			  , #{refReceiver}
+			  , SYSDATE
+			  , 'N'
+			  )
 	</insert>
+	
+	<!-- 발송/받은메일의 첨부파일 -->
+	<update id="insertMailAttachment" parameterType="java.util.List">
+		INSERT
+		      INTO ma_attach
+			      (
+		          FILE_NO
+		        , DOC_NO
+		        , FILE_TYPE
+		        , ORIGIN_NAME
+		        , FILE_URL
+		        , FILE_LEVEL
+		      	)
+    	SELECT   
+    			SEQ_AANO.NEXTVAL
+    		 <choose>
+		 		<when test="folder == '받은'">
+				   , SEQ_RMLNO.CURRVAL
+				</when>
+				<otherwise>
+				 , SEQ_SMNO.CURRVAL
+			    </otherwise>
+			 </choose>   
+		      , A.* 
+    	FROM(
+		<foreach collection="at" item="at" separator="UNION ALL"> 
+			       select 
+			        #{at.fileType} as fileType
+			      , #{at.originName} as originName
+			      , #{at.fileUrl} as fileUrl
+			      , #{at.fileLevel} as fileLevel
+			      FROM DUAL
+		</foreach> ) A
+	</update>
+	
+	
+	<!-- 서버에서 받아온 메일 insert -->
+	<insert id="insertPop">
+	insert INTO mail_receiver
+			     (
+		         RE_MAIL_NO
+				,MEM_NO
+				,MAIL_TITLE
+				,MAIL_CONTENT
+				,SENDER
+				,RECEIVER
+				,REF_RECEIVER
+				,RECEIVE_DATE
+				,READ
+				,STATUS
+				,SPAM
+				,FOLDER
+		     )
+		     values
+		     (
+			       SEQ_RMLNO.NEXTVAL
+			      , #{memNo}
+			      , #{mailTitle}
+			      , #{mailContent} 
+			      , #{sender}
+			      , #{receiver}
+			      , #{refReceiver}
+			      , #{sendDate}
+			      ,'N' 
+			      ,'N'
+			      ,'N'
+			      ,'받은'
+    		)
+	</insert>
+	
+	<!-- 메일 상세조회  -->
+	<select id="selectDetailMail" resultMap="mailResult">
 
-	<update>
-	</update>	
+			select 
+		      RE_MAIL_NO
+		    , MEM_NO
+		    , MAIL_TITLE
+		    , MAIL_CONTENT
+		    , SENDER
+		    , RECEIVER
+            , ref_receiver
+		    , RECEIVE_DATE
+		    , READ
+		    , STATUS
+		    , SPAM
+		    , FOLDER
+		from mail_receiver
+		where RE_MAIL_NO =#{mno}
+		and status='N'
+		
+	</select>
+	
+	<!-- 메일 읽음 처리 한개-->
+	<update id="updateReadMailOne">
+			update MAIL_RECEIVER
+						set
+					READ = 'Y'
+				where RE_MAIL_NO = #{mno}
+	</update>
+	
+	
+	<!-- 메일 읽음 처리 여러개-->
+	<update id="updateReadMail">
+			update MAIL_RECEIVER
+						set
+					READ = 'Y'
+				where RE_MAIL_NO IN
+		 <foreach item="item" index="index" collection="list"
+		      open="(" separator="," close=")">
+				#{item}
+			
+		 </foreach>
+	</update>
+	
+	<!-- 메일 삭제 처리 휴지통으로 이동-->
+	<update id="updateDeleteMail">
+		update MAIL_RECEIVER
+							set
+						FOLDER = '휴지'
+						where RE_MAIL_NO IN 
+			<foreach item="item" index="index" collection="list"
+		      open="(" separator="," close=")">
+				#{item}
+			 </foreach>
+	</update>
+	
+	
+	<!-- 메일 휴지통에서 삭제 처리--> 
+	<update id="updateDeleteAllMail">
+		update MAIL_RECEIVER
+							set
+						status='Y'
+						where RE_MAIL_NO IN 
+			<foreach item="item" index="index" collection="list"
+		      open="(" separator="," close=")">
+				#{item}
+			 </foreach>
+	</update>
+	
+	<!-- 보낸메일에서 완전 삭제 처리--> 
+	<update id="updateDeleteAllSendMail">
+		update MAIL_SENDER
+							set
+						status='Y'
+					where SE_MAIL_NO IN 
+			<foreach item="item" index="index" collection="list"
+		      open="(" separator="," close=")">
+				#{item}
+			 </foreach>
+	</update>
+	
+	<!--  메일 첨부 완전삭제 처리를 위한  url조회-->
+	<select id="selectDeleteAllMailAt"  resultMap="attachmentResult">
 
-	<delete>
+		select file_url
+	       from ma_attach
+	       where doc_no IN(#{docNo})
+	       and file_Type=#{folder}
+		
+	</select>
+	
+	<!-- 메일 첨부 완전삭제 처리-->
+	<delete id="updateDeleteAllMailAt" >
+		delete from ma_attach
+						where doc_no IN(#{docNo})
+						and file_Type=#{folder}
 	</delete>
- 	-->
+	
+	<!-- 메일 스팸 처리-->
+	<update id="updateSpamMail">
+		update MAIL_RECEIVER
+							set
+					SPAM = 'Y'
+				where RE_MAIL_NO IN
+		<foreach item="item" index="index" collection="list"
+		      open="(" separator="," close=")">
+				#{item}
+			
+		 </foreach>
+	</update>
+	
+	<!-- 메일 스팸해제 처리-->
+	<update id="updateUnSpamMail">
+		update MAIL_RECEIVER
+							set
+					SPAM = 'N'
+				where RE_MAIL_NO IN
+		<foreach item="item" index="index" collection="list"
+		      open="(" separator="," close=")">
+				#{item}
+		 </foreach>
+	</update>
+	
+	<!-- 발신메일 삭제 처리-->
+	<update id="updateDeleteSendMail">
+		update MAIL_SENDER
+							set
+						status = 'Y'
+						where SE_MAIL_NO IN 
+			<foreach item="item" index="index" collection="list"
+		      open="(" separator="," close=")">
+				#{item}
+			 </foreach>
+	</update>
+	
+	<!--  발신메일 상세조회 -->
+	<select id="selectSendDetailMail" resultMap="mailResult">
+
+		select 
+			      mem_no
+			    , SE_MAIL_NO
+			    , MAIL_TITLE
+			    , MAIL_CONTENT
+			    , SENDER
+			    , RECEIVER
+			    , SEND_DATE
+			    , TEMP_SAVE
+			    , a.STATUS
+			    , REF_RECEIVER
+			    , '보낸' "FOLDER"
+			from mail_sender a
+			join member on(email=sender)
+			where SE_MAIL_NO=#{mno}
+		
+	</select>
+	
+	
+	<select id="selectDetailMailAt" resultMap="attachmentResult">
+		select 
+		     FILE_NO
+		    ,DOC_NO
+		    ,FILE_TYPE
+		    ,ORIGIN_NAME
+		    ,FILE_URL
+		    ,FILE_LEVEL
+		from ma_attach
+		 <choose>
+	 		<when test="folder == '보낸'">
+	 		where doc_no = #{seMailNo}
+			 and file_type ='보낸메일'
+			</when>
+			<otherwise>
+			where doc_no = #{reMailNo}
+			 and file_type ='받은메일'
+		    </otherwise>
+		 </choose>   
+		order by file_level 
+	</select>
 </mapper>

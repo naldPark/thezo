@@ -144,9 +144,9 @@
                         </li>
 
                         <%-- 연락처 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
-                        <li><a href="">연락처</a>
+                        <li><a href="contactInfo.me">연락처</a>
                             <ul>
-                                <li><a href="">직원 연락처</a></li>
+                                <li><a href="contactInfo.me">직원 연락처</a></li>
                                 <li><a href="">조직도</a></li>
                                 <li><a href="company.info">회사정보</a></li>
                             </ul>
@@ -280,7 +280,7 @@
                         <li><a href="main.sc">일정관리</a></li>
         
                         <%-- 재원(내꺼) urlMapping값 넣으면됨~ --%> 
-                        <li><a href="list.adms">메신저</a>
+                        <li style="z-index:1000"><a href="list.adms">메신저</a>
                             <ul>
                                 <li><a href="list.adms">쪽지 신고처리</a></li>
                                 <li><a href="list.adnf">알림 등록 및 기록</a></li>
@@ -362,16 +362,16 @@
             }
 
             function moveToMessage(){
-                $("#userChatMain").hide();
-                $("#userMessageMain").show();
-                $("#userNotificationMain").hide();
-                $(".message-menu").css("color","rgb(41,128,185)");
-                $(".message-menu>div").css("color","white").css("background","rgb(41,128,185)");
-                $(".chat-menu").css("color","white");
-                $(".chat-menu>div").css("color","orangered").css("background","white");
-                $(".notification-menu").css("color","white");
-                $("#chatting-outer").show();
-                $("#open-chat-Room").hide();
+	                $("#userChatMain").hide();
+	                $("#userMessageMain").show();
+	                $("#userNotificationMain").hide();
+	                $(".message-menu").css("color","rgb(41,128,185)");
+	                $(".message-menu>div").css("color","white").css("background","rgb(41,128,185)");
+	                $(".chat-menu").css("color","white");
+	                $(".chat-menu>div").css("color","orangered").css("background","white");
+	                $(".notification-menu").css("color","white");
+	                $("#chatting-outer").show();
+	                $("#open-chat-Room").hide();
             }
 
             function moveToNotification(){

@@ -33,8 +33,8 @@
 				<a class="back" href="main.sc" data-toggle="tooltip" title="일정관리로 돌아가기"><i class='fas fa-reply' style='font-size:15px'></i></a>
 			</div>
 			
-			<a href="insertForm.note" class="btn btn-primary" style="width: 180px; margin:10px;">
-			노트 작성
+			<a href="insertForm.note?memNo=${ loginUser.memNo }" class="btn btn-primary" style="width: 180px; margin:10px;">
+				노트 작성
 			</a>
 			<hr>
 			

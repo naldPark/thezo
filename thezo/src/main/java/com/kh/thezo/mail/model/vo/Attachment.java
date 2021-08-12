@@ -17,6 +17,7 @@ public class Attachment {
 	private int docNo;
 	private String fileType;
 	private String originName;
+	private String changeName;
 	private String fileUrl;
 	private int fileLevel;
 	

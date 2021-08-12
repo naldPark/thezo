@@ -3,9 +3,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+	<!-- @Author : Jaewon.s  webSocket관련 xsi추가 -->
+
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
@@ -39,5 +43,22 @@
 			<beans:bean id="loginInterceptor" class="com.kh.thezo.common.interceptor.LoginInterceptor"/>
 		</interceptor>
 	</interceptors>
+	
+	<!-- @author : Jaewon.s 웹소켓 빈 객체 등록  -->
+	<!-- handler="echoHandler" 와 bean에서 id = "echoHandler" 일치시키고 
+		class 값으로 websocket어디서 처리할것인지 작성. 
+	-->	
+    <websocket:handlers>
+		<websocket:mapping handler="echoHandler" path="/echo" />
+			<websocket:handshake-interceptors>
+			<beans:bean
+				class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor" />
+			</websocket:handshake-interceptors>
+			<!-- HTTPSESSION값을 가져오기 위하여 -->
+		<websocket:sockjs />
+	</websocket:handlers>
+    
+	<beans:bean id="echoHandler" class="com.kh.thezo.chatting.socket.EchoHandler"></beans:bean>		
+	
 	
 </beans:beans>

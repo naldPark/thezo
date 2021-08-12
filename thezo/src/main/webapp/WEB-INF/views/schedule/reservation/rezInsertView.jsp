@@ -41,7 +41,7 @@
                         </tr>
 	                    <tr>
 	                        <th>예약 시간</th>
-	                        <td><input type="time" name="startTime"> ~ <input type="time" name="endTime"></td>
+	                        <td><input type="time" name="startTime" step="900"> ~ <input type="time" name="endTime" step="900"></td>
                             <td></td>
 	                    </tr>
 	                   
@@ -58,7 +58,7 @@
                 <div class="modal-footer">
                     <div class="button-area">
                         <button class="btn btn-primary" type="submit">확인</button>
-                        <a href="delete.rez" class="btn btn-danger" data-toggle="modal" data-target="#rez-del">삭제</a>
+                        <a href="delete.rez" class="btn btn-secondary" data-dismiss="modal">취소</a>
                     </div>
                 </div>
         

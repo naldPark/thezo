@@ -5,6 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+	<!-- 풀캘린더  -->
+	<link href='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/main.css' rel='stylesheet' />
+	<script src='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/main.js'></script>
+	<!-- 한국어설정 -->
+	<script src='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/locales/ko.js'></script>
 <style>
 	#nav button{margin: 10px;}
 	#nav ul{list-style-type: none; padding-left: 20px;}
@@ -12,6 +17,77 @@
 	.slide_menu>a{margin: 20px; color:black}
 	.slide_menu>a:hover{color: rgb(243,156,18);}
 	.btn>b{font-size: 18px; margin: 10px;}
+	.scColorBox{width:15px; height: 15px; border-radius:5px; display: inline-block;}
+	#todayCalendar{width:200px; height:200px;}
+</style>
+<script>
+	$(function(){
+		$("#todayScCalendar .fc-toolbar-title").css('font-size', '15px');
+		$("#todayScCalendar .fc-header-toolbar").css('margin', '0');
+		$("#todayScCalendar .btn").addClass("btn-sm");
+	})
+</script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	    var tdCalendar = document.getElementById('todayScCalendar');
+	    var todayScCalendar = new FullCalendar.Calendar(tdCalendar, {
+    	
+	    	eventClick: function(info) {
+	        	// 이벤트 클릭했을 시 기능 설정
+	        	// 일정 내용과 보고서가 보여져야 함!!
+	        	var scNo = info.event._def.extendedProps.scNo;
+	        	var option = "width = 680, height = 700, top = 100, left = 200, location = no";
+				window.open("detail.sc?scNo=" + scNo, "일정상세정보", option);
+	        },
+	    	
+	      	headerToolbar: { // 헤더설정
+				left: 'prev',
+				center: 'title',
+				right: 'next'
+	        },
+	        titleFormat: {
+	            month: 'long',
+	            day: 'numeric'
+	         },
+	        lazyFetching : 'false',
+	        initialView: 'listDay',
+	        locale: 'ko', // 한국어 설정
+	        themeSystem: 'bootstrap', // 테마 설정
+	        eventSources:[
+        		{
+				events: [ // ajax로 일정 불러오기
+					$.ajax({
+						url :'list.sc',
+						data : {scType:"all", memNo:${loginUser.memNo}},
+						cache: false,
+						success:function(list){
+							var scList = Object.values(JSON.parse(list));
+							for(var i=0; i<scList.length; i++){
+								if(scList[i].scType == '개인'){
+									scList[i].color = '#148CFF';
+								}else if(scList[i].scType == '회사'){
+									scList[i].color = '#378006';
+								}else{
+									scList[i].color = '#7B68EE';
+								}
+								todayScCalendar.addEvent(scList[i]);
+							}
+						},error: function(){
+							console.log("일정 조회용 ajax 통신 실패");
+						}
+					})
+				]
+	        }]
+		});
+	    
+	    todayScCalendar.render();
+	});
+	
+</script>
+<style>
+	#todayScCalendar{width:200px;}
+	.fc-list-event{font-size:10px;}
 </style>
 </head>
 <body>
@@ -31,29 +107,20 @@
 			</button>
 			<hr>
 			
-			<button class="btn down_sc" onclick="slideDown_sc();" style="font-size: 20px; margin: 3px; padding: 3px;">
-				<i class='fas fa-caret-down'></i><b>오늘 일정</b>
-			</button>
-			<button class="btn up_sc" onclick="slideUp_sc();" style="font-size: 20px; margin: 3px; padding: 3px;" hidden>
-				<i class='fas fa-caret-right'></i><b>오늘 일정</b>
-			</button>
 			
-			
-			<div class="slide_sc">
-				 <ul id="todaySchedule">
-					<!-- 오늘일정 수만큼 li태그가 반복되는 반복문 -->
-					<li><input type="checkbox">Conference</li>
-					<li><input type="checkbox">Meeting</li>
-					<li><input type="checkbox">Lunch</li>
-			
-				</ul>
+			<%-- 오늘 일정 뜨게 하는 영역 -----------------------------------------------------------------%>
+			<div style="margin-left:30px;">
+				<b>오늘 일정 &nbsp;
+				<span id="todayDate"></span></b>
 			</div>
+			<!-- <ul id="todaySchedule" style="list-style-type: square; margin-left:5px;"></ul> -->
+			<div id="todayScCalendar"></div>
 			
 			<hr>
-			<button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
-				메뉴 바로가기 <i class="fa fa-caret-down"></i>
+			<button class="w3-button w3-block w3-left-align" onclick="menu();">
+				<i class="fa fa-caret-down"></i> 메뉴 바로가기 
 			</button>
-			<div id="demoAcc" class="w3-hide w3-white w3-card">
+			<div id="menu" class="w3-hide w3-white w3-card">
 				<a class="w3-bar-item w3-button" href="list.note?memNo=${ loginUser.memNo }" id="note-list">노트 목록</a>
 				
 				<a class="w3-bar-item w3-button" href="" id="note-list">업무 보고</a>
@@ -62,8 +129,8 @@
 			</div>
 
 			<script>
-				function myAccFunc() {
-					var x = document.getElementById("demoAcc");
+				function menu() {
+					var x = document.getElementById("menu");
 					if (x.className.indexOf("w3-show") == -1) {
 						x.className += " w3-show";
 						x.previousElementSibling.className += " w3-gray";
@@ -78,18 +145,32 @@
 
 			<hr>
 			
-			<div class="table-bordered" id="do-navbar" style="width:200px; margin-top: 10px; padding: 5px;">
-			<b>필터</b>
-			<br>
-			<!-- 일정 카테고리 선택하는 부분 /색깔도 줄 수 있을까?..-->
-				<input type="checkbox"> 전체 <br>
-				<input type="checkbox"> 개인 <input type="color"><br> 
-				<input type="checkbox"> 팀 <br>
-				<input type="checkbox"> 회사 <br>
-				<input type="checkbox"> 비품 <br>
-				<input type="checkbox"> 회의실 <br>
-				
+			<div class="table-bordered" id="scFilter" style="width:200px; margin-top: 10px; padding: 5px;">
+				<b>필터</b>
+				<!-- <br>
+				<input type="checkbox" id="전체" value="전체" checked>
+				<label for="개인">전체</label> -->
+				<br>
+				<input type="checkbox" id="개인" value="개인" checked> 
+				<label for="개인">개인 일정 <div class="scColorBox" style="background-color: #148CFF;"></div></label>
+				<br> 
+				<input type="checkbox" id="부서" value="부서" checked> 
+				<label for="부서">내 부서 일정 <div class="scColorBox" style="background-color: #7B68EE;"></div></label>
+				<br>
+				<input type="checkbox" id="회사" value="회사" checked> 
+				<label for="회사">회사 일정 <div class="scColorBox" style="background-color: #378006;"></div></label>
+				<br>
+				<!-- 
+				<input type="checkbox" checked> 비품 <br>
+				<input type="checkbox" checked> 회의실 <br>
+				 -->
 			</div>
+			
+			<script>
+				var scChk = $("#scFilter input[type=checkbox]");
+				var scTypeString = "개인부서회사";
+			</script>
+			
 		</div>
 		
 	</div>

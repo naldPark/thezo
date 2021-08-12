@@ -95,7 +95,11 @@
                                 <i class="fas fa-envelope fa-lg"></i>
                             </div>
                             <div class="col text-left">
-                                <span>새 메일 2건 <i class="fas fa-exclamation-circle" style="color:red"></i></span>
+                                <a href='main.mail?folder=받은'>새 메일 ${mainMailCount}건 
+                                    <c:if test="${mainMailCount ne 0 }">
+                                        <i class="fas fa-exclamation-circle" style="color:red"></i>
+                                    </c:if>
+                                </a>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -141,13 +145,11 @@
                     <div class="boxTitle">전자결재(수정중)  <a href="main.appr" class="btn badge-secondary btn-sm more">more</a></div>
                     <div style="padding:12px;">
                         <div class="input-group-prepend" style="justify-content: left;">
-                            <a href="main.appr?apprFolder=waiting" class="btn btn-sm btn-outline-danger">
+                            <a href="main.appr" class="btn btn-sm btn-outline-danger">
                             	안읽은문서 ${mainApprCount.get("APPRREAD")+mainApprCount.get("REFERREAD")}
                                 <c:if test='${mainApprCount.get("APPRREAD")+mainApprCount.get("REFERREAD") ne 0}'>
                                     <i class="fas fa-exclamation-circle" style="color:red"></i>
-                                </c:if>
-                                
-                                건 
+                                </c:if>건 
                             </a> &nbsp;
                             <a href="main.appr?apprFolder=send" class="btn btn-sm btn-outline-success">결재대기 0건</a> &nbsp;
                             <a href="main.appr?apprFolder=sendFin" class="btn btn-sm btn-outline-primary">완료문서</a>
@@ -234,7 +236,7 @@
             </div>
             <div class="outer-wrap" style="width:23%">
                 <div class="wrap">
-                    <div class="boxTitle">캘린더<button type="button" class="btn badge-secondary btn-sm more">more</button></div>
+                    <div class="boxTitle">캘린더<a href="main.sc" type="button" class="btn badge-secondary btn-sm more">more</a></div>
                     <div style="padding: 20px; text-align: center;">
                         <table id="calendar" border="0" align="center" width="230" height="230" style="font-size:12pt;">
                             <tr>
@@ -255,11 +257,9 @@
                     </div>
                 </div>
                 <div class="wrap">
-                    <div class="boxTitle">일정<button type="button" class="btn badge-secondary btn-sm more">more</button></div>
+                    <div class="boxTitle">일정<a href="main.sc" type="button" class="btn badge-secondary btn-sm more">more</a></div>
                     <div class="m-3 text-left">
-                        <div class="shadow-sm p-3 mb-3 bg-light">2021-06-01 <br>나는 일정이야</div>
-                        <div class="shadow-sm p-3 mb-3 bg-light">2021-06-01 <br>나는 일정이야</div>
-                        <div class="shadow-sm p-3 mb-3 bg-light">2021-06-01 <br>나는 일정이야</div>
+                        <jsp:include page="schedule/todayScView.jsp"/>
                     </div>
                     
                 </div>

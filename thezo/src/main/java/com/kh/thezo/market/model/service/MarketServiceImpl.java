@@ -7,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.thezo.board.model.vo.Reply;
+import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.dao.MarketDao;
 import com.kh.thezo.market.model.vo.Market;
@@ -55,6 +57,51 @@ public class MarketServiceImpl implements MarketService {
 	public Market selectMarket(int marketNo) {
 		return mkDao.selectMarket(sqlSession, marketNo);
 	}
+
+	// 사용자 : 벼룩시장 등록(글)
+	@Override
+	public int insertMarket(Market mk) {
+		return mkDao.insertMarket(sqlSession, mk);
+	}
+
+	// 사용자 : 벼룩시장 삭제
+	@Override
+	public int deleteMarket(int marketNo) {
+		return mkDao.deleteMarket(sqlSession, marketNo);
+	}
+
+	// 사용자 : 벼룩시장 수정
+	@Override
+	public int updateMarket(Market mk) {
+		return mkDao.updateMarket(sqlSession, mk);
+	}
+
+	// 사용자 : 벼룩시장 댓글 조회
+	@Override
+	public ArrayList<Reply> marketReplyList(int marketNo) {
+		return mkDao.marketReplyList(sqlSession, marketNo);
+	}
+
+	// 사용자 : 벼룩시장 댓글 입력
+	@Override
+	public int insertMarketReply(Reply r) {
+		return mkDao.insertMarketReply(sqlSession, r);
+	}
+
+	// 사용자 : 벼룩시장 게시글, 댓글 신고
+	@Override
+	public int marketReport(Report rp) {
+		return mkDao.marketReport(sqlSession, rp);
+	}
+
+	// 사용자 : 벼룩시장 댓글 삭제 
+	@Override
+	public int deleteMarketReply(int replyNo) {
+		return mkDao.deleteMarketReply(sqlSession, replyNo);
+	}
+
+	
+
 	
 
 }

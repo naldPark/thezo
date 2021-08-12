@@ -55,13 +55,15 @@
 	                        <b>관련일정을 선택하세요</b> <br>
 	                        <select class="w3-select" name="noteSc">
 	                        	<option value="" selected>선택안함</option>
-	                        	<!-- 
 	                        	<c:forEach var="sc" items="${ scList }">
-	                            	<option value="">${ sc.title }</option>
+	                            	<option value="${ sc.scNo }">
+	                            		${ sc.start } &nbsp; ~ &nbsp; ${ sc.end } &nbsp;
+	                            		${ sc.title }
+	                            	</option>
 	                            </c:forEach>
-	                             -->
 	                        </select>
-	
+							
+							
 	                        <br><br><br>
 	                        <div class="button-area">
 	                            <button type="reset" onclick="back();" class="btn btn-secondary">취소</button>

@@ -119,7 +119,7 @@
                 <div class="p-3" style="border:1px solid lightgrey; width:400px; min-height: 500px;">
 
                   <ul id="apprOrgTree">
-                    <li class="eachPerson" id="ceoCheck"></li></span>
+                    <li class="eachPerson" id="ceoCheck"></li>
                     <ul>
                       <li class="departmentLevel">
                         <span class="box">경영관리본부</span>
@@ -371,20 +371,22 @@
       $(function(){
        
           $("#enrollApprLineBtn").click(function () {
-            if ($("#currentLine div").length == 0) {
+            if ($("#currentLine tr").length == 0) {
               alert("결재자를 최소 1명이상 지정해야합니다");
             } else {
                 var confirmedLine = [];
-                $("#currentLine").children().each(function (index, el) {
+                $("#currentLine tr").each(function (index, el) { //currentLine tr
                   var tempLine = [];
+                  console.log($(this).html());
                   tempLine.push($(this).children().eq(0).text());  // 0 이름 및 직급
                   tempLine.push($(this).children().eq(0).children().val()); //1 사번
                   tempLine.push($(this).children().eq(1).text()); //2 부서
                   tempLine.push($(this).children().eq(2).children().val()); // 3 합의결재
                   confirmedLine.push(tempLine);
                 })
-
+                $("#selectedLine div").remove();
                 for( var i =0 ; i< confirmedLine.length;i++){
+                  console.log("confirmedlineLength"+confirmedLine.length);
                   var addLine= '<div class="mb-2 p-2 shadow-sm">'
                         +'<div class="d-flex">'
                               +'<div class="p-2 text-primary"><b>'+confirmedLine[i][0]+'</b></div>'
@@ -393,10 +395,11 @@
                               +'<div class="pl-2" style="width:75%">'+confirmedLine[i][2]+'</div>'
                               +'<div><span class="btn-sm btn-secondary">'+confirmedLine[i][3]+'</span></div>'
                         +'</div>'
-                        +'<input type="hidden" name="Approval.apAccept['+i+'].memNo" value="'+confirmedLine[i][1]+'">'
-                        +'<input type="hidden" name="Approval.apAccept['+i+'].type" value="'+confirmedLine[i][3]+'">'
+                        +'<input type="hidden" name="apAccept['+i+'].memNo" value="'+confirmedLine[i][1]+'">'
+                        +'<input type="hidden" name="apAccept['+i+'].type" value="'+confirmedLine[i][3]+'">'
+                        +'<input type="hidden" name="apAccept['+i+'].apprLevel" value="'+i+1+'">'
                   +'</div>'
-                  $("#selectedLine div").remove();
+                  
                   $("#selectedLine").append(addLine);
               }
             

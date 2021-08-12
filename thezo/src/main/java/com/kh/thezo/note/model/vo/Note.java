@@ -18,4 +18,6 @@ public class Note {
 	private String noteContent;
 	private Date createDate;
 	private String status;
+	
+	private int scNo;
 }

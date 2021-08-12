@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.document.model.dao.DocumentDao;
+import com.kh.thezo.document.model.vo.DocCategory;
 import com.kh.thezo.document.model.vo.Document;
 
 @Service
@@ -60,11 +61,10 @@ public class DocumentServiceImpl implements DocumentService {
 	public Document selectDocument(int docNo) {
 		return dDao.selectDocument(sqlSession, docNo);
 	}
-	
-	/*
-	public Department selectDepartMentList() {
-		
-	}
-	*/
 
+	@Override
+	public ArrayList<DocCategory> selectCategoryList() {
+		return dDao.selectCategoryList(sqlSession);
+	}
+	
 }

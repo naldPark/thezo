@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.kh.thezo.board.model.dao.BoardDao;
 import com.kh.thezo.board.model.vo.Board;
 import com.kh.thezo.board.model.vo.BoardFile;
+import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 
@@ -168,6 +169,34 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.insertBoardRefile(sqlSession, bf);
 	}
 
+	// 사용자 : 사내게시판 댓글 조회
+	@Override
+	public ArrayList<Reply> selectReplyList(int boardNo) {
+		return bDao.selectReplyList(sqlSession, boardNo);
+	}
+
+	// 사용자 : 사내게시판 댓글 작성
+	@Override
+	public int insertReply(Reply r) {
+		return bDao.insertReply(sqlSession, r);
+	}
+
+	// 사용자 : 사내게시판 신고하기 
+	@Override
+	public int boardReport(Report rp) {
+		return bDao.boardReport(sqlSession, rp);
+	}
+
+	// 사용자 : 댓글 삭제
+	@Override
+	public int deleteBoardReply(int replyNo) {
+		return bDao.deleteBoardReply(sqlSession, replyNo);
+	}
+
+	
+
+	
+	
 
 	
 	
@@ -198,8 +227,6 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	
-	
-
 
 	
 }

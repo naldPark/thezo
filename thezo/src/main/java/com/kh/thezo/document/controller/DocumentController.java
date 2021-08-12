@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.document.model.service.DocumentService;
+import com.kh.thezo.document.model.vo.DocCategory;
 import com.kh.thezo.document.model.vo.Document;
 
 /**
@@ -50,8 +51,12 @@ public class DocumentController {
 		
 		ArrayList<Document> list = dService.selectDocumentList(pi, docCategory);
 		
+		ArrayList<DocCategory> category = dService.selectCategoryList();
+		
 		// 카테고리 불러오기(부서명)
-		//ArrayList<Department> depList = dService.selectDepartMentList();
+		model.addAttribute("category", category);
+		model.addAttribute("docCategory", docCategory);
+		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
 		model.addAttribute("dCount", dCount);
@@ -111,7 +116,8 @@ public class DocumentController {
 	 * 문서양식 수정
 	 */
 	@RequestMapping("update.doc")
-	public String updateDocument(Document d, MultipartFile reupfile, HttpSession session) {
+	public String updateDocument(Document d, MultipartFile reupfile, HttpSession session,
+			@RequestParam(value="docCategory", defaultValue="공용") String docCategory) {
 		// 새로 넘어온 첨부파일이 있을 경우
 		if(!reupfile.getOriginalFilename().equals("")) {
 			// 기존에 첨부파일이 있었을 경우 => 기존의 첨부파일 지우기
@@ -151,7 +157,15 @@ public class DocumentController {
 		int listCount = dService.searchListCount(map);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, dCount);
 		
+		
+		
 		ArrayList<Document> list = dService.searchDocumentList(map, pi);
+		
+		ArrayList<DocCategory> category = dService.selectCategoryList();
+		
+		// 카테고리 불러오기(부서명)
+		model.addAttribute("category", category);
+		model.addAttribute("docCategory", docCategory);
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
@@ -161,6 +175,7 @@ public class DocumentController {
 		
 		return "document/documentListView";
 	}
+	
 	
 	
 	

@@ -1,6 +1,7 @@
 package com.kh.thezo.schedule.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 	private SqlSessionTemplate sqlSession;
 	
 	@Override
-	public ArrayList<Schedule> selectScheduleList() {
-		return scDao.selectScheduleList(sqlSession);
+	public ArrayList<Schedule> selectScheduleList(HashMap map) {
+		return scDao.selectScheduleList(sqlSession, map);
 	}
 
 	@Override
@@ -43,8 +44,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 	}
 
 	@Override
-	public ArrayList<Schedule> selectScheduleData() {
-		return scDao.selectScheduleData(sqlSession);
+	public int insertBizReport(Schedule sc) {
+		return scDao.insertBizReport(sqlSession, sc);
+	}
+
+	@Override
+	public int updateBizReport(Schedule sc) {
+		return scDao.updateBizReport(sqlSession, sc);
 	}
 
 }

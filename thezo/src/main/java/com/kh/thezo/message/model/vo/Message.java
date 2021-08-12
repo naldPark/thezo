@@ -1,8 +1,6 @@
 package com.kh.thezo.message.model.vo;
 //@author Jaewon.s
 
-import java.sql.Date;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

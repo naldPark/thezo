@@ -44,9 +44,8 @@ table {
 			<div class="innerOuter">
 				<h2><b>사내게시판</b></h2>
 				<br>
-				
 				<div align="right">
-					<a href="" data-toggle="modal" data-target="#reportForm">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="" data-toggle="modal" data-target="#boardReportForm" style="text-decoration:none;">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<!--게시글 작성자만 보이도록-->
 					<c:if test="${ loginUser.memId eq b.boardWriter}">
 		            	<a style="float:right; cursor: pointer; color: #0091FF;" onclick="postFormSubmit(2);">삭제</a>
@@ -92,45 +91,96 @@ table {
 				<table id="replyArea" class="table-borderless" align="center">
 					<thead>
 						<tr>
-							<td colspan="3">댓글 (<span id="rcount">3</span>)
+							<td colspan="6">댓글 (<span id="rcount"></span>)
 							</td>
 						</tr>
-						<tr>
-							<th>user02</th>
-							<td>좋은 내용 댓글~~~</td>
-							<td>2020-08-01</td>
-						</tr>
-						<tr>
-							<th>user01</th>
-							<td>비방용 댓글~~</td>
-							<td>2020-08-02</td>
-						</tr>
-						<tr>
-							<th>user04</th>
-							<td>ㅋㅋㅋ</td>
-							<td>2020-08-03</td>
-						</tr>
 					</thead>
-	
 					<tbody>
+					</tbody>
+					<tfoot>
 						<tr>
-							<th colspan="2"><textarea class="form-control" name=""
-									id="content" cols="55" rows="2"
-									style="resize: none; width: 100%"></textarea></th>
-							<th style="vertical-align: middle">&nbsp;&nbsp;
-								<button class="btn btn-secondary">등록하기</button>
+							<th colspan="4"><textarea class="form-control" id="content" cols="55" rows="2" style="resize: none; width: 100%"></textarea></th>
+							<th colspan="2" style="vertical-align: middle">
+								&nbsp;&nbsp;<button class="btn btn-secondary" onclick="addReply();">등록하기</button>
 							</th>
 						</tr>
-					</tbody>
+					</tfoot>
 				</table>
-				<br>
-				<br>
-				<br>
-	
-	
+				<br><br><br>
+				
+				<script>
+		        	$(function(){
+		        		selectReplyList();
+		        	})
+		        	
+		        	// 댓글 작성
+		        	function addReply(){
+        		
+		        		if($("#content").val().trim().length != 0){ // 유효한 댓글 작성시 => insert요청 // trim: 공백제거
+		        			
+		        			$.ajax({
+								url:"rinsert.bo",
+								data:{
+									refNo:${b.boardNo},
+									memNo:${loginUser.memNo},
+									replyContent:$("#content").val(),
+									replyWriter:'${loginUser.memId}'
+								}, success:function(status){
+									
+									if(status == "success"){
+										selectReplyList();
+										$("#content").val("");
+									}
+									
+								}, error:function(){
+									console.log("댓글 작성용 ajax통신 실패");
+								}
+		        			}) 			
+		        			
+		        			
+		        		}else{
+		        			alertify.alert("댓글 작성후 등록 요청해주세요!");
+		        		}
+		        		
+		        	}
+		        	
+		        	// 댓글 조회
+		        	function selectReplyList(){
+		        		$.ajax({
+		        			url:"rlist.bo",
+		        			data:{bno:${ b.boardNo }},
+		        			success:function(list){
+		        				console.log(list);
+		        				
+		        				$("#rcount").text(list.length);
+		        				
+		        				//<a href='' data-toggle='modal' data-target='#bReplyReportForm' style='text-decoration:none;'>신고</a>
+		        				var value = "";
+		        				for(var i in list){
+		        					value += "<tr>"
+				                              + "<th>" + list[i].replyWriter +"</th>"
+				                              + "<td><form id='postform' action='' method='post'>"
+				                                +"<input type='text' name='replyNo' id='replyNo' value='"
+				                                + list[i].replyNo +
+				                                + "'></form></td>"
+				                              + "<td style='width: 400px;'>" + list[i].replyContent + "</td>"
+				                              + "<td>" + list[i].createDate + "</td>"
+				                              + "<td><a href='' data-toggle='modal' data-target='#bReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
+				                              + "<td><a href='deleteReply.bo?replyNo=" + list[i].replyNo + "&bno=" + ${ b.boardNo } + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
+				                           + "</tr>";
+		        				}
+		        				
+		        				$("#replyArea tbody").html(value);
+		        				
+		        			},error:function(){
+		        				console.log("댓글 리스트 조회용 ajax 통신 실패");
+		        			}
+		        		})
+		        	}
+		        </script>
+			
 				<div align="center">
-					<!-- 수정하기, 삭제하기 버튼은 이글이 본인글일 경우만 보여져야됨 -->
-					<a class="btn btn-secondary" href="">목록</a> 
+					<a class="btn btn-secondary" href="boardList.bo">목록</a> 
 					<c:if test="${ loginUser.memId eq b.boardWriter}">
                     	<a class="btn btn-secondary" onclick="postFormSubmit(1);">수정</a>
                     </c:if>
@@ -156,7 +206,8 @@ table {
 	
 	
 				<!-- 신고하기 버튼 클릭시 보여질 Modal -->
-				<div class="modal" id="reportForm">
+				<!-- 게시글 신고 -->
+				<div class="modal" id="boardReportForm">
 					<div class="modal-dialog">
 						<div class="modal-content">
 	
@@ -168,22 +219,22 @@ table {
 	
 							<!-- Modal body -->
 							<div class="modal-body" align="center">
-								<form action="" method="post">
+								<form action="memBoardReport.bo" method="post">
 									<!-- 신고할 내용 입력 -->
-									<input type="hidden" name="userId" value=""> <input
-										type="hidden" name="boardType" value="">
-									<!-- 컬럼명확인 -->
-									<input type="hidden" name="boardNo" value=""> 
-									<b>신고구분</b><br> 
-									<select id="rpSection" name="rpSection">
-										<option value="욕설">욕설/비방</option>
-										<option value="음란">음란/유해</option>
-										<option value="도배">도배/스팸</option>
+									<input type="hidden" name="rpId" value="${ loginUser.memId }"> 
+									<input type="hidden" name="rpNo" value="${ b.boardNo }">
+									<input type="hidden" name="boardType" value="1">
+									<input type="hidden" name="rpType" value="1"> 
+									<b>신고구분</b><br><br>
+									<select id="rpSection" name="rpSection"  class="form-control" style="width:130px;">
+										<option value="욕설/비방">욕설/비방</option>
+										<option value="음란/유해">음란/유해</option>
+										<option value="도배/스팸">도배/스팸</option>
 									</select> <br>
 									<br> <b>신고 내용 입력</b><br>
 									<br>
 									<textarea name="rpContent" id="rpContent" cols="50" row="1"
-										style="resize: none"></textarea>
+										style="resize: none" class="form-control"></textarea>
 									<br>
 									<br>
 									<button type="submit" class="btn btn-danger btb-sm">신고하기</button>
@@ -193,11 +244,59 @@ table {
 	
 						</div>
 					</div>
-	
 				</div>
+				
+				<!-- 신고하기 모달창 끝 -->
+
+
+				<!-- 신고하기 버튼 클릭시 보여질 Modal -->
+				<!-- 댓글 신고 -->
+				<div class="modal" id="bReplyReportForm">
+					<div class="modal-dialog">
+						<div class="modal-content">
+	
+							<!-- Modal Header -->
+							<div class="modal-header">
+								<h4 class="modal-title">댓글 신고하기</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+	
+							<!-- Modal body -->
+							<div class="modal-body" align="center">
+								<form action="boardReplyReport.bo" method="post">
+									<!-- 신고할 내용 입력 -->
+									<input type="hidden" name="rpId" value="${ loginUser.memId }"> 
+									<input type="hidden" name="rpNo" value="${ b.boardNo}">
+									<input type="hidden" name="boardType" value="1">
+									<input type="hidden" name="rpType" value="2"> 
+									<b>신고구분</b><br><br>
+									<select id="rpSection" name="rpSection"  class="form-control" style="width:130px;">
+										<option value="욕설/비방">욕설/비방</option>
+										<option value="음란/유해">음란/유해</option>
+										<option value="도배/스팸">도배/스팸</option>
+									</select> <br>
+									<br> <b>신고 내용 입력</b><br>
+									<br>
+									<textarea name="rpContent" id="rpContent" cols="50" row="1"
+										style="resize: none" class="form-control"></textarea>
+									<br>
+									<br>
+									<button type="submit" class="btn btn-danger btb-sm">신고하기</button>
+	
+								</form>
+							</div>
+	
+						</div>
+					</div>
+				</div>
+				
+			
+				
+				
 			</div>
 		</div>
 			
 	</section>
 </body>
 </html>
+	

@@ -27,6 +27,9 @@ public class Member {
 	private String zipCode;
 	private String address;
 	private String depNo;
+	private String addressExtra;
+	private String addressDetail;
+	private int depNo;
 	private String department;
 	private String job;
 	private String rank;
@@ -38,7 +41,7 @@ public class Member {
 	private int memVacDate;
 	private int memUsedDate;
 	private int memTotalDate;
-	private String messageFunc;
+	private String msgRestrict;
 	private String noticeAuth;
 	private String status;
 	

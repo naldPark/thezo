@@ -14,6 +14,8 @@
 		<result column="birth" property="birth"/>
 		<result column="zip_code" property="zipCode"/>
 		<result column="address" property="address"/>
+		<result column="address_extra" property="addressExtra"/>
+		<result column="address_detail" property="addressDetail"/>
 		<result column="enroll_date" property="enrollDate"/>
 		<result column="gender" property="gender"/>
 		<result column="resign_date" property="resignDate"/>
@@ -26,6 +28,7 @@
 		<result column="path" property="path"/> 
 		<result column="notice_auth" property="noticeAuth"/> 
 		<result column="status" property="status"/>
+		<result column="msg_restrict" property="msgRestrict"/> 
 	</resultMap>
 
 
@@ -42,6 +45,8 @@
 			, BIRTH
 			, ZIP_CODE
 			, ADDRESS
+			, ADDRESS_EXTRA
+			, ADDRESS_DETAIL
 			, DEP_NO
 			, DEPARTMENT
 			, JOB
@@ -54,7 +59,7 @@
 			, MEM_VAC_DATE
 			, MEM_USED_DATE
 			, MEM_TOTAL_DATE
-			, MESSAGE_FUNC
+			, MSG_RESTRICT
 			, NOTICE_AUTH
 			, status
 		  from member
@@ -161,6 +166,71 @@
 		 where mem_no = #{memNo}       
 	</select>
 	
+	
+	
+	<!-- 5_1) 사원등록 : 아이디 중복체크용 -->
+	<select id="idCheck" resultType="_int">
+ 		select
+ 		       count(*)
+ 		  from member
+ 		 where mem_id = #{memId}      
+ 	</select>
+ 	
+ 	<!-- 5_2) 사원 등록-->
+ 	<insert id="insertMember">
+ 	
+	 	insert
+		  into member
+		    (  mem_no
+		     , mem_id
+		     , mem_name
+		     , mem_pwd
+		     , gender
+		     , phone
+		     , email
+		     , birth
+		     , zip_code
+		     , address
+		     , address_extra
+		     , address_detail
+		     , enroll_date
+		     , dep_no
+		     , department
+		     , job
+		     , rank
+		     , extension_no
+		     , origin_name
+		    )
+		values
+		    (
+		       seq_mno.nextval
+		     , #{memId}
+		     , #{memName}
+		     , #{memPwd}
+		     , #{gender}
+		     , #{phone}
+		     , #{email}
+		     , #{birth}
+		     , #{zipCode}
+		     , #{address}
+		     , #{addressExtra}
+		     , #{addressDetail}
+		     , #{enrollDate}
+		     , (select dep_no
+		          from department
+		         where dep_name = #{department})
+		     , #{department}
+		     , #{job}
+		     , #{rank}
+		     , #{extensionNo}
+		     , #{originName}
+		     )
+ 	</insert>
+	
+	
+	
+	
+	
 	<!-- 회원 삭제 : 관리자(이성경) -->
 	<!-- 1) 탈퇴 회원 수 조회 -->
 	<select id="memDeleteListCount" resultType="_int">
@@ -231,4 +301,22 @@
 			  order
 			     by mem_no desc 
 	</select>
+	
+ 	
+ 	<!-- 사용자 : 내 정보 수정  -->
+ 	<update id="updateMember">
+ 		update 
+ 		       member
+ 		   set mem_name = #{memName}
+ 		     , mem_pwd = #{memPwd}
+ 		     , phone = #{phone}
+ 		     , email = #{email}  
+ 		     , birth = #{birth}
+ 		     , zip_code = #{zipCode}
+ 		     , address = #{address}
+ 		     , address_extra = #{addressExtra}
+ 		     , address_detail = #{addressDetail}
+ 		     , origin_name = #{originName}
+ 		 where mem_no = #{memNo}      
+ 	</update>
 </mapper>

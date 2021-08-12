@@ -10,110 +10,144 @@
 <body>
 	<jsp:include page="../common/header.jsp"/>
 	
-   	 <section>
-        <div class="outer" align="center">    
-          <p class="pageTitle">  e-mail <b> 전자메일</b></p>
-            <jsp:include page="mailSidebar.jsp"/>
-            <div class="mailOuter">
-                <div align="left">
-                    <button type="button"  class="btn btn-sm btn-secondary">읽음</button>
-                    <button type="button" class="btn btn-sm btn-secondary">삭제</button>
-                    <button type="button" class="btn btn-sm btn-secondary">스팸</button>
-                    <button type="button" class="btn btn-sm btn-secondary">전달</button>
-                </div>
-                <br>
-                <table class="table w3-centered table-hover">
-                    <thead>
-                      <tr class="table-primary">
-                        <th><input type="checkbox" class="bigCheckbox"></th>
-                        <th>읽음</th>
-                        <th>발신자</th>
-                        <th>제목</th>
-                        
-                        <th>일시</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr class="font-weight-bold">
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope"></i></td>
-                        <td>박날드</td>
-                        <td>주간회의자료 빨리 보내주세요</td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope-open"></i></td>
-                        <td>강보람</td>
-                        <td>마감기한 20일 남았는데 잠이 옵니까</td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope"></i></td>
-                        <td>남주혁</td>
-                        <td>Re:요청하신 자료 송부드립니다<i class="fas fa-paperclip"></i></td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr class="font-weight-bold">
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope"></i></td>
-                        <td>박날드</td>
-                        <td>주간회의자료 빨리 보내주세요</td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope-open"></i></td>
-                        <td>강보람</td>
-                        <td>마감기한 20일 남았는데 잠이 옵니까</td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope"></i></td>
-                        <td>남주혁</td>
-                        <td>Re:요청하신 자료 송부드립니다<i class="fas fa-paperclip"></i></td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr class="font-weight-bold">
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope"></i></td>
-                        <td>박날드</td>
-                        <td>주간회의자료 빨리 보내주세요</td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope-open"></i></td>
-                        <td>강보람</td>
-                        <td>마감기한 20일 남았는데 잠이 옵니까</td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                      <tr>
-                        <td><input type="checkbox" class="bigCheckbox"></td>
-                        <td><i class="far fa-envelope"></i></td>
-                        <td>남주혁</td>
-                        <td>Re:요청하신 자료 송부드립니다<i class="fas fa-paperclip"></i></td>
-                        <td>2021-07-20 22:50</td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                <br><br>
-                
-                <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">이전</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">다음</a></li>
-                  </ul>
+      <section>
+        <div class="outer" align="center">
+          <p class="pageTitle"> e-mail <b> 전자메일</b></p>
+          <jsp:include page="mailSidebar.jsp" />
+      
+          <div class="mailOuter">
+            <div align="left">
+              <button type="button" id="readBtn" class="mainBtn btn btn-sm btn-secondary">읽음처리</button>
+              <c:choose>
+                <c:when test="${ folder eq '스팸' }">
+                  <button type="button" id="unSpamBtn" class="mainBtn btn btn-sm btn-secondary">스팸해제</button>
+                </c:when>
+                <c:otherwise>
+                  <button type="button" id="spamBtn" class="mainBtn btn btn-sm btn-secondary">스팸처리</button>
+                </c:otherwise>
+              </c:choose>
+              <c:choose>
+                <c:when test="${ folder eq '휴지' }">
+                  <button type="button" id="deleteAllBtn" class="mainBtn btn btn-sm btn-secondary">완전삭제</button>
+                </c:when>
+                <c:otherwise>
+                  <button type="button" id="deleteBtn" class="mainBtn btn btn-sm btn-secondary">삭제</button>
+                </c:otherwise>
+              </c:choose>
+              
             </div>
-    	</div>
-    </section>
+            <br>
+            <form action="mainBtn.mail" method="post" id="mainBtnForm">
+              <table class="table w3-centered table-hover">
+                <thead>
+                  <input type="hidden" id="btnType" name="btnType" value="">
+                  <tr class="table-primary">
+                    <th><input type="checkbox" class="bigCheckbox" id="allCheck"></th>
+                    <th>읽음</th>
+                    <th>발신자</th>
+                    <th style="width:500px">제목</th>
+      
+                    <th>일시</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <c:forEach var="m" items="${ list }">
+      
+                    <tr <c:if test="${m.read eq 'N'}">class="font-weight-bold"</c:if>>
+                      <td hidden>${m.reMailNo}</td>
+                      <th><input type="checkbox" class="bigCheckbox" name="mailNo" value="${m.reMailNo}"></th>
+                      <td>
+                        <c:choose>
+                          <c:when test="${m.read eq 'N'}">
+                            <i class="far fa-envelope"></i>
+                          </c:when>
+                          <c:otherwise>
+                            <i class="far fa-envelope-open"></i>
+                          </c:otherwise>
+                        </c:choose>
+                      </td>
+                      <td>${m.sender}</td>
+                      <!--발신자가 외부면 메일, 내부면 이름?-->
+                      <td>
+                        ${m.mailTitle}
+                        <c:if test="${!empty m.attach}">
+                          &nbsp;<i class="fas fa-paperclip"></i>
+                        </c:if>
+                      </td>
+                      <td>${m.receiveDate}</td>
+                    </tr>
+                  </c:forEach>
+      
+                </tbody>
+              </table>
+            </form>
+      
+            <br><br>
+      
+            <!--페이징 처리 시작-->
+            <div id="pagingArea">
+              <ul class="pagination">
+                <c:if test="${ pi.currentPage ne 1 }">
+                  <li class="page-item"><a class="page-link"
+                      href="main.mail?currentPage=${ pi.currentPage-1 }&folder=${folder}">이전</a></li>
+                </c:if>
+      
+                <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                  <c:choose>
+                    <c:when test="${ pi.currentPage eq p }">
+                      <li class="page-item"><a class="page-link" style="background-color: lightsteelblue"
+                          href="main.mail?currentPage=${ p }&folder=${folder}">${ p }</a></li>
+                    </c:when>
+                    <c:otherwise>
+                      <li class="page-item"><a class="page-link"
+                          href="main.mail?currentPage=${ p }&folder=${folder}">${ p }</a></li>
+                    </c:otherwise>
+                  </c:choose>
+                </c:forEach>
+      
+                <c:if test="${ pi.currentPage ne pi.maxPage }">
+                  <li class="page-item"><a class="page-link"
+                      href="main.mail?currentPage=${ pi.currentPage+1 }&folder=${folder}">다음</a></li>
+                </c:if>
+              </ul>
+            </div>
+            <!--페이징 처리 끝-->
+          </div>
+        </div>
 
+           
+
+      </section>
+
+  <script>
+    	$(function () {
+          $(".table>tbody>tr>td").click(function () {
+            var mno = $(this).parent().children().eq(0).text();
+            location.href = 'mailDetail.mail?mno=' + mno;
+          })
+        })
+
+      //체크박스 모두동의
+      $(function(){
+              $("#allCheck").change(function(){
+                  if($(this).prop("checked")==true){
+                      $(".bigCheckbox").prop("checked",true); 
+                  }else{
+                      $(".bigCheckbox").prop("checked",false); 
+                  }
+              })                    
+        })    
+
+        $(".mainBtn").click(function () {
+            var message = $(this).text();
+            if (confirm(message+" 하시겠습니까?")) {
+              $("#btnType").val($(this).attr("id"));
+              $("#mainBtnForm").submit();
+            }
+          })
+        
   
+  </script>
  	
 </body>
 </html>

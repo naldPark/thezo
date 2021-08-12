@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.thezo.board.model.vo.Board;
 import com.kh.thezo.board.model.vo.BoardFile;
+import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 
@@ -87,6 +88,8 @@ public class BoardDao {
 		return sqlSession.insert("boardMapper.insertNoticeRefile", bf);
 	}
 	
+	
+	
 	// ------------------------  사내게시판 영역  ----------------------------
 	
 	// 사용자 : 사내게시판 글 총 갯수 
@@ -146,6 +149,25 @@ public class BoardDao {
 		return sqlSession.insert("boardMapper.insertBoardRefile", bf);
 	}
 	
+	// 사용자 : 사내게시판 댓글 조회
+	public ArrayList<Reply> selectReplyList(SqlSessionTemplate sqlSession, int boardNo){
+		return (ArrayList)sqlSession.selectList("boardMapper.selectReplyList", boardNo);
+	}
+	
+	// 사용자 : 사내게시판 댓글 작성
+	public int insertReply(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.insert("boardMapper.insertReply", r);
+		}
+	
+	// 사용자 : 사내게시글, 댓글 신고
+	public int boardReport(SqlSessionTemplate sqlSession, Report rp) {
+		return sqlSession.insert("boardMapper.boardReport", rp);
+	}
+	
+	// 사용자 : 댓글 삭제
+	public int deleteBoardReply(SqlSessionTemplate sqlSession, int replyNo) {
+		return sqlSession.update("boardMapper.deleteBoardReply", replyNo);
+	}
 	
 	// ----------------------- 관리자 영역 ---------------------------
 	

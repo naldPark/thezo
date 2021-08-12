@@ -59,7 +59,7 @@
                      
                     </div>
                   
-                    <div class="form-group">
+                    <div class="form-group" style="overflow:auto">
                         <hr>
                         <div style="min-height:500px; padding:20px">
                           ${a.content}

@@ -31,6 +31,15 @@
 
 </style>
 </head>
+<c:if test="${!empty alertMsg }">
+	<script>	
+		alert("${alertMsg}");
+	</script>
+       <!-- 뭔가가 담겨있는 경우 -->	
+	<c:remove var="alertMsg" scope="session"/>	
+</c:if>
+
+
 <body>
     <div class="outer">
         <div id="biglogo-area">

@@ -12,7 +12,6 @@
 	#nav a{color: black;}
 	#nav ul{list-style-type: none; padding-left: 20px;}
 	.subject{font-size: x-large;text-align: center;}
-	.chMenu{color: rgb(243,156,18);}
 	hr {
 	    margin-top: 1rem;
 	    margin-bottom: 1rem;
@@ -30,27 +29,55 @@
 		</div>
 		
 		<hr>
-		<ul align="left">
-			<b><a href="list.doc"><li class="chMenu">공용 문서양식</li></a></b>
+		<ul align="left" id="docCategory">
+			<li><a href="list.doc" id="public" class="w3-button w3-left-align">공용 문서양식</a></li>
+			<li><label for="dep"><span id="dep" class="w3-button w3-left-align" onclick="dep('depDoc');">부서별 문서양식</span></label>
+				
+				<ul id="depDoc" class="w3-hide w3-show">
+					<!-- 클릭 시 부서별 게시판 이름이 나오게 -->
+					<!-- 각각 a링크를 주지말고 category=""의 조건을 줘서 조회되게 -->
+					<c:forEach var="doc" begin="2" items="${ category }">
+						<li><a class="w3-button w3-block w3-left-align" href="list.doc?docCategory=${ doc.depName }">${ doc.depName }</a></li>
+					</c:forEach>
+				</ul>
+				
+			</li>
 			
-			<label for="depDoc">
-				<li id="depDoc">부서별 문서양식</li>
-			</label>
-			<!-- 클릭 시 부서별 게시판 이름이 나오게 -->
-	
-			<!-- 홈페이지에서 생성하게 할 수 있을까?-->
-			<!-- 각각 a링크를 주지말고 category=""의 조건을 줘서 조회되게 -->
-			<!-- 
-			-->
-			</ul>
 		</ul>
-
-		<!-- 사용자가 관리자라면 -->
-		<hr>
-		<button class="btn btn-primary" style="width: 180px;" align="center">
-			부서?카테고리? 추가
-		</button>
+		
 	</div>
+	
+	<script>
+		$(function(){
+			//var category = decodeURI(window.location.href).split('=')[1];
+			var category = '${ docCategory }';
+			//console.log(category);
+			$.each($("#depDoc>li>a"), function(index, value){
+				if($(this).text() == category){
+					$(this).css('color', 'rgb(243,156,18)');
+					$(this).css('font-weight', 'bold');
+					
+					$("#dep").css('color', 'rgb(243,156,18)');
+					$("#dep").css('font-weight', 'bold');
+				}
+			})
+			
+			if(category == '공용'){ // 공용
+				$("#public").css('color', 'rgb(243,156,18)');
+				$("#public").css('font-weight', 'bold');
+			}
+			
+		})
+		
+		function dep(id) {
+			var x = document.getElementById(id);
+			if (x.className.indexOf("w3-show") == -1) {
+			  x.className += " w3-show";
+			} else { 
+			  x.className = x.className.replace(" w3-show", "");
+			}
+		}
+	</script>
 	
 </body>
 </html>

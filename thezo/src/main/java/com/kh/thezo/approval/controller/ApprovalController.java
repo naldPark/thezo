@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,8 +37,10 @@ public class ApprovalController {
 
 	//전자결재 메인페이지로 관련있는 결재리스트 불러오기
 	@RequestMapping("main.appr")
-	public ModelAndView selectApprovalMain(ModelAndView mv, @RequestParam(value="apprFolder", defaultValue="main") String apprFolder, HttpSession session, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
-		
+	public ModelAndView selectApprovalMain(ModelAndView mv,
+			@RequestParam(value = "apprFolder", defaultValue = "main") String apprFolder, HttpSession session,
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
+
 		Member m = (Member) session.getAttribute("loginUser");
 //		System.out.println(apprFolder);
 		// 페이징 확인
@@ -48,20 +49,16 @@ public class ApprovalController {
 		a.setMemNo(m.getMemNo());
 		a.setApprFolder(apprFolder);
 		int listCount = aService.selectListCount(a);
-		
+
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		ArrayList<Approval> list = aService.selectApprovalMain(a, pi);
 		ArrayList<ApprovalAccept> readCheckList = aService.selectApprovalRead(a);
-		System.out.println(readCheckList);
-		System.out.println(list);
-		mv.addObject("list", list)
-		  .addObject("readCheckList",readCheckList)
-		  .addObject("pi", pi)
-		  .addObject("apprFolder", apprFolder)
-		  .setViewName("approval/approvalMain");
+		// System.out.println(readCheckList);
+		// System.out.println(list);
+		mv.addObject("list", list).addObject("readCheckList", readCheckList).addObject("pi", pi)
+				.addObject("apprFolder", apprFolder).setViewName("approval/approvalMain");
 		return mv;
 	}
-	
 	
 	// 문서양식 리스트 불러오기
 	@RequestMapping("new.appr")
@@ -87,7 +84,7 @@ public class ApprovalController {
 		Approval a = aService.enrollApproval(aTemp);
 		ArrayList<Member> empList = aService.employeeList();
 		ArrayList<ApprovalAccept> cLine = aService.selectformLineList(aTemp);
-		System.out.println(cLine);
+	//	System.out.println(cLine);
 		Member leaveCount = aService.selectLeave(aTemp.getMemNo());
 //		System.out.println("A는"+a);
 //		System.out.println("cLine는"+cLine);
@@ -186,6 +183,7 @@ public class ApprovalController {
 					at.setOriginName(upfile[i].getOriginalFilename());
 					at.setFileUrl("resources/uploadFiles/approval/" + changeName);
 					at.setFileLevel(i+1);
+					at.setFileType("전자결재");
 					list.add(at);
 				}
 				a.setAt(list);

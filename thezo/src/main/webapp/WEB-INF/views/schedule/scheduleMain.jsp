@@ -6,11 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <title>일정관리</title>
-<style>
-</style>
 </head>
 <body>
-	 
     <jsp:include page="../common/header.jsp"/>
     
     <section>
@@ -29,6 +26,7 @@
             </div>
         </div>
             <script>
+            	
                 function w3_open() {
                     document.getElementById("main").style.marginLeft = "200px";
                     document.getElementById("mySidebar").style.width = "200px";
@@ -37,6 +35,7 @@
                 }
                 function w3_close() {
                     document.getElementById("main").style.marginLeft = "0%";
+                    document.getElementById("calendar").width = "100%";
                     document.getElementById("mySidebar").style.display = "none";
                     document.getElementById("openNav").style.display = "inline-block";
                 }

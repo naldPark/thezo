@@ -70,9 +70,10 @@
 			 				       + '</td></tr>';
 			 			}
 		 			}else{
-		 				value += '<tr><td colspan="5">받은 쪽지가 없습니다!</td></tr>';
+		 				value += '<tr><td colspan="5">휴지통에 받은 쪽지가 없습니다!</td></tr>';
 		 			}
 		 			$("#for-rb-receive-checkbox").html(value);
+		 	        $("#rrbSelectAllCheckBox").prop("checked", false);
 		 		},error:function(){
 		 			console.log("ajax통신 실패");
 		 		}				
@@ -81,7 +82,7 @@
 		// 휴지통 보낸 쪽지 목록 
 		function showStRecycleBin(){				
 		 	$.ajax({
-		 		url:"selectRcStList.msg",
+		 		url:"selectStRbList.msg",
 				data:{memNo: "${sessionScope.loginUser.memNo}"},
 		 		success:function(sentList){
 		 			var value ="";
@@ -104,9 +105,10 @@
 			 				       + '</td></tr>';
 			 			}
 		 			}else{
-		 				value += '<tr><td colspan="5">받은 쪽지가 없습니다!</td></tr>';
+		 				value += '<tr><td colspan="5">휴지통에 보낸 쪽지가 없습니다!</td></tr>';
 		 			}
 			 			$("#for-rb-sent-checkbox").html(value);
+			 	        $("#srbSelectAllCheckBox").prop("checked", false);
 		 		},error:function(){
 		 			console.log("ajax통신 실패");
 		 		}				
@@ -119,15 +121,14 @@
 		})
 	</script>
 
-
     <div class="recycle-bin-btn-area">
         <div>
             <button type="button" class="recycle-bin-del" onclick="openRecycleBinDelete();">영구 삭제</button>
             <button type="button" class="recycle-bin-restore" onclick="openRecycleBinResorte();">복구</button>
         </div>
         <span class="report-header-btn report-span">※ 신고 처리 내역</span>
-        <button type="button" class="report-log-btn" onclick="moveToRepostListArea();">신고 처리 내역</button>
-        <button type="button" class="report-header-btn" onclick="movebackToRepostList();">뒤로가기</button>
+        <button type="button" class="report-log-btn" onclick="moveToReportListArea();">신고 처리 내역</button>
+        <button type="button" class="report-header-btn" onclick="movebackToRecycleBin();">뒤로가기</button>
     </div>
 
     <div class="recycle-bin-content-area w3-animate-opacity">
@@ -147,18 +148,6 @@
                     </tr>                
                 </thead>
                 <tbody id="for-rb-receive-checkbox">
-                    <!-- 쪽지번호와 받은 쪽지인지 넘긴다. -->
-                    <tr onclick="openDetailMSG(1,'rrb');">
-                        <td onclick="event.cancelBubble=true">
-                            <!-- 체크박스 value값은 !!! 쪽지번호다!!!  -->
-                            <input type="checkbox" name="tossNo" value="1,rm">
-                        </td>
-                        <td>이땡떙 대리</td>
-                        <!-- 여기서는 css로다가 하나 스타일 뺴놓고 만약 ajax해왔을떄 긴급이면 해당 td에다가 class부여하는것으로 진행 -->
-                        <td>긴급</td>
-                        <td>회의</td>
-                        <td>11:10</td>
-                    </tr>
                 </tbody>
                 <thead>
                     <tr>
@@ -175,24 +164,11 @@
                     </tr>                
                 </thead>
                 <tbody id="for-rb-sent-checkbox">
-                    <!-- 쪽지번호를 넘긴다. -->
-                    <tr onclick="openDetailMSG(1,'srb');">
-                        <td onclick="event.cancelBubble=true">
-                            <!-- 체크박스 value값은 !!! 쪽지번호다!!!  -->
-                            <input type="checkbox" name="tossNo" value="1,sm">
-                        </td>
-                        <td>이땡떙 대리</td>
-                        <!-- 여기서는 css로다가 하나 스타일 뺴놓고 만약 ajax해왔을떄 긴급이면 해당 td에다가 class부여하는것으로 진행 -->
-                        <td>긴급</td>
-                        <td>회의</td>
-                        <td>11:10</td>
-                    </tr>
                 </tbody>
         </table>
     </div>
 
     <!-- 스크립트 영역 !  -->
-
     <script>
         function rrbSelectAll() {
             if ($("#rrbSelectAllCheckBox").is(':checked')) {
@@ -209,50 +185,52 @@
                 $(" #for-rb-sent-checkbox input:checkbox[name=tossNo]").prop("checked", false);
             }
         }
-
-        //  신고처리 내역으로 넘어가기!!! 
-        function moveToRepostListArea(){
-            $(".recycle-bin-content-area").hide();
-            $(".recycle-bin-del").hide();
-            $(".recycle-bin-restore").hide();
-            $(".report-log-btn").hide();
-            $(".report-list-area").show();
-            $(".report-header-btn").show();            
-        }
-
-        function movebackToRepostList(){
-            $(".recycle-bin-content-area").show();
-            $(".recycle-bin-del").show();
-            $(".recycle-bin-restore").show();
-            $(".report-log-btn").show();
-            $(".report-list-area").hide();
-            $(".report-header-btn").hide();            
-        }
     </script>
 <%-- ------------------------------------------------------------------------------------------------- --%>
 <%-- ------------------------------------------------------------------------------------------------- --%>
 <%-- ----------------------------------------신고처리 내역 부분 시작 ------------------------------------------ --%>
    	<script>
-   		// ※ 정석적으로 report쪽으로 받아와야한다. 
-		/*function showReportMsg(){				
+    // 휴지통으로 돌아가기 
+	    function movebackToRecycleBin(){
+	        $(".recycle-bin-content-area").show();
+	        $(".recycle-bin-del").show();
+	        $(".recycle-bin-restore").show();
+	        $(".report-log-btn").show();
+	        $(".report-list-area").hide();
+	        $(".report-header-btn").hide();
+	        reloadReportList();
+	    }
+   	
+	    //  신고처리 내역으로 넘어가기!!! 
+	    function moveToReportListArea(){
+	        $(".recycle-bin-content-area").hide();
+	        $(".recycle-bin-del").hide();
+	        $(".recycle-bin-restore").hide();
+	        $(".report-log-btn").hide();
+	        $(".report-list-area").show();
+	        $(".report-header-btn").show();            
+	        reloadReportList();
+	    }
+
+	    function reloadReportList(){	    	
 		 	$.ajax({
 		 		url:"selectReportList.msg",
-				data:{memNo: "${sessionScope.loginUser.memNo}"},
+				data:{memNo: ${sessionScope.loginUser.memNo}},
 		 		success:function(reportList){
-
+		 			//console.log(reportList);
 		 			var value ="";
 		 			if(reportList.length != 0){
 			 			for(var i in reportList){
-			 				value += '<tr onclick="userTossReportNo('
-			 					   + reportList[i].msgNo	
+			 				value += '<tr onclick="openReportDetail('
+			 					   + reportList[i].msgReportNo	
 			 				       + ');"><td>'
 			 				       + reportList[i].senderNameAndRank
 			 				       + '</td><td>'
-			 				       + reportList[i].msgStatus
+			 				       + reportList[i].handleStatus
 			 				       + '</td><td>'
-			 				       + reportList[i].contentStatus
+			 				       + (reportList[i].resultStatus == null? '미정' : reportList[i].resultStatus)
 			 				       + '</td><td>'
-			 				       + reportList[i].createDate
+			 				       + (reportList[i].handleDate =='일전'? "미정" : reportList[i].handleDate)
 			 				       + '</td></tr>';
 			 			}
 		 			}else{
@@ -263,11 +241,8 @@
 		 			console.log("ajax통신 실패");
 		 		}				
 		 	})		 	
-		}
-		
-		$(function(){		
-			showReportMsg();
-		})*/
+	    }
+
 	</script>
     
     
@@ -285,40 +260,10 @@
                     </tr>                
                 </thead>
                 <tbody>
-                    <!-- 동적으로 생성 될때 !!! 이때 !자바스크립트로 색상 바꿔주면 된다!!!  -->
-                    <!-- 신고번호를 넘긴다. -->
-                    <tr onclick="userTossReportNo(1);" >
-                        <td>나쁜 xx</td>
-                        <!-- 여기서는 css로다가 하나 스타일 뺴놓고 만약 ajax해왔을떄 긴급이면 해당 td에다가 class부여하는것으로 진행 -->
-                        <td>처리완료</td>
-                        <td>기능제한</td>
-                        <td>11:10</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
     </div>
-
-    
-    <script>
-        function userTossReportNo(reportNo){
-            //신고번호 넘겨서 만들어놓은 ajax 활용하기 (재활용) 
-            //var tossedNo = $(reportNo).children(0).eq(0).text();
-            // 해당 전역변수 가지고 db가서 정보 조회해와서 ! 값동적으로 생성해서 보여주기  여기서 작업 해주면된다!
-            //console.log(reportNo);
-            //마지막에 만들어진 모달을 여는것으로 효율성 증대! 
-            $("#user-report-detail-modal").modal();
-        }
-
-        function cancelReportMsg(tossedMsgNo){
-            // 받은 번호 가지고 신고 철회하기! 
-            // 1. 우선적으로 ! 해당 신고 버튼을 !!! 신고 시간과 sysdate 비교해서 ! 
-            //    만약 하루가 지났다면 회색으로 바꾸고 disabled 주기!!! 
-
-            console.log(tossedMsgNo);
-            $("#user-report-detail-modal").modal('hide');
-        }
-    </script>
 <%-- ----------------------------------------신고처리 내역 부분 끝 ------------------------------------------ --%>
 </body>
 </html>

@@ -19,6 +19,64 @@
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 	    var calendarEl = document.getElementById('calendar');
+	    var infoSet = new Set();
+	    var infoArr = new Array();
+	    function removeEvents(re){
+    		infoArr.push(re);
+    		//infoSet = new Set(infoArr);
+    	}
+	    //var infoArr = Array.from(infoSet);
+	    
+	   
+	    // 일정 출력 필터
+	    $(scChk).change(function(){
+	    	var scTypeString = "";
+			$.each(scChk, function (index, value) {
+				if($(value).is(":checked")){
+					scTypeString += $(value).val();
+					//console.log(scTypeString);
+				}else{
+					scTypeString += "";
+				}
+			});
+			//console.log(calendar.getEvents());
+			
+			// 만약 캘린더에 남은 일정이 없다면 (모두 지워졌다면)
+			// 접근할 event가 없기 때문에 event를 저장해 두었던 infoArr에 접근하도록 한다
+			if(calendar.getEvents().length === 0){
+				$.each(infoArr, function(index, value){
+					//console.log(value);			
+					var scType = value._def.extendedProps.scType;
+					if(scTypeString.includes(scType)){
+						calendar.addEvent(value);
+					}
+				})
+			}else{
+				$.each(calendar.getEvents(), function(index, value){ // 캘린더에 출력된 이벤트에 접근
+					//console.log(value);
+					var scType = value._def.extendedProps.scType
+					if(!scTypeString.includes(scType)){ 
+						// 메뉴바에서의 scType이 체크 해제 되었다면,
+						// 달력에서 출력되지 않게 한다.
+						removeEvents(value); // 체크 해제 된 일정을 따로 저장하고 달력에서 지움
+						value.remove();
+					}else{
+						// 메뉴바에서 scType이 체크 되었다면,
+						// 달력에 다시 출력 한다.
+						$.each(infoArr, function(index, value){
+							var scType = value._def.extendedProps.scType;
+							if(scTypeString.includes(scType)){
+								calendar.addEvent(value);
+							}
+							//console.log(value);
+						})
+					}
+				});
+			}
+			
+			
+			
+		});
 	    
 	    var calendar = new FullCalendar.Calendar(calendarEl, {
     	
@@ -31,136 +89,98 @@
 	    		$('#insertSc').modal();
 	    	},
 	    	
+	    	eventClick: function(info) {
+	        	// 이벤트 클릭했을 시 기능 설정
+	        	// 일정 내용과 보고서가 보여져야 함!!
+	        	var scNo = info.event._def.extendedProps.scNo;
+	        	var option = "width = 700, height = 700, top = 100, left = 200, location = no";
+				window.open("detail.sc?scNo=" + scNo, "일정상세정보", option);
+	        },
 	      	headerToolbar: { // 헤더설정
 				left: 'prevYear,prev,next,nextYear today',
 				center: 'title',
 				right: 'dayGridMonth,dayGridWeek,dayGridDay'
 	        },
+	        handleWindowResize: true,
 	        navLinks: true, // can click day/week names to navigate views
-	       	editable: true, // 편집가능
+	       	//editable: true, // 편집가능
 	        dayMaxEvents: true, // allow "more" link when too many events
 	        locale: 'ko', // 한국어 설정
 	        themeSystem: 'bootstrap', // 테마 설정
-	        events: [ // ajax로 일정 불러오기
-				$.ajax({
-					url :'list.sc',
-					success:function(list){
-						var scList = Object.values(JSON.parse(list));
-						console.log(scList);
-						//calendar.addEvent({title:"test", start: "2021-07-01"});
-						for(var i=0; i<scList.length; i++){
-							calendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+	        eventSources:[
+        		{
+				events: [ // ajax로 일정 불러오기
+					// 1. 개인 일정
+					$.ajax({
+						url :'list.sc',
+						data : {scType:"개인", memNo:${loginUser.memNo}},
+						cache: false,
+						success:function(list){
+							var scList = Object.values(JSON.parse(list));
+							for(var i=0; i<scList.length; i++){
+								scList[i].color = '#148CFF';
+								if(scTypeString.includes('개인')){
+									calendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								}
+							}
+						},error: function(){
+							console.log("일정 조회용 ajax 통신 실패");
 						}
-					},error: function(){
-						console.log("일정 조회용 ajax 통신 실패");
-					}
-				})
-	        ], 
-			
-	        eventClick: function(info) {
-	        	// 이벤트 클릭했을 시 기능 설정
-	        	// 일정 내용과 보고서가 보여져야 함!!
-	        	//console.log(info.event.start);
-				//console.log(info.event.extendedProps.allday);
-				
-	        	// 시간 형식 바꾸기
-	        	var start = newDateFormat(info.event.start);
-				if(info.event.end != null){
-					var end = newDateFormat(info.event.end);
-				}
-				var allday = info.event.extendedProps.allday;
-				
-				//console.log(new Date(end-start));
-				
-				
-				
-				if(allday = 'Y'){
-					// 일정이 1일 하루 종일이라면
-					// => 시작일 출력, 끝나는 날(년월일시)출력 X (시작일 년월일만 출력)
-					start = start.substring(0, 10);
-					end = "";
-				//}else if(allday = 'Y' &&){
-					// 일정이 며칠동안의 하루종일이라면 ?
-					// => 시간출력x, 끝나는 일 출력
-					//start = start.substring(0, 10);
-				//	end = end.substring(0, 10);
-				}else{
-					// 일정이 하루종일이 아니라면
-					// 시작, 끝 년월일시 모두 출력
-					end = " ~ " + end;
-				}
-				
-				// 등록된 보고서가 없을 때 !! 
-				// => 1. 등록 버튼 출력 2. 보고서 영역 비워주기
-				$("#repInsertBtn").removeAttr("hidden");
-				$("#repInfo").html("");
-				
-	        	//console.log(info.event.extendedProps);
-	        	
-	        	$("#scNo").val(info.event.extendedProps.scNo);
-	        	
-	        	$("#scInfo").html("<tr>"
-	        						+ "<th width='120px'>일정 제목</th>"
-	        						+ "<td width='300px'>" + info.event.title + "</td>"
-	        					+ "<tr>"
-		        				+ "<tr>"
-	        						+ "<th>일정 시간</th>"
-	        						+ "<td>" + start + end + "</td>"
-	        					+ "<tr>"
-        						+ "<tr>"
-    								+ "<th>작성자</th>"
-    								+ "<td>" + info.event.extendedProps.scWriter + "</td>"
-    							+ "<tr>"
-		    					+ "<tr>"
-									+ "<th>내용</th>"
-									+ "<td>" + info.event.extendedProps.scContent + "</td>"
-								+ "<tr>"
-	        					);
-	        	
-	        	if(info.event.extendedProps.reportTitle != undefined){
-	        		// 등록된 보고서가 있다면
-		        	// => 보고서 출력
-	        		$("#repInfo").html("<tr>"
-			    						+ "<th width='120px'>제목</th>"
-			    						+ "<td width='250px'>" + info.event.extendedProps.reportTitle + "</td>"
-			    					 + "</tr>"
-			    					 + "<tr>"
-			    					 	+"<th>보고서 작성자</th>"
-			    					 	+"<td>" + info.event.extendedProps.reportWriter + "</td>"
-			    					 + "<tr>"
-			    					 	+ "<th>등록일</th>"
-			    					 	+"<td>" + info.event.extendedProps.createDate + "</td>"
-			    					 + "</tr>"
-			    					 + "<tr>"
-			    					 	+"<th>내용</th>"
-			    					 	+"<td>" + info.event.extendedProps.reportContent + "</td>"
-			    					 + "</tr>"
-			    					 + "<tr>"
-			    					 	+"<th>첨부파일</th>"
-			    					 	+"<td>" + info.event.extendedProps.originName + "</td>"
-			    					 + "</tr>"
-    				);
-	        		$("#repInsertBtn").attr("hidden", true);
-	        	}
-	        	
-	        	$("#detailSc").modal();
-	        },
-	        eventMouseEnter: function(info) {
-				//info.el.style.borderColor = '#378006';
-			}
-	        //eventColor: '#378006'
+					})
+				],
+        		 
+     	        events: [
+     	        	// 2. 회사 일정
+     	        	$.ajax({
+     	        		url :'list.sc',
+	     				data : {scType: "회사", memNo:${loginUser.memNo}},
+	     				cache: false,
+	     				success:function(list){
+	     					var scList = Object.values(JSON.parse(list));
+	     					for(var i=0; i<scList.length; i++){
+	     						scList[i].color = '#378006';
+								if(scTypeString.includes('회사')){
+	     							calendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								}
+	     					}
+	     				},error: function(){
+	     					console.log("일정 조회용 ajax 통신 실패");
+	     				}
+     	        	})
+     	        ], 
+     	        events: [
+     	        	// 3. 부서 일정
+     	        	$.ajax({
+     	        		url :'list.sc',
+	     				data : {scType: "부서", memNo:${loginUser.memNo}},
+	     				cache: false,
+	     				success:function(list){
+	     					var scList = Object.values(JSON.parse(list));
+	     					for(var i=0; i<scList.length; i++){
+	     						scList[i].color = '#7B68EE';
+								if(scTypeString.includes('부서')){
+	     							calendar.addEvent(scList[i]); // DB에 있는 이벤트 캘린더에 추가
+								}
+	     					}
+	     				},error: function(){
+	     					console.log("일정 조회용 ajax 통신 실패");
+	     				}
+     	        	})
+     	        ],
+	        }]
+	        
+	        
+	        
 		});
+	    
+	    function resize(){
+	    	calendar.updateSize();
+	    }
 	    
 	    calendar.render();
 	});
 	
-	function newDateFormat(date){
-		// Tue Aug 10 2021 00:00:00 GMT+0900 (한국 표준시)
-		// => yyyy-MM-dd hh:mm
-		date.setHours(date.getHours() + 9);
-		return date.toISOString().replace('T', ' ').substring(0, 16);
-	}
-		
+	
 </script>
 
 <style>
@@ -181,6 +201,5 @@
 	<div id="calendar"></div>
 	<!-- 일정추가 모달창 -->
 	<jsp:include page="scheduleInsertView.jsp"/>
-	<jsp:include page="scheduleDetailView.jsp"/>
 </body>
 </html>

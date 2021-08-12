@@ -77,6 +77,7 @@
 									<c:forEach var="n" items="${ list }">
 										<div class="w3-panel w3-card w3-yellow w3-hover-shadow w3-padding-32 text-left" id="note">
 											<input type="hidden" id="noteNo" value="${ n.noteNo }">
+											<input type="hidden" id="scNo" value="${ n.scNo }">
 											<p><b style="font-size:20px;">${ n.noteTitle }</b></p>
 											<hr>
 											<p id="noteContent">${ n.noteContent }</p>
@@ -84,7 +85,9 @@
 											<!-- 관련일정 없을 시 보여지지 않게 -->
 											<c:choose>
 												<c:when test="${ !empty n.noteSc }">
-													<p id="noteSc"><a href="#">관련일정 : <b>${ n.noteSc }</b></a></p>
+													<p id="noteSc">
+														관련일정 : <b>${ n.noteSc }</b>
+													</p>
 												</c:when>
 												<c:otherwise>
 													<p id="noteSc">관련일정 : <b>선택안함</b></p>
@@ -108,6 +111,7 @@
 							})
 						</script>
 						
+						<c:if test="${ !empty list }">
 						<br>
 						<%-- 페이징바 -------------------------------------- --%>
 						<div class="paging-area">
@@ -188,7 +192,9 @@
 								<button type="submit" class="btn btn-primary btn-search">검색</button>
 							</form>
 						</div>
+						</c:if>
 						<br><br>
+						
 						<c:if test="${ !empty condition }">
 							<script>
 								$(function(){

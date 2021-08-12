@@ -6,96 +6,47 @@
 <head>
 <meta charset="UTF-8">
 <title>업무 보고 등록</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+	.insert-form{width: 80%; margin:0 auto; text-align: center; border: 1px solid black; padding: 30px;}
+</style>
 </head>
 <body>
-	<form action="insert.bizRep" method="post">
-		<!-- The Modal -->
-		<input type="hidden" name="scWriter" value="${ loginUser.userId }"> <!-- 현재 로그인한 유저 아이디 전달 -->
-		<div class="modal" id="insertBizRep">
-		  <div class="modal-dialog modal-lg">
-		    <div class="modal-content">
-		
-		      <!-- Modal Header -->
-		      <div class="modal-header">
-		        <h4 class="modal-title">업무 보고 하기</h4>
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		      </div>
-		
-		      <!-- Modal body -->
-		      <div class="modal-body">
-			    <table align="center">
-			        <tr>
-			            <th width="120px">제목</th>
-			            <td colspan="2">
-			            	<input type="text" name="reportTitle" style="width: 350px;" placeholder="제목을 입력해주세요">
-			            	<select name="scType" id="scType">
-			                    <option value="개인">개인</option>
-			                    <option value="부서">부서</option>
-			                    <option value="회사">회사</option>
-			                </select>
-			            </td>
-			            <td>
-			                
-			            </td>
-			        </tr>
-			        
-			        <tr>
-			            <th>시작일</th>
-			            <td width="350px">
-			            	<input type="date" name="start" id="startDate"> <input type="time" name="start" id="startTime">
-			            </td>
-			            <td rowspan="2">
-							<input type="checkbox" id="timeCheck" checked>
-							<input type="hidden" id="allDay" name="allday" value="N">
-							<label for="timeCheck">시간설정</label>
-						</td>
-			            <!-- 시간설정 체크 해제시 시간 input 사라지게 / 기본값: 체크설정-->
-			        </tr>
-			        
-			        <tr>
-			            <th>종료일</th>
-			            <td>
-				            <input type="date" name="end" id="endDate"> 
-				            <input type="time" name="end" id="endTime">
-			            </td>
-			        </tr>
-			        <tr>
-			            <th>내용</th>
-			            <td colspan="2">
-			            	<textarea name="scContent" cols="45" rows="10" style="resize: none;" placeholder="내용을 입력해주세요" required></textarea>
-			            </td>
-			        </tr>
-			
-			    </table>
-			    
-		      </div>
-				<script>
-			        	// 시간설정 -> 기본을 체크로 두고, 체크해제시 시간설정 input을 hidden처리하고 입력받지않는다.
-			        	// 시간 input의 value값을 지우는 설정도 해야될듯 안그러면 값입력하고 hidden 처리시 값이 넘어오니까
-			        	// => 체크해제시 하루종일 'Y'로 되게
-					$(function(){
-						$("#timeCheck").change(function(){
-							if($(this).is(":checked")){
-								$("input[type=time]").show();
-								$("#allday").val('N');
-							}else{
-								$("input[type=time]").hide();
-								$("input[type=time]").val("");
-								$("#allday").val('Y');
-							}
-						})
-					})
-		        </script>
-		      <!-- Modal footer -->
-		      <div class="modal-footer center">
-			      <div class="button-area">
-				        <button class="btn btn-secondary" data-dismiss="modal">취소</button>
-				        <button class="btn btn-primary" type="submit">저장</button>
-				  </div>
-		      </div>
-		
-		    </div>
-		  </div>
+	<br>
+	<form action="insert.bizRep" method="post" enctype="multipart/form-data" style="font-family:'Noto Sans KR', sans-serif;">
+		<div class="insert-form w3-panel w3-border w3-round">
+			<input type="hidden" name="scNo" value="${ scNo }">
+			<input type="hidden" name="memNo" value="${ loginUser.memNo }"> <!-- 현재 로그인한 유저 아이디 전달 -->
+	        <h4 class="modal-title">업무 보고 하기</h4>
+			<hr>
+		    <table id="repInfo" align="center" class="text-left">
+		 		<tr> 
+					<th width='120px'>제목</th> 
+					<td width='250px'><input type="text" name="reportTitle" placeholder="제목을 입력해주세요" required></td> 
+			    </tr> 
+			    <tr> 
+			 	  	<th>보고서 작성자</th> 
+			 	  	<td><input type="text" name="reportWriter" value="${ loginUser.memId }" readonly></td> 
+			    <tr> 
+	 	 			<th>내용</th> 
+			 	  	<td>
+			 	  		<textarea name="reportContent" cols="45" rows="10" placeholder="내용을 입력해주세요" style="resize:none;" required></textarea>
+			 	  	</td> 
+			    </tr> 
+			    <tr> 
+			 	  	<th>첨부파일</th> 
+			 	  	<td><input type="file" name="upfile"></td>
+			    </tr> 
+			</table>
+		    <hr>
+			<div class="button-area" align="center">
+				<button class="btn btn-secondary" onclick="window.close();">취소</button>
+				<button class="btn btn-primary" type="submit">저장</button>
+			</div>
 		</div>
 	</form>
 </body>

@@ -22,7 +22,6 @@
     	<div class="outer">
 			<!-- -- 문서관리 네비바 --->
 			<jsp:include page="documentMenubar.jsp"/>            
-		    
 
 		    <br>
 		    
@@ -41,28 +40,30 @@
 				
 				function countChange(){
 					var para = document.location.href.split("?"); // 현재 파라미터 값 가져오기
-					//console.log(para);
 					$("#dCount>option").removeAttr("selected");
 					if(para.length>=2){ 
 						// 파라미터 값 까지 넘겨서 새로고침
 						if(para[1].indexOf("keyword") == -1){
-							// 검색어가 없다면 list.doc로 dCount 값만 전달
-							location.href = "list.doc?dCount=" + $("#dCount").val();
+							// 검색어가 없다면 list.doc로 dCount, docCategory 값만 전달
+							location.href = "list.doc?dCount=" + $("#dCount").val()
+											+ "&docCategory=" + '${ docCategory }';
 						}else{
 							// 검색어가 있다면 search.doc로 검색어 + dCount 전달
 							if(para[1].indexOf("dCount") == -1){
 								location.href = "search.doc?" + para[1]
-												+ "&dCount=" + $("#dCount").val();
+												+ "&dCount=" + $("#dCount").val()
+												+ "&docCategory=" + '${ docCategory }';
 							}else{ 
 								// 이미 dCount를 넘겨주었다면, 값을 지우고 다시 전달
 								var cut = para[1].split("&dCount");
 								location.href = "search.doc?" + cut[0]
-												+ "&dCount=" + $("#dCount").val();
+												+ "&dCount=" + $("#dCount").val()
+												+ "&docCategory=" + '${ docCategory }';
 									
 							}
 						}
 					}else{
-						location.href = "list.doc?dCount=" + $("#dCount").val();
+						location.href = "list.doc?dCount=" + $("#dCount").val() + "&docCategory=" + '${ docCategory }';
 					}
 				}
 			</script>
@@ -95,7 +96,7 @@
 										<td>${ d.department } ${ d.docWriter }</td>
 										<td>${ d.docContent }</td>
 										<td>
-											<a href="${ d.changeName }" download="${ d.originName }">
+											<a data-toggle="tooltip" title="${ d.originName }" href="${ d.changeName }" download="${ d.originName }">
 												<div>
 													<i class='far fa-file' style='font-size:20px'></i>
 												</div>
@@ -110,15 +111,16 @@
 		        </table>
 		        
 		        <div class="button-area" align="left">
-		        	<!-- 
-					<button data-toggle="modal" data-target="#updateDoc" class="btn btn-primary">수정</button>
-					<button data-toggle="modal" data-target="#deleteDoc" class="btn btn-danger">삭제</button>
-					 -->
 					<button class="btn btn-primary" type="button" id="update">수정</button>
 					<button class="btn btn-danger" data-toggle="modal" data-target="#deleteDoc">삭제</button>
 		            <button class="btn btn-primary" data-toggle="modal" data-target="#insertDoc" style="float:right;">등록</button>
-		            
 		    	</div>
+		    	
+				<script>
+					$(document).ready(function(){
+						$('[data-toggle="tooltip"]').tooltip();   
+					});
+				</script>
 		    	
 		    	<%-- update, delete 기능 수행 할 스크립트 -------------------------- --%>
 		    	<script>
@@ -153,22 +155,19 @@
 								data: {arr:arr},
 								type: "post",
 								success:function(d){
-									//console.log(d);
 									var doc = Object.values(JSON.parse(d));
 									//console.log(doc);
 									$("#docNo").val(doc[0]);
-									$("#docWriter").text(doc[1]);
-									$("#docWriter").val(doc[1]);
-									$("#docContent").val(doc[2]);
-									$("#docCategory").val(doc[3]);
+									$("#docContent").val(doc[3]);
+									$("#docCategory option[value=${ docCategory }]").attr("selected", true);
 									
 									// 현재 업로드된 파일
-									$("#file1").attr("href", doc[6])
-									$("#file1").text(doc[5]);
-									$("#file1").attr("download", doc[6]);
-									$("#originName").val(doc[5]);
+									$("#file1").attr("href", doc[7])
+									$("#file1").text(doc[6]);
+									$("#file1").attr("download", doc[7]);
+									$("#originName").val(doc[6]);
 									
-									$("#changeName").val(doc[6]);
+									$("#changeName").val(doc[7]);
 									$("#updateForm").modal('show');
 								},error: function(){
 									console.log("문서양식 수정용 조회 ajax 통신실패");
@@ -218,12 +217,15 @@
 							arr = []; // 데이터 전달 후 배열 초기화
 			    		}
 			    		
-						// 취소바튼 클릭 시
-						$("#cancel").click(function(){
-							arr = []; // 배열에 담긴 값 초기화
-							$(".modal").modal('hide'); // 모달창 닫기
-						})
+						
 		    		})
+		    		
+		    		// 취소버튼 클릭 시
+					$("#cancel").click(function(){
+						arr = []; // 배열에 담긴 값 초기화
+						$(".modal").modal('hide'); // 모달창 닫기
+						location.reload();
+					})
 		    	</script>
 		    		
 		        
@@ -270,7 +272,7 @@
 							<!-- Modal Header -->
 							<div class="modal-header">
 								<h4 class="modal-title">문서수정</h4>
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<button type="button" class="close" onclick="window.location.reload();" data-dismiss="modal">&times;</button>
 							</div>
 			
 							<!-- Modal body -->
@@ -283,12 +285,15 @@
 											<th width="120px">작성자</th>
 											<td colspan="2"><input type="text" id="docWriter" name="docWriter" value="${ loginUser.memId }" readonly></td>
 											<td>
-												<select name="docCategory" id="docCategory" value="${ d.docCategory }">
+												<select name="docCategory" id="docCategory">
 													<option value='공용'>공용</option>
+													<c:forEach var="dc" begin="2" items="${ category }">
+														<option value='${ dc.depName }'>${ dc.depName }</option>
+													</c:forEach>
 												</select>
 											</td>
 										</tr>
-			
+										
 										<tr>
 											<th>내용</th>
 											<td colspan="2"><textarea name="docContent" id="docContent" cols="50" rows="10" style="text-aling: left; resize: none;" required>${ d.docContent }</textarea></td>
@@ -308,11 +313,11 @@
 									</table>
 			
 								</div>
-							
+								
 								<!-- Modal footer -->
 								<div class="modal-footer center">
 									<div class="button-area">
-										<button class="btn btn-secondary" data-dismiss="modal" id="cancel">취소</button>
+										<button class="btn btn-secondary" data-dismiss="modal" id="cancel" onclick="window.location.reload();">취소</button>
 										<button class="btn btn-primary" type="submit">저장</button>
 									</div>
 								</div>
@@ -320,78 +325,100 @@
 						</div>
 					</div>
 				</div>
-
-		        <%-- 페이징바 ------------------------------------------------------------------------ --%>
-		        <div class="paging-area">
-		            <ul class="pagination justify-content-center">
-		            	<c:choose>
-		            		<c:when test="${ pi.currentPage eq 1 }">
-			            		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-			            	</c:when>
-			            	<c:otherwise>
-			            		<c:choose>
-			            			<c:when test="${ empty condition }">
-			                			<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ pi.currentPage - 1 }&dCount=${ dCount }">Previous</a></li>
-			                		</c:when>
-			                		<c:otherwise>
-			                			<li class="page-item"><a class="page-link" href="search.doc?currentPage=${ pi.currentPage - 1 }&keyword=${ keyword }&condition=${ condition }&dCount=${ dCount }">Previous</a></li>
-			                		</c:otherwise>
-			                	</c:choose>
-			                </c:otherwise>
-			            </c:choose>
-			            
-                		<c:choose>
-                			<c:when test="${ empty condition }">
-                				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                					<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ p }&dCount=${ dCount }">${ p }</a></li>
-                				</c:forEach>
-                			</c:when>
-                			<c:otherwise>
-                				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                					<li class="page-item"><a class="page-link" href="search.doc?currentPage=${ p }&keyword=${ keyword }&condition=${ condition }&dCount=${ dCount }">${ p }</a></li>
-                				</c:forEach>
-                			</c:otherwise>
-               			</c:choose>
-			                			
-			            <c:choose>
-			            	<c:when test="${ pi.currentPage eq pi.maxPage }">
-			            		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
-			            	</c:when>
-			            	<c:otherwise>
-			            		<c:choose>
-				            		<c:when test="${ empty condition }">
-					                	<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ pi.currentPage + 1 }&dCount=${ dCount }">Next</a></li>
-				            		</c:when>
-				            		<c:otherwise>
-				            			<li class="page-item"><a class="page-link" href="search.doc?currentPage=${ pi.currentPage + 1 }&keyword=${ keyword }&condition=${ condition }&dCount=${ dCount }">Next</a></li>
-				            		</c:otherwise>
-			            		</c:choose>
-		            		</c:otherwise>
-		                </c:choose>
-		                
-		            </ul>
-		        </div>
-		        <%------------------------------------------------------------------------------ 페이징바 끝--%>
-
-				<%-- 검색바 ------%>
-				<div class="search-area">
-					<form id="searchForm" class="form-inline justify-content-center" action="search.doc" method="Get">
-						<select class="form-control" name="condition" id="condition">
-							<option value="writer">작성자</option>
-							<option value="content">내용</option>
-						</select>
-						<input type="search" class="form-control" name="keyword" value="${ keyword }" placeholder="검색어를 입력하세요">
-						<button type="submit" class="btn btn-primary btn-search">검색</button>
-					</form>
-					
-					<c:if test="${ !empty condition }">
-			            <script>
-			            	$(function(){
-			            		$("#searchForm option[value=${ condition }]").attr("selected", true);
-			            	})
-			            </script>
-		            </c:if>
-				</div>
+				
+				
+				<c:if test="${ !empty list }">
+			        <%-- 페이징바 ------------------------------------------------------------------------ --%>
+			        <div class="paging-area">
+			            <ul class="pagination justify-content-center">
+			            	<c:choose>
+			            		<c:when test="${ pi.currentPage eq 1 }">
+				            		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+				            	</c:when>
+				            	<c:otherwise>
+				            		<c:choose>
+				            			<c:when test="${ empty condition }">
+				                			<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ pi.currentPage - 1 }&dCount=${ dCount }&docCategory=${ docCategory }">Previous</a></li>
+				                		</c:when>
+				                		<c:otherwise>
+				                			<li class="page-item"><a class="page-link" href="search.doc?currentPage=${ pi.currentPage - 1 }&keyword=${ keyword }&condition=${ condition }&dCount=${ dCount }&docCategory=${ docCategory }">Previous</a></li>
+				                		</c:otherwise>
+				                	</c:choose>
+				                </c:otherwise>
+				            </c:choose>
+				            
+	                		<c:choose>
+	                			<c:when test="${ empty condition }">
+	                				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+	                					<c:choose>
+	                						<c:when test="${ pi.currentPage eq p }">
+	                							<li class="page-item active"><a class="page-link" href="list.doc?currentPage=${ p }&dCount=${ dCount }&docCategory=${ docCategory }">${ p }</a></li>
+	                						</c:when>
+	                						<c:otherwise>
+	                							<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ p }&dCount=${ dCount }&docCategory=${ docCategory }">${ p }</a></li>
+	                						</c:otherwise>
+	                					</c:choose>
+	                				</c:forEach>
+	                			</c:when>
+	                		
+	                			<c:otherwise>
+	                				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+	                					<c:choose>
+	                						<c:when test="${ pi.currentPage eq p }">
+	                							<li class="page-item active"><a class="page-link" href="search.doc?currentPage=${ p }&keyword=${ keyword }&condition=${ condition }&dCount=${ dCount }&docCategory=${ docCategory }">${ p }</a></li>
+	                						</c:when>
+	                						<c:otherwise>
+	                							<li class="page-item"><a class="page-link" href="search.doc?currentPage=${ p }&keyword=${ keyword }&condition=${ condition }&dCount=${ dCount }&docCategory=${ docCategory }">${ p }</a></li>
+	                						</c:otherwise>
+	                					</c:choose>
+	                				</c:forEach>
+	                			</c:otherwise>
+	               			</c:choose>
+				                			
+				            <c:choose>
+				            	<c:when test="${ pi.currentPage eq pi.maxPage }">
+				            		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+				            	</c:when>
+				            	<c:otherwise>
+				            		<c:choose>
+					            		<c:when test="${ empty condition }">
+						                	<li class="page-item"><a class="page-link" href="list.doc?currentPage=${ pi.currentPage + 1 }&dCount=${ dCount }&docCategory=${ docCategory }">Next</a></li>
+					            		</c:when>
+					            		<c:otherwise>
+					            			<li class="page-item"><a class="page-link" href="search.doc?currentPage=${ pi.currentPage + 1 }&keyword=${ keyword }&condition=${ condition }&dCount=${ dCount }&docCategory=${ docCategory }">Next</a></li>
+					            		</c:otherwise>
+				            		</c:choose>
+			            		</c:otherwise>
+			                </c:choose>
+			                
+			            </ul>
+			        </div>
+			        <%------------------------------------------------------------------------------ 페이징바 끝--%>
+			        
+			        <%-- 검색바 ------%>
+					<div class="search-area">
+						<form id="searchForm" class="form-inline justify-content-center" action="search.doc" method="Get">
+							<input type="hidden" name="docCategory" value=${ docCategory }>
+							<select class="form-control" name="condition" id="condition">
+								<option value="writer">작성자</option>
+								<option value="content">내용</option>
+							</select>
+							<input type="search" class="form-control" name="keyword" value="${ keyword }" placeholder="검색어를 입력하세요">
+							<button type="submit" class="btn btn-primary btn-search">검색</button>
+						</form>
+						
+						<c:if test="${ !empty condition }">
+				            <script>
+				            	$(function(){
+				            		$("#searchForm option[value=${ condition }]").attr("selected", true);
+				            	})
+				            </script>
+			            </c:if>
+					</div>
+			        
+				</c:if>
+				
+				
 			</div>
     	</div>
 		

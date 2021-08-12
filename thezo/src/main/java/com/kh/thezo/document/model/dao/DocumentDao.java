@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.document.model.vo.DocCategory;
 import com.kh.thezo.document.model.vo.Document;
 
 @Repository
@@ -47,6 +48,10 @@ public class DocumentDao {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList)sqlSession.selectList("documentMapper.searchDocumentList", map, rowBounds);
+	}
+	
+	public ArrayList<DocCategory> selectCategoryList(SqlSessionTemplate sqlSession){
+		return (ArrayList)sqlSession.selectList("documentMapper.selectCategoryList");
 	}
 	
 }

@@ -26,6 +26,8 @@ public class Member {
 	private String birth;
 	private String zipCode;
 	private String address;
+	private String addressExtra;
+	private String addressDetail;
 	private int depNo;
 	private String department;
 	private String job;

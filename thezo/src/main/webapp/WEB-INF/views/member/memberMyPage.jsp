@@ -146,7 +146,7 @@
                             <input type="text" class="form-control" id="email" name="email" value="${ loginUser.email }"><br>
                             
                             <label for="birth">생년월일</label>
-                            <input type="date" class="form-control" id="birth" name="birth" value="${ loginUser.birth }"><br>	
+                            <input type="text" class="form-control" id="birth" placeholder="ex)1990-01-01" name="birth" value="${ loginUser.birth }"><br>	
                        	</div>
                        	
                        <div id="address-area">
@@ -155,22 +155,12 @@
                                 <input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" name="zipCode" value="${ loginUser.zipCode }" required style="width: 100px;">
                                 <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="btn-address"  class="btn btn-primary mb-2">
                             </div>
-                            <input type="text"  class="form-control" id="sample6_address" name="add1" placeholder="주소" value="${ loginUser.address }" required>
+                            <input type="text"  class="form-control" id="sample6_address" name="address" placeholder="주소" value="${ loginUser.address }" required>
                             <div id="div-name"></div>
-                            <input type="text"  class="form-control" id="sample6_extraAddress" name="add2" placeholder="참고항목" required>
-                            <input type="text" class="form-control" id="sample6_detailAddress" name="add3" placeholder="상세주소" required>
+                            <input type="text"  class="form-control" id="sample6_extraAddress" name="addressExtra" placeholder="참고항목" value="${ loginUser.addressExtra }">
+                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소" value="${ loginUser.addressDetail }" >
                    
-                   			
-                   			<!-- 
-                   			<script>
-	                   			var result='';
-	                   			$('input[name=address1]').map(function(){
-	                   				result +=$(this).val();
-	                   			});
-	                   			$("#address").show();
-	                   			
-                   			</script>
-                   			 -->
+                   		
                         </div>
                         
 

@@ -206,10 +206,7 @@ public class MemberController {
 	
 	// 사용자 : 내 정보 수정하기 - 이성경
 	@RequestMapping("myPageUpdate.me")
-	public String updateMember(String add1, String add2, String add3, Member m, MultipartFile reupfile,HttpSession session, Model model) {
-		
-		String address = add1 + add2 + add3;
-		m.setAddress(address);
+	public String updateMember(Member m, MultipartFile reupfile,HttpSession session, Model model) {
 		
 		String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
 		m.setMemPwd(encPwd);

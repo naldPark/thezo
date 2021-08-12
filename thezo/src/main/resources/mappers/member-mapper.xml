@@ -14,6 +14,8 @@
 		<result column="birth" property="birth"/>
 		<result column="zip_code" property="zipCode"/>
 		<result column="address" property="address"/>
+		<result column="address_extra" property="addressExtra"/>
+		<result column="address_detail" property="addressDetail"/>
 		<result column="enroll_date" property="enrollDate"/>
 		<result column="gender" property="gender"/>
 		<result column="resign_date" property="resignDate"/>
@@ -43,6 +45,8 @@
 			, BIRTH
 			, ZIP_CODE
 			, ADDRESS
+			, ADDRESS_EXTRA
+			, ADDRESS_DETAIL
 			, DEP_NO
 			, DEPARTMENT
 			, JOB
@@ -254,6 +258,8 @@
  		     , birth = #{birth}
  		     , zip_code = #{zipCode}
  		     , address = #{address}
+ 		     , address_extra = #{addressExtra}
+ 		     , address_detail = #{addressDetail}
  		     , origin_name = #{originName}
  		 where mem_no = #{memNo}      
  	</update>

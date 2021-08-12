@@ -157,7 +157,7 @@
                             <input type="text" class="form-control" id="email" name="email" required><br>
                             
                             <label for="birth">생년월일</label>
-                            <input type="date" class="form-control" id="birth" name="birth" required><br>
+                            <input type="text" class="form-control" id="birth" name="birth" placeholder="ex)1990-01-01" required><br>
                            
 						</div>
                            
@@ -171,7 +171,7 @@
                             <input type="text"  class="form-control" id="sample6_address" name="addressS" placeholder="주소" required>
                             <div id="div-name"></div>
                             <input type="text"  class="form-control" id="sample6_extraAddress" name="addressExtra" placeholder="참고항목" required>
-                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetai" placeholder="상세주소" required>
+                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소" required>
                         </div>
 
                         <div class="form-row" id="content">

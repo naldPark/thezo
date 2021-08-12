@@ -106,6 +106,13 @@ public class MemberServiceImpl implements MemberService {
 	public ArrayList<Member> deleteSearchList(PageInfo pi, HashMap<String, String> map) {
 		return mDao.deleteSearchList(sqlSession, pi, map);
 	}
+	
+	// 4) 회원 삭제
+	@Override
+	public int deleteMember(int memNo) {
+		return mDao.deleteMember(sqlSession, memNo);
+	}
+	
 
 	
 
@@ -115,6 +122,9 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.updateMember(sqlSession, m);
 	}
 
+	
+
+	
 
 	
 

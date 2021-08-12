@@ -34,6 +34,10 @@ table tbody {
 	margin: 5px;
 }
 
+  #searchForm{
+        width:49%;
+    }
+
 .select {
 	width: 20%;
 }
@@ -70,13 +74,7 @@ table tbody {
 				<b>사원 삭제</b>
 			</h2>
 			<br>
-			<div id="outerHeader">
-				<div class="header1">
-					<a class="btn btn-primary btn-sm" id="approval">삭제</a>
-				</div>
-
-				<div class="header2">
-					<div id="search-area" align="right">
+			<div id="search-area" align="right">
 						<form id="searchForm" action="deleteSearch.me" method="Get">
 							<div class="select">
 								<select class="custom-select" name="condition">
@@ -99,15 +97,10 @@ table tbody {
 			            </script>
 							
 					</div>
-				</div>
-				<br>
-
-			</div>
-			<br>
+			<br><br><br>
 			<table id="boardList" class="table table-hover" align="center">
 				<thead>
 					<tr>
-						<th>#</th>
 						<th>사원번호</th>
 						<th>이름</th>
 						<th>아이디</th>
@@ -119,8 +112,7 @@ table tbody {
 				<tbody>
 					<c:forEach var="m" items="${ list }">
 	                    <tr>
-	                        <td><input type="checkbox" name="check"></td>
-	                        <td>${ m.memNo }</td>
+	                        <td class="mno">${ m.memNo }</td>
 	                        <td>${ m.memName }</td>
 	                        <td>${ m.memId }</td>
 	                        <td>${ m.department }</td>
@@ -131,6 +123,14 @@ table tbody {
 				</tbody>
 
 			</table>
+			
+			<script>
+            	$(function(){
+            		$("#boardList>tbody>tr").click(function(){
+            			location.href="memDeleteForm.me?mno=" + $(this).children(".mno").text();
+            		})
+            	})
+            </script>
 
 			<br>
 			<br>

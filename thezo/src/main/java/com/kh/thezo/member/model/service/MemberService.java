@@ -41,6 +41,9 @@ public interface MemberService {
 	int updateMember(Member m);
 
 	// 7. 관리자 : 회원 정보 수정
-	int adMemberUpdate(Member m);	
+	int adMemberUpdate(Member m);
+	
+	// 8. 관리자 : 회원 정보 삭제
+	int deleteMember(int memNo);
 	
 }

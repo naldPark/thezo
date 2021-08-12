@@ -97,9 +97,14 @@ public class MemberDao {
 		
 		return (ArrayList)sqlSession.selectList("memberMapper.deleteSearchList", map, rowBounds);
 	}
+	
+	// 4) 회원 삭제 : 관리자 - 이성경
+	public int deleteMember(SqlSessionTemplate sqlSession, int memNo) {
+		return sqlSession.delete("memberMapper.deleteMember", memNo);
+	}
 
 	
-	// 6. 내 정보 수정 : 사용자 - 이성경
+	// 내 정보 수정 : 사용자 - 이성경
 	public int updateMember(SqlSessionTemplate sqlSession, Member m) {
 		return sqlSession.update("memberMapper.updateMember", m);
 	}

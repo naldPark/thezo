@@ -232,6 +232,36 @@ public class MemberController {
 		
 	}
 	
+	// 관리자 : 회원 삭제하기 화면 포워딩
+	@RequestMapping("memDeleteForm.me")
+	public ModelAndView memDeleteForm(int mno, ModelAndView mv) {
+		Member m = mService.selectMember(mno);
+		
+		if( m != null) {
+			mv.addObject("m", m).setViewName("member/memDeleteDetail");
+		}else {
+			mv.addObject("errorMsg", "상세조회 실패");
+		}
+		return mv;
+	}
+	
+	// 관리자 : 회원 삭제
+	@RequestMapping("adminMemDelete.me")
+	public String adDeleteMember(int mno, Model model, HttpSession session) {
+		
+		//System.out.println(mno);
+		int result = mService.deleteMember(mno);
+		
+		if(result > 0) { // 성공 => 리스트 페이지
+			
+			session.setAttribute("alertMsg", "성공적으로 회원 정보가 삭제되었습니다.");
+			return "redirect:memberDelete.me";
+		}else { // 실패
+			model.addAttribute("errorPage", "회원 정보 삭제 실패");
+			return "common/errorPage";
+		}
+	}
+	
 	
 	// 사용자 : 내 정보 수정 페이지 응답 - 이성경
 	@RequestMapping("myPage.me")

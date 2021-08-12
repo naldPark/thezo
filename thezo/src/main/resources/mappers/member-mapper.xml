@@ -332,6 +332,13 @@
 			     by mem_no desc 
 	</select>
 	
+	
+	<!-- 회원 삭제 -->
+	<delete id="deleteMember">
+		delete 
+		  from member
+		 where mem_no = #{memNo}
+	</delete>
  	
  	<!-- 사용자 : 내 정보 수정  -->
  	<update id="updateMember">

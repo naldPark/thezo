@@ -29,7 +29,6 @@ public class Member {
 	private String depNo;
 	private String addressExtra;
 	private String addressDetail;
-	private int depNo;
 	private String department;
 	private String job;
 	private String rank;

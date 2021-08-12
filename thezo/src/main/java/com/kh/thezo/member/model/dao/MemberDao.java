@@ -52,6 +52,21 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.selectMember", memNo);
 	}
 	
+	
+	// 5_1) 사원 등록 : 아이디 중복체크
+	public int idCheck(SqlSessionTemplate sqlSession, String memId) {
+		return sqlSession.selectOne("memberMapper.idCheck", memId);
+	}
+	
+	// 5_2) 사원 등록 
+	public int insertMember(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.insert("memberMapper.insertMember", m);
+	}
+	
+	
+	
+	
+	
 	// 회원 삭제 : 관리자 - 이성경
 	// 1) 회원 삭제 리스트 갯수 조회(탈퇴 회원수 조회)
 	public int memDeleteListCount(SqlSessionTemplate sqlSession) {
@@ -78,16 +93,7 @@ public class MemberDao {
 		
 		return (ArrayList)sqlSession.selectList("memberMapper.deleteSearchList", map, rowBounds);
 	}
-	
-	// 4. 아이디 중복체크 
-	public int idCheck(SqlSessionTemplate sqlSession, String memId) {
-		return sqlSession.selectOne("memberMapper.idCheck", memId);
-	}
-	
-	// 5. 사원 등록 : 관리자 - 이성경
-	public int insertMember(SqlSessionTemplate sqlSession, Member m) {
-		return sqlSession.insert("memberMapper.insertMember", m);
-	}
+
 	
 	// 6. 내 정보 수정 : 사용자 - 이성경
 	public int updateMember(SqlSessionTemplate sqlSession, Member m) {

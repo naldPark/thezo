@@ -103,7 +103,7 @@
 						
 						<div id="pwdcontent" class="form-row">
 							<label for="memPwd">비밀번호</label>
-                            <input type="password" class="form-control" id="memPwd" name="memPwd"" required><br>
+                            <input type="password" class="form-control" id="memPwd" name="memPwd" required><br>
 
                             <label for="checkPwd">비밀번호 확인</label>
                             <input type="password" class="form-control" id="checkPwd"" required><br>
@@ -136,12 +136,12 @@
 	                       	<label for="gender">성별</label>&nbsp;&nbsp;&nbsp;&nbsp;
 	                        <div class="form-check-inline">
 	                             <label class="form-check-label">
-	                             	<input type="radio" class="form-check-input" name="gender" id="Male" value="M">남자
+	                             	<input type="radio" class="form-check-input" name="gender" id="Male" value="M" required>남자
 	                             </label>
 	                        </div>
 	                        <div class="form-check-inline">
 	                             <label class="form-check-label">
-	                                <input type="radio" class="form-check-input" name="gender" id="Female" value="F">여자
+	                                <input type="radio" class="form-check-input" name="gender" id="Female" value="F" required>여자
 	                             </label><br>
 	                        </div>
                        </div>  
@@ -158,7 +158,6 @@
                             
                             <label for="birth">생년월일</label>
                             <input type="text" class="form-control" id="birth" name="birth" placeholder="ex)1990-01-01" required><br>
-                           
 						</div>
                            
                         <div id="address-area">
@@ -168,14 +167,14 @@
                                 <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="btn-address"  class="btn btn-primary mb-2">
                             </div>
                             
-                            <input type="text"  class="form-control" id="sample6_address" name="addressS" placeholder="주소" required>
+                            <input type="text"  class="form-control" id="sample6_address" name="address" placeholder="주소" required>
                             <div id="div-name"></div>
-                            <input type="text"  class="form-control" id="sample6_extraAddress" name="addressExtra" placeholder="참고항목" required>
-                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소" required>
+                            <input type="text"  class="form-control" id="sample6_extraAddress" name="addressExtra" placeholder="참고항목" >
+                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소" >
                         </div>
 
                         <div class="form-row" id="content">
-                            <label for="birth">입사일</label>
+                            <label for="enroll_date">입사일</label>
                             <input type="date" class="form-control" id="enrollDate" name="enrollDate" required><br>
                         </div>
 
@@ -200,11 +199,11 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><!--직책을 따로..? 만들어야하나..?-->
+                                    <td>
                                         <div class="form-group" class="form-row" align="left">
                                             <label for="sel1">직책</label>
                                             <select class="form-control" name="job" id="sel1" style="width: 90%;" align="center">
-                                                <option>-</option>
+                                                <option></option>
                                                 <option value="팀장">팀장</option>
                                                 <option value="본부장">본부장</option>
                                                 <option value="대표이사">대표이사</option>

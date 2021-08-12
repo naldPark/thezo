@@ -57,6 +57,24 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.selectMember(sqlSession, memNo);
 	}
 
+	
+	// 5_1) 사원 등록 : 아이디 중복체크용
+	@Override
+	public int idCheck(String memId) {
+		return mDao.idCheck(sqlSession, memId);
+	}
+
+	// 5_2) 사원 등록
+	@Override
+	public int insertMember(Member m) {
+		return mDao.insertMember(sqlSession, m);
+	}
+
+	
+	
+	
+	
+	
 	// 회원 삭제 : 관리자 - 이성경
 	// 1) 회원 삭제 리스트 갯수 조회(탈퇴 회원수 조회)
 	@Override
@@ -82,16 +100,7 @@ public class MemberServiceImpl implements MemberService {
 		return mDao.deleteSearchList(sqlSession, pi, map);
 	}
 
-	// 아이디 중복체크용 
-	@Override
-	public int idCheck(String memId) {
-		return mDao.idCheck(sqlSession, memId);
-	}
-
-	@Override
-	public int insertMember(Member m) {
-		return mDao.insertMember(sqlSession, m);
-	}
+	
 
 	// 사용자 : 내 정보 수정하기 
 	@Override

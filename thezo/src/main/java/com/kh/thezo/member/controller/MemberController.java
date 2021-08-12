@@ -258,10 +258,13 @@ public class MemberController {
 		
 	}
 	
-	/*
+	
 	// 관리자 : 사원등록하기 - 이성경
 	@RequestMapping("memberEnroll.me")
 	public String insertMember(Member m, MultipartFile upfile, HttpSession session, Model model) {
+		
+		String encPwd = bcryptPasswordEncoder.encode(m.getMemPwd());
+		m.setMemPwd(encPwd);
 		
 		if(!upfile.getOriginalFilename().equals("")) {
 			
@@ -282,7 +285,6 @@ public class MemberController {
 					
 	}
 	
-	*/
 	
 	
 	// 사용자 : 조직도(연락처) 화면 포워딩

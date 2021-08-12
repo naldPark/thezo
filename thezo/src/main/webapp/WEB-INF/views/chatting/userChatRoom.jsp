@@ -108,11 +108,11 @@
             </div>
             <div>
                 <span id="group-chat-room-name">인사팀 단체방</span>
-                <button type="button" onclick="openCreateGroupChat('cgn')"><i class="fas fa-edit"></i></button>
+                <button type="button" onclick="openCreateGroupChat('cgn', 8)"><i class="fas fa-edit"></i></button>
             </div>
             <div>
                 <span onclick="backToChatList();"><i class="fas fa-reply"></i></span>
-                <span onclick="openCreateGroupChat('ga')"><i class="fas fa-user-plus"></i></span>
+                <span onclick="openCreateGroupChat('ga', 8)"><i class="fas fa-user-plus"></i></span>
             </div>
         </div>
         <!-- 채팅 header끝 -->

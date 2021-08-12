@@ -9,6 +9,9 @@ import lombok.ToString;
 @Getter	@Setter
 @ToString
 public class ChatRoom {
-	
-	
+	private int roomNo;
+	private String roomName;
+	private String createDate;
+	private String updateDate;
+	private String groupStatus;
 }

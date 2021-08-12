@@ -4,31 +4,171 @@
 
 	<!-- @author Jaewon.s -->
 
-	<!-- 
-	<resultMap id="" type="">
-		<result column="" property=""/>	
+	<resultMap id="colleagueResult" type="Colleague">
+		<result column="mymem_no" property="myMemNo"/>	
+		<result column="comem_no" property="coMemNo"/>	
+		<result column="del_status" property="delStatus"/>	
+		<result column="my-img-path" property="myImgPath"/>	
+		<result column="co-img-path" property="coImgPath"/>	
+		<result column="my_name_and_rank" property="myNameAndRank"/>	
+		<result column="co_name_and_rank" property="coNameAndRank"/>	
+		<result column="room_no" property="roomNo"/>	
 	</resultMap>
-	 -->
-	<!-- 
-	<select id=" resultXXXX="">
-	
-	
-	</select>
-
-	<insert>
-	</insert>
-
-	<update>
-	</update>	
-
-	<delete>
-	</delete>
- 	-->
  	
+ 	<!-- 
  	<insert id="InsertChatContent">
+ 	</insert>
+ 	 -->
  	
+ 	<!-- 채팅 나의 동료 리스트 가져오는 sql문 -->
+ 	<select id="ajaxSelectColleagueList" resultMap="colleagueResult">
+ 		select mymem_no
+ 		     , comem_no
+ 		     , mb1.path as myImgPath
+ 		     , mb2.path as coImgPath
+  	         , mb1.mem_name || ' [' || mb1.rank || ']' as my_name_and_rank
+  	         , mb2.mem_name || ' [' || mb2.rank || ']' as co_name_and_rank
+ 		  from colleague co
+ 		  join member mb1 on (co.mymem_no = mb1.mem_no)
+ 		  join member mb2 on (co.comem_no = mb2.mem_no)
+ 		 where del_status = 'Y'
+ 		   and mb2.status != 'N'
+ 		   and mymem_no = #{memNo} 
+ 		 order
+ 		    by mb2.mem_name asc  
+ 	</select>
  	
+ 	<!-- 이미 동료로 추가되어있는지 확인하는 sql문  -->
+ 	<select id="ajaxCheckColleague" resultType="_int">
+ 		select count(*)
+ 		  from colleague
+ 		 where mymem_no = #{myMemNo}  
+		   and comem_no = #{coMemNo}   	
+ 	</select>
+ 	
+ 	<!-- 단순하게 친추하는 서비스 방만드는것은 ! 다른쪽에서 진행한다. -->
+ 	<insert id="ajaxAddColleague">
+		insert 
+	 	  into colleague
+	 	  (
+	 	  	mymem_no
+	 	  , comem_no	
+	 	  )
+	 	  values
+	 	  (
+	 	    #{ myMemNo } 
+  	 	  , #{ coMemNo } 
+	 	  )
  	</insert>
  	
+ 	<!-- 동료창에서 동료 더블클릭시에 이미 채팅방이 존재하는지 확인하는 sql -->
+ 	<select id="ajaxCheckExistRoom" resultType="string">
+ 		select first_tb.room_no
+		  from (select room_no
+		          from chat_connect
+		         where mem_no = ${myMemNo}) first_tb,
+		       (select room_no
+		          from chat_connect
+		         where mem_no = ${coMemNo}) second_tb,
+		       (select room_no
+		          from chatroom
+		         where group_status = 'P') third_tb
+		where first_tb.room_no = second_tb.room_no
+		  and second_tb.room_no = third_tb.room_no
+ 	</select>
+ 	
+ 	<!-- 채팅방 만드는 Dao 이지만 selectKey로다가 값을 반환할거다. -->
+	<insert id="ajaxMakeRoom">
+     	insert
+     	  into chatroom
+     	  (
+     	  	room_no
+     	  , room_name	
+     	  , group_status
+     	  )
+		values	
+		  (
+		  	seq_rmno.nextval
+		  , (#{myMemNo} || ',' || #{coMemNo})
+		  , 'P'	
+		  )
+	    <selectKey keyProperty="roomNo" resultType="_int" order="AFTER">  
+        	select seq_rmno.currval FROM dual  
+     	</selectKey>
+	</insert> 
+ 	
+ 	<!-- 개인채팅 chat_connect 2행 집어넣는 sql문  -->
+ 	<insert id="ajaxMakeChatConnect">
+ 		insert all
+ 		  into chat_connect (room_no, mem_no)values(#{roomNo}, #{myMemNo})
+ 		  into chat_connect (room_no, mem_no)values(#{roomNo}, #{coMemNo})
+		select * from dual 	
+ 	</insert>
+ 	
+ 	<!-- 단체 채팅방에서 동료 초대할때 이미 초대된 동료를 제외한 나의 동료 조회 -->
+ 	<select id="ajaxSelectExtraColleague" resultMap="colleagueResult">
+ 		select mymem_no
+ 		     , comem_no
+ 		     , mb1.path as myImgPath
+ 		     , mb2.path as coImgPath
+  	         , mb1.mem_name || ' [' || mb1.rank || ']' as my_name_and_rank
+  	         , mb2.mem_name || ' [' || mb2.rank || ']' as co_name_and_rank
+ 		  from colleague co
+ 		  join member mb1 on (co.mymem_no = mb1.mem_no)
+ 		  join member mb2 on (co.comem_no = mb2.mem_no)
+ 		 where del_status = 'Y'
+ 		   and mb2.status != 'N'
+ 		   and mymem_no = #{ myMemNo }
+ 		   and comem_no not in(select mem_no 
+                                 from chat_connect
+                                where room_no = #{ roomNo })
+ 		 order
+ 		    by mb2.mem_name asc
+ 	</select>
+ 	
+ 	<!-- 단체채팅방 이름 가져오는 sql문  -->
+ 	<select id="ajaxSelectGroupName" resultType="string" parameterType="_int">
+ 		select room_name
+ 		  from chatroom
+ 		 where room_no = #{roomNo} 
+ 	</select>
+ 	
+ 	<!-- 단체 채팅방 이름 수정하는 sql문  -->
+ 	<update id="ajaxModifyGroupName">
+		update
+		       chatroom
+		   set room_name = #{roomName},
+		       update_date = sysdate
+		 where room_no = ${roomNo}
+ 	</update>
+ 	
+ 	<!-- 단체 체팅방 만들면서 동시에 해당 방의 방번호를 반환하는 sql문  -->
+ 	<insert id="ajaxMakeGroupRoom" parameterType="hashMap">
+ 	    insert
+     	  into chatroom
+     	  (
+     	  	room_no
+     	  , room_name	
+     	  , group_status
+     	  )
+		values	
+		  (
+		  	seq_rmno.nextval
+		  , #{roomName}
+		  , 'G'	
+		  )
+	    <selectKey keyProperty="roomNo" resultType="int" order="AFTER">  
+        	select seq_rmno.currval FROM dual  
+     	</selectKey>
+ 	</insert>
+ 	
+ 	<!-- 단체방이 만들어졌으면 이후에 chat_connect를 단채톡 이원만큼 돌리면서 넣는 sql문 -->
+ 	<!-- 미친.. insert문인데 update태그를 사용해야된다..  -->
+ 	<update id="ajaxMakeGroupChatConnect" parameterType="hashMap">
+	        <foreach item="coMemNo" open="INSERT ALL" close="SELECT * FROM DUAL" collection="newGroupMemMultiVal">
+ 		     into chat_connect (room_no, mem_no) values (${roomNo} , ${coMemNo}) 
+	        </foreach>
+ 	</update>
+  	
  	
 </mapper>

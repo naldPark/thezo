@@ -67,8 +67,56 @@
     <!-- 후에 소켓으로 구현하면 !! 더블 클릭시 해당 ! 인원과 채팅바로되게 해결 -->
     <!-- 제일 좋은 방법은 !! 친구추가할떄 트리거로 room까지도 만들고 room정보(번호)까지도 가져오는것이다!! -->
     <script>
-        function clickShowChatRoom(rNo, groupStatus){
-            // 넘겨 받은 번호를 가지고 ajax 처리해서 보여지겠끔 하자! 
+        function clickConnectChatRoom(coMemNo){
+        	// 동료창에서 채팅방으로 넘어가는 경우 
+          	$.ajax({
+		 		url:"checkExistRoom.cht",
+				data:{myMemNo : ${ loginUser.memNo }
+          		 	, coMemNo : coMemNo
+            	},
+		 		success:function(result){
+		 			if(result != null && result > 0){// 이미 방이 존재하는 경우 
+		 				//console.log("이미 방이 존재함 방번호 :" + result);
+		 				//여기서 이제 해당 방번호로 이동해주면되!
+		 				ShowChatRoomByRoomNo(result, 'P');
+		 			}else{// 방이 존재하지 않는 경우 
+		 				// 방이 존재하지 않으니 방을 만들고 chat_connect까지도 만들어주자
+		            	$.ajax({
+		 			 		url:"makeRoomAndChatConnect.cht",
+		 					data:{myMemNo : ${ loginUser.memNo }
+		            		 	, coMemNo : coMemNo
+		 	            	},
+		 			 		success:function(result){
+		 			 			if(result>0){
+			 			 			console.log("방 접속 싹다 만들어짐 ");
+					 				console.log("가져온 방번호 :" + result);
+					 				ShowChatRoomByRoomNo(result, 'P');
+		 			 			}else{
+		 			 				alert("채팅방에 입장하지 못하였습니다. 개발자에게 문의해주세요!");
+		 			 			}
+		 			 		},error:function(){
+		 			 			console.log("ajax통신 실패");
+		 			 		}				
+		 			 	})
+		 			}
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})
+        } 
+        
+        function ShowChatRoomByRoomNo(RoomNo, groupStatus){
+        	console.log(RoomNo);
+        	console.log(groupStatus);
+
+            $("#chatting-outer").hide();
+            $("#open-chat-Room").show();
+            $("#chat-content-body").scrollTop($("#chat-content-body")[0].scrollHeight);
+            
+			// 채팅 목록 방에서 갠톡으로 넘어온 경우 
+            if(groupStatus=='P'){
+                console.log("갠톡임");
+            }
 
             //  넘어온 groupStatus로 갠톡 단톡 구분한다.   
             if(groupStatus=='G'){
@@ -76,10 +124,11 @@
             }
 
             //console.log("더블클릭임");
-            $("#chatting-outer").hide();
-            $("#open-chat-Room").show();
-            $("#chat-content-body").scrollTop($("#chat-content-body")[0].scrollHeight);
-        } 
+
+
+        }
+        
+        
     </script>
 
 <%-- -------------------------더블클릭시 채팅방으로 이동하는 영역 끝 ------------------------------------------------%>   

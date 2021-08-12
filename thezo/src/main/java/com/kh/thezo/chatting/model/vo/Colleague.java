@@ -10,5 +10,14 @@ import lombok.ToString;
 @ToString
 public class Colleague {
 	
+	private int myMemNo;
+	private int coMemNo;
+	private String delStatus;
+	private String myImgPath;
+	private String coImgPath;
+	private String myNameAndRank; 
+	private String coNameAndRank; 
+	private int roomNo;
+
 	
 }

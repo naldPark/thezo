@@ -81,7 +81,7 @@ public class EchoHandler extends TextWebSocketHandler{// TextWebSocketHandler를
         
         
         // 아래가 선생님이 요청하신 메세지 insert시키는 메소드 호출이다. 
-        chatController.insertChatContent(memNo , roomNo, message.getPayload());
+        //chatController.insertChatContent(memNo , roomNo, message.getPayload());
         
     }    
 

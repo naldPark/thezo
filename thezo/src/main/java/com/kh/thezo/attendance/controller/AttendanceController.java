@@ -1,30 +1,49 @@
 package com.kh.thezo.attendance.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.thezo.attendance.model.service.AttendanceService;
 import com.kh.thezo.attendance.model.vo.Attendance;
+import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.common.template.Pagination;
+import com.kh.thezo.department.model.service.DepartmentService;
+import com.kh.thezo.department.model.vo.Department;
 
 @Controller
 public class AttendanceController{
 	
 	@Autowired
 	private AttendanceService aService;
+	@Autowired
+	private DepartmentService dService;
 	
 	@RequestMapping("attendance.ma")
 	public String attendance() {
 		return "attendance/attendanceView";
 	}
 	
+	//부서관리 페이지(관리자)
 	@RequestMapping("adminDept.ma")
-	public String deptManage() {
+	public String deptManage(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		
+		int listCount = dService.departmentListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Department> list = dService.selectDepartment(pi);
+	
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
+		
 		return "attendance/adminDeptManage";
 	}
 	

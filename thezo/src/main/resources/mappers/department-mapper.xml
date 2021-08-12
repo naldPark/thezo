@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="departmentMapper">
+
+	<resultMap id="departmentResult" type="Department">
+		<result column="dep_no" property="depNo"/>
+		<result column="dep_name" property="depName"/>
+		<result column="dep_class" property="depClass"/>
+		<result column="parent_dep" property="parentDep"/>
+		<result column="par_dep_class" property="parDepclass"/>
+		<result column="dep_status" property="depStatus"/>
+	</resultMap>
+	
+	<!-- 부서 입력 -->
+	<insert id="insertDept">
+		insert
+		  into department
+		     (
+		       dep_no
+		     , dep_name
+		     , dep_class
+		     , parent_dep
+		     , par_dep_class
+		     , dep_status
+		     )
+		values
+		     (
+		       #{ depNo }
+		     , #{ depName }
+		     , #{ depClass }
+		     , #{ parentDep }
+		     , #{ parDepclass }
+		     <choose>
+		     	<when test="depStatus == 'used'">
+		     		,'Y'
+		     	</when>
+		    	<otherwise>
+		    		,'N'
+		    	</otherwise>
+		     </choose>	     
+		     )
+	</insert>
+	
+	<!-- 부서코드 중복 조회 -->
+	<select id="depNocheck" parameterType="String" resultType="int">
+		select count(*)
+		  from department
+		 where dep_no = #{ depNo }
+	</select>
+	
+	<!-- 부서 총 갯수 -->
+	<select id="departmentListCount" resultType="_int">
+		select
+			   count(*)
+	      from department
+	</select>
+	
+	<!-- 부서 조회 -->
+	<select id="selectDepartment" resultMap="departmentResult">
+		select
+			   dep_no
+			 , dep_name
+			 , dep_class
+			 , parent_dep
+			 , par_dep_class
+			 , dep_status
+	      from department
+	     order
+	        by dep_class
+	</select>
+	
+	<!-- 부서 수정 -->
+ 	<update id="updateDepartment">
+ 		update
+ 			   department
+ 		   set dep_name = #{ depName }
+ 		   	 , dep_class = #{ depClass }
+ 		   	 , parent_dep = #{ parentDep }
+ 		   	 , par_dep_class = #{ parDepclass }
+ 		   	 , dep_status = 
+	 		   	 <choose>
+			     	<when test="depStatus == 'used'">
+			     		'Y'
+			     	</when>
+			    	<otherwise>
+			    		'N'
+			    	</otherwise>
+			     </choose>
+		 where dep_no = #{ depNo }
+ 	</update>
+</mapper>

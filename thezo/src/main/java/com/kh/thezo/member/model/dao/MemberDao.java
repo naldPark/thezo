@@ -63,6 +63,10 @@ public class MemberDao {
 		return sqlSession.insert("memberMapper.insertMember", m);
 	}
 	
+	// 6. 회원 정보 수정 
+	public int adMemberUpdate(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("memberMapper.adMemberUpdate", m);
+	}
 	
 	
 	

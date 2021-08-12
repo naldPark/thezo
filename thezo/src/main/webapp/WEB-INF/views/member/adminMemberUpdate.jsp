@@ -6,6 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<!-- 주소 api -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <style>
    .innerOuter{
         width: 1000px;
@@ -19,9 +22,7 @@
         margin:auto;
     }
     #content , #address-area, #department{width:50%;}
-
     #department>table{width: 100%;}
-
 
     body{position:relative;}
 	.container{position:absolute; top:30%; left:20%;}
@@ -52,16 +53,53 @@
             <div id="content1">
 
                 <div align="center" class="d-flex justify-content-center">
-                    <form action="" method="post" enctype="multipart/form-data">
+                    <form action="adMemberUpdate.me" method="post" enctype="multipart/form-data">
                         <div class="form-group d-flex justify-content-center">
-                            <!-- 프로필 사진이 비어있지 않은 경우-->
-                            <input type="hidden" name="path" value="path">
-                            <input type="hidden" name="originName" value="origin">
-                            <!-- if( 사원정보 != null ){ 처리 }-->
-                            <input id="reUpfile" type="file" name="reUpfile" onchange="loadImg(this);">
-                            <img id="sPhoto" width="200" height="200" src="resources/images/userProfile.png">
-
+							<c:choose>
+								<c:when test="${ m.originName == null }">
+	                        		<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="resources/images/userProfile.png">
+	                        		<input style="display: block;" type="file" id="input-image" name="reupfile">
+	                        	</c:when>
+	                        	<c:otherwise>
+	                        		<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="resources/uploadFiles/${ m.originName }">
+	                        		<input style="display: block;" type="file" id="input-image" name="reupfile">
+	                        	</c:otherwise>
+	                        </c:choose>	
                         </div>
+                        
+                        <script type="text/javascript">
+					        $(function(){
+					            
+					            $("#input-image").hide();
+					            $("#preview-image").click(function(){
+					                $("#input-image").click();
+					            })
+					        });
+				        
+					        function readImage(input) {
+					            // 인풋 태그에 파일이 있는 경우
+					            if(input.files && input.files[0]) {
+					                // 이미지 파일인지 검사 (생략)
+					                // FileReader 인스턴스 생성
+					                const reader = new FileReader()
+					                // 이미지가 로드가 된 경우
+					                reader.onload = e => {
+					                    const previewImage = document.getElementById("preview-image")
+					                    previewImage.src = e.target.result
+					                }
+					                // reader가 이미지 읽도록 하기
+					                reader.readAsDataURL(input.files[0])
+					            }
+					        }
+					        // input file에 change 이벤트 부여
+					        const inputImage = document.getElementById("input-image")
+					        inputImage.addEventListener("change", e => {
+					            readImage(e.target)
+					        })
+				        </script>
+                        
+                        
+                        
                         <div id="content" class="form-row">
                             <label for="memNo" align="left">사원번호</label>
                             <input type="text" class="form-control" id="memNo" name="memNo" value="${ m.memNo }" readonly><br>
@@ -71,39 +109,63 @@
 
                             <label for="memName">이름</label>
                             <input type="text" class="form-control" id="memName" name="memName" value="${ m.memName }"><br>
-
-                            <label for="gender">성별</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <div class="form-check-inline">
-                                <label class="form-check-label">
-                                  <input type="radio" class="form-check-input" name="gender" id="Male" value="M">남자
-                                </label>
-                              </div>
-                              <div class="form-check-inline">
-                                <label class="form-check-label">
-                                  <input type="radio" class="form-check-input" name="gender" id="Female" value="F">여자
-                                </label>
-                            </div>
-
-                            <label for="phone">전화번호</label>
-                            <input type="text" class="form-control" id="phone" name="phone" value="${ m.phone }" required><br>
-
-                            <label for="email">이메일</label>
-                            <input type="text" class="form-control" id="email" name="email"  value="${ m.email }" required><br>
+						</div>
+						
+						 
+                       <div id="content" class="form-row">
+	                       	<label for="gender">성별</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	                       	<c:choose>
+	                       		<c:when test="${ m.gender == 'M' }">
+					                <div class="form-check-inline">
+					                	<label class="form-check-label">
+					                    	<input type="radio" class="form-check-input" name="gender" id="Male" value="M" checked required>남자
+					                    </label>
+					                    <label class="form-check-label">
+					                        <input type="radio" class="form-check-input" name="gender" id="Female" value="F" required>여자
+					                    </label><br>
+					                </div>   
+					            </c:when>
+					            <c:otherwise>
+					                <div class="form-check-inline">
+					                	<label class="form-check-label">
+					                    	<input type="radio" class="form-check-input" name="gender" id="Male" value="M" required>남자
+					                    </label>
+					                    <label class="form-check-label">
+					                        <input type="radio" class="form-check-input" name="gender" id="Female" value="F" checked required>여자
+					                    </label><br>
+					                </div>   
+				                </c:otherwise>
+			                </c:choose>
+                       </div>  
+                       
                             
-                            <label for="birth">생년월일</label> 
-                            <input type="text" class="form-control" id="birth" name="birth" value="${ m.birth }" required><br>
-                        </div>    
+
+						
+						<div id="content" class="form-row">
+							<label for="phone">전화번호</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="${ m.phone }" required><br>
+                            	
+                            <label for="email">이메일</label>
+                            <input type="text" class="form-control" id="email" name="email" value="${ m.email }" required><br>
+                            
+                            <label for="birth">생년월일</label>
+                            <input type="text" class="form-control" id="birth" name="birth"  value="${ m.birth }" placeholder="ex)1990-01-01" required><br>
+						</div>
+						
+						
+						
+						
 
                         <div id="address-area">
                             <label for="address"  class="form-row" align="left">&nbsp;주소</label>
                             <div id="zip_code" class="form-inline">
-                                <input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" name="zipCode"  value="${ m.zipCode }" required style="width: 100px;">
-                                <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="btn-address"  class="btn btn-primary mb-2"><br>
+                                <input type="text" class="form-control mb-2 mr-sm-2" id="sample6_postcode" name="zipCode" value="${ m.zipCode }" required style="width: 100px;">
+                                <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" id="btn-address"  class="btn btn-primary mb-2">
                             </div>
-                            <div style="width:130px; display:inline-block;"></div>
-                            <input type="text"  class="form-control" id="sample6_address" name="addressS" value="${ m.address }" required>
+                            <input type="text"  class="form-control" id="sample6_address" name="address" placeholder="주소" value="${ m.address }" required>
                             <div id="div-name"></div>
-                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" value=""required>
+                            <input type="text"  class="form-control" id="sample6_extraAddress" name="addressExtra" placeholder="참고항목" value="${ m.addressExtra }">
+                            <input type="text" class="form-control" id="sample6_detailAddress" name="addressDetail" placeholder="상세주소" value="${ m.addressDetail }" >
                         </div>
 
                         <div class="form-row" id="content">
@@ -111,15 +173,21 @@
                             <input type="date" class="form-control" id="enrollDate" name="enrollDate" value="${ m.enrollDate }" required><br>
                             <label for="resignDate">퇴사일</label>
                             <input type="date" class="form-control" id="resignDate" name="resignDate" value="${ m.resignDate }"><br>
+                            
+                          	<label for="status">회원 상태</label>
+		                    	<select class="form-control" name="status" id="status">
+		                            <option value="Y">Y</option>
+		                            <option value="N">N</option>
+		                        </select>
                         </div>
-
+                       
                         <div id="department">
                             <table>
                                 <tr>
                                     <td colspan="2">
                                         <div class="form-group" class="form-row" align="left">
                                             <label for="sel1" align="left">부서</label>
-                                            <select class="form-control" id="sel1" required>
+                                            <select class="form-control" name="department" style="width: 100%;" id="department" required>
                                               <option>인사팀</option>
                                               <option>총무팀</option>
                                               <option>회계팀</option>
@@ -137,8 +205,8 @@
                                     <td><!--직책을 따로..? 만들어야하나..?-->
                                         <div class="form-group" class="form-row" align="left">
                                             <label for="sel1">직책</label>
-                                            <select class="form-control" id="sel1" style="width: 90%;" align="center">
-                                                <option>팀원</option>
+                                            <select class="form-control" name="job" id="job" align="center">
+                                                <option></option>
                                                 <option>팀장</option>
                                                 <option>본부장</option>
                                                 <option>대표이사</option>
@@ -148,7 +216,7 @@
                                     <td>
                                         <div class="form-group" class="form-row" align="left">
                                             <label for="sel1" align="left">직급</label>
-                                            <select class="form-control" id="sel1" style="width: 90%;" align="center">
+                                            <select class="form-control" name="rank"  id="rank" align="center">
                                                 <option>사원</option>
                                                 <option>대리</option>
                                                 <option>과장</option>
@@ -166,6 +234,31 @@
                                     </td>
                                 </tr>
                             </table>
+                            
+                            <script>
+                            	$(function(){
+                            		var department = "${ m.department }"
+                            		var job = "${ m.job }"
+                            		var rank = "${ m.rank }"
+                            		
+                            		$("#department option").each(function(indext,e){
+                            			if(department.indexOf($(this).val()) != -1){
+                            				$(this).prop("selected",true);
+                            			}
+                            		})
+                            		$("#job option").each(function(index,e){
+                            			if(job.indexOf($(this).val()) != -1){
+                            				$(this).prop("selected",true);
+                            			}
+                            		})
+                            		$("#rank option").each(function(index,e){
+                            			if(rank.indexOf($(this).val()) != -1){
+                            				$(this).prop("selected",true);
+                            			}
+                            		})
+                            
+                            </script>
+                            
                         </div>
 
 
@@ -180,29 +273,6 @@
                 </div>
             </div>
 
-
-            <script>
-                $(function(){
-                   
-                    $("#reUpfile").hide();
-                    $("#sPhoto").click(function(){
-                        $("#reUpfile").click();
-                    })
-                });
-                function loadImg(inputFile){
-                    if(inputFile.files.length == 1){
-                        var reader = new FileReader();
-                        reader.readAsDataURL(inputFile.files[0])
-                        reader.onload = function(e){
-                            $("#sPhoto").attr("src", e.target.result).show();
-                        }
-                    } else {
-                        $("#sPhoto").attr("src", null);
-                    }
-                }
-            </script>
-
-        
 
             <script>
                 function sample6_execDaumPostcode() {

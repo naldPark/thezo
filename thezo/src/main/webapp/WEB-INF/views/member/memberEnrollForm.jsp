@@ -148,7 +148,7 @@
                          
                             
 
-							<!-- 여기가 문제...해결하기  -->
+						
 						<div id="content" class="form-row">
 							<label for="phone">전화번호</label>
                             <input type="text" class="form-control" id="phone" name="phone" required><br>

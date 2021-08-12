@@ -154,6 +154,8 @@
 		     , birth
 		     , zip_code
 		     , address
+		     , address_extra
+		     , address_detail
 		     , enroll_date
 		     , resign_date
 		     , department
@@ -162,6 +164,7 @@
 		     , extension_no
 		     , origin_name
 		     , path
+		     , status
 		  from member
 		 where mem_no = #{memNo}       
 	</select>
@@ -226,6 +229,33 @@
 		     , #{originName}
 		     )
  	</insert>
+ 	
+ 	<!-- 6. 회원 정보 수정 -->
+ 	<update id="adMemberUpdate">
+ 		update 
+ 		       member
+ 		   set mem_name = #{memName}
+ 		     , gender = #{gender}
+ 		     , phone = #{phone}
+ 		     , email = #{email}  
+ 		     , birth = #{birth}
+ 		     , zip_code = #{zipCode}
+ 		     , address = #{address}
+ 		     , address_extra = #{addressExtra}
+ 		     , address_detail = #{addressDetail}
+ 		     , enroll_date = #{enrollDate}
+ 		     , resign_date = #{resignDate}
+ 		     , origin_name = #{originName}
+ 		     , status = #{status}
+ 		     , job = #{job}
+ 		     , rank = #{rank}
+ 		     , dep_no =(select dep_no
+				          from department
+				         where dep_name = #{department})
+ 		     , department = #{department}
+ 		     , extension_no = #{extensionNo}
+ 		 where mem_no = #{memNo}      
+ 	</update>
 	
 	
 	

@@ -40,6 +40,7 @@ public interface MemberService {
 	// 6. 사용자 : 내 정보 수정하기 
 	int updateMember(Member m);
 
-	
+	// 7. 관리자 : 회원 정보 수정
+	int adMemberUpdate(Member m);	
 	
 }

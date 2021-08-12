@@ -153,6 +153,42 @@ public class MemberController {
 		return mv;
 	}
 	
+	/*
+	// 회원정보관리(사원등록,수정):관리자 -이성경
+	// 회원 정보 수정
+	@RequestMapping("adMemberUpdate.me")
+	public String adMemberUpdate(Member m, MultipartFile reupfile,HttpSession session, Model model) {
+		
+		// 새로 넘어온 첨부파일이 있을 경우
+		if(!reupfile.getOriginalFilename().equals("")) {
+			// 기본에 첨부파일이 있었을 경우 => 기존의 첨부파일 지우기
+			if(m.getOriginName() != null) {
+				new File(session.getServletContext().getRealPath(m.getOriginName())).delete();
+				// 새로 넘어온 첨부파일 서버 업로드 시키기
+				String changeName = saveFile(session, reupfile); 
+				m.setOriginName(changeName);
+			}else {
+				String changeName = saveFile(session, reupfile); 
+				m.setOriginName(changeName);
+			}
+		}
+	
+		int result = mService.adMemberUpdate(m);
+		
+		if(result > 0) {
+			
+			session.setAttribute("loginUser", mService.loginMember(m));
+			session.setAttribute("alertMsg", "성공적으로 정보 수정되었습니다.");
+			
+			return "redirect:memberInfo.me";
+			
+		}else { 
+			model.addAttribute("errorMsg", "내 정보 수정 실패");
+			return "common/erroPage";
+		}
+	}
+	*/
+	
 	
 	
 	// 회원 삭제(사원삭제) : 관리자 - 이성경

@@ -23,7 +23,7 @@ public class Approval {
 	private String memName;
 	private String department;
 	private int formNo;
-	private int deptNo; //유저의 부서코드
+	private int depClass; //유저의 부서코드
 	private String docName;  //유저 작성 제목
 	private String category; //(ex.일반,비용 등등)
 	private String formName; //양식명(ex.시말서)

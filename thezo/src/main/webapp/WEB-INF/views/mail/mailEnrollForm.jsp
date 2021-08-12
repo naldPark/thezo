@@ -36,10 +36,7 @@
   })( jQuery );
   </script>
   <style>
-    .note-modal-content, .note-modal-content:before, .note-modal-content:after{box-sizing: unset!important;}
-    .note-modal-footer,.note-modal-footer:before, .note-modal-footer:after{box-sizing: unset!important;}
-    .input-group-text{width:80px}
-      /* *{border:1px solid red} */
+      .input-group-text{width:80px}
       .referSpan{padding:10px; margin-right: 2px;}
         .w3-dropdown-content{min-width: 714px !important;}
         .drop-zone {
@@ -48,8 +45,8 @@
           height: 110px;
           border: 1px solid lightgray;
           overflow: auto;
+          font-weight: bolder; 
         }
-
         .empAddZone {
           margin-left: 80px;
           width: 100%;
@@ -57,15 +54,17 @@
           font-size: 15pt;
         }
         .empListInput{width: 867px !important; }
-        
-        
+        .dropFile{ text-decoration:underline !important; cursor: pointer; color: rgb(109, 107, 107)!important;}
+        .dropFile:hover{ text-decoration:underline !important; cursor: pointer; }
   </style>
 </head>
 <body>
+  <% request.setAttribute("mm",session.getAttribute("mm"));
+    session.removeAttribute("mm"); %>
 	<jsp:include page="../common/header.jsp"/>
     <section>
       <div class="outer">    
-        <p class="pageTitle">  e-mail <b> 전자메일</b></p>
+        <p class="pageTitle">  e-mail <b>전자메일</b></p>
         <jsp:include page="mailSidebar.jsp"/>
         <div class="mailOuter row">
           <div class="card" style="margin-bottom: 5rem; width:100%">
@@ -76,7 +75,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text bg-white border-0">제목</span>
                   </div>
-                  <input type="text" name="mailTitle" placeholder="제목을 입력해주세요" class="form-control">
+                  <input type="text" name="mailTitle" placeholder="제목을 입력해주세요" class="form-control" value="${replyType}${mm.mailTitle}">
                 </div>
 
                 <div class="input-group mb-3">
@@ -85,7 +84,10 @@
                   </div>
                   <div class="w3-dropdown-click" style="width:700px">
                     <div class="empListDiv w3-dropdown-content w3-bar-block w3-light-grey" id="receiveListDiv">
-                      <input type="text" class="form-control empListInput" name="receiveAry" id="receiveListInput" placeholder="(선택사항)이름을 입력하세요" onkeyup="filterFunction()">
+                      <input type="text" class="form-control empListInput" name="receiveAry" 
+                      <c:if test="${replyType eq 're:'}">value="${mm.sender}"</c:if> 
+                      <c:if test="${replyType eq 'me:'}">value="${loginUser.email}" disabled</c:if> 
+                          id="receiveListInput" placeholder="(선택사항)이름을 입력하세요" onkeyup="filterFunction()">
                        <!-- 동적문구 -->
                        <a class="w3-bar-item w3-button" id="receiveKeyupInput" style="display: none;"></a>
                        <input type="hidden" value="" style="display: none;">
@@ -98,25 +100,25 @@
                   </div>
                 </div>
 
-
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text bg-white border-0">수신참조</span>
-                  </div>
-                  <div class="w3-dropdown-click" style="width:700px">
-                    <div class="empListDiv w3-dropdown-content w3-bar-block w3-light-grey" id="referListDiv">
-                      <input type="text" class="form-control empListInput" name="refReceiveAry" id="referListInput" placeholder="(선택사항)이름을 입력하세요" onkeyup="filterFunction()">
-                      <!-- 동적문구 -->
-                        <a class="w3-bar-item w3-button" id="refKeyupInput" style="display: none;"></a>
-                      <input type="hidden" value="" style="display: none;">
+                <c:if test="${replyType ne 'me:'}">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text bg-white border-0">수신참조</span>
+                    </div>
+                    <div class="w3-dropdown-click" style="width:700px">
+                      <div class="empListDiv w3-dropdown-content w3-bar-block w3-light-grey" id="referListDiv">
+                        <input type="text" class="form-control empListInput" name="refReceiveAry" id="referListInput" placeholder="(선택사항)이름을 입력하세요" onkeyup="filterFunction()">
+                        <!-- 동적문구 -->
+                          <a class="w3-bar-item w3-button" id="refKeyupInput" style="display: none;"></a>
+                        <input type="hidden" value="" style="display: none;">
+                      </div>
+                    </div>
+                    <div id="referListSpan" class="empAddZone" style="text-align: center; font-size: 15pt;">
+                      <span><input type="hidden" value="-1"></span> 
+                      <!-- 동적 추가된 span자리 -->
                     </div>
                   </div>
-                  <div id="referListSpan" class="empAddZone" style="text-align: center; font-size: 15pt;">
-                    <span><input type="hidden" value="-1"></span> 
-                    <!-- 동적 추가된 span자리 -->
-                  </div>
-                </div>
-
+                </c:if>
 
 
                 <div class="input-group mb-3">
@@ -126,12 +128,34 @@
                   <input type="file" id="file" name="upfile" multiple>
                   <div class="drop-zone" style="text-align: center; font-size: 15pt;">
                     <br>
-                    <i class="far fa-clone"></i>
-                    파일을 여기로 드래그하세요.
+                    <c:choose>
+                      <c:when test="${empty mm.at}">
+                        <i class="far fa-clone"></i>
+                        파일을 여기로 드래그하세요.
+                      </c:when>
+                      <c:otherwise>
+                        <c:forEach var="at" items="${ mm.at }">
+                          <a class="dropFile" style="font-size: 12pt; " href="${at.fileUrl}"><i class="fas fa-file-download"></i>&nbsp;${at.originName}</a><br>
+                        </c:forEach>
+                        </c:otherwise>
+                      
+                    </c:choose>
+                    
                   </div>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" name="mailContent" id="summernote" maxlength="140" rows="7" autocomplete="off"></textarea>
+                    <textarea class="form-control" name="mailContent" id="summernote" maxlength="140" rows="7" autocomplete="off">
+                      <c:if test="${!empty mm.mailTitle}">
+                        ----------Original Message---------- <br>
+                        From: ${mm.sender} <br>
+                        To: ${mm.receiver}  <br>
+                        Cc: ${mm.refReceiver} <br>
+                        Sent:  ${mm.receiveDate}${mm.sendDate} <br> 
+                        Subject: ${mm.mailTitle}  <br>
+                        <br><br>
+                        ${mm.mailContent}
+                      </c:if>
+                    </textarea>
                 </div><br>
                 <div class="row justify-content-center">
                   <button type="button" id="submitBtn" class="btn btn-primary">발송하기</button>&nbsp;

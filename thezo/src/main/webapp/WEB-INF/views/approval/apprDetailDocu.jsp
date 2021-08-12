@@ -8,13 +8,14 @@
 <meta charset="UTF-8">
 <title>The Zo</title>
   <style>
-    .note-modal-content, .note-modal-content:before, .note-modal-content:after{box-sizing: unset!important;}
-    .note-modal-footer,.note-modal-footer:before, .note-modal-footer:after{box-sizing: unset!important;}
-    .sideOuter .input-group-text{width:80px}
-    .sideOuter .form-control:disabled,.sideOuter .form-control[readonly]{ background: white!important; }
-    a{ text-decoration:none !important; cursor: pointer; }
-    a:hover{ text-decoration:none !important; cursor: pointer; color: black !important;}
-    .popover-header{margin-top: 0px !important;}
+   .popover-header{margin-top: 0px !important;}
+    table a{ text-decoration:none !important; cursor: pointer; color: rgb(25, 99, 148)!important;}
+    table a:hover{ text-decoration:underline !important; cursor: pointer; }
+    table th{text-align: center;}
+    table td{width: 600px !important; border-top:0;border-bottom: 0;}
+   .table-bordered td{border: 0px !important; border-top: 1px solid #dee2e6!important; }
+   #contentTd{min-height: 500px!important;}
+   .expandEmpBtn{font-weight: normal!important;}
   </style>
 </head>
 <body>
@@ -28,43 +29,35 @@
               <div class="card border-0" style=" width:80%">
                 <div class="card-body">
                     <h3 style="margin-bottom: 25px;" id="apprFormName">${a.formName}</h3>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white border-0">기안자</span>
-                      </div>
-                      <span class="input-group-text bg-white border-0">${a.department} / ${a.memName}</span>
-                    </div>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white border-0">제목</span>
-                      </div>
-                      <span class="input-group-text bg-white border-0">${a.docName}</span>
-                    </div>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white border-0">참조자</span>
-                      </div>
-                      <span class="input-group-text bg-white border-0">${a.refMemNo}</span>
-                    </div>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text bg-white border-0">파일첨부</span>
-                      </div>
-                      <span style="padding-left:10px">
-                        <c:forEach var="at" items="${ a.at }">
-                          <a href="${at.fileUrl}">${at.originName}</a><br>
-                        </c:forEach>
-                      </span>
-                     
-                     
-                    </div>
-                  
-                    <div class="form-group" style="overflow:auto">
-                        <hr>
-                        <div style="min-height:500px; padding:20px">
-                          ${a.content}
-                        </div>
-                    </div><br>
+
+                    <table class="table table-bordered" style="word-break: break-all;">
+                      <tr>
+                        <th style="width:200px!important">기안자</th>
+                        <td>${a.department} ${a.memName}</td>
+                      </tr>
+                      <tr>
+                        <th>참조자</th>
+                        <td style="display:block; width: 800px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
+                            <span><button id="referEmp" class="expandEmpBtn w3-button w3-white w3-border w3-padding-small w3-small">펼치기</button>&nbsp;${a.refMemNo}</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>제목</th>
+                        <td>${a.docName}</td>
+                      </tr>
+                      <tr>
+                        <th>파일첨부</th>
+                        <td>
+                          <c:forEach var="at" items="${ mm.at }">
+                            <a href="${at.fileUrl}">${at.originName}</a><br>
+                          </c:forEach>
+                        </td>
+                      </tr>
+                      <tr id="contentTd">
+                        <td colspan="2">${a.content}</td>
+                      </tr>
+                    </table>
+
                     <hr>
                     <div class="row justify-content-center">
                       
@@ -134,6 +127,7 @@
                         <input type="hidden" value="${ aLine[fn:length(aLine)-1].memNo}" name="lastApprover">
                         <input type="hidden" value="${a.docNo}" name="docNo">
                         <input type="hidden" value='승인' name="apprStatus">
+                        <input type="hidden" value='${a.formNo}' name="formNo">
                         <button type="button" id="approveDocuBtn" class="btn btn-primary">승인</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                       </div>
@@ -164,6 +158,7 @@
                       <input type="hidden" value="${a.sort}" name="memNo">
                       <input type="hidden" value="${ aLine[fn:length(aLine)-1].memNo}" name="lastApprover">
                       <input type="hidden" value="${a.docNo}" name="docNo">
+                      <input type="hidden" value='${a.formNo}' name="formNo">
                       <input type="hidden" value="반려" name="apprStatus">
                       <button type="button" id="denyDocuBtn" class="btn btn-primary">반려</button>
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
@@ -176,12 +171,72 @@
             
               <!--반려모달끝-->
 
+               <!-- 회수모달 -->
+               <div class="modal fade" id="cancel">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">회수하기</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form action="cancelDocu.appr" method="post" id="cancelDocuform">
+                    <div class="modal-body">
+                        회수하면 임시저장함으로 이동 됩니다
+                    </div>
+                    <div class="modal-footer">
+                      <input type="hidden" value="${a.memNo}" name="memNo">
+                      <input type="hidden" value="${a.docNo}" name="docNo">
+                      <input type="hidden" value='${a.formNo}' name="formNo">
+                      <button type="button" id="cancelDocuBtn" class="btn btn-primary">회수</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    </div>
+                  </form>
+                  </div>
+                </div>
+              </div>
+              <!--회수모달끝-->
+
+
+              
               <script>
+                // 수신 참조가 많을 경우 펼치기 접기 기능 
                 $(function(){
-                  if($("#selectedLine").find("span").text().indexOf("반려") != -1) {
-                    $("#apprFormName").html("${a.formName} <b class='text-danger'>(반려되었습니다)</b>")
+                  $(function(){
+                  var refWidth = ($("#referEmp").parent().innerWidth());
+                  var receiveWidth = ($("#receiveEmp").parent().innerWidth());
+          
+                  if(refWidth < 580){
+                    $("#referEmp").hide()
+                  }
+                  if(receiveWidth < 580){
+                    $("#receiveEmp").hide();
                   }
                 })
+                })
+                $(".expandEmpBtn").click(function(){
+          
+                  if($(this).parent().parent().css("white-space")=="nowrap"){
+                    $(this).html("접기")
+                    // $(this).next().html("<br>"+$(this.next().html()));
+                    $(this).parent().parent().css("white-space","normal");
+                  }else{
+                    $(this).parent().parent().css("white-space","nowrap");
+                    $(this).html("펼치기")
+                  }
+                  
+                })  
+             
+              // 반려된 페이지의 경우 반려표기
+              $(function () {
+                  $(function () {
+                    if ($("#selectedLine").find("span").text().indexOf("반려") != -1) {
+                      $("#apprFormName").html("${a.formName} <b class='text-danger'>(반려되었습니다)</b>")
+                    }
+                  })
+                })
+
+              // 버튼 페이지 이동 기능 
+
                 $("#approveDocuBtn").click(function(){
                   $("memo").text("[시스템 관리자 처리]"+$("memo").text());
                    
@@ -191,11 +246,9 @@
                       </c:if>
                       $("#approveDocuform").submit();
                     }
-                     
                  });
 
                  $("#denyDocuBtn").click(function(){
-                   
                    if (confirm("반려 하시겠습니까?")) {
                      <c:if test="${a.sort ne loginUser.memNo and loginUser.status eq 'A'}">
                      $("memo").text("[시스템 관리자 처리]"+$("memo").text());
@@ -204,28 +257,16 @@
                    }
                     
                 });
+
+                $("#cancelDocuBtn").click(function(){
+                   if (confirm("회수 하시겠습니까?")) {
+                     $("#cancelDocuform").submit();
+                   }
+                    
+                });
               </script>
 
-               <!-- 회수모달 -->
-               <div class="modal fade" id="cancel">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h4 class="modal-title">회수하기</h4>
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        회수하면 임시저장함으로 이동 됩니다
-                    </div>
-                    <div class="modal-footer">
-                      <input type="hidden" value="${a.memNo}" name="memNo">
-                      <button type="button" class="btn btn-primary" data-dismiss="modal">회수</button>
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--회수모달끝-->
+              
 
             </div>
     	</div>

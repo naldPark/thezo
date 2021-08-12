@@ -42,7 +42,7 @@ public class ApprovalController {
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
 
 		Member m = (Member) session.getAttribute("loginUser");
-//		System.out.println(apprFolder);
+		session.setAttribute("apprRead", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		// 페이징 확인
 		Approval a = new Approval();
 		a.setStatus("");
@@ -53,8 +53,6 @@ public class ApprovalController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		ArrayList<Approval> list = aService.selectApprovalMain(a, pi);
 		ArrayList<ApprovalAccept> readCheckList = aService.selectApprovalRead(a);
-		// System.out.println(readCheckList);
-		// System.out.println(list);
 		mv.addObject("list", list).addObject("readCheckList", readCheckList).addObject("pi", pi)
 				.addObject("apprFolder", apprFolder).setViewName("approval/approvalMain");
 		return mv;
@@ -79,16 +77,12 @@ public class ApprovalController {
 		Approval aTemp = new Approval();
 		Member m = (Member) session.getAttribute("loginUser");
 		aTemp.setMemNo(m.getMemNo()); 
-		aTemp.setDeptNo(m.getDepNo()); 
+		aTemp.setDepClass(m.getDepClass()); //department depNo수정 
 		aTemp.setFormNo(ano);
 		Approval a = aService.enrollApproval(aTemp);
 		ArrayList<Member> empList = aService.employeeList();
 		ArrayList<ApprovalAccept> cLine = aService.selectformLineList(aTemp);
-	//	System.out.println(cLine);
 		Member leaveCount = aService.selectLeave(aTemp.getMemNo());
-//		System.out.println("A는"+a);
-//		System.out.println("cLine는"+cLine);
-		
 		mv.addObject("a", a) // 문서 포맷
 			.addObject("empList", empList) // 전사원 리스트 
 			.addObject("cLine", cLine);  // 해당 양식의 결재선
@@ -164,7 +158,6 @@ public class ApprovalController {
 	@RequestMapping("insertDocu.appr")
 	public ModelAndView insertApprovalDocument(String tempStatus, Approval a,HttpSession session, MultipartFile[] upfile, ModelAndView mv) {
 		Member m = (Member) session.getAttribute("loginUser");
-		System.out.println("tempStatus"+tempStatus);
 		a.setMemNo(m.getMemNo());
 //		System.out.println("insertDocu"+a);
 //		if(tempStatus!=null&&tempStatus.equals("임시")) {
@@ -173,7 +166,6 @@ public class ApprovalController {
 //			return mvTemp;
 //		} else {
 			a.setStatus("대기");
-			System.out.println(a);
 			if (!upfile[0].getOriginalFilename().equals("")) {
 				ArrayList<Attachment> list = new ArrayList<>();
 	
@@ -201,7 +193,7 @@ public class ApprovalController {
 		
 	}
 	
-	// 결재문서 상세조회 (회수/승인/반려는 여기서 진행)
+	// 결재문서 상세조회 (회수/승인/반려는 반환되는 페이지에서 진행)
 	@RequestMapping("detailDocu.appr")
 	public ModelAndView detailApproval(int docNo, ModelAndView mv, HttpSession session) {
 		Member m = (Member) session.getAttribute("loginUser");
@@ -218,18 +210,22 @@ public class ApprovalController {
 		return mv;
 	}
 	
-	// 승인반려 선택시 진행되는 매핑
+	// 승인 선택시 진행되는 매핑
 	@RequestMapping("approveDocu.appr")
-	public ModelAndView approveDocu(int lastApprover, HttpSession session, ApprovalAccept a, String apprStatus, ModelAndView mv) {
+	public ModelAndView approveDocu(int lastApprover, HttpSession session, ApprovalAccept a, String apprStatus, int formNo, ModelAndView mv) {
 		Member m = (Member) session.getAttribute("loginUser");
 		a.setStatus(apprStatus); //모델앤뷰 변수와 충돌되어서 별도로 뺐음
 		if(m.getMemNo()==a.getMemNo() || m.getStatus().equals("A")) {
 			int result = aService.approveDocu(lastApprover,a);
 			if(result > 0) { // 성공
+				// 연차관련 문서였다면 추가
+				if(formNo ==5) {
+					result=aService.updateLeaveStatus(lastApprover,a);
+				}
 				session.setAttribute("alertMsg", "성공적으로 등록 되었습니다.");
 				mv.setViewName("redirect:detailDocu.appr?docNo="+a.getDocNo());
 			}else {
-				mv.addObject("errorMsg", "작성에 실패했습니다");
+				mv.addObject("errorMsg", "승인 과정 중 에러가 발생 했습니다");
 				mv.setViewName("common/errorPage");
 			}
 		}else {
@@ -241,17 +237,25 @@ public class ApprovalController {
 	
 	// 반려 선택시 진행되는 매핑
 	@RequestMapping("denyDocu.appr")
-	public ModelAndView denyDocu(HttpSession session, ApprovalAccept a, String apprStatus, ModelAndView mv) {
+	public ModelAndView denyDocu(HttpSession session, ApprovalAccept a, String apprStatus, int formNo, ModelAndView mv) {
 		Member m = (Member) session.getAttribute("loginUser");
 		a.setStatus(apprStatus); //모델앤뷰 변수와 충돌되어서 별도로 뺐음
+		
+		// 연자신청서를 반려하는 경우
+		
+		
 		if(m.getMemNo()==a.getMemNo() || m.getStatus().equals("A")) {
-			
+			// lastApprover가 의미가 없어서 -1로 지정
 			int result = aService.approveDocu(-1,a);
 			if(result > 0) { // 성공
+				// 연차관련 문서였다면 추가
+				if(formNo ==5) {
+					result=aService.updateLeaveStatus(-1,a);
+				}
 				session.setAttribute("alertMsg", "성공적으로 등록 되었습니다.");
 				mv.setViewName("redirect:detailDocu.appr?docNo="+a.getDocNo());
 			}else {
-				mv.addObject("errorMsg", "작성에 실패했습니다");
+				mv.addObject("errorMsg", "반려 과정 중 에러가 발생 했습니다");
 				mv.setViewName("common/errorPage");
 			}
 		}else {
@@ -260,6 +264,27 @@ public class ApprovalController {
 		}
 		return mv;	
 	}
+	
+	// 회수선택시 진행되는 매핑
+		@RequestMapping("cancelDocu.appr")
+		public ModelAndView cancelDocu(HttpSession session, Approval a, int formNo, ModelAndView mv) {
+			Member m = (Member) session.getAttribute("loginUser");
+			if(m.getMemNo()==a.getMemNo()) {
+				a.setStatus("임시");
+				int result = aService.cancelDocu(a);
+				if(result > 0) { // 성공
+					session.setAttribute("alertMsg", "성공적으로 회수 되었습니다.");
+					mv.setViewName("redirect:detailDocu.appr?docNo="+a.getDocNo());
+				}else {
+					mv.addObject("errorMsg", "회수에 실패했습니다");
+					mv.setViewName("common/errorPage");
+				}
+			}else {
+				mv.addObject("errorMsg", "잘못된 경로로 접근하셨습니다. 로그인을 확인 해 주세요");
+				mv.setViewName("common/errorPage");
+			}
+			return mv;	
+		}
 		
 	
 	@RequestMapping("adminMain.appr") //관리자 페이지 메인

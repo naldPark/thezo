@@ -15,7 +15,7 @@
   <div class="w3-bar-block">
     <br>
     <a type="button" href="enrollForm.mail" class="btn btn-primary">메일쓰기</a>
-    <button type="button" class="btn btn-primary">내게쓰기</button>
+    <a type="button" href="enrollForm.mail?replyType=me:" class="btn btn-primary">내게쓰기</a>
     <br><br>
     <a href='main.mail?folder=받은' class="w3-bar-item w3-button w3-padding"><i class="fas fa-envelope"></i>&nbsp; 받은편지함</a>
     <a href="sendInbox.mail" class="w3-bar-item w3-button w3-padding"><i class="fas fa-paper-plane"></i>&nbsp; 보낸편지함</a>

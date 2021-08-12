@@ -32,13 +32,17 @@ public class ApprovalServiceImpl implements ApprovalService {
 	public HashMap<String, Integer> mainApprCount(int memNo) {
 		return aDao.mainApprCount(memNo, sqlSession);
 	}
-
+	
+	@Override
+	public ArrayList<Approval> selectApprovalMain(Approval a) {
+		return aDao.selectApprovalMain(a, sqlSession);
+	}
 	
 	@Override
 	public int selectListCount(Approval a) {
 		return aDao.selectListCount(a, sqlSession);
 	}
-
+	
 	@Override
 	public ArrayList<Approval> selectApprovalMain(Approval a, PageInfo pi) {
 		return aDao.selectApprovalMain(a, sqlSession, pi);
@@ -88,6 +92,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		if(a.getAt()!=null) {
 			result= result*aDao.insertDocuAttachment(sqlSession, a);
 		}
+		// 문서가 연차신청서인 경우
 		if(a.getFormNo()==5) {
 			result= result*aDao.insertLeaveDocu(sqlSession, a);
 			result= result*aDao.updateLeaveDocu(sqlSession, a);
@@ -141,7 +146,11 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
         int result=1;
         result= result*aDao.approveDocu(sqlSession, a);
-        result = result*aDao.setApprovalStatus(sqlSession, lastApprover, a);
+        // 마지막 결재자인 경우 문서를 완료로 처리 
+		if((lastApprover==a.getMemNo()&&a.getStatus().equals("승인"))) {
+			a.setStatus("완료");
+		}
+        result = result*aDao.setApprovalStatus(sqlSession, a);
         if(result>0) {
 			transactionManager.commit(status);
 		} else{
@@ -150,8 +159,30 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return result;
 	}
 
-	
-
+	// 연차신청 승인 반려 하는 경우 추가 update문
+	@Override
+	public int updateLeaveStatus(int lastApprover,ApprovalAccept a) {
+		
+		int result=  1;
+		// leave테이블에서 승인 처리
+		if(lastApprover==a.getMemNo()&&a.getStatus().equals("완료")) {
+			a.setStatus("승인");
+			result = aDao.updateLeaveStatus(sqlSession, a);
+		}
+		if(a.getStatus().equals("반려")) {
+			result = aDao.updateLeaveStatus(sqlSession, a);
+			Approval leaveMem = aDao.selectLeaveCount(sqlSession, a.getDocNo());
+			if(leaveMem.getLeaveCount()!=0) {
+				result = aDao.updateLeaveCount(sqlSession, leaveMem);
+			}
+		}
+		return result;
+	}
+		
+	@Override
+	public int cancelDocu(Approval a) {
+		return aDao.cancelDocu(sqlSession, a);
+	}
 
 
 //	@Override

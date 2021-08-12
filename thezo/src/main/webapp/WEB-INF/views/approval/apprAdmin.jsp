@@ -42,7 +42,7 @@
                         <br>
                         <!-- 검색 area 끝 -->
                         <!-- 문서리스트 -->
-                        <div class="d-flex mb-5 shadow newDocu">
+                        <div class="d-flex mb-3 shadow newDocu">
                             <div class="p-2 newDocuCate"><b class="text-primary"><i class="fas fa-coins docMenu"></i>
                                     일반</b> <br>일반기안서</div>
                             <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
@@ -54,7 +54,7 @@
                                     data-target="#delete">삭제</button>
                             </div>
                         </div>
-                        <div class="d-flex mb-5 shadow newDocu">
+                        <div class="d-flex mb-3 shadow newDocu">
                             <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
                             <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                             <div class="pr-3" align="center">
@@ -65,7 +65,7 @@
                                     class="btn btn-sm btn-outline-primary">삭제</button>
                             </div>
                         </div>
-                        <div class="d-flex mb-5 shadow newDocu">
+                        <div class="d-flex mb-3 shadow newDocu">
                             <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
                             <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                             <div class="pr-3" align="center">
@@ -76,7 +76,7 @@
                                     class="btn btn-sm btn-outline-primary">삭제</button>
                             </div>
                         </div>
-                        <div class="d-flex mb-5 shadow newDocu">
+                        <div class="d-flex mb-3 shadow newDocu">
                             <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
                             <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                             <div class="pr-3" align="center">
@@ -87,7 +87,7 @@
                                     class="btn btn-sm btn-outline-primary">삭제</button>
                             </div>
                         </div>
-                        <div class="d-flex mb-5 shadow newDocu">
+                        <div class="d-flex mb-3 shadow newDocu">
                             <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
                             <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                             <div class="pr-3" align="center">
@@ -98,7 +98,7 @@
                                     class="btn btn-sm btn-outline-primary">삭제</button>
                             </div>
                         </div>
-                        <div class="d-flex mb-5 shadow newDocu">
+                        <div class="d-flex mb-3 shadow newDocu">
                             <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
                             <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                             <div class="pr-3" align="center">
@@ -109,7 +109,7 @@
                                     class="btn btn-sm btn-outline-primary">삭제</button>
                             </div>
                         </div>
-                        <div class="d-flex mb-5 shadow newDocu">
+                        <div class="d-flex mb-3 shadow newDocu">
                             <div class="p-2 newDocuCate"><b class="text-primary"> 일반</b> <br>일반기안서</div>
                             <div class="p-3 flex-grow-1">별도의 양식이 없는 경우 사용하는 문서입니다 </div>
                             <div class="pr-3" align="center">

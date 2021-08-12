@@ -21,11 +21,11 @@
 	<jsp:include page="../common/header.jsp"/>
     <section>
       <div class="outer">
+     
         <p class="pageTitle"> e-mail <b> 전자메일</b></p>
         <jsp:include page="mailSidebar.jsp" />
         <div class="mailOuter">
           <div align="left">
-            <input type="hidden" name="mail" value='${mm}'/>
             <c:if test="${mm.seMailNo eq 0}">
             <!-- 답장: 보낸사람을 받는사람으로 세팅, ------------origin message ---------추가 -->
               <button type="button" id="replyBtn" class="enrollBtn btn btn-sm btn-secondary">답장</button>
@@ -72,34 +72,7 @@
               <td colspan="2" style="width: 100% !important;">${mm.mailContent}</td>
             </tr>
           </table>
-          <script>
-            $(function(){
-              $(function(){
-              var refWidth = ($("#referEmp").parent().innerWidth());
-              var receiveWidth = ($("#receiveEmp").parent().innerWidth());
-
-              if(refWidth < 790){
-                $("#referEmp").hide()
-              }
-              if(receiveWidth < 790){
-                $("#receiveEmp").hide();
-              }
-            })
-            })
-            $(".expandEmpBtn").click(function(){
-
-              if($(this).parent().parent().css("white-space")=="nowrap"){
-                $(this).html("접기")
-                // $(this).next().html("<br>"+$(this.next().html()));
-                $(this).parent().parent().css("white-space","normal");
-              }else{
-                $(this).parent().parent().css("white-space","nowrap");
-                $(this).html("펼치기")
-              }
-              
-            })
-          </script>
-        
+         
           <div class="row justify-content-center">
             <a type="button" href="main.mail" class="btn btn-primary">목록으로</a> &nbsp;
             <c:if test="${mm.reMailNo eq 0}">
@@ -111,6 +84,33 @@
       </div>
     </section>
 
+    <script>
+      $(function(){
+        $(function(){
+        var refWidth = ($("#referEmp").parent().innerWidth());
+        var receiveWidth = ($("#receiveEmp").parent().innerWidth());
+
+        if(refWidth < 790){
+          $("#referEmp").hide()
+        }
+        if(receiveWidth < 790){
+          $("#receiveEmp").hide();
+        }
+      })
+      })
+      $(".expandEmpBtn").click(function(){
+
+        if($(this).parent().parent().css("white-space")=="nowrap"){
+          $(this).html("접기")
+          // $(this).next().html("<br>"+$(this.next().html()));
+          $(this).parent().parent().css("white-space","normal");
+        }else{
+          $(this).parent().parent().css("white-space","nowrap");
+          $(this).html("펼치기")
+        }
+        
+      })
+    </script>
 
     <script>
     $(".mainBtn").click(function () {
@@ -125,15 +125,18 @@
           
         }
       })
-
-
-      $(".mainBtn").click(function () {
-        var message = $(this).text();
-
-        var = ${mm.mailContent}
-          }
-
-      })
+   
+      // controller 가서 다시 뿌리기 비효율적이라 바로 넘김..
+      $(".enrollBtn").click(function () {
+        <% session.setAttribute("mm", request.getAttribute("mm")); %>
+        var replyType="";
+        if ($(this).attr("id") == "replyBtn") {
+          replyType = "re:";
+        } else{
+          replyType = "fwd:";
+        }
+          location.href = 'enrollForm.mail?replyType='+replyType;
+        })
 </script>
 
 </body>

@@ -9,6 +9,7 @@
 		<result column="department" property="department"/>
 		<result column="form_no" property="formNo"/>
 		<result column="dep_no" property="deptNo"/>
+		<result column="dep_class" property="depClass"/>
 		<result column="doc_name" property="docName"/>
 		<result column="category" property="category"/>
 		<result column="form_name" property="formName"/>
@@ -20,6 +21,7 @@
 		<result column="line" property="line"/>
 		<result column="ref_mem_no" property="refMemNo"/>
 		<result column="SORT" property="sort"/>
+		<result column="leave_count" property="leaveCount"/>
 		
 	</resultMap>
 	
@@ -29,6 +31,7 @@
 		<result column="mem_no" property="memNo"/>
 		<result column="mem_name" property="memName"/>
 		<result column="dep_no" property="deptNo"/>
+		<result column="dep_class" property="depClass"/>
 		<result column="department" property="department"/>
 		<result column="line_level" property="apprLevel"/>
 		<result column="job" property="job"/>
@@ -51,6 +54,7 @@
 		<result column="job" property="job"/>
 		<result column="rank" property="rank"/>
 		<result column="MEM_VAC_DATE" property="memVacDate"/>
+		<result column="MEM_USED_DATE" property="memUsedDate"/>
 		<result column="MEM_TOTAL_DATE" property="memTotalDate"/>
 	</resultMap>
 	
@@ -65,113 +69,142 @@
 	
 	
 	<select id ="mainApprCount" resultType="map">
-		 select 
-                (SELECT 
-                    count(*)
-                FROM appr_accept	
-                where mem_no =#{memNo}
-                and read ='N') apprRead,
+		 	 select 
+               -- 안읽은 문서(참조)
                (SELECT 
                     count(*)
                 FROM reference
-                where ref_no =#{memNo}
-                and read ='N') referRead
+                where ref_no = #{memNo}
+                and read ='N') referRead,
+                 -- 결재대기
+                (SELECT count(*)
+		        FROM(
+		            select DOC_NO, aa.status,mem_no, appr_level current_order_level,mem_name ||' '|| rank SORT
+		            ,RANK() OVER (PARTITION BY DOC_NO ORDER BY APPR_LEVEL ASC) AS CURRENT_ORDER
+		            from appr_accept aa
+		            join member m using(mem_no)
+		            where aa.status='대기' or aa.status='반려'
+		            order by APPR_level)a
+		        WHERE CURRENT_ORDER=1
+                and mem_no=#{memNo}
+                and a.status='대기') waitingAppr,
+                -- 금일 결재완료
+               (select count(*)
+                   from approval
+                   where doc_date = to_char(SYSDATE, 'yyyy-mm-dd')
+                   and status='완료'
+                   and mem_no = #{memNo}) todayFin,
+                -- 금일 반려
+                 (select count(*)
+                   from approval
+                   where doc_date = to_char(SYSDATE, 'yyyy-mm-dd')
+                   and status='반려'
+                   and mem_no = #{memNo}) todayDenied
             from dual
 	</select>
 	
 	
 	<select id="selectListCount" resultType="_int">
-		select 
+			select 
 				count(*)
-		    from approval a
-            join(
-                SELECT doc_no,  ','||LISTAGG(mem_no||',',',') WITHIN GROUP (ORDER BY mem_no) AS mem_no
-                       from( SELECT doc_no, ref_mem_no mem_no
-                                FROM reference
-                            union    
-                            SELECT doc_no, mem_no
-                                FROM appr_accept 
-                            union
-                            SELECT doc_no, mem_no
-                                FROM approval)
-                      GROUP BY DOC_NO ) appr_include on(appr_include.doc_no =A.DOC_NO)
-			where appr_include.mem_no like '%,' || 3 || ',%'
+				from vw_approval vw
+			 <choose>
+				<when test='apprFolder.equals("main")'>
+	      	 		 left join ( select doc_no,appr_level
+	                			from appr_accept aa
+	                			where mem_no = #{memNo})aa on(vw.doc_no = aa.doc_no)
+             		-- 관련있는 사람들 전체
+             		where inmem_no like '%,' || #{memNo} || ',%'
+             		-- 현재 결재선에 도달하지 않은 사람은 제외
+             		and (current_order_level &gt;= appr_level
+             				or status='완료'
+             				or ref_mem_no like '%,' || #{memNo} || ',%'
+             				or mem_no =#{memNo})
+				</when>
+				<otherwise>
+					where inmem_no like '%,' || #{memNo} || ',%'
+				</otherwise>
+		 	 </choose>   
+				--상신문서
+				<if test='apprFolder.equals("send")'>and mem_no = #{memNo}
+				and status != '완료'</if>
+				--상신 문서 중 완료문서
+				<if test='apprFolder.equals("sendFin")'>and mem_no = #{memNo}
+				and status = '완료'</if>
+				--임시저장
+			  <choose>
+				<when test='apprFolder.equals("temp")'>
+	      	 		and mem_no = #{memNo}
+					and status = '임시'
+				</when>
+				<otherwise>
+					and status != '임시'
+				</otherwise>
+		 	  </choose>   
+				--결재대기
+				<if test='apprFolder.equals("waiting")'>and mem_no = #{memNo}  and status ='대기'</if>
+				--결재자가 결재
+				<if test='apprFolder.equals("approved")'>and mem_no_fin like '%,' || #{memNo} || ',%'</if>
+				--참조
+				<if test='apprFolder.equals("refer")'>and ref_mem_no like '%,' || #{memNo} || ',%'</if>
 	</select>
 	
 		<!-- 메인에 보이는 문서 리스트 조회 -->
 	<select id ="selectApprovalMain" resultMap="approvalResult">
 
 			select 
-				 a.doc_no
-				,a.form_no
-			    ,mem_name||' '|| m.rank mem_name
-                ,ref_mem_no
-                ,mem_no_fin
-		        ,department
-				,doc_name
-			    ,category
-			    ,form_name
-				,doc_content
-	            ,doc_date
-				,a.status
-			    ,line
-			    ,SORT
-		    from approval a
-		    join appr_form f on(f.form_no = a.form_no)
-	        join member m on(m.mem_no =a.mem_no)
-		    JOIN (SELECT DOC_NO, LISTAGG(mem_name ||' '|| rank,',') WITHIN GROUP (ORDER BY APPR_LEVEL) AS line
-		            FROM APPR_ACCEPT
-		            JOIN MEMBER USING(MEM_NO)
-		            GROUP BY DOC_NO
-		            ORDER BY DOC_NO) AL ON (A.DOC_NO = AL.DOC_NO)
-		    full JOIN(
-		        SELECT *
-		        FROM(
-		            select DOC_NO, mem_no, mem_name ||' '|| rank SORT
-		            ,RANK() OVER (PARTITION BY DOC_NO ORDER BY APPR_LEVEL ASC) AS RANK
-		            from appr_accept aa
-		            join member m using(mem_no)
-		            where aa.status='대기'
-		            order by APPR_level)
-		        WHERE RANK=1
-		        ) CURRENT_LEVEL ON(A.DOC_NO = CURRENT_LEVEL.DOC_NO)
-            join(
-                -- 관련 문서 전체 조회시 사용
-                SELECT doc_no,  ','||LISTAGG(mem_no||',',',') WITHIN GROUP (ORDER BY mem_no) AS mem_no
-                       from( SELECT doc_no, ref_mem_no mem_no
-                                FROM reference
-                            union    
-                            SELECT doc_no, mem_no
-                                FROM appr_accept 
-                            union
-                            SELECT doc_no, mem_no
-                                FROM approval)
-                      GROUP BY DOC_NO ) appr_include on(appr_include.doc_no =A.DOC_NO)
-                -- 참조문서 폴더 조회시 사용
-               full join(
-                SELECT doc_no,  ','||LISTAGG(ref_mem_no||',',',') WITHIN GROUP (ORDER BY ref_mem_no) AS ref_mem_no
-                        FROM reference
-                      GROUP BY DOC_NO ) appr_refer on(appr_refer.doc_no =A.DOC_NO)
-             -- 결재/반려완료 폴더 조회시 사용
-               full join(
-                SELECT doc_no,  ','||LISTAGG(mem_no||',',',') WITHIN GROUP (ORDER BY mem_no) AS mem_no_fin
-                        FROM appr_accept
-                      GROUP BY DOC_NO ,status
-                      having status ='승인' or status='반려') appr_fin on(appr_fin.doc_no =A.DOC_NO)
-			
-			where appr_include.mem_no like '%,' || #{memNo} || ',%'
-			
+				vw.DOC_NO
+			        ,FORM_NO
+			        ,MEM_NAME
+			        ,MEM_NO
+			        ,CURRENT_ORDER_LEVEL
+			        ,REF_MEM_NO
+			        ,MEM_NO_FIN
+			        ,DEPARTMENT
+			        ,DOC_NAME
+			        ,CATEGORY
+			        ,FORM_NAME
+			        ,DOC_CONTENT
+			        ,DOC_DATE
+			        ,STATUS
+			        ,LINE
+			        ,SORT
+				from vw_approval vw
+			 <choose>
+				<when test='apprFolder.equals("main")'>
+	      	 		 left join ( select doc_no,appr_level
+	                			from appr_accept aa
+	                			where mem_no = #{memNo})aa on(vw.doc_no = aa.doc_no)
+             		-- 관련있는 사람들 전체
+             		where inmem_no like '%,' || #{memNo} || ',%'
+             		-- 현재 결재선에 도달하지 않은 사람은 제외
+             		and (current_order_level &gt;= appr_level
+             				or status='완료'
+             				or ref_mem_no like '%,' || #{memNo} || ',%'
+             				or mem_no =#{memNo})
+				</when>
+				<otherwise>
+					where inmem_no like '%,' || #{memNo} || ',%'
+				</otherwise>
+		 	 </choose>   
 				--상신문서
-				<if test='apprFolder.equals("send")'>and a.mem_no = #{memNo}
-				and a.status != '완료'</if>
+				<if test='apprFolder.equals("send")'>and mem_no = #{memNo}
+				and status != '완료'</if>
 				--상신 문서 중 완료문서
-				<if test='apprFolder.equals("sendFin")'>and a.mem_no = #{memNo}
-				and a.status = '완료'</if>
+				<if test='apprFolder.equals("sendFin")'>and mem_no = #{memNo}
+				and status = '완료'</if>
 				--임시저장
-				<if test='apprFolder.equals("temp")'>and a.mem_no = #{memNo}
-					and a.status = '임시'</if>
+			  <choose>
+				<when test='apprFolder.equals("temp")'>
+	      	 		and mem_no = #{memNo}
+					and status = '임시'
+				</when>
+				<otherwise>
+					and status != '임시'
+				</otherwise>
+		 	  </choose>   
 				--결재대기
-				<if test='apprFolder.equals("waiting")'>and CURRENT_LEVEL.mem_no = #{memNo}</if>
+				<if test='apprFolder.equals("waiting")'>and mem_no = #{memNo}  and status ='대기'</if>
 				--결재자가 결재
 				<if test='apprFolder.equals("approved")'>and mem_no_fin like '%,' || #{memNo} || ',%'</if>
 				--참조
@@ -235,22 +268,22 @@
 	<!-- 특정유저의 특정양식 결재선 커스텀이 없는경우 default값 조회  -->
 	<select id="defaultLine" resultMap="apprAcceptResult">
 	
-        select rownum as line_level, mem_no, mem_name, EMAIL, dep_no, department, job, rank, '결재' "type"
+        select rownum as line_level, mem_no, mem_name, EMAIL, dep_class, department, job, rank, '결재' "type"
          	from (
        		                select rownum as num, a.*
                     from (
-                            select mem_no, mem_name, EMAIL, dep_no, department, job, rank,par_dep_class
+                            select mem_no, mem_name, EMAIL, dep_class, department, job, rank,par_dep_class
                                 from member
                                      join department using(dep_no)
-                                     where dep_no = (select par_dep_class
+                                     where dep_class = (select par_dep_class
                                                      from department
-                                                     where dep_class=#{deptNo})
-                                   or dep_no =  (select par_dep_class
+                                                     where dep_class=#{depClass})
+                                   or dep_class =  (select par_dep_class
 				                                     from department
 				                                     where dep_class=(select par_dep_class
 			                                                       from department
-			                                                        where dep_class=#{deptNo}))
-                                   or dep_no=#{deptNo}
+			                                                        where dep_class=#{depClass}))
+                                   or dep_class=#{depClass}
                                    and job is not null
                                    order by  decode(rank,'대표이사',1,'상무',2,'부장',3,'과장',4,'대리',5))a
                    where mem_no !=#{memNo}
@@ -434,17 +467,17 @@
 			from member
 			where mem_no=#{memNo}
 	</select>
-		
-		
+	
 	<!-- 기안한 문서가 연차신청서인 경우 MEMBER에 업데이트 -->
 	<update id="updateLeaveDocu">
-
 		update member
 			set
 			MEM_USED_DATE = MEM_USED_DATE+#{leaveCount}
-			,MEM_TOTAL_DATE =MEM_VAC_DATE-#{leaveCount}
+			,MEM_TOTAL_DATE =MEM_TOTAL_DATE-#{leaveCount}
 		where mem_no = #{memNo}
 	</update>
+	
+	
 	
 	<!-- 문서세부조회 -->
 	<select id="detailApproval" resultMap="approvalResult">
@@ -537,20 +570,48 @@
 			where doc_no = #{docNo}
 	</update>
 	
+	
+	<!-- 연차신청서에 대해 승인/반려 하는경우 연차테이블 status변경 (미승인, 결재완료시 '승인', 반려시 '반려')-->
+	<update id="updateLeaveStatus">
+		update leave
+			set
+		leave_status = #{status}
+		where doc_no = #{docNo}
+	</update>
+	
+	<!-- 연차신청서에 대해 반려 하는경우 해당문서에서 차감된 연차확인 -->
+	<select id="selectLeaveCount" resultMap="approvalResult">
+	select mem_no, leave_count
+		from leave
+		where doc_no= #{docNo}
+	</select>
+	
+	<!-- 연차신청서에 대해 반려 하는경우 member테이블 연차 갯수 원상복구-->
+	<update id="updateLeaveCount">
+		update member
+			set
+			MEM_USED_DATE = MEM_USED_DATE-#{leaveCount}
+		    ,MEM_TOTAL_DATE =MEM_TOTAL_DATE+#{leaveCount}
+		where mem_no = #{memNo}
+	</update>
+	
+	<!-- 결재대상자가 읽은 경우 읽음으로 표시 -->
 	<update id="detailApprovalReadUpdate">
-		update reference
+		update appr_accept
 			set
 			 read = 'Y'
 			where doc_no = #{docNo}
-			and ref_no = #{memNo}
+			and mem_no = #{memNo}
+			
 	</update>
 	
+	<!-- 참조자가 읽은 경우 읽음으로 표시 -->
 	<update id="detailReferenceReadUpdate">
-		update appr_accept
+		update reference
              set 
               READ ='Y'
              where doc_no = #{docNo}
-             and MEM_NO = #{memNo} 
+             and REF_MEM_NO = #{memNo} 
 	</update>
 	
 </mapper>

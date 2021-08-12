@@ -19,6 +19,9 @@ public interface ApprovalService {
 	// 해당 유저와 관련된 전자결재 리스트 카운트
 	int selectListCount(Approval a);
 	
+	// 메인페이지에 노출될 리스트 (오버라이딩)
+	ArrayList<Approval> selectApprovalMain(Approval a);
+	
 	// 해당 유저와 관련된 전자결재 리스트
 	ArrayList<Approval> selectApprovalMain(Approval a, PageInfo pi);
 	
@@ -55,6 +58,12 @@ public interface ApprovalService {
 	
 	// 전자결재 승인
 	int approveDocu(int lastApprover, ApprovalAccept a);
+	
+	
+	int updateLeaveStatus(int lastApprover,ApprovalAccept a);
+	
+	// 문서 회수
+	int cancelDocu(Approval a);
 	
 	// 임시저장했을때 docNo 출력해오는 select
 	//	int selectRecentTemp(int memNo);

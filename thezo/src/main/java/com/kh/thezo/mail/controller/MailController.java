@@ -52,6 +52,7 @@ public class MailController {
 			, @RequestParam(value = "folder", defaultValue = "받은") String folder, 
 			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
 		Member m = (Member) session.getAttribute("loginUser");
+		
 		if (m != null) {
 			Mail mm = new Mail();
 			mm.setMemNo(((Member) session.getAttribute("loginUser")).getMemNo());
@@ -88,7 +89,6 @@ public class MailController {
 				pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 				list = mmService.selectMailList(mm, pi);
 			}
-//			System.out.println(list);
 			mv.addObject("list", list)
 			.addObject("pi", pi)
 			.addObject("folder", folder)
@@ -138,8 +138,6 @@ public class MailController {
 		Member m = (Member) session.getAttribute("loginUser");
 		if (m != null) {
 			ArrayList<String> mailNoAry = new ArrayList<>(Arrays.asList(mailNo));
-//			String savePath = session.getServletContext().getRealPath("/webapp/");
-//			System.out.println(savePath);
 			mv.setViewName("redirect:main.mail");
 			switch (btnType) {
 			case "readBtn": result = mmService.updateReadMail(mailNoAry); break;
@@ -204,13 +202,13 @@ public class MailController {
 	
 	// 글쓰기로 넘어감 (가면서 전사원리스트 조회함)
 	@RequestMapping("enrollForm.mail")
-	public ModelAndView enrollMail(HttpSession session, ModelAndView mv, Mail mm) {
+	public ModelAndView enrollMail(HttpSession session, ModelAndView mv, String replyType) {
 		Member m = (Member) session.getAttribute("loginUser");
 		if (m != null) {
 			ArrayList<Member> empList = mmService.employeeList();
 			
 			mv.addObject("empList", empList) // 전사원 리스트
-			  .addObject("mm", mm) 
+			  .addObject("replyType", replyType)  
 			  .setViewName("mail/mailEnrollForm");
 		} else {
 			mv.addObject("errorMsg", "로그인 후 이용 해 주세요");
@@ -439,5 +437,10 @@ public class MailController {
 		return receiver;
 		
 	}
+	
+	// ------------------ admin 영역 -------------------------------------
+	
+	
+
 	
 }

@@ -397,7 +397,7 @@
                         +'</div>'
                         +'<input type="hidden" name="apAccept['+i+'].memNo" value="'+confirmedLine[i][1]+'">'
                         +'<input type="hidden" name="apAccept['+i+'].type" value="'+confirmedLine[i][3]+'">'
-                        +'<input type="hidden" name="apAccept['+i+'].apprLevel" value="'+i+1+'">'
+                        +'<input type="hidden" name="apAccept['+i+'].apprLevel" value="'+(i+1)+'">'
                   +'</div>'
                   
                   $("#selectedLine").append(addLine);

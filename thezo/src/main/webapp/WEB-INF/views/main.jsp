@@ -45,6 +45,9 @@
     #start, #finish{width: 70px; background-color: rgb(22,190,190) !important; border: none;}
     #start:hover, #finish:hover{ font-weight: bold; background-color: rgb(22, 220, 220) !important;}
 	/*-------------*/	
+
+    .tableBreakWord{display:inline-block; white-space: nowrap;word-break: break-all;overflow: hidden; text-overflow: ellipsis;}
+
 </style>
 </head>
 <body>
@@ -142,61 +145,56 @@
 
             <div class="outer-wrap" style="width:45%">
                 <div class="wrap">
-                    <div class="boxTitle">전자결재(수정중)  <a href="main.appr" class="btn badge-secondary btn-sm more">more</a></div>
+                    <div class="boxTitle">전자결재 <a href="main.appr" class="btn badge-secondary btn-sm more">more</a></div>
                     <div style="padding:12px;">
                         <div class="input-group-prepend" style="justify-content: left;">
-                            <a href="main.appr" class="btn btn-sm btn-outline-danger">
-                            	안읽은문서 ${mainApprCount.get("APPRREAD")+mainApprCount.get("REFERREAD")}
-                                <c:if test='${mainApprCount.get("APPRREAD")+mainApprCount.get("REFERREAD") ne 0}'>
+                            <a href="main.appr?apprFolder=waiting" class="btn btn-sm btn-outline-primary">
+                                결재대기 ${mainApprCount.get("REFERREAD")}건
+                                <c:if test='${mainApprCount.get("WAITINGAPPR") ne 0}'>
                                     <i class="fas fa-exclamation-circle" style="color:red"></i>
-                                </c:if>건 
+                                </c:if>
                             </a> &nbsp;
-                            <a href="main.appr?apprFolder=send" class="btn btn-sm btn-outline-success">결재대기 0건</a> &nbsp;
-                            <a href="main.appr?apprFolder=sendFin" class="btn btn-sm btn-outline-primary">완료문서</a>
-                        </div>  
+                            <a href="main.appr" class="btn btn-sm btn-outline-success">
+                                안읽은문서 ${mainApprCount.get("REFERREAD")}건
+                                <c:if test='${mainApprCount.get("REFERREAD") ne 0}'>
+                                    <i class="fas fa-exclamation-circle" style="color:red"></i>
+                                </c:if>
+                            </a> &nbsp;
+                
+                            <a href="main.appr?apprFolder=sendFin" class="btn btn-sm btn-outline-info">
+                                결재완료
+                                <c:if test='${mainApprCount.get("TODAYFIN") ne 0 and empty apprRead}'>
+                                    <span class="badge badge-pill badge-info">new</span>
+                                </c:if>
+                            </a> &nbsp;
+                            <a href="main.appr?apprFolder=sendFin" class="btn btn-sm btn-outline-danger">
+                                반려문서
+                                <c:if test='${mainApprCount.get("TODAYDENIED") ne 0 and empty apprRead}'>
+                                    <span class="badge badge-pill badge-danger">new</span>
+                                </c:if>
+                            </a>
+                        </div>
                     </div>
-                    <table class="table table-sm board table-hover" style="text-align: center;" >
+                    <table id="apprTable" class="table table-sm board table-hover" style="text-align: center;">
                         <thead>
                             <tr>
+                                <th hidden></th>
                                 <th>제목</th>
                                 <th>작성자</th>
                                 <th>날짜</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>결재하자결재하자<span class="badge badge-danger" style="margin-left:5px;">new</span></td>
-                                <td>김개똥이</td>
-                                <td>2020-01-01</td>
-                            </tr>
-                            <tr>
-                                <td>결재하자결재하자결재하자결재하자<span class="badge badge-danger" style="margin-left:5px;">new</span></td>
-                                <td>이말똥</td>
-                                <td>2020-01-01</td>
-                            </tr>
-                            <tr>
-                                <td>결재하자결재하자</td>
-                                <td>웋헿헤</td>
-                                <td>2020-01-01</td>
-                            </tr>
-                            <tr>
-                                <td>결재하자결재하자<span class="badge badge-danger" style="margin-left:5px;">new</span></td>
-                                <td>김개똥이</td>
-                                <td>2020-01-01</td>
-                            </tr>
-                            <tr>
-                                <td>결재하자결재하자결재하자결재하자<span class="badge badge-danger" style="margin-left:5px;">new</span></td>
-                                <td>이말똥</td>
-                                <td>2020-01-01</td>
-                            </tr>
-                            <tr>
-                                <td>결재하자결재하자</td>
-                                <td>웋헿헤</td>
-                                <td>2020-01-01</td>
-                            </tr>
+                            <c:forEach var="a" items="${ apprList }">
+                                <tr>
+                                    <td hidden>${ a.docNo }</td>
+                                    <td class="tableBreakWord text-left pl-3" style="width:350px;">${ a.docName }</td>
+                                    <td style="width:25%">${ a.memName }</td>
+                                    <td style="width:25%">${ a.docDate }</td>
+                                </tr>
+                            </c:forEach>
                         </tbody>
                     </table>
-
                 </div>
                 <div class="wrap">
                     <div class="boxTitle">게시판<button type="button" class="btn badge-secondary btn-sm more">more</button></div>
@@ -395,6 +393,14 @@
 		showMessengerArea();
     	moveToMessage();    	
     }
+
+    // approval Link
+    $(function () {
+        $("#apprTable>tbody>tr").click(function () {
+        var mno = $(this).children().eq(0).text();
+        location.href = 'detailDocu.appr?docNo=' + mno;
+        })
+    })
     
     </script>
  	

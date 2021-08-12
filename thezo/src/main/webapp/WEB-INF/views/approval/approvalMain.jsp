@@ -17,32 +17,32 @@
             <jsp:include page="apprSidebar.jsp"/>
             <div class="sideOuter">
                 <!-- 안읽은 문서 건수 안내 시작 -->
-                <div class="card-deck">
-                    <div class="card bg-light">
-                        <div class="card-body text-left">
-                        <p class="card-text">기안문서</p>
-                        <h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
-                        </div>
-                    </div>
-                    <div class="card bg-light">
-                        <div class="card-body text-left">
-                        <p class="card-text">결재요청</p>
-                        <h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
-                        </div>
-                    </div>
-                    <div class="card bg-light">
-                        <div class="card-body text-left">
-                        <p class="card-text">참조문서</p>
-                        <h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
-                        </div>
-                    </div>
-                    <div class="card bg-light">
-                        <div class="card-body text-left">
-                        <p class="card-text">결재내역</p>
-                        <h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
-                        </div>
-                    </div>  
-                </div>
+				<div class="card-deck">
+					<div class="card bg-light">
+						<div class="card-body text-left">
+							<p class="card-text">기안문서</p>
+							<h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
+						</div>
+					</div>
+					<div class="card bg-light">
+						<div class="card-body text-left">
+							<p class="card-text">결재요청</p>
+							<h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
+						</div>
+					</div>
+					<div class="card bg-light">
+						<div class="card-body text-left">
+							<p class="card-text">참조문서</p>
+							<h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
+						</div>
+					</div>
+					<div class="card bg-light">
+						<div class="card-body text-left">
+							<p class="card-text">결재내역</p>
+							<h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
+						</div>
+					</div>
+				</div>
                 <br><br>
                 <!-- 안읽은 문서 건수 안내 끝 -->
                 <c:forEach var="a" items="${ list }">
@@ -62,7 +62,7 @@
 										<i class="fas fa-box-open docMenu"></i>
 									</c:when>
 									<c:otherwise>
-										<i class="far fa-file docMenu"></i>
+										<i class="far fa-edit docMenu"></i>
 									</c:otherwise>
 								</c:choose><br>
 								<span style="font-size:9pt" >${ a.formName }</span>
@@ -79,67 +79,64 @@
 	                        <small>${ a.department }</small>
 							
 	                    </div>
-
-						<script>
-
-						
+					<script>
 						<c:forEach var="rc" items="${ readCheckList }">
 							<c:if test="${rc.docNo eq a.docNo and rc.read eq 'N'}">
 								$("#${a.docNo}docName").html("<i class='fas fa-exclamation-circle' style='color:firebrick'></i> ${a.docName}");
 							</c:if>
 						</c:forEach>
-						</script>
+					</script>
 
 
-	                    <div class="w3-cell" style="width:30%;">
-	                        <c:forTokens var="l" items="${a.line}" delims="," varStatus="status">
-		   						<c:choose>
-		   							<c:when test="${l eq a.sort }">
-		   								<div class="w3-cell"><h3 class="w3-cell"><i class="fas fa-pen apprLine"></i></h3>
-				                            <small>${ l }</small>
-				                        </div>
-		   							</c:when>
-		   							<c:otherwise>
-				                    	<div class="w3-cell"><h3 class="w3-cell"><i class="far fa-check-circle"></i></h3>
-				                            <small>${ l }</small>
-				                        </div>
-				                    </c:otherwise>
-	    						</c:choose>
-			                    <c:if test="${status.last eq false}">
-			                    	<div class="w3-cell">&horbar;</div>
-			                    </c:if>
+						<div class="w3-cell" style="width:30%;">
+							<c:forTokens var="l" items="${a.line}" delims="," varStatus="status">
+								<c:choose>
+									<c:when test="${l eq a.sort }">
+										<div class="w3-cell">
+											<h3 class="w3-cell"><i class="fas fa-pen apprLine"></i></h3>
+											<small>${ l }</small>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="w3-cell">
+											<h3 class="w3-cell"><i class="far fa-check-circle"></i></h3>
+											<small>${ l }</small>
+										</div>
+									</c:otherwise>
+								</c:choose>
+								<c:if test="${status.last eq false}">
+									<div class="w3-cell">&horbar;</div>
+								</c:if>
 							</c:forTokens>
-	                    </div>
+						</div>
 	                </div>
                 </c:forEach>
-                
-
                 <br>
 				<!--페이징 처리 시작-->
-                 <div id="pagingArea">
+				<div id="pagingArea">
 					<ul class="pagination">
 						<c:if test="${ pi.currentPage ne 1 }">
-							<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ pi.currentPage-1 }&apprFolder=${apprFolder}">이전</a></li>
+							<li class="page-item"><a class="page-link"
+									href="main.appr?currentPage=${ pi.currentPage-1 }&apprFolder=${apprFolder}">이전</a></li>
 						</c:if>
-
 						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
 							<c:choose>
 								<c:when test="${ pi.currentPage eq p }">
-									<li class="page-item"><a class="page-link" style="background-color: lightsteelblue" href="main.appr?currentPage=${ p }&apprFolder=${apprFolder}">${ p }</a></li>
+									<li class="page-item"><a class="page-link" style="background-color: lightsteelblue"
+											href="main.appr?currentPage=${ p }&apprFolder=${apprFolder}">${ p }</a></li>
 								</c:when>
 								<c:otherwise>
-									<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ p }&apprFolder=${apprFolder}">${ p }</a></li>
+									<li class="page-item"><a class="page-link"
+											href="main.appr?currentPage=${ p }&apprFolder=${apprFolder}">${ p }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
-
 						<c:if test="${ pi.currentPage ne pi.maxPage }">
-							<li class="page-item"><a class="page-link" href="main.appr?currentPage=${ pi.currentPage+1 }&apprFolder=${apprFolder}">다음</a></li>
+							<li class="page-item"><a class="page-link"
+									href="main.appr?currentPage=${ pi.currentPage+1 }&apprFolder=${apprFolder}">다음</a></li>
 						</c:if>
-
-
 					</ul>
-           		 </div>
+				</div>
 				<!--페이징 처리 끝-->
                 <br>
             </div>

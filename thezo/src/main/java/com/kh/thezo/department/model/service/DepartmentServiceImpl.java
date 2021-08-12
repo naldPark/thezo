@@ -40,4 +40,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 	public ArrayList<Department> selectDepartment(PageInfo pi) {
 		return dDao.selectDepartment(sqlSession, pi);
 	}
+
+	@Override
+	public int updateDept(Department d) {
+		return dDao.updateDepartment(sqlSession, d);
+	}
 }

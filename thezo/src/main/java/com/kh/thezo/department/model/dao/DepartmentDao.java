@@ -31,4 +31,8 @@ public class DepartmentDao {
 		return (ArrayList)sqlSession.selectList("departmentMapper.selectDepartment", null, rowBounds);
 	}
 	
+	public int updateDepartment(SqlSessionTemplate sqlSession, Department d) {
+		System.out.println(d);
+		return sqlSession.update("departmentMapper.updateDepartment", d);
+	}
 }

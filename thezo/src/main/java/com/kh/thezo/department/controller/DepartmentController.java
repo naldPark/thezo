@@ -26,7 +26,7 @@ public class DepartmentController {
 		
 		if(result > 0) {
 			session.setAttribute("alertMsg", "성공적으로 부서등록 되었습니다");
-			return "redirect:/";
+			return "redirect:adminDept.ma";
 		}else {
 			model.addAttribute("errorMsg", "부서등록 실패");
 			return "common/errorPage";
@@ -39,5 +39,17 @@ public class DepartmentController {
 	public int depNocheck(@RequestParam("depNo") String depNo) {
 		int checkNo = dService.depNocheck(depNo);
 		return checkNo;
+	}
+	
+	@RequestMapping("deptModi.dept")
+	public String updateDept(Department d, Model model, HttpSession session) {
+		int result = dService.updateDept(d);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "성공적으로 수정되었습니다");
+			return "redirect:adminDept.ma";
+		}else {
+			model.addAttribute("errorMsg", "부서수정 실패");
+			return "common/errorPage";
+		}
 	}
 }

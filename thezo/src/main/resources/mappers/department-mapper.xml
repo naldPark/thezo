@@ -55,6 +55,7 @@
 	      from department
 	</select>
 	
+	<!-- 부서 조회 -->
 	<select id="selectDepartment" resultMap="departmentResult">
 		select
 			   dep_no
@@ -67,5 +68,24 @@
 	     order
 	        by dep_class
 	</select>
- 
+	
+	<!-- 부서 수정 -->
+ 	<update id="updateDepartment">
+ 		update
+ 			   department
+ 		   set dep_name = #{ depName }
+ 		   	 , dep_class = #{ depClass }
+ 		   	 , parent_dep = #{ parentDep }
+ 		   	 , par_dep_class = #{ parDepclass }
+ 		   	 , dep_status = 
+	 		   	 <choose>
+			     	<when test="depStatus == 'used'">
+			     		'Y'
+			     	</when>
+			    	<otherwise>
+			    		'N'
+			    	</otherwise>
+			     </choose>
+		 where dep_no = #{ depNo }
+ 	</update>
 </mapper>

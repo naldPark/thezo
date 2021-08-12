@@ -16,5 +16,8 @@ public interface DepartmentService {
 	//부서 조회용
 	int departmentListCount();
 	ArrayList<Department> selectDepartment(PageInfo pi);
+	
+	//부서 수정
+	int updateDept(Department d);
 
 }

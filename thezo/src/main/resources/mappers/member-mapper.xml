@@ -20,6 +20,7 @@
 		<result column="gender" property="gender"/>
 		<result column="resign_date" property="resignDate"/>
 		<result column="dep_no" property="depNo"/>
+		<result column="dep_class" property="depClass"/>
 		<result column="department" property="department"/>
 		<result column="job" property="job"/>
 		<result column="rank" property="rank"/>
@@ -34,7 +35,7 @@
 
 	<select id="loginMember" resultMap="memberResult">
 
-		select
+		    select
 		    MEM_NO
 			, MEM_ID
 			, MEM_PWD
@@ -48,6 +49,7 @@
 			, ADDRESS_EXTRA
 			, ADDRESS_DETAIL
 			, DEP_NO
+            , DEP_CLASS
 			, DEPARTMENT
 			, JOB
 			, RANK
@@ -63,8 +65,9 @@
 			, NOTICE_AUTH
 			, status
 		  from member
+          join department using(dep_no)
 	 		where status IN ('Y', 'A')
-		   	and mem_id = #{memId}  
+		   	and mem_id = #{memId} 
 	</select>
 
 	<!--

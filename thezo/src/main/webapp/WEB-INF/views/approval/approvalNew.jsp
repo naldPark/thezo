@@ -53,6 +53,30 @@
                 <h6>결재양식을 선택 해 주세요</h6>
                 <hr>
                 <br>
+                <form action="main.appr" method="post">
+                    <div class="w3-row-padding">
+                        <div class="w3-third">&nbsp;</div>
+                        <div class="w3-twothird">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">검색분류</span>
+                                </div>
+                                <select class="form-control" name="category">
+                                    <option>전체</option>
+                                    <option>일반</option>
+                                    <option>비용</option>
+                                    <option selected>총무</option>
+                                    <option>인사</option>
+                                </select>
+                                <input type="text" name="docName" class="form-control" placeholder="검색할 제목을 입력하세요" style="width:200px">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary btn-sm" style="width: 100px">&nbsp;조회&nbsp;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
                 <!-- 안읽은 문서 건수 안내 끝 -->
                 <!-- 문서리스트 -->
 
@@ -86,27 +110,26 @@
                <!--페이징 처리 시작-->
                  <div id="pagingArea">
 					<ul class="pagination">
-						<c:choose>
-							<c:when test="${ pi.currentPage eq 1 }">
-								<li class="page-item disabled"><a class="page-link">이전</a></li>
-							</c:when>
-							<c:otherwise>
-								<li class="page-item"><a class="page-link" href="approvalNew?currentPage=${ pi.currentPage-1 }">이전</a></li>
-							</c:otherwise>
-						</c:choose>
-
-						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-								<li class="page-item"><a class="page-link" href="approvalNew?currentPage=${ p }">${ p }</a></li>
+                        <c:if test="${ pi.currentPage ne 1 }">
+                            <li class="page-item"><a class="page-link" href="approvalNew?currentPage=${ pi.currentPage-1 }">이전</a></li>
+                        </c:if>
+                        <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+							<c:choose>
+								<c:when test="${ pi.currentPage eq p }">
+									<li class="page-item">
+                                        <a class="page-link" style="background-color: lightsteelblue" href="approvalNew?currentPage=${ p }">${ p }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="page-item">
+                                        <a class="page-link"  href="approvalNew?currentPage=${ p }">${ p }</a></li>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
-
-						<c:choose>
-							<c:when test="${ pi.currentPage eq pi.maxPage }">
-								<li class="page-item disabled"><a class="page-link">다음</a></li>
-							</c:when>
-							<c:otherwise>
-									<li class="page-item"><a class="page-link" href="approvalNew?currentPage=${ pi.currentPage+1 }">다음</a></li>
-							</c:otherwise>
-						</c:choose>
+						<c:if test="${ pi.currentPage ne pi.maxPage and pi.maxPage ne '0'}">
+                            <li class="page-item">
+                                <a class="page-link" href="approvalNew?currentPage=${ pi.currentPage+1 }">다음</a>
+                            </li>
+                        </c:if>
 					</ul>
            		 </div>
 				<!--페이징 처리 끝-->

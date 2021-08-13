@@ -63,6 +63,7 @@
 								</div>
 							</div>
 						</div>
+					</div>
 				</form>
 				
 				<script>
@@ -162,8 +163,9 @@
 							</c:choose>
 						</c:forEach>
 						<c:if test="${ pi.currentPage ne pi.maxPage and pi.maxPage ne '0'}">
-							<li class="page-item"><a class="page-link"
-									href="main.appr?currentPage=${ pi.currentPage+1 }&apprFolder=${apprFolder}">다음</a></li>
+							<li class="page-item">
+								<a class="page-link" href="main.appr?currentPage=${ pi.currentPage+1 }&apprFolder=${apprFolder}">다음</a>
+							</li>
 						</c:if>
 					</ul>
 				</div>

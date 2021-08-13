@@ -84,15 +84,15 @@ public class ApprovalDao {
 	 *  문서작성 관련 Dao
 	 */
 	// 문서양식 갯수 카운트
-		public int newApprListCount(SqlSessionTemplate sqlSession) {
-			return sqlSession.selectOne("approvalMapper.newApprListCount");
+		public int newApprListCount(SqlSessionTemplate sqlSession, Approval a) {
+			return sqlSession.selectOne("approvalMapper.newApprListCount",a);
 		}
 	
 	// 문서양식 리스트 불러오기
-	public ArrayList<Approval> newApprList(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public ArrayList<Approval> newApprList(SqlSessionTemplate sqlSession,  Approval a, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		ArrayList<Approval> list = (ArrayList)sqlSession.selectList("approvalMapper.newApprList", null, rowBounds);
+		ArrayList<Approval> list = (ArrayList)sqlSession.selectList("approvalMapper.newApprList", a, rowBounds);
 		return list;
 	}
 	

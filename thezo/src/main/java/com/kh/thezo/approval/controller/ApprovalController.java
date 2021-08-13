@@ -76,10 +76,10 @@ public class ApprovalController {
 	
 	// 문서양식 리스트 불러오기
 	@RequestMapping("new.appr")
-	public ModelAndView newApprList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
-		int listCount = aService.newApprListCount();
+	public ModelAndView newApprList(Approval a,ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		int listCount = aService.newApprListCount(a);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-		ArrayList<Approval> list = aService.newApprList(pi);
+		ArrayList<Approval> list = aService.newApprList(a,pi);
 		
 		mv.addObject("list", list)
 		  .addObject("pi", pi)
@@ -89,7 +89,7 @@ public class ApprovalController {
 	
 	// 문서 작성하는 페이지 
 	@RequestMapping("enrollForm.appr")
-	public ModelAndView enrollApproval(ModelAndView mv, HttpSession session, int ano) {
+	public ModelAndView enrollApproval(Approval a,ModelAndView mv, HttpSession session, int ano) {
 		Approval aTemp = new Approval();
 		Member m = (Member) session.getAttribute("loginUser");
 		aTemp.setMemNo(m.getMemNo()); 

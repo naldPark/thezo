@@ -29,10 +29,10 @@ public interface ApprovalService {
 	 ArrayList<ApprovalAccept> selectApprovalRead(Approval a);
 	
 	// 문서양식 갯수 카운트
-	int newApprListCount();
+	int newApprListCount(Approval a);
 	
 	// 문서양식 리스트 불러오기
-	ArrayList<Approval> newApprList(PageInfo pi);
+	ArrayList<Approval> newApprList(Approval a, PageInfo pi);
 	
 	// 문서 작성하는 페이지 
 	Approval enrollApproval(Approval aTemp);

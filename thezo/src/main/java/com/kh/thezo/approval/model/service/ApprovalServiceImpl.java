@@ -55,13 +55,13 @@ public class ApprovalServiceImpl implements ApprovalService {
 	
 
 	@Override
-	public int newApprListCount() {
-		return aDao.newApprListCount(sqlSession);
+	public int newApprListCount(Approval a) {
+		return aDao.newApprListCount(sqlSession, a);
 	}
 
 	@Override
-	public ArrayList<Approval> newApprList(PageInfo pi) {
-		return aDao.newApprList(sqlSession, pi);
+	public ArrayList<Approval> newApprList(Approval a, PageInfo pi) {
+		return aDao.newApprList(sqlSession, a,pi);
 	}
 
 

@@ -61,13 +61,13 @@ public class MailController {
 			
 			// 받은편지함만 해당
 			if (folder.equals("받은")) {
-
 				// 해당 두 계정만 서버와 연동시켰기 때문에 조건처리했습니다.
 				if (m.getEmail().equals("user05@thezo.site") || m.getEmail().equals("user06@thezo.site")) {
 					try {
 						// 외부에 새로들어온 메일이 있는지 체크
 						mList = mailReceivecheck(m.getMemNo(), m.getEmail(), session);
-						if (mList != null) {
+						
+						if (mList.size() != 0) {
 							int result = mmService.insertPopList(mList);
 						}
 					} catch (MessagingException e) {
@@ -127,6 +127,14 @@ public class MailController {
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		ArrayList<Mail> mList = chkInbox.receiveMailAttachedFile(savePath, memNo, email, currentTime);
 		return mList;
+
+	}
+	
+	// main화면에서 이메일 새로고침기능
+	public void mailReceivecheck(String email,  int memNo, HttpSession session) throws MessagingException {
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/mail/");
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		ArrayList<Mail> mList = chkInbox.receiveMailAttachedFile(savePath, memNo, email, currentTime);
 
 	}
 

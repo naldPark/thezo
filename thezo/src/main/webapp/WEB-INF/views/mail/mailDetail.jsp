@@ -11,8 +11,7 @@
     table a{ text-decoration:none !important; cursor: pointer; color: rgb(25, 99, 148)!important;}
     table a:hover{ text-decoration:underline !important; cursor: pointer; }
     table th{text-align: center;}
-    table td{width: 800px !important;; border-top:0;border-bottom: 0;}
-   .table-bordered td{border: 0px !important; border-top: 1px solid #dee2e6!important; }
+    .mailInfo td{width: 800px !important;; border-top:0;border-bottom: 0;border: 0px !important; border-top: 1px solid #dee2e6!important; }
    .expandEmpBtn{font-weight: normal!important;}
     /* *{border:1px solid red} */
   </style>
@@ -40,27 +39,27 @@
           <br>
     
           <table class="table table-bordered" style="word-break: break-all;">
-            <tr>
+            <tr class="mailInfo">
               <th style="width:200px!important">보낸사람</th>
               <td>${mm.sender}</td>
             </tr>
-            <tr>
+            <tr class="mailInfo">
               <th>받는사람</th>
               <td style="display:block; width: 800px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
                 <span><button id="receiveEmp" class="expandEmpBtn w3-button w3-white w3-border w3-padding-small w3-small">펼치기</button>&nbsp;${mm.receiver}</span>
               </td>
             </tr>
-            <tr>
+            <tr class="mailInfo">
               <th>참조자</th>
               <td style="display:block; width: 800px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
                   <span><button id="referEmp" class="expandEmpBtn w3-button w3-white w3-border w3-padding-small w3-small">펼치기</button>&nbsp;${mm.refReceiver}</span>
               </td>
             </tr>
-            <tr>
+            <tr class="mailInfo">
               <th>제목</th>
               <td>${mm.mailTitle}</td>
             </tr>
-            <tr>
+            <tr class="mailInfo">
               <th>파일첨부</th>
               <td>
                 <c:forEach var="at" items="${ mm.at }">

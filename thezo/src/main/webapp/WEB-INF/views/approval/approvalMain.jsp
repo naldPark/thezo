@@ -7,6 +7,9 @@
 <head>
 <meta charset="UTF-8">
 <title>The Zo</title>
+
+<link rel="stylesheet"  href="resources/css/datepicker.min.css">
+
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
@@ -15,42 +18,69 @@
         <div class="outer" align="center">    
             <p class="pageTitle">  approval <b> 전자결재</b></p>
             <jsp:include page="apprSidebar.jsp"/>
+			<script src="resources/js/datepicker.min.js"></script>
+			<script src="resources/js/datepicker.ko.js"></script>
             <div class="sideOuter">
-                <!-- 안읽은 문서 건수 안내 시작 -->
-				<div class="card-deck">
-					<div class="card bg-light">
-						<div class="card-body text-left">
-							<p class="card-text">기안문서</p>
-							<h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
+				<br>
+				<h4 class="text-left pl-3">문서리스트</h4>
+				<br>
+				<!-- 검색 area -->
+				<c:choose>
+					<c:when test="${empty list}">
+					  <div style="font-size:30pt; color: darkgray"><br>
+						<img src="resources/images/empty.png" style="width:30%"><br>
+						<span>무...문서함이 텅 비어있어요</span>
+					  </div>
+					</c:when>
+					<c:otherwise>
+				<form action="main.appr" method="post">
+					<div class="w3-row-padding">
+						<div class="w3-third">
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text">기간선택</span>
+								</div>
+								<input type="text" name="datePeriod" data-range="true" data-multiple-dates-separator=" - "
+									data-language="ko" class="datepicker-here form-control" style="cursor: pointer; width:100px" />
+							</div>
 						</div>
-					</div>
-					<div class="card bg-light">
-						<div class="card-body text-left">
-							<p class="card-text">결재요청</p>
-							<h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
+						<div class="w3-twothird">
+							<div class="input-group mb-3">
+								<div class="input-group-prepend">
+									<span class="input-group-text">검색분류</span>
+								</div>
+								<select class="form-control" id="sel1" name="category">
+									<option>전체</option>
+									<option>일반</option>
+									<option>비용</option>
+									<option>총무</option>
+									<option>인사</option>
+								</select>
+								<input type="text" name="docName" class="form-control" placeholder="검색할 제목을 입력하세요" style="width:200px">
+								<input type="hidden" name="apprFolder" value="${apprFolder}">
+								<div class="input-group-append">
+									<button type="submit" class="btn btn-primary btn-sm" style="width: 100px">&nbsp;조회&nbsp;</button>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="card bg-light">
-						<div class="card-body text-left">
-							<p class="card-text">참조문서</p>
-							<h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
-						</div>
-					</div>
-					<div class="card bg-light">
-						<div class="card-body text-left">
-							<p class="card-text">결재내역</p>
-							<h5 class="card-text text-right"><span class="recentDoc">1</span> 건</h5>
-						</div>
-					</div>
-				</div>
-                <br><br>
-                <!-- 안읽은 문서 건수 안내 끝 -->
+				</form>
+				
+				<script>
+					$(function () {
+						$('.datepicker-here').datepicker({
+							language: 'ko',
+							autoClose: true
+						})
+					})
+				</script>
+				<br><br><hr>
+						
                 <c:forEach var="a" items="${ list }">
 	                <!-- 문서리스트 -->
-	                <div class="apprList shadow p-4 mb-3 bg-white w3-cell-row" id="${a.docNo}doclist" 
+					<div class="apprList shadow p-4 mb-3 bg-white w3-cell-row" id="${a.docNo}doclist"
 						onclick="location.href='detailDocu.appr?docNo=${a.docNo}'">
-	                    <div class="w3-cell" style="width:10%">
-	                        <h3 class="w3-cell">
+						<div class="w3-cell" style="width:10%">
+							<h3 class="w3-cell">
 								<c:choose>
 									<c:when test="${a.category eq '인사'}">
 										<i class="fas fa-user-alt docMenu"></i>
@@ -65,29 +95,27 @@
 										<i class="far fa-edit docMenu"></i>
 									</c:otherwise>
 								</c:choose><br>
-								<span style="font-size:9pt" >${ a.formName }</span>
+								<span style="font-size:9pt">${ a.formName }</span>
 							</h3>
-	                    </div>
-	                    <div class="w3-cell text-left" style="width:30%; padding-left:10px">
-	                        <h5 class="w3-cell" id="${a.docNo}docName">${a.docName}</h5>
+						</div>
+						<div class="w3-cell text-left" style="width:30%; padding-left:10px">
+							<h5 class="w3-cell" id="${a.docNo}docName">${a.docName}</h5>
 							<small>${ a.docDate }</small>
-	                        
-	                    </div>
-	                    <div class="w3-cell">
-	                        <h3 class="w3-cell"><i class="fas fa-user-edit"></i></h3>
-	                        <h5 class="w3-cell">&nbsp; ${ a.memName }</h5>
-	                        <small>${ a.department }</small>
-							
-	                    </div>
-					<script>
-						<c:forEach var="rc" items="${ readCheckList }">
-							<c:if test="${rc.docNo eq a.docNo and rc.read eq 'N'}">
-								$("#${a.docNo}docName").html("<i class='fas fa-exclamation-circle' style='color:firebrick'></i> ${a.docName}");
-							</c:if>
-						</c:forEach>
-					</script>
-
-
+					
+						</div>
+						<div class="w3-cell">
+							<h3 class="w3-cell"><i class="fas fa-user-edit"></i></h3>
+							<h5 class="w3-cell">&nbsp; ${ a.memName }</h5>
+							<small>${ a.department }</small>
+					
+						</div>
+						<script>
+							<c:forEach var="rc" items="${ readCheckList }">
+								<c:if test="${rc.docNo eq a.docNo and rc.read eq 'N'}">
+									$("#${a.docNo}docName").html("<i class='fas fa-exclamation-circle' style='color:firebrick'></i> ${a.docName}");
+								</c:if>
+							</c:forEach>
+						</script>
 						<div class="w3-cell" style="width:30%;">
 							<c:forTokens var="l" items="${a.line}" delims="," varStatus="status">
 								<c:choose>
@@ -111,6 +139,8 @@
 						</div>
 	                </div>
                 </c:forEach>
+			</c:otherwise>
+			</c:choose>
                 <br>
 				<!--페이징 처리 시작-->
 				<div id="pagingArea">
@@ -131,14 +161,13 @@
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
-						<c:if test="${ pi.currentPage ne pi.maxPage }">
+						<c:if test="${ pi.currentPage ne pi.maxPage and pi.maxPage ne '0'}">
 							<li class="page-item"><a class="page-link"
 									href="main.appr?currentPage=${ pi.currentPage+1 }&apprFolder=${apprFolder}">다음</a></li>
 						</c:if>
 					</ul>
 				</div>
 				<!--페이징 처리 끝-->
-                <br>
             </div>
     	</div>
     </section>

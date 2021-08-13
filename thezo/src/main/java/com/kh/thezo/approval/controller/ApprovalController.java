@@ -2,6 +2,7 @@ package com.kh.thezo.approval.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,21 +40,36 @@ public class ApprovalController {
 	@RequestMapping("main.appr")
 	public ModelAndView selectApprovalMain(ModelAndView mv,
 			@RequestParam(value = "apprFolder", defaultValue = "main") String apprFolder, HttpSession session,
-			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
-
+			@RequestParam(value = "currentPage", defaultValue = "1") int currentPage,
+			String datePeriod, Approval a) {
+		
 		Member m = (Member) session.getAttribute("loginUser");
 		session.setAttribute("apprRead", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 		// 페이징 확인
-		Approval a = new Approval();
 		a.setStatus("");
 		a.setMemNo(m.getMemNo());
 		a.setApprFolder(apprFolder);
+		
+		if(a.getDocName()!=null&&a.getDocName().equals("")) {
+			a.setDocName(null);
+		}
+		
+		if (datePeriod != null && !datePeriod.equals("")) {
+			String calStartDate = datePeriod.substring(0, 10);
+			String calEndDate;
+			if (datePeriod.length() < 22) {
+				calEndDate = calStartDate;
+			} else {
+				calEndDate = datePeriod.substring(13, 23);
+			}
+			a.setSearchSDate(calStartDate);
+			a.setSearchEDate(calEndDate);
+		}
 		int listCount = aService.selectListCount(a);
-
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		ArrayList<Approval> list = aService.selectApprovalMain(a, pi);
 		ArrayList<ApprovalAccept> readCheckList = aService.selectApprovalRead(a);
-		mv.addObject("list", list).addObject("readCheckList", readCheckList).addObject("pi", pi)
+		mv.addObject("list", list).addObject("search", a).addObject("readCheckList", readCheckList).addObject("pi", pi)
 				.addObject("apprFolder", apprFolder).setViewName("approval/approvalMain");
 		return mv;
 	}

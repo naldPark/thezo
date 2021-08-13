@@ -75,12 +75,11 @@ public class MailServiceImpl implements MailService {
 	
 	@Override
 	public int insertPopList(ArrayList<Mail> mList) {
-		
 		int result=0;
 		for (int i = 0; i < mList.size(); i++) {
-			mmDao.insertPopList(sqlSession, mList.get(i));
-			if(mList.get(i).getAt()!=null) {
-			mmDao.insertMailAttachment(sqlSession, mList.get(i));
+				mmDao.insertPopList(sqlSession, mList.get(i));
+			if(mList.get(i).getAt()!=null&& mList.get(i).getAt().size()!=0) {
+				mmDao.insertMailAttachment(sqlSession, mList.get(i));
 			}
 		}
 		return result;

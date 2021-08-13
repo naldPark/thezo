@@ -186,7 +186,14 @@
 				<otherwise>
 					where inmem_no like '%,' || #{memNo} || ',%'
 				</otherwise>
-		 	 </choose>   
+		 	 </choose>  
+		 	 <if test='searchSDate != null'>
+		 			and doc_date between #{searchSDate} and #{searchEDate}
+		 	 </if> 
+		 	 <if test='category != "전체"'>
+		 			and category like '%' || #{category} || '%'
+		 	 </if> 
+                    and doc_name like '%' || #{docName} || '%'
 				--상신문서
 				<if test='apprFolder.equals("send")'>and mem_no = #{memNo}
 				and status != '완료'</if>

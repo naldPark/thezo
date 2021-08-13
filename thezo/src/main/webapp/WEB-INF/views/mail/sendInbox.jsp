@@ -16,77 +16,83 @@
           <jsp:include page="mailSidebar.jsp" />
       
           <div class="mailOuter">
-            <div align="left">
-              <button type="button" id="sendDeleteBtn" class="mainBtn btn btn-sm btn-secondary">완전삭제</button>
-            </div>
-            <br>
-            <form action="mainBtn.mail" method="post" id="mainBtnForm">
-              <table class="table w3-centered table-hover">
-                <thead>
-                  <input type="hidden" id="btnType" name="btnType" value="">
-                  <tr class="table-primary">
-                    <th><input type="checkbox" class="bigCheckbox" id="allCheck"></th>
-                    <th>발신자</th>
-                    <th style="width:500px">제목</th>
-                    <th>일시</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <c:forEach var="m" items="${ list }">
-                    <tr>
-                      <td hidden>${m.seMailNo}</td>
-                      <th><input type="checkbox" class="bigCheckbox" name="mailNo" value="${m.seMailNo}"></th>
-                      <td>${m.sender}</td>
-                      <!--발신자가 외부면 메일, 내부면 이름?-->
-                      <td>
-                        ${m.mailTitle}
-                        <c:if test="${!empty m.attach}">
-                          &nbsp;<i class="fas fa-paperclip"></i>
-                        </c:if>
-                      </td>
-                      <td>${m.sendDate}</td>
-                    </tr>
-                    <!--첨부파일 여부-->
-                  </c:forEach>
-      
-                </tbody>
-              </table>
-            </form>
-      
-            <br><br>
-      
-            <!--페이징 처리 시작-->
-            <div id="pagingArea">
-              <ul class="pagination">
-                <c:if test="${ pi.currentPage ne 1 }">
-                  <li class="page-item"><a class="page-link"
-                      href="sendInbox.mail?currentPage=${ pi.currentPage-1 }">이전</a></li>
-                </c:if>
-      
-                <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                  <c:choose>
-                    <c:when test="${ pi.currentPage eq p }">
-                      <li class="page-item"><a class="page-link" style="background-color: lightsteelblue"
-                          href="sendInbox.mail?currentPage=${ p }">${ p }</a></li>
-                    </c:when>
-                    <c:otherwise>
-                      <li class="page-item"><a class="page-link"
-                          href="sendInbox.mail?currentPage=${ p }">${ p }</a></li>
-                    </c:otherwise>
-                  </c:choose>
-                </c:forEach>
-      
-                <c:if test="${ pi.currentPage ne pi.maxPage }">
-                  <li class="page-item"><a class="page-link"
-                      href="sendInbox.mail?currentPage=${ pi.currentPage+1 }">다음</a></li>
-                </c:if>
-      
-      
-              </ul>
-            </div>
-            <!--페이징 처리 끝-->
+            <c:choose>
+              <c:when test="${empty list}">
+                <div style="font-size:30pt; color: darkgray">
+                  <br>
+                  <img src="resources/images/empty.png" style="width:30%"><br>
+                  <span>메..메일이 없어요</span>
+                </div>
+              </c:when>
+              <c:otherwise>
+                <div align="left">
+                  <button type="button" id="sendDeleteBtn" class="mainBtn btn btn-sm btn-secondary">완전삭제</button>
+                </div>
+                <br>
+                <form action="mainBtn.mail" method="post" id="mainBtnForm">
+                  <table class="table w3-centered table-hover">
+                    <thead>
+                      <input type="hidden" id="btnType" name="btnType" value="">
+                      <tr class="table-primary">
+                        <th><input type="checkbox" class="bigCheckbox" id="allCheck"></th>
+                        <th>발신자</th>
+                        <th style="width:500px">제목</th>
+                        <th>일시</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <c:forEach var="m" items="${ list }">
+                        <tr>
+                          <td hidden>${m.seMailNo}</td>
+                          <th><input type="checkbox" class="bigCheckbox" name="mailNo" value="${m.seMailNo}"></th>
+                          <td>${m.sender}</td>
+                          <!--발신자가 외부면 메일, 내부면 이름?-->
+                          <td>
+                            ${m.mailTitle}
+                            <c:if test="${!empty m.attach}">
+                              &nbsp;<i class="fas fa-paperclip"></i>
+                            </c:if>
+                          </td>
+                          <td>${m.sendDate}</td>
+                        </tr>
+                        <!--첨부파일 여부-->
+                      </c:forEach>
+                    </tbody>
+                  </table>
+                </form>
+                <br><br>
+          
+                <!--페이징 처리 시작-->
+                <div id="pagingArea">
+                  <ul class="pagination">
+                    <c:if test="${ pi.currentPage ne 1 }">
+                      <li class="page-item"><a class="page-link" href="sendInbox.mail?currentPage=${ pi.currentPage-1 }">이전</a>
+                      </li>
+                    </c:if>
+          
+                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                      <c:choose>
+                        <c:when test="${ pi.currentPage eq p }">
+                          <li class="page-item"><a class="page-link" style="background-color: lightsteelblue"
+                              href="sendInbox.mail?currentPage=${ p }">${ p }</a></li>
+                        </c:when>
+                        <c:otherwise>
+                          <li class="page-item"><a class="page-link" href="sendInbox.mail?currentPage=${ p }">${ p }</a></li>
+                        </c:otherwise>
+                      </c:choose>
+                    </c:forEach>
+          
+                    <c:if test="${ pi.currentPage ne pi.maxPage and pi.maxPage ne '0'}">
+                      <li class="page-item"><a class="page-link" href="sendInbox.mail?currentPage=${ pi.currentPage+1 }">다음</a>
+                      </li>
+                    </c:if>
+                  </ul>
+                </div>
+                <!--페이징 처리 끝-->
+              </c:otherwise>
+            </c:choose>
           </div>
-        </div>
+          </div>
 
            
 

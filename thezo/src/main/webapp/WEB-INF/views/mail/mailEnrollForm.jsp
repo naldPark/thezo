@@ -56,6 +56,7 @@
         .empListInput{width: 867px !important; }
         .dropFile{ text-decoration:underline !important; cursor: pointer; color: rgb(109, 107, 107)!important;}
         .dropFile:hover{ text-decoration:underline !important; cursor: pointer; }
+        
   </style>
 </head>
 <body>
@@ -86,7 +87,7 @@
                     <div class="empListDiv w3-dropdown-content w3-bar-block w3-light-grey" id="receiveListDiv">
                       <input type="text" class="form-control empListInput" name="receiveAry" 
                       <c:if test="${replyType eq 're:'}">value="${mm.sender}"</c:if> 
-                      <c:if test="${replyType eq 'me:'}">value="${loginUser.email}" disabled</c:if> 
+                      <c:if test="${replyType eq 'me:'}">value="${loginUser.email}" readonly</c:if> 
                           id="receiveListInput" placeholder="(선택사항)이름을 입력하세요" onkeyup="filterFunction()">
                        <!-- 동적문구 -->
                        <a class="w3-bar-item w3-button" id="receiveKeyupInput" style="display: none;"></a>

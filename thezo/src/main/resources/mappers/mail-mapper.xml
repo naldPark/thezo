@@ -90,7 +90,8 @@
 			and folder like '%' || #{folder} || '%'
 			and spam='N'
 			and status='N'
-			order by RECEIVE_DATE desc
+			order by RECEIVE_DATE desc, RE_MAIL_NO desc
+			
 		
 	</select>
 	
@@ -124,8 +125,8 @@
 	        full join ( select distinct 'ATTACH' "ATTACH", doc_no from MA_ATTACH where file_type='받은메일') on(RE_MAIL_NO = doc_NO)
 		where mem_no = #{memNo}
 			and spam='Y'
-			and status='N'
-			order by RECEIVE_DATE desc
+			and status='N' 
+			order by RECEIVE_DATE desc, RE_MAIL_NO desc
 		
 	</select>
 	
@@ -159,6 +160,7 @@
 			join member on(email=sender)
 			where mem_no=#{memNo}
 			and a.status='N'
+			order by SEND_DATE desc, SE_MAIL_NO desc
 	</select>
 	
 	<!-- 메일발송 -->
@@ -187,7 +189,6 @@
 			  , 'N'
 			  )
 	</insert>
-	
 	<!-- 발송/받은메일의 첨부파일 -->
 	<update id="insertMailAttachment" parameterType="java.util.List">
 		INSERT

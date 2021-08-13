@@ -26,8 +26,8 @@ public class Mail {
 	private String[] refReceiveAry; //참조 배열이메일형태
 	private String refReceiver; //이메일형태
 	private String read;//Y/N
-	private Date sendDate;
-	private Date receiveDate;
+	private String sendDate;
+	private String receiveDate;
 	private String tempSave;//Y/N
 	private ArrayList<Attachment> at; 
 	private String status;//Y/N

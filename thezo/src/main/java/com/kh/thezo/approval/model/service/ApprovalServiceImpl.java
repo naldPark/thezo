@@ -35,7 +35,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	
 	@Override
 	public ArrayList<Approval> selectApprovalMain(Approval a) {
-		return aDao.selectApprovalMain(a, sqlSession);
+		 return aDao.selectApprovalMain(a, sqlSession);
 	}
 	
 	@Override
@@ -45,7 +45,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	
 	@Override
 	public ArrayList<Approval> selectApprovalMain(Approval a, PageInfo pi) {
-		return aDao.selectApprovalMain(a, sqlSession, pi);
+		 return aDao.selectApprovalMain(a, sqlSession, pi);
 	}
 	
 	@Override

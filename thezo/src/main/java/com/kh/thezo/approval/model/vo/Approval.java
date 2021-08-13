@@ -43,4 +43,6 @@ public class Approval {
 	private int leaveCount; // 연차 차감갯수
 	private String leaveCategory; // 카테고리(연차/경조사)
 	private String apprFolder; // 폴더명
+	private String searchSDate;  // 검색시작일
+	private String searchEDate;  // 검색종료일
 }

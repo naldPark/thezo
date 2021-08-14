@@ -112,7 +112,6 @@
         })
     </script>
 
-
     <!-- The Modal -->
     <div class="modal fade" id="add-colleague-modal">
         <div class="modal-dialog">
@@ -123,113 +122,26 @@
                     <p class="modal-title">+ 동료 추가</p>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <span>동료 찾기</span>
-                        <input type="text" name="" id="select-colleague-name" readonly placeholder="검색을 통해 동료를 추가">
-                        <input type="hidden" name="" id="hidden-colleague-number"  required>
-                        <!-- 2번을 넘겨줘야 내가 원하는 팝업창을 열수가있다.  -->
-                        <button type="button" onclick="openSearchMem(2)"><i class="fas fa-search-plus"></i></button>
-                        <input type="text" id="popupType" value="col-select" style="display: none;">
-                    </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">취소</button>
-                        <button type="button" onclick="checkAndAddColleague();">추가하기</button>
-                    </div>
-                
-            </div>
-        </div>
-    </div>
-<%-- --------------------------------------------친구 추가용 모달 끝 (완료) ---------------------------------------------- --%>
-    <%-- ------------------------------------------사진 보기 모달은 공용이다.------------------------------------------ --%>
-
-    <style>
-        #chatAndProfileImage-modal .modal-content{
-            width: 500px;
-            max-height: 620px;
-            transform: translateY(40px);
-        }
-
-        #chatAndProfileImage-modal .modal-header{
-            height: 50px;
-            border-bottom: none;
-        }
-
-        #chatAndProfileImage-modal .modal-header>p{
-            font-size: 24px;
-            font-weight: bold;
-            color: tomato;
-        }
-
-        #chatAndProfileImage-modal .modal-body{
-            height: 530px;
-        }
-
-        #chatAndProfileImage-modal .modal-body>img{
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-        
-        #chatAndProfileImage-modal .modal-footer{
-            /* display: none; */
-            height: 40px;
-            border-top: none;
-            padding: 0px;
-        }
-
-        #chatAndProfileImage-modal .modal-footer>button{
-            width: 100px;
-            height: 34px;
-            color: white;
-            background: darkgray;
-            font-weight: bold;
-            border: none;
-            outline: none;
-            border-radius: 5px;
-            margin: 0px 15px 5px 0px;
-        }
-    </style>
-
-
-    <!-- The Modal -->
-    <div class="modal fade" id="chatAndProfileImage-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <p class="modal-title">사진 보기</p>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <span>동료 찾기</span>
+                    <input type="text" name="" id="select-colleague-name" readonly placeholder="검색을 통해 동료를 추가">
+                    <input type="hidden" name="" id="hidden-colleague-number"  required>
+                    <!-- 2번을 넘겨줘야 내가 원하는 팝업창을 열수가있다.  -->
+                    <button type="button" onclick="openSearchMem(2)"><i class="fas fa-search-plus"></i></button>
+                    <input type="text" id="popupType" value="col-select" style="display: none;">
                 </div>
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <img src="">
-                    </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" onclick="">다운로드</button>
-                    </div>
                 
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal">취소</button>
+                    <button type="button" onclick="checkAndAddColleague();">추가하기</button>
+                </div>
             </div>
         </div>
     </div>
-    
-
-
-    <!-- 사진보기용 모달 하나. -->
-    <script>    
-        function oneClickOpenImage(imgSrc){
-        	$("#chatAndProfileImage-modal img").attr("src", imgSrc);
-            $("#chatAndProfileImage-modal").modal();
-        }
-    </script>
-    
-<%-- ------------------------------------------사진 보기 모달은 공용임 끝------------------------------------------ --%>
-<%-- -----------------------------------------단톡방 만드는 모달 시작------------------------------------------------%>   
+<%-- --------------------------------------------친구 추가용 모달 끝 (완료) --------------------------------------------------------------------------------- --%>
+<%-- -----------------------------------------단톡방 만드는 모덜, 단톡방 이름 바꾸는 모달, 단톡방인원 추가 모달 통합본  시작(완료)------------------------------------------------%>   
     <script>
 	    // 글자수 제한 스크립트 시작 
 	    $(document).ready(function() {
@@ -245,7 +157,8 @@
  				$("#group-room-name-content").val(""); // 방번호도 (hidden) 날려버리기 
 	       	});
 	    });
-	    
+	 
+	    // 방번호로 나를 제외한 동료목록을 가져와서 조건 검사하는 함수 
         function showMyColListForGroupChat(roomNo){
 			if(roomNo != null){ // 채팅방에서 add로 열었을떄 
 	            $.ajax({
@@ -254,7 +167,6 @@
 	            		 , roomNo : roomNo 	
 					},
 			 		success:function(list){
-			 			// 정보 싸그리 가져왔다. 
 						var value;
 			 			for(var i in list){		 				
 			 				value += '<tr><td> <img src="'
@@ -276,7 +188,6 @@
 			 			console.log("ajax통신 실패");
 			 		}				
 			 	})//ajax 끝 
-
 			}else{ // 동료창에서 단톡방 만들때 
 	            $.ajax({
 					url:"selsectCoList.cht",
@@ -307,20 +218,11 @@
 			}
         }
 
-
 		// 3개의 모달을 합친 것! 
         function openCreateGroupChat(mode, roomNo){
-        	//console.log(mode);
-        	//console.log(roomNo);
+        	//console.log("mode:" +mode);
+        	//console.log("modal에서의 :" +roomNo);
 
-            //값뿌려주면서 모달 열기 전에 ! 
-            // 일단 1. 이게 단톡방에서 열은 모달인지 동료창에서 열은 모달인지 확인을 해야한다. 
-            // gc == 는 동료 창에서 만드는 단톡방이다. 
-            // ga == 는 단톡방에서 동료를 추가하는 것이다. 
-            // JSTL로다가 만약에 방번호가 이미 있다면 ! 그떄는 ! 추가하는 방향으로 진행을 하고 
-            // 아니면 기존에 내가 가진 동료를 싸그리 보여주는 형식이다. 
-            // 추가같은 경우 방번호에 이미 나의 친구가 추가되어있다면 걔는 제외한 나머지가 추가되게 해줘야한다. 
-            //console.log(mode);
             if(mode == 'gc'){ // 만드는 방으로 들어왔을때 
                 $("#beforeCreateGroupRoom").show();
                 $("#group-room-name-content").val("");
@@ -328,14 +230,11 @@
                 $(".group-add-title").hide();
                 $(".create-group-btn").show();
                 $(".add-group-btn").hide();
-
                 $("#my-colleage-group-list").show();
                 $(".change-room-name").hide();
                 $("#createGroupChat-Modal .modal-body").css("height", "410px");
                 $("#createGroupChat-Modal .modal-content").css("height", "520px");
-                
-                // 친구 목록 가져오기 
-				showMyColListForGroupChat();
+				showMyColListForGroupChat();// 친구 목록 가져오기 
 
             }else if(mode == 'ga'){
                 $("#beforeCreateGroupRoom").hide();
@@ -343,16 +242,13 @@
                 $(".group-add-title").show();
                 $(".create-group-btn").hide();
                 $(".add-group-btn").show();
-
                 $("#my-colleage-group-list").show();
                 $(".change-room-name").hide();
                 $("#createGroupChat-Modal .modal-body").css("height", "410px");
                 $("#createGroupChat-Modal .modal-content").css("height", "520px");
-                
                 $("#forAddAndModifyGroupChat").val(roomNo); // 방번호 심어넣기  
-				showMyColListForGroupChat(roomNo);// 친구 목록가져오기 
+                showMyColListForGroupChat(roomNo);// 친구 목록가져오기 
                 
-
             }else{//mode 인자에 cgn 이 들어가있다. 단체 채칭방에서 단톡방 이름 바꾸는것 ! 
                 $("#my-colleage-group-list").hide();
                 $(".group-create-title").hide();;
@@ -364,8 +260,6 @@
                 $("#group-room-name-content").val($("#group-chat-room-name").text());
                 $("#createGroupChat-Modal .modal-body").css("height", "100px");
                 $("#createGroupChat-Modal .modal-content").css("height", "210px");
-                
-                console.log(roomNo);
                 $("#forAddAndModifyGroupChat").val(roomNo); // 방번호 심어넣기  
 	            $.ajax({
 					url:"bringGroupRoomName.cht",
@@ -376,19 +270,16 @@
 			 			console.log("ajax통신 실패");
 			 		}				
 			 	})//ajax 끝 
-
             }
             $("#createGroupChat-Modal").modal();
         }
 
         //------------------아래는 버튼 클릭시 작동 되는 function들 ------------------
-        
         // 단톡방 만들고 해당 단톡방으로 이동하는 함수 
        var newGroupMemMultiVal = []; 
         function createAndMoveToGroupChat(){
 			var newRoomName= $("#group-room-name-content").val();
             var  eachCheck = $("#my-colleage-group-list input:checkbox[name=myCollegueNo]:checked");
-			
             if(newRoomName.trim() == ""){
             	alert("채팅방 이름을 작성해주세요")
             	$("#group-room-name-content").val("");
@@ -412,27 +303,52 @@
 	        				 , roomName: newRoomName 
 	        				 , myMemNo : ${ loginUser.memNo }
 	                	},
-	        	 		success:function(result){
-	        	 			alert(result);
+	        	 		success:function(roomNo){
+	        	 			if(roomNo > 0){
+	        	 				alert("단체 채팅방을 성공적으로 생성하였습니다.");
+		        	            ShowChatRoomByRoomNo(roomNo,'G');
+		        	            $("#createGroupChat-Modal").modal('hide'); // 마지막에 모달창 꺼줘야지
+	        	 			}else{
+	        	 				alert("단체 채팅방을 생성에 실패하였습니다. \n개발자에게 문의해주세요");
+		        	            $("#createGroupChat-Modal").modal('hide'); // 마지막에 모달창 꺼줘야지
+	        	 			}
 	        	 		},error:function(){
 	        	 			console.log("ajax통신 실패");
 	        	 		}				
 	        	 	})//ajax끝
-	                
 	            }
             }
-
-        	
-        	
-            //$("#createGroupChat-Modal").modal('hide');
         }
         
         // 단톡방에 인원 추가 하고 단톡방으로 다시 이동하는 함수 
+		var addGroupMemMultiVal = []; 
         function addAndMoveToGroupChat(){
-            $("#createGroupChat-Modal").modal('hide');
-        	
+            var  eachCheck = $("#my-colleage-group-list input:checkbox[name=myCollegueNo]:checked");
+            if(eachCheck.length == 0){
+                alert("해당 기능은 동료를 1명 이상 선택 해야 이용가능합니다.");
+            }else{
+                // 쪽지 번호들을 배열에 담았다. 
+                eachCheck.each(function(){
+                    var checkedItem = $(this).val();
+                    addGroupMemMultiVal.push(checkedItem)
+                });// 오직 추가된 인원의 memNo만 담음 ! 
+				//console.log(addGroupMemMultiVal);
+                $.ajax({
+        	 		url:"addGroupRoom.cht",
+        	 		traditional : true,
+        			data:{ addGroupMemMultiVal: addGroupMemMultiVal 
+        				 , roomNo: $("#forAddAndModifyGroupChat").val() 
+                	},
+        	 		success:function(result){
+        	 			alert(result);
+        	            ShowChatRoomByRoomNo($("#forAddAndModifyGroupChat").val(),'G');
+        	            $("#createGroupChat-Modal").modal('hide'); // 마지막에 모달창 꺼줘야지
+        	 		},error:function(){
+        	 			console.log("ajax통신 실패");
+        	 		}				
+        	 	})//ajax끝
+            }
         }
-
         
         // 이름 바꾸기 버튼 클릭시에 
         function modiftGroupChatName(){
@@ -444,6 +360,7 @@
 		 		success:function(result){
 		 			if(result>0){
 			 			alert("단체 채팅방 이름을 성공적으로 수정하였습니다. \n 확인해주세요")
+		                ShowChatRoomByRoomNo($("#forAddAndModifyGroupChat").val(), 'G');
 		 			}else{
 			 			alert("단체 채팅방 이름 수정에 실패하였습니다. \n개발자에게 문의해주세요")
 		 			}
@@ -451,8 +368,6 @@
 		 			console.log("ajax통신 실패");
 		 		}				
 		 	})//ajax 끝 
-
-        	
             $("#createGroupChat-Modal").modal('hide');
         }
         
@@ -471,38 +386,86 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
-                    <!-- form태그 쓰지마 -->
-
-                    <!-- Modal body -->
-                    <div class="modal-body">
-                        <div id="beforeCreateGroupRoom" style="display: none;">
-                            <span style="font-size: 18px;"><b>※ 단체 채팅방 이름</b></span><input type="text" id="group-room-name-content" style="padding-left: 10px;" required placeholder="최대 30자 까지 입력가능" autocomplete=”off”>
-                            <input type="hidden" id="forAddAndModifyGroupChat">
-                        </div>
-                        <table id="my-colleage-group-list">
-                            <thead>
-                                <tr>
-                                    <th>나의 동료 목록</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div id="beforeCreateGroupRoom" style="display: none;">
+                        <span style="font-size: 18px;"><b>※ 단체 채팅방 이름</b></span><input type="text" id="group-room-name-content" style="padding-left: 10px;" required placeholder="최대 30자 까지 입력가능" autocomplete=”off”>
+                        <input type="hidden" id="forAddAndModifyGroupChat">
                     </div>
-                    
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal">취소</button>
-                        <button type="button" class="create-group-btn" style="display: none;" onclick="createAndMoveToGroupChat();">단체톡 만들기</button>
-                        <button type="button" class="add-group-btn" style="display: none;" onclick="addAndMoveToGroupChat();">인원 추가</button>
-                        <button type="button" class="change-room-name" style="display: none;" onclick="modiftGroupChatName();">방이름 바꾸기</button>
-                    </div>
+                    <table id="my-colleage-group-list">
+                        <thead>
+                            <tr>
+                                <th>나의 동료 목록</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
                 
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal">취소</button>
+                    <button type="button" class="create-group-btn" style="display: none;" onclick="createAndMoveToGroupChat();">단체톡 만들기</button>
+                    <button type="button" class="add-group-btn" style="display: none;" onclick="addAndMoveToGroupChat();">인원 추가</button>
+                    <button type="button" class="change-room-name" style="display: none;" onclick="modiftGroupChatName();">방이름 바꾸기</button>
+                </div>
             </div>
         </div>
     </div>
 
-<%-- -------------------------단톡방 만드는 모달 끝------------------------------------------------%>   
+<%-- -------------------------단톡방 만드는 모덜, 단톡방 이름 바꾸는 모달, 단톡방인원 추가 모달 통합본  끝(완료)--------------------------------------------------------%>
+<%-- ------------------------------------------사진 보기 모달은 공용이다.--------------------------------------------------------------------------- --%>
+
+    <style>
+    	/* 사진 보기용 모달 css영역 인데 (후에 동료 삭제하는 버튼이 들어갈수가 있음 ! )*/
+        #chatAndProfileImage-modal .modal-content{width: 500px; max-height: 620px; transform: translateY(40px);}
+        #chatAndProfileImage-modal .modal-header{height: 50px; border-bottom: none;}
+        #chatAndProfileImage-modal .modal-header>p{color: tomato; font-size: 24px; font-weight: bold;}
+        #chatAndProfileImage-modal .modal-body{height: 530px;}
+        #chatAndProfileImage-modal .modal-body>img{width: 100%; height: 100%; object-fit: contain;}
+        #chatAndProfileImage-modal .modal-footer{height: 40px; padding: 0px; border-top: none;}
+        #chatAndProfileImage-modal .modal-footer>button{width: 200px; height: 34px; color: white; font-weight: bold; border: none; border-radius: 5px; margin: 0px 15px 5px 0px; outline: none; background: tomato;}
+    </style>
+
+
+    <!-- The Modal -->
+    <div class="modal fade" id="chatAndProfileImage-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <p class="modal-title">사진 보기</p>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <img src="">
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button id="delCoMemBtn" type="button" onclick="">??? 멀넣을까 ???</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 사진보기용 모달 하나. -->
+    <script>    
+    	// 사진보기 모달 인데 혹여나 꼭 ! 삭제 기능을 넣을 꺼면 ! 동료번호를 넘겨서 해결하는 식으로 진행하자. 
+        function oneClickOpenImage(imgSrc, coMemNo){
+        	$("#chatAndProfileImage-modal img").attr("src", imgSrc);
+        	// 동료 삭제 하기 용으로 넣은 것인데 만약 구현한다고 가정하면 ! 오직 통료 리스트 페이지에서만 가능한것으로 진행 
+        	if(coMemNo != null){
+	        	$("#delCoMemBtn").attr("onclick", "delColleague(" + coMemNo +");");
+        	}
+            $("#chatAndProfileImage-modal").modal();
+        }
+    </script>
+    
+<%-- ------------------------------------------사진 보기 모달은 공용임 끝------------------------------------------ --%>
+   
 
 
 

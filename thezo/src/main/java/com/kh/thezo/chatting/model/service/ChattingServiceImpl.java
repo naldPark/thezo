@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.thezo.chatting.model.dao.ChattingDao;
+import com.kh.thezo.chatting.model.vo.ChatConnect;
+import com.kh.thezo.chatting.model.vo.ChatDailyBasic;
+import com.kh.thezo.chatting.model.vo.ChatLog;
 import com.kh.thezo.chatting.model.vo.ChatRoom;
 import com.kh.thezo.chatting.model.vo.Colleague;
 
@@ -20,16 +23,6 @@ public class ChattingServiceImpl implements ChattingService{
 	@Autowired 
 	private SqlSessionTemplate sqlSession;
 
-	/** 단순하게 채팅로그 insert시켜버리는 서비스
-	 */
-	//@Override
-	//public void InsertChatContent(HashMap<Object, Object> hm) {
-	//	chatDao.InsertChatContent(sqlSession, hm) ;
-	//}
-
-	
-	//----------------------------------------------------------------------
-	// ----------------------------부수적인 채팅 작업 -----------------------------
 	/** 채팅 나의 동료 리스트 가져오는 서비스 
 	 */
 	@Override
@@ -66,13 +59,11 @@ public class ChattingServiceImpl implements ChattingService{
 		if(chatDao.ajaxMakeRoom(sqlSession, colleague) > 0) {
 			// 로직처리하고 selectKey로다가 colleageu에 roomNo에 담아서 다시가져왔다.  
 			// 이제 2개의 행을 Chat_connect에 insert해줘야한다
-			// System.out.println(colleague);
 			if(chatDao.ajaxMakeChatConnect(sqlSession, colleague) > 0) {
 				return colleague.getRoomNo();
 			}else {
 				return 0;
 			}
-			
 		}else {// 존재하지 않을때 
 			return 0;
 		}
@@ -114,7 +105,46 @@ public class ChattingServiceImpl implements ChattingService{
 		}else {// 존재하지 않을때 
 			return 0;
 		}
-
 	}
+
+	/** 단체 채팅방에서 동료를 추가하는 서비스
+	 */
+	@Override
+	public int ajaxAddGroupChat(HashMap<Object, Object> hm) {
+		return chatDao.ajaxAddGroupChat(sqlSession, hm);
+	}
+
+	/** 나의 채팅방 목록 조회해오는 서비스
+	 */
+	@Override
+	public ArrayList<ChatRoom> ajaxSelectMyChatList(int myMemNo) {
+		return chatDao.ajaxSelectMyChatList(sqlSession, myMemNo);
+	}
+
+	/** 채팅방 머리부 정보 가져오는 서비스 
+	 */
+	@Override
+	public ArrayList<ChatRoom> ajaxBringRoomHeaderList(ChatLog memAndRoomNo) {
+		return chatDao.ajaxBringRoomHeaderList(sqlSession, memAndRoomNo);
+	}
+
+	/** 채팅 목록들을 일단위로 has many형태로 가져오는 서비스 
+	 */
+	@Override
+	public ArrayList<ChatDailyBasic> ajaxbringChatInfoList(int roomNo) {
+		return chatDao.ajaxbringChatInfoList(sqlSession, roomNo);
+	}
+
+	//----------------------------------------------------------------------
+	// ----------------------------------------------------------------------
+	/** 단순하게 채팅로그 insert시켜버리는 서비스
+	 */
+	//@Override
+	//public void InsertChatContent(HashMap<Object, Object> hm) {
+	//	chatDao.InsertChatContent(sqlSession, hm) ;
+	//}
+
+	
+
 
 }

@@ -40,7 +40,6 @@
             <jsp:include page="../chatting/userChatListView.jsp"/>
         </div>
     </div>
-
     <!-- 채팅방 하나면 된다 여기서 조건 검사로 싸그리 해결한다. 복잡도는 늘어나지만 코드가 짧아진다. -->
     <div id="open-chat-Room" class="w3-animate-opacity" style="display: none;">
         <jsp:include page="../chatting/userChatRoom.jsp"/>
@@ -59,14 +58,13 @@
             $("#colleague-area-page").hide();
             $(".chatting-list-area").css("color","rgb(241,196,15)").css("background","rgb(56,77,97)");
             $(".colleague-area").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");
+            showMyChatList();
         }
     </script>
 
 <%-- -------------------------더블클릭시 채팅방으로 이동하는 영역 시작 ------------------------------------------------%>
-
-    <!-- 후에 소켓으로 구현하면 !! 더블 클릭시 해당 ! 인원과 채팅바로되게 해결 -->
-    <!-- 제일 좋은 방법은 !! 친구추가할떄 트리거로 room까지도 만들고 room정보(번호)까지도 가져오는것이다!! -->
     <script>
+        // 채팅 방과 접속 시키고 해당 방으로 이동 시키는 함수 
         function clickConnectChatRoom(coMemNo){
         	// 동료창에서 채팅방으로 넘어가는 경우 
           	$.ajax({
@@ -88,8 +86,8 @@
 		 	            	},
 		 			 		success:function(result){
 		 			 			if(result>0){
-			 			 			console.log("방 접속 싹다 만들어짐 ");
-					 				console.log("가져온 방번호 :" + result);
+			 			 			//console.log("방 접속 싹다 만들어짐 ");
+					 				//console.log("가져온 방번호 :" + result);
 					 				ShowChatRoomByRoomNo(result, 'P');
 		 			 			}else{
 		 			 				alert("채팅방에 입장하지 못하였습니다. 개발자에게 문의해주세요!");
@@ -104,33 +102,7 @@
 		 		}				
 		 	})
         } 
-        
-        function ShowChatRoomByRoomNo(RoomNo, groupStatus){
-        	console.log(RoomNo);
-        	console.log(groupStatus);
-
-            $("#chatting-outer").hide();
-            $("#open-chat-Room").show();
-            $("#chat-content-body").scrollTop($("#chat-content-body")[0].scrollHeight);
-            
-			// 채팅 목록 방에서 갠톡으로 넘어온 경우 
-            if(groupStatus=='P'){
-                console.log("갠톡임");
-            }
-
-            //  넘어온 groupStatus로 갠톡 단톡 구분한다.   
-            if(groupStatus=='G'){
-                console.log("단톡임");
-            }
-
-            //console.log("더블클릭임");
-
-
-        }
-        
-        
     </script>
-
 <%-- -------------------------더블클릭시 채팅방으로 이동하는 영역 끝 ------------------------------------------------%>   
 
 </body>

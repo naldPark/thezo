@@ -18,6 +18,4 @@ public class Colleague {
 	private String myNameAndRank; 
 	private String coNameAndRank; 
 	private int roomNo;
-
-	
 }

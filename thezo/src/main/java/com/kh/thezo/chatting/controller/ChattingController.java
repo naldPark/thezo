@@ -11,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.thezo.chatting.model.service.ChattingService;
+import com.kh.thezo.chatting.model.vo.ChatDailyBasic;
+import com.kh.thezo.chatting.model.vo.ChatLog;
 import com.kh.thezo.chatting.model.vo.ChatRoom;
 import com.kh.thezo.chatting.model.vo.Colleague;
 
@@ -19,20 +21,7 @@ public class ChattingController {
 	@Autowired
 	private ChattingService chatService;
 	// 위는 기본 세팅 
-	
-	// 얘는 오직 insert만 하는 개념이라 AJAX 호출도 아니다 단순히 기록만 할뿐 나중을 위해서 보여지는 것은 다른 개념이다.
-	/*
-	public void insertChatContent(int memNo, int roomNo, String msgContent) {
-		// 가공처리하자. 
-		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("memNo",memNo);		
-		hm.put("roomNo",roomNo);
-		hm.put("msgContent",msgContent);
-		chatService.InsertChatContent(hm);
-	}
-	*/
-	//----------------------------------------------------------------------
-	// ----------------------------부수적인 채팅 작업 -----------------------------
+
 	/** 친구 추가하는 popUp창 여는 Controller 
 	 * @param mv
 	 * @return
@@ -54,8 +43,6 @@ public class ChattingController {
 	    return new Gson().toJson(list);
 	}
 	
-	
-	//--------------------------------------모달 시작 -------------------------------------------
 	/** 이미 동료로 추가가 되어있는지 확인하는 controller 
 	 * @param myMemNo
 	 * @param coMemNo
@@ -71,7 +58,7 @@ public class ChattingController {
 		    return new Gson().toJson(result);
 	}
 	
-	/** 동료 추가 
+	/** 동료 추가 Controller
 	 * @param myMemNo
 	 * @param coMemNo
 	 * @return
@@ -86,7 +73,6 @@ public class ChattingController {
 		    return new Gson().toJson(result);
 	}
 	
-
 	/** 동료창에서 동료 더블클릭시에 이미 채팅방이 존재하는지 확인하는 Controller
 	 * @param myMemNo
 	 * @param coMemNo
@@ -101,8 +87,6 @@ public class ChattingController {
 		int result = chatService.ajaxCheckExistRoom(colleague);
 		    return new Gson().toJson(result);
 	}
-
-	
 	
 	/** 1차 유효성 검사후에 채팅방이 존재하지 않는다면 !!! 채팅방 만들어주고 또한 chat_connect까지 만들어주는 Controller
 	 * @param myMemNo
@@ -145,7 +129,6 @@ public class ChattingController {
 		String list = chatService.ajaxSelectGroupName(roomNo);	
 	    return new Gson().toJson(list);
 	}
-
 	
 	/** 단체 채팅방 이름 수정하는 Controller 
 	 * @param roomNo
@@ -162,7 +145,6 @@ public class ChattingController {
 	    return new Gson().toJson(result);
 	}
 
-	
 	/** 단체 채팅방 만드는 Controller (서비스단에서 chat_connect까지 생성)
 	 * @param newGroupMemMultiVal
 	 * @param roomName
@@ -177,17 +159,88 @@ public class ChattingController {
 		hm.put("roomName",  roomName);
 		hm.put("myMemNo", myMemNo);
 		hm.put("roomNo", "");
-		System.out.println(hm);
-		int result = chatService.ajaxCreateGroupChat(hm);
-		System.out.println("방번호가 넘어와야해 " + result);
-		if(result > 0) {
-			return new Gson().toJson("단체 채팅방을 성공적으로 생성하였습니다.");			
+		//System.out.println(hm);
+		int roomNo = chatService.ajaxCreateGroupChat(hm);
+		//System.out.println("방번호가 넘어와야해 " + result);
+		if(roomNo > 0) {
+			return new Gson().toJson(roomNo);			
 		}else {
-			return new Gson().toJson("단체 채팅방을 생성에 실패하였습니다. \n개발자에게 문의해주세요");						
+			return new Gson().toJson(0);						
 		}
 	}
+	
+	/** 단체 채팅방에서 동료를 추가하는 controller 
+	 * @param addGroupMemMultiVal
+	 * @param roomNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="addGroupRoom.cht", produces="application/json; charset=utf-8")
+	public String ajaxAddGroupChat(int[] addGroupMemMultiVal, int roomNo) {
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("addGroupMemMultiVal",  addGroupMemMultiVal);
+		hm.put("roomNo",  roomNo);
+		int result = chatService.ajaxAddGroupChat(hm);
+		if(result > 0) {
+			return new Gson().toJson("선택하신 동료(들)을 단체채팅방에 초대하였습니다.");			
+		}else {
+			return new Gson().toJson("단체 채팅방 동료 초대에 실패하였습니다. \n개발자에게 문의해주세요");						
+		}
+	}
+	
+	/** 나의 채팅방 목록 조회해오는 Controller
+	 * @param myMemNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="chatList.cht", produces="application/json; charset=utf-8")
+	public String ajaxSelectMyChatList(int myMemNo){
+		ArrayList<ChatRoom> list = chatService.ajaxSelectMyChatList(myMemNo);	
+		//System.out.println(list);
+	    return new Gson().toJson(list);
+	}
+	
+	/** 채팅방 header 정보 가져오는 controller 
+	 * @param myMemNo
+	 * @param roomNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="bringRoomHeader.cht", produces="application/json; charset=utf-8")
+	public String ajaxBringRoomHeaderList(int myMemNo, int roomNo){
+		ChatLog memAndRoomNo = new ChatLog();
+		memAndRoomNo.setMemNo(myMemNo);
+		memAndRoomNo.setRoomNo(roomNo);
+		ArrayList<ChatRoom> list = chatService.ajaxBringRoomHeaderList(memAndRoomNo);	
+		//System.out.println(list);
+	    return new Gson().toJson(list);
+	}
+	
+	/** 채팅 목록들을 일단위로 has many형태로 가져오는 Controller 
+	 * @param roomNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="bringChatInfo.cht", produces="application/json; charset=utf-8")
+	public String ajaxbringPChatInfoList(int roomNo){
+		ArrayList<ChatDailyBasic> list = chatService.ajaxbringChatInfoList(roomNo);	
+		//System.out.println(list);
+	    return new Gson().toJson(list);
+	}
 
-	
-	
+	//----------------------------------------------------------------------
+	//----------------------------------------------------------------------
+
+	/*
+	public void insertChatContent(int memNo, int roomNo, String msgContent) {
+		// 가공처리하자. 
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("memNo",memNo);		
+		hm.put("roomNo",roomNo);
+		hm.put("msgContent",msgContent);
+		chatService.InsertChatContent(hm);
+	}
+	*/
+
 	
 }

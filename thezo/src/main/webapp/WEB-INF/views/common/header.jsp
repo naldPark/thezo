@@ -280,8 +280,8 @@
                         <li><a href="main.sc">일정관리</a></li>
         
                         <%-- 재원(내꺼) urlMapping값 넣으면됨~ --%> 
-                        <li style="z-index:1000"><a href="list.adms">메신저</a>
-                            <ul>
+                        <li><a href="list.adms">메신저</a>
+                            <ul style="z-index:1000">
                                 <li><a href="list.adms">쪽지 신고처리</a></li>
                                 <li><a href="list.adnf">알림 등록 및 기록</a></li>
                             </ul>

@@ -1,6 +1,8 @@
 package com.kh.thezo.chatting.socket;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -66,7 +68,7 @@ public class EchoHandler extends TextWebSocketHandler{// TextWebSocketHandler를
         int roomNo = 1; // 나중에 화면단에서 뽑아서 session에 담아둬야한다. 
         
         //logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload()); // 여기서 {}얘는 SQL에 홀더같은 느낌이다. 
-        logger.info("{}로 부터 서버로 메시지 → {} 받음", memName, message.getPayload()); // 여기서 {}얘는 SQL에 홀더같은 느낌이다. 
+        logger.info("{}로 부터 서버로 메시지 → {} 받음", memName, getTime() + message.getPayload()); // 여기서 {}얘는 SQL에 홀더같은 느낌이다. 
         // logger는 말그대로 log를 남기기위한 것으로 pinrtln메소드마냥 console에 찍어준다. 
        
         //System.out.println(message.getPayload());// 얘가 쪽지 내용이다. 
@@ -75,7 +77,7 @@ public class EchoHandler extends TextWebSocketHandler{// TextWebSocketHandler를
         //모든 유저에게 메세지 출력을 해주는것이다. 
         for(WebSocketSession sess : sessionList){
         	//((Member)sess.getAttributes().get("loginUser")).get
-            sess.sendMessage(new TextMessage(message.getPayload())); // 새로이 메세지 생성해서 나머지 유저들한테 뿌려주겠다 라는것이다. 
+            sess.sendMessage(new TextMessage(getTime() + message.getPayload() + memNo)); // 새로이 메세지 생성해서 나머지 유저들한테 뿌려주겠다 라는것이다. 
         }
         // 만약 여기서 읽음처리를 하고자 한다면 !!! 접속하는 시점이랑 나가는 시점을 !!! 채팅방 나갈때를 기준으로 잡아줘야한다!!! 
         
@@ -99,4 +101,10 @@ public class EchoHandler extends TextWebSocketHandler{// TextWebSocketHandler를
         
        //System.out.println("채팅방 퇴장자 : " + session.getPrincipal().getName());
     }
+    
+    static String getTime() {
+    	SimpleDateFormat sdf = new SimpleDateFormat("[hh:mm:ss]");
+    	return sdf.format(new Date());
+    }
+    
 }

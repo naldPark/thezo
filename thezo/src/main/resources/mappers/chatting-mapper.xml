@@ -14,12 +14,90 @@
 		<result column="co_name_and_rank" property="coNameAndRank"/>	
 		<result column="room_no" property="roomNo"/>	
 	</resultMap>
- 	
- 	<!-- 
- 	<insert id="InsertChatContent">
- 	</insert>
- 	 -->
- 	
+	
+	<!-- resultMap 자체가 해당 하는 컬럼은 만났을때 털커덕 걸려서 해당 vo로다가 넣어주는 개념이다.  -->
+	<resultMap id="chatroomResult" type="ChatRoom">
+		<result column="room_no" property="roomNo"/>	
+		<result column="room_name" property="roomName"/>	
+		<result column="create_date" property="createDate"/>	
+		<result column="update_date" property="updateDate"/>	
+		<result column="group_status" property="groupStatus"/>	
+		<result column="chat_content" property="lastChatContent"/>	
+		<result column="chat_date" property="lastChatDate"/>	
+		<result column="unread_count" property="unreadChatCount"/>	
+		<collection property="memList" ofType="com.kh.thezo.member.model.vo.Member">
+			<result column="mem_no" property="memNo"/>	
+			<result column="path" property="path"/>	
+		</collection>
+	</resultMap>
+	
+	<resultMap id="chatdailybasicResult" type="ChatDailyBasic">
+		<result column="daily_basic" property="dailyBasic"/>	
+		<result column="formatted_date" property="formattedDate"/>	
+		
+		<collection property="chatList" ofType="com.kh.thezo.chatting.model.vo.ChatLog">
+			<result column="chatlog_no" property="chatlogNo"/>	
+			<result column="mem_no" property="memNo"/>	
+			<result column="name_and_rank" property="nameAndRank"/>	
+			<result column="room_no" property="roomNo"/>	
+			<result column="chat_content" property="chatContent"/>	
+			<result column="chat_time" property="chatDate"/>	
+		</collection>
+	</resultMap>
+	
+	
+	<!-- 채팅방 목록 조회해오는 sql문  -->
+	<select id="ajaxSelectMyChatList" parameterType="java.util.Map" resultMap="chatroomResult" resultType="com.kh.thezo.member.model.vo.Member">
+		select 
+		       a.room_no
+		     , case when group_status = 'P' then (rank || ' ' || mem_name || '님')
+                    when group_status = 'G' then room_name
+                    end as room_name
+		     , (select unread_count
+		          from chat_connect ccc
+		         where ccc.room_no = a.room_no
+		           and ccc.mem_no = #{myMemNo}) as unread_count
+		     , (select chat_content
+		          from chatlog
+		         where chatlog_no = (select max(chatlog_no)
+		                               from chatlog
+		                              where room_no = a.room_no)) as chat_content
+	         , (select case when (to_char(chat_date, 'YYYYMMDD') = to_char(sysdate, 'YYYYMMDD'))
+		                    then to_char(chat_date, 'HH24:MI')
+		                    when to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(chat_date, 'YYYYMMDD')))/365 > 1 
+		                    then round(to_number(to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(chat_date, 'YYYYMMDD')))/365) || '년 전'  
+		                    when (to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(chat_date, 'YYYYMMDD'))) = 1
+		                    then '어제'
+                       else
+                             to_date(to_char(sysdate, 'YYYYMMDD')) - to_date(to_char(chat_date, 'YYYYMMDD')) || '일전' 
+                        end as chat_date_processed
+                  from chatlog
+                 where chatlog_no = (select max(chatlog_no)
+                  from chatlog
+                 where room_no = a.room_no)) "chat_date"                     
+             , (select chat_date
+		          from chatlog
+		         where chatlog_no = (select max(chatlog_no)
+		                               from chatlog
+		                              where room_no = a.room_no)) as chat_for_orderby                                   
+		     , group_status                         
+		     , a.mem_no
+		     , m.path
+		  from chat_connect a, (
+		                        select cc.room_no, cc.mem_no, cc.unread_count, cr.group_status
+		                             , cr.room_name
+		                          from chat_connect cc
+		                          join chatroom cr on (cc.room_no = cr.room_no) 
+		                         where mem_no = #{myMemNo}
+		                     ) b,
+		        member m
+		 where a.room_no = b.room_no
+		   and a.mem_no != #{myMemNo}
+		   and a.mem_no = m.mem_no
+		 order 
+		    by chat_for_orderby desc nulls last, start_date desc
+	</select>
+	
  	<!-- 채팅 나의 동료 리스트 가져오는 sql문 -->
  	<select id="ajaxSelectColleagueList" resultMap="colleagueResult">
  		select mymem_no
@@ -162,13 +240,65 @@
      	</selectKey>
  	</insert>
  	
- 	<!-- 단체방이 만들어졌으면 이후에 chat_connect를 단채톡 이원만큼 돌리면서 넣는 sql문 -->
- 	<!-- 미친.. insert문인데 update태그를 사용해야된다..  -->
+ 	<!-- 단체방이 만들어졌으면 이후에 chat_connect를 단채톡 이원만큼 돌리면서 넣는 sql문 insert all 쓰고자 하면 update태그를 사용해야된다. -->
  	<update id="ajaxMakeGroupChatConnect" parameterType="hashMap">
-	        <foreach item="coMemNo" open="INSERT ALL" close="SELECT * FROM DUAL" collection="newGroupMemMultiVal">
- 		     into chat_connect (room_no, mem_no) values (${roomNo} , ${coMemNo}) 
-	        </foreach>
+        <foreach item="coMemNo" open="INSERT ALL" close="SELECT * FROM DUAL" collection="newGroupMemMultiVal">
+		     into chat_connect (room_no, mem_no) values (${roomNo} , ${coMemNo}) 
+        </foreach>
  	</update>
+ 	
+ 	<!-- 단체 채팅방에서 동료를 추가하는 sql문 -->
+ 	<update id="ajaxAddGroupChat" parameterType="hashMap">
+        <foreach item="coMemNo" open="INSERT ALL" close="SELECT * FROM DUAL" collection="addGroupMemMultiVal">
+		     into chat_connect (room_no, mem_no) values (#{roomNo} , ${coMemNo}) 
+        </foreach>
+ 	
+ 	</update>
+ 
+ 	<!-- 채팅방 머리부 정보를 가져오는 sql문 -->
+ 	<select id="ajaxBringRoomHeaderList" parameterType="java.util.Map" resultMap="chatroomResult" resultType="com.kh.thezo.member.model.vo.Member">
+ 	    select cr.room_no
+	         , case when group_status = 'P' then (mem_name || ' ' || rank || ' ' || '['|| department  || ']')
+	           when group_status = 'G' then room_name
+	           end as room_name 
+	         , mb.mem_no
+	         , mb.path
+	    from chatroom cr
+	    join chat_connect cc on(cr.room_no = cc.room_no)
+	    join member mb on (mb.mem_no = cc.mem_no)
+	   where cr.room_no = #{roomNo}
+	     and cc.mem_no != #{memNo}
+ 	</select>
+ 	
+ 	<!-- 채팅 기록들 가져오는 sql문  -->
+ 	<select id="ajaxbringChatInfoList" parameterType="java.util.Map" resultMap="chatdailybasicResult" resultType="com.kh.thezo.chatting.model.vo.ChatLog">
+	 	select to_date(to_char(chat_date, 'YYYYMMDD')) as daily_basic
+		     , to_char(chat_date, '""YYYY"년 "MM"월 "DD"일 "DAY"') as formatted_date 
+		     , chatlog_no
+		     , cl.mem_no
+		     , mb.mem_name || ' ' || rank as name_and_rank 
+		     , mb.path
+		     , room_no
+		     , chat_content
+		     , to_char(chat_date, 'AM HH24:MI') as chat_time
+		  from chatlog cl
+		  join member mb on (mb.mem_no = cl.mem_no) 
+		where room_no = #{roomNo}
+		 order
+		    by chat_date
+ 	</select>	
+ 		
+	<!-- ============================================================================================ -->
+	<!-- ======================================여기서 부터 웹소켓 가지고 노는 구간! =============================  -->  
+	<!--
+ 	<insert id="InsertChatContent">
+ 	</insert>
+ 	-->
+ 	
+ 	
+ 	
+  	
+    	
   	
  	
 </mapper>

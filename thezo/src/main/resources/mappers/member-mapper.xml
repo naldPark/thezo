@@ -284,8 +284,6 @@
 			 , to_char(resign_date, 'YYYY-MM-DD') as resign_date
 		  from member
 		 where status = 'N'
-		 order 
-		    by mem_no desc 	   
 	</select>
 	
 	<!--  3_1) 회원 삭제 리스트 검색 조회(갯수) -->

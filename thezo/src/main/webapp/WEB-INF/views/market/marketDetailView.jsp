@@ -33,7 +33,56 @@
         <div class="innerOuter">
             <h2><b>더조마켓</b></h2>
             <div align="center">
-                <a href="">찜하기</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="btn heart">
+			    	<img id="heart" src="" style="width:20px;height:20px;">
+			    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			    
+			    <script>
+				    $(document).ready(function () {
+				
+				        var heartval = ${ mk.productLike };
+				
+				        if(heartval>0) {
+				            console.log(heartval);
+				            $("#heart").prop("src", "resources/images/like2.png");
+				            $(".heart").prop('name',heartval)
+				        }
+				        else {
+				            console.log(heartval);
+				            $("#heart").prop("src", "resources/images/like1.png");
+				            $(".heart").prop('name',heartval)
+				        }
+				        
+
+				        $(".heart").on("click", function () {
+
+				            var that = $(".heart");
+
+				            var sendData = {'marketNo' : '${ mk.marketNo }','productLike' : that.prop('name')};
+				            $.ajax({
+				                url :'/board/heart',
+				                type :'POST',
+				                data : sendData,
+				                success : function(data){
+				                    that.prop('name',data);
+				                    if(data==1) {
+				                        $('#heart').prop("src","/resources/images/like2.png");
+				                    }
+				                    else{
+				                        $('#heart').prop("src","/resources/images/like1.png");
+				                    }
+
+
+				                }
+				            });
+				        });
+				
+				    });
+				</script>
+							    
+			    
+			    
+			    
                 <a href="" data-toggle="modal" data-target="#marketReportForm" style="text-decoration:none;">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <!--게시글 작성자만 보이도록-->
 				<c:if test="${ loginUser.memId eq mk.marketWriter}">

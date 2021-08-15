@@ -19,7 +19,7 @@
 	.w3-row-padding img {margin-bottom: 12px}
 	.w3-half{ 
 		display: flex; height: 400px;}
-	.far{font-size: 35pt; color: rgb(134, 65, 134)}
+	.far{font-size: 35pt; color: rgb(20,70,104)}
 </style>
 	<body>
 		<div class="w3-content mt-5" style="max-width:1000px;">
@@ -36,7 +36,7 @@
 					</p>
 				</div>
 
-				<div class="w3-row-padding w3-grayscale" style="margin-bottom:78px">
+				<div class="w3-row-padding" style="margin-bottom:78px">
 					<div class="w3-half">
 						<img src="resources/images/error.gif" style="width:70%">
 					</div>
@@ -51,7 +51,7 @@
 								발생했습니다....</span> <br><br>
 						</div>
 					</div>
-					<a class="w3-border w3-border-purple w3-btn w3-round-xxlarge" href="main">메인으로 가기</a>
+					<a class="w3-border w3-border-purple w3-btn w3-round-xxlarge" style="border:0.5px solid rgb(20,70,104)" href="main">메인으로 가기</a>
 				</div>
 			</div>
 		</div>

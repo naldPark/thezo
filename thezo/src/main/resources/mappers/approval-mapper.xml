@@ -128,7 +128,7 @@
 		 	 <if test='searchSDate != null'>
 		 			and doc_date between #{searchSDate} and #{searchEDate}
 		 	 </if> 
-		 	 <if test='category != "전체"'>
+		 	 <if test='category != "전체" and category!=null'>
 		 			and category like '%' || #{category} || '%'
 		 	 </if> 
                     and doc_name like '%' || #{docName} || '%'
@@ -157,7 +157,7 @@
 			order by doc_date desc
 	</select>
 	
-		<!-- 메인에 보이는 문서 리스트 조회 -->
+	<!-- 메인에 보이는 문서 리스트 조회 -->
 	<select id ="selectApprovalMain" resultMap="approvalResult">
 
 			select 
@@ -198,7 +198,7 @@
 		 	 <if test='searchSDate != null'>
 		 			and doc_date between #{searchSDate} and #{searchEDate}
 		 	 </if> 
-		 	 <if test='category != "전체"'>
+		 	 <if test='category != "전체" and category!=null'>
 		 			and category like '%' || #{category} || '%'
 		 	 </if> 
                     and doc_name like '%' || #{docName} || '%'
@@ -236,14 +236,14 @@
 			  , read
         	FROM appr_accept	
 			where mem_no =#{memNo}
-		UNION  
- 		SELECT 
-	 			doc_no
-	          , ref_mem_no mem_no
-			  , read
-			FROM 
-			reference
-			where ref_mem_no =#{memNo}
+			UNION  
+	 		SELECT 
+		 			doc_no
+		          , ref_mem_no mem_no
+				  , read
+				FROM 
+				reference
+				where ref_mem_no =#{memNo}
 	</select>
 	
 	<!-- 신규작성을 위한 문서 양식 리스트 갯수 조회  -->
@@ -252,8 +252,12 @@
 			 count(*)
 			from appr_form
 			where status IN ('A', 'Y')
-			and category=#{category}
+			<if test='category!=null'>
+				and category=#{category}
+			</if>
+			<if test='formName!=null'>
 			and form_name like '%' || #{formName} || '%'
+			</if>
 	</select>
 	
 	<!-- 신규작성을 위한 문서 양식 리스트 조회  -->
@@ -261,8 +265,12 @@
 		select FORM_NO, CATEGORY, FORM_NAME, FORM_INFO
 			from appr_form
 			where status IN ('A', 'Y')
-			and category=#{category}
+			<if test='category!=null and category!="전체"'>
+				and category=#{category}
+			</if>
+			<if test='formName!=null and formName!=""'>
 			and form_name like '%' || #{formName} || '%'
+			</if>
 	</select>
 	
 	<!-- 신규작성 페이지  -->

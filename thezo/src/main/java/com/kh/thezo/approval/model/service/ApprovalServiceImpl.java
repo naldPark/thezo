@@ -184,45 +184,5 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return aDao.cancelDocu(sqlSession, a);
 	}
 
-
-//	@Override
-//	public int tempApproval(Approval a) {
-//		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-//		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//		
-//        TransactionStatus status = transactionManager.getTransaction(def);
-//        int result=1;
-//		result= result*aDao.insertApproval(sqlSession, a);
-//		result= result*aDao.insertSpecificDocuLine(sqlSession, a);
-//		if(a.getRefMemNoAry()!=null) {
-//			result= result*aDao.approvalMapper(sqlSession, a);
-//		}
-//		if(a.getAt()!=null) {
-//			result= result*aDao.insertDocuAttachment(sqlSession, a);
-//		}
-//		if(result>0) {
-//			transactionManager.commit(status);
-//		} else{
-//			transactionManager.rollback(status);
-//		}
-//		if(result>0) {
-//			transactionManager.commit(status);
-//		} else{
-//			transactionManager.rollback(status);
-//		}
-//		
-//		return result;
-//	}
-//
-//	@Override
-//	public int selectRecentTemp(int memNo) {
-//		return aDao.selectRecentTemp(sqlSession, memNo);
-//	}
-
-	
-
-	
-
-
 	
 }

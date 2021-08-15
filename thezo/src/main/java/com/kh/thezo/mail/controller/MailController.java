@@ -1,7 +1,11 @@
 package com.kh.thezo.mail.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,11 +28,16 @@ import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.thezo.common.model.vo.PageInfo;
@@ -59,6 +68,9 @@ public class MailController {
 			mm.setFolder(folder);
 			ArrayList<Mail> mList = new ArrayList<>();
 			
+			
+			
+			
 			// 받은편지함만 해당
 			if (folder.equals("받은")) {
 				// 해당 두 계정만 서버와 연동시켰기 때문에 조건처리했습니다.
@@ -66,7 +78,6 @@ public class MailController {
 					try {
 						// 외부에 새로들어온 메일이 있는지 체크
 						mList = mailReceivecheck(m.getMemNo(), m.getEmail(), session);
-						
 						if (mList.size() != 0) {
 							int result = mmService.insertPopList(mList);
 						}
@@ -89,7 +100,10 @@ public class MailController {
 				pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 				list = mmService.selectMailList(mm, pi);
 			}
+			ArrayList<Member> empList = mmService.employeeList();
+			
 			mv.addObject("list", list)
+			.addObject("empList", empList) // 전사원 리스트
 			.addObject("pi", pi)
 			.addObject("folder", folder)
 			.setViewName("mail/mailMain");
@@ -111,8 +125,8 @@ public class MailController {
 			int listCount = mmService.selectSendListCount(memNo);
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 			ArrayList<Mail> list = mmService.selectSendList(memNo, pi);
-
-			mv.addObject("list", list).addObject("pi", pi).addObject("folder", "보낸").setViewName("mail/sendInbox");
+			ArrayList<Member> empList = mmService.employeeList();// 전사원 리스트
+			mv.addObject("list", list).addObject("empList", empList).addObject("pi", pi).addObject("folder", "보낸").setViewName("mail/sendInbox");
 		} else {
 			mv.addObject("errorMsg", "로그인 후 이용 해 주세요")
 			  
@@ -242,9 +256,44 @@ public class MailController {
 		return changeName;
 	}
 	
+	// 전달메일 발송시 첨부파일 저장을 위한 메소드 모듈화
+	public String saveFile(HttpSession session, File in, String originName) {
+		String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/mail/");
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+		int ranNum = (int)(Math.random() * 90000 + 10000);
+		String ext = originName.substring(originName.lastIndexOf("."));
+		return currentTime + ranNum + ext;
+	}
+	
+	
 	// 메일 발송시 인설트 및 서버에 전송(sendMailSmtp()) 처리
 	@RequestMapping("send.mail")
-	public ModelAndView sendMail(HttpServletRequest request,ModelAndView mv, HttpSession session, MultipartFile[] upfile, Mail mm) {
+	public ModelAndView sendMail(HttpServletRequest request,ModelAndView mv, HttpSession session, MultipartFile[] upfile, Mail mm, String[] originFile) {
+
+		// 첨부파일을 전달해서 발송하는 경우 기존 파일 에서 꺼내와서 카피
+		if(originFile!=null&&originFile.length!=0) {
+			String savePath = session.getServletContext().getRealPath("/resources/uploadFiles/mail/");
+			ArrayList<Attachment> list = new ArrayList<>();
+			for (int i = 0; i < originFile.length; i=i+2) {
+				Attachment at = new Attachment();
+				File in = new File(session.getServletContext().getRealPath(originFile[i]));
+				String changeName =saveFile(session, in,originFile[i+1]);
+				File out = new File(savePath+changeName);
+				at.setChangeName(changeName);
+				at.setOriginName(originFile[i+1]);
+				at.setFileUrl("resources/uploadFiles/mail/" + at.getChangeName());
+				at.setFileLevel((i + 2)/2);
+				at.setFileType("보낸메일");
+				list.add(at);
+				try {
+					FileCopyUtils.copy(in, out);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			mm.setAt(list);
+		}
+		
 		Member m = (Member) session.getAttribute("loginUser");
 		if (m != null) {
 			mm.setMemNo(m.getMemNo());
@@ -391,10 +440,13 @@ public class MailController {
 				mm.setRefReceiver(setReceiversFunction(mm.getRefReceiver()));
 			}
 			if (mm.getMemNo() == memNo) {
+				ArrayList<Member> empList = mmService.employeeList();// 전사원 리스트
+				
 				mmService.updateReadMailOne(mno);
 				session.setAttribute("mainMailCount", mmService.mainMailCount(m.getMemNo()));
-				mv.addObject("mm", mm);
-				mv.setViewName("mail/mailDetail");
+				mv.addObject("mm", mm)
+				.addObject("empList", empList)
+				.setViewName("mail/mailDetail");
 			} else {
 				mv.addObject("errorMsg", "오류가 발생했습니다");
 				mv.setViewName("common/errorPage");
@@ -432,16 +484,18 @@ public class MailController {
 		return mv;
 	}
 	
-	
-	// db에 여러 수신,참조자가 컴마로 둘러싸여있는데 빈칸 및 맨 앞 ,제거하는 메소드
+	// db에 여러 수신,참조자가 컴마로 둘러싸여있는데 빈칸 및 맨 앞 맨 뒤 ,제거 하는 메소드
 	public String setReceiversFunction(String receiver) {
-		receiver = receiver.replace(" ","");
+		receiver = receiver.replace(" ",""); // 빈칸을 없앰
+		// 첫번째글자가 ,이면 ,뺴고 출력
 		if(receiver.substring(0, 1).matches(",")) {
 			receiver=receiver.substring(1);
 		}		
+		// 맨뒤 글자가 ,이면 ,뺴고 출력
 		if(receiver.substring(receiver.length()-1, receiver.length()).matches(",")) {
 			receiver=receiver.substring(0,receiver.length()-1);
 		}
+		
 		return receiver;
 		
 	}

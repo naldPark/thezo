@@ -184,13 +184,6 @@ public class ApprovalDao {
 	}
 	
 	
-	
-//	public int selectRecentTemp(SqlSessionTemplate sqlSession, int memNo) {
-//		return sqlSession.selectOne("approvalMapper.selectRecentTemp",memNo);
-//
-//	}
-	
-	
 }
 
 

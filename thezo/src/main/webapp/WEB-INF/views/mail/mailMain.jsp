@@ -7,7 +7,14 @@
 <meta charset="UTF-8">
 <title>The Zo</title>
 <style>
-   .tableBreakWord{display:inline-block; white-space: nowrap;word-break: break-all;overflow: hidden; text-overflow: ellipsis;}
+   .tableBreakWord{display:inline-block;  white-space: nowrap;word-break: break-all;overflow: hidden; text-overflow: ellipsis;}
+   .empAddZone {
+        margin-left: 80px;
+        width: 100%;
+        text-align: left!important;
+        font-size: 15pt;
+      }
+      .table td, .table th, .table tr {border-top:unset!important}
 
 </style>
 </head>
@@ -51,23 +58,23 @@
                 </div>
                 <br>
                 <form action="mainBtn.mail" method="post" id="mainBtnForm">
-                  <table class="table w3-centered table-hover">
+                  <table class="table w3-centered w3-bordered table-hover">
                     <thead>
                       <input type="hidden" id="btnType" name="btnType" value="">
                       <tr class="table-primary">
-                        <th><input type="checkbox" class="bigCheckbox" id="allCheck"></th>
-                        <th style="width:70px">읽음</th>
-                        <th style="width:70px">발신자</th>
+                        <th style="width:30px;"><input type="checkbox" class="bigCheckbox" id="allCheck"></th>
+                        <th style="width:60px">읽음</th>
+                        <th style="width:180px">발신자</th>
                         <th style="width:500px">제목</th>
-                        <th style="width:100px">일시</th>
+                        <th style="width:170px">일시</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <c:forEach var="m" items="${ list }">
-                        <tr <c:if test="${m.read eq 'N'}">class="font-weight-bold"</c:if>>
+                      <c:forEach var="m" varStatus="vs"  items="${ list }">
+                        <tr style="width:980" <c:if test="${m.read eq 'N'}">class="font-weight-bold"</c:if>>
                           <td hidden>${m.reMailNo}</td>
-                          <th><input type="checkbox" class="bigCheckbox" name="mailNo" value="${m.reMailNo}"></th>
-                          <td>
+                          <th style="width:30px"><input type="checkbox" class="bigCheckbox" name="mailNo" value="${m.reMailNo}"></th>
+                          <td style="width:60px">
                             <c:choose>
                               <c:when test="${m.read eq 'N'}">
                                 <i class="far fa-envelope"></i>
@@ -77,14 +84,21 @@
                               </c:otherwise>
                             </c:choose>
                           </td>
-                          <td>${m.sender}</td>
-                          <!--발신자가 외부면 메일, 내부면 이름?-->
-                          <td>
-                            ${m.mailTitle}
+                          <td style="width:180px;" class="sender"
+                            data-placement="bottom" data-toggle="tooltip" title="${m.sender}" id="sender${vs.index+1}">
+                            <div style="width:160px;" class="tableBreakWord">
+                              ${m.sender}
+                            </div>
+                          </td>
+                          <!--발신자가 외부면 메일, 내부면 이름-->
+                          <td style="width:500px;">
+                            <div  style="width:450px;" class="tableBreakWord">
+                              ${m.mailTitle}
+                              </div>
                             <c:if test="${!empty m.attach}">
                               &nbsp;<i class="fas fa-paperclip"></i>
                             </c:if>
-                          </td>
+                          </td style="width:170px">
                           <td>${m.receiveDate}</td>
                         </tr>
                       </c:forEach>
@@ -92,6 +106,7 @@
                   </table>
                 </form>
                 <br><br>
+                <div id="empList" class="empAddZone" style="text-align: center; font-size: 15pt;"></div>
           
                 <!--페이징 처리 시작-->
                 <div id="pagingArea">
@@ -149,16 +164,41 @@
               })                    
         })    
 
-        $(".mainBtn").click(function () {
-            var message = $(this).text();
-            if (confirm(message+" 하시겠습니까?")) {
-              $("#btnType").val($(this).attr("id"));
-              $("#mainBtnForm").submit();
-            }
-          })
+      $(".mainBtn").click(function () {
+          var message = $(this).text();
+          if (confirm(message+" 하시겠습니까?")) {
+            $("#btnType").val($(this).attr("id"));
+            $("#mainBtnForm").submit();
+          }
+        })
+
+
         
-  
+      // 전사원 리스트 세팅
+      $(function(){
+        $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();
+
+          // 이걸로 보여지는 화면의 SENDER를 어레이로 뽑았고
+          var senderArray = [
+          <c:forEach items="${list}" var="a">
+                      "${a.sender}",
+          </c:forEach>
+            ];
+          
+          <c:forEach var="p" items="${ empList }" varStatus="status">
+          for (var i = 0; i < senderArray.length; i++) {
+            if('${p.email}' == senderArray[i]){
+              $("#sender"+(i+1)).text("${p.department} / ${p.memName} ${p.rank}");
+            }
+          }
+          </c:forEach>
+
+        });
+      })
   </script>
+  
+  
  	
 </body>
 </html>

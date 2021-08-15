@@ -30,12 +30,6 @@
       <a href='main.appr?apprFolder=approved' id="approvednav" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"> </i> &nbsp;&nbsp;결재내역</a>
       <a href="main.appr?apprFolder=refer" id="refernav" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"> </i> &nbsp;&nbsp;수신참조</a>
     </div>
-    <a class="w3-bar-item w3-button w3-padding" onclick="extend('personalDocu')"><i class="far fa-caret-square-down"></i>  개인보관함</a>
-    <div id="personalDocu" class="w3-bar-block w3-hide w3-show">
-      <a href="#" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i> &nbsp;&nbsp;뭘넣을까</a>
-      <a href="#" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i> &nbsp;&nbsp;뭘넣을까</a>
-      <a href="#" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i> &nbsp;&nbsp;뭘넣을까</a>
-    </div>
   </div>
 </nav>
 

@@ -38,24 +38,24 @@
   <style>
       .input-group-text{width:80px}
       .referSpan{padding:10px; margin-right: 2px;}
-        .w3-dropdown-content{min-width: 714px !important;}
-        .drop-zone {
-          margin-left: 80px;
-          width: 100%;
-          height: 110px;
-          border: 1px solid lightgray;
-          overflow: auto;
-          font-weight: bolder; 
-        }
-        .empAddZone {
-          margin-left: 80px;
-          width: 100%;
-          text-align: left!important;
-          font-size: 15pt;
-        }
-        .empListInput{width: 867px !important; }
-        .dropFile{ text-decoration:underline !important; cursor: pointer; color: rgb(109, 107, 107)!important;}
-        .dropFile:hover{ text-decoration:underline !important; cursor: pointer; }
+      .w3-dropdown-content{min-width: 714px !important;}
+      .drop-zone {
+        margin-left: 80px;
+        width: 100%;
+        height: 110px;
+        border: 1px solid lightgray;
+        overflow: auto;
+        font-weight: bolder; 
+      }
+      .empAddZone {
+        margin-left: 80px;
+        width: 100%;
+        text-align: left!important;
+        font-size: 15pt;
+      }
+      .empListInput{width: 867px !important; }
+      .dropFile{ text-decoration:underline !important; cursor: pointer; color: rgb(109, 107, 107)!important;}
+      .dropFile:hover{ text-decoration:underline !important; cursor: pointer; }
         
   </style>
 </head>
@@ -120,8 +120,6 @@
                     </div>
                   </div>
                 </c:if>
-
-
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">
                     <span class="input-group-text bg-white border-0">파일첨부</span>
@@ -130,18 +128,19 @@
                   <div class="drop-zone" style="text-align: center; font-size: 15pt;">
                     <br>
                     <c:choose>
-                      <c:when test="${empty mm.at}">
+                      <c:when test="${replyType ne 'fwd:'}">
                         <i class="far fa-clone"></i>
                         파일을 여기로 드래그하세요.
                       </c:when>
                       <c:otherwise>
                         <c:forEach var="at" items="${ mm.at }">
-                          <a class="dropFile" style="font-size: 12pt; " href="${at.fileUrl}"><i class="fas fa-file-download"></i>&nbsp;${at.originName}</a><br>
+                          <input type="hidden" name="originFile" value="${at.fileUrl}">
+                          <input type="hidden" name="originFile" value="${at.originName}">
+                          <a class="dropFile" style="font-size: 12pt;" href="${at.fileUrl}"><i class="fas fa-file-download"></i>&nbsp;${at.originName}</a><br>
                         </c:forEach>
                         </c:otherwise>
                       
                     </c:choose>
-                    
                   </div>
                 </div>
                 <div class="form-group">

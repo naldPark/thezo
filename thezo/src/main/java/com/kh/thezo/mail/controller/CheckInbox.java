@@ -38,7 +38,7 @@ public class CheckInbox {
 		String password = "skfem11!";
 		
 		try {
-			// mail에 pop3 로 연결''
+			// mail에 pop3 로 연결
 			Properties prop = new Properties();
 			prop.put("mail.pop3.host", host);
 			prop.put("mail.pop3.port", 995);

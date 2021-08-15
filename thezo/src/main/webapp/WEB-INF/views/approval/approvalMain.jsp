@@ -50,14 +50,15 @@
 									<span class="input-group-text">검색분류</span>
 								</div>
 								<select class="form-control" id="sel1" name="category">
-									<option>전체</option>
-									<option>일반</option>
-									<option>비용</option>
-									<option>총무</option>
-									<option>인사</option>
+									<option value="전체">전체</option>
+									<option value="일반">일반</option>
+									<option value="비용">비용</option>
+									<option value="총무">총무</option>
+									<option value="인사	">인사</option>
 								</select>
 								<input type="text" name="docName" class="form-control" placeholder="검색할 제목을 입력하세요" style="width:200px">
 								<input type="hidden" name="apprFolder" value="${apprFolder}">
+								<input type="hidden" name="currentPage" id="apprCurrentPage" value="1">
 								<div class="input-group-append">
 									<button type="submit" class="btn btn-primary btn-sm" style="width: 100px">&nbsp;조회&nbsp;</button>
 								</div>
@@ -102,7 +103,6 @@
 						<div class="w3-cell text-left" style="width:30%; padding-left:10px">
 							<h5 class="w3-cell" id="${a.docNo}docName">${a.docName}</h5>
 							<small>${ a.docDate }</small>
-					
 						</div>
 						<div class="w3-cell">
 							<h3 class="w3-cell"><i class="fas fa-user-edit"></i></h3>
@@ -147,24 +147,21 @@
 				<div id="pagingArea">
 					<ul class="pagination">
 						<c:if test="${ pi.currentPage ne 1 }">
-							<li class="page-item"><a class="page-link"
-									href="main.appr?currentPage=${ pi.currentPage-1 }&apprFolder=${apprFolder}">이전</a></li>
+							<li class="page-item"><a class="page-link">이전</a></li>
 						</c:if>
 						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
 							<c:choose>
 								<c:when test="${ pi.currentPage eq p }">
-									<li class="page-item"><a class="page-link" style="background-color: lightsteelblue"
-											href="main.appr?currentPage=${ p }&apprFolder=${apprFolder}">${ p }</a></li>
+									<li class="page-item"><a class="page-link" style="background-color: lightsteelblue">${ p }</a></li>
 								</c:when>
 								<c:otherwise>
-									<li class="page-item"><a class="page-link"
-											href="main.appr?currentPage=${ p }&apprFolder=${apprFolder}">${ p }</a></li>
+									<li class="page-item"><a class="page-link">${ p }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<c:if test="${ pi.currentPage ne pi.maxPage and pi.maxPage ne '0'}">
 							<li class="page-item">
-								<a class="page-link" href="main.appr?currentPage=${ pi.currentPage+1 }&apprFolder=${apprFolder}">다음</a>
+								<a class="page-link">다음</a>
 							</li>
 						</c:if>
 					</ul>
@@ -174,6 +171,33 @@
     	</div>
     </section>
 
+	<script>
+
+		
+
+	// 페이징바 기능
+	$(".page-link").click(function(){
+
+		  var page = $(this).text();
+		  if(page =="이전"){   //main.appr?currentPage=${ pi.currentPage-1 }&apprFolder=${apprFolder}
+			$("#apprCurrentPage").val("${ pi.currentPage-1 }");
+		  } else if(page=="다음"){
+			$("#apprCurrentPage").val("${ pi.currentPage+1 }");
+		  } else {
+			$("#apprCurrentPage").val(page);
+		  }
+		  $("#main.appr").submit();
+	})
+
+	$(function(){
+		$(function(){
+		<c:if test="${!empty a.category}">
+			$("#sel1").val("${a.category}").attr("selected", "selected");
+		</c:if>
+		})
+	})
+
+</script>
   
  	
 </body>

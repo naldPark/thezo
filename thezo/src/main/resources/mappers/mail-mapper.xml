@@ -78,7 +78,7 @@
 		    , SENDER
 		    , RECEIVER
 		    , REF_RECEIVER
-		    , RECEIVE_DATE
+		    ,TO_CHAR(receive_date, 'YYYY-MM-DD') receive_date
 		    , READ
 		    , STATUS
 		    , SPAM
@@ -115,7 +115,7 @@
 		    , SENDER
 		    , RECEIVER
 		    , REF_RECEIVER
-		    , RECEIVE_DATE
+		    ,TO_CHAR(receive_date, 'YYYY-MM-DD') receive_date
 		    , READ
 		    , STATUS
 		    , SPAM
@@ -150,7 +150,7 @@
 			    , MAIL_CONTENT
 			    , SENDER
 			    , RECEIVER
-			    , SEND_DATE
+			     ,TO_CHAR(SEND_DATE, 'YYYY-MM-DD') SEND_DATE
 			    , TEMP_SAVE
 			    , a.STATUS
 			    , REF_RECEIVER
@@ -269,7 +269,7 @@
 		    , SENDER
 		    , RECEIVER
             , ref_receiver
-		    , RECEIVE_DATE
+		     ,TO_CHAR(receive_date, 'YYYY-MM-DD') receive_date
 		    , READ
 		    , STATUS
 		    , SPAM
@@ -403,7 +403,7 @@
 			    , MAIL_CONTENT
 			    , SENDER
 			    , RECEIVER
-			    , SEND_DATE
+			     ,TO_CHAR(SEND_DATE, 'YYYY-MM-DD') SEND_DATE
 			    , TEMP_SAVE
 			    , a.STATUS
 			    , REF_RECEIVER

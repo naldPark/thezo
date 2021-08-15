@@ -25,7 +25,8 @@ public class MailDao {
 	public ArrayList<Mail> selectMailList(Mail mm, PageInfo pi, SqlSessionTemplate sqlSession) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList) sqlSession.selectList("mailMapper.selectMailList", mm, rowBounds);
+		ArrayList<Mail> selectMailList = (ArrayList) sqlSession.selectList("mailMapper.selectMailList", mm, rowBounds);
+		return selectMailList;
 	}
 	
 	public int selectSpamMailListCount(Mail mm, SqlSessionTemplate sqlSession) {
@@ -35,7 +36,8 @@ public class MailDao {
 	public ArrayList<Mail> selectSpamMailList(Mail mm, PageInfo pi, SqlSessionTemplate sqlSession) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList) sqlSession.selectList("mailMapper.selectSpamMailList", mm, rowBounds);
+		ArrayList<Mail> selectSpamMailList =(ArrayList) sqlSession.selectList("mailMapper.selectSpamMailList", mm, rowBounds);
+		return selectSpamMailList;
 	}
 	
 	
@@ -46,7 +48,8 @@ public class MailDao {
 	public ArrayList<Mail> selectSendList(int memNo, PageInfo pi, SqlSessionTemplate sqlSession) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return (ArrayList) sqlSession.selectList("mailMapper.selectSendList", memNo, rowBounds);
+		ArrayList<Mail> selectSendList = (ArrayList) sqlSession.selectList("mailMapper.selectSendList", memNo, rowBounds);
+		return selectSendList;
 	}
 
 	// 서버에 있는 받은 메일함 db로 옮기기
@@ -64,7 +67,8 @@ public class MailDao {
 	}
 
 	public Mail selectDetailMail(SqlSessionTemplate sqlSession, int mno) {
-		return sqlSession.selectOne("mailMapper.selectDetailMail", mno);
+		Mail selectDetailMail = sqlSession.selectOne("mailMapper.selectDetailMail", mno);
+		return selectDetailMail;
 	}
 	
 	public ArrayList<Attachment> selectDetailMailAt(SqlSessionTemplate sqlSession,Mail mm) {

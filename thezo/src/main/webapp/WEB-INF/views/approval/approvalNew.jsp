@@ -23,37 +23,42 @@
                 
                 <!-- 카테고리 area -->
                 <div class="card-deck" style="width:70%">
-                    
-                    <div class="card category shadow">
+                    <a class="card category shadow" href="new.appr">
+                        <div class="card-body text-center">
+                            <p class="card-text"><i class="far fa-file-alt"></i></p>
+                            <h5 class="card-text">전체</h5>
+                        </div>
+                    </a>
+                    <a class="card category shadow" href="new.appr?category=일반">
                         <div class="card-body text-center">
                             <p class="card-text"><i class="far fa-file-alt"></i></p>
                             <h5 class="card-text">일반</h5>
                         </div>
-                    </div>
-                    <div class="card category shadow">
+                    </a>
+                    <a class="card category shadow" href="new.appr?category=비용">
                         <div class="card-body text-center">
                             <p class="card-text"><i class="far fa-file-alt"></i></p>
                             <h5 class="card-text">비용</h5>
                         </div>
-                    </div>
-                    <div class="card category shadow">
+                    </a>
+                    <a class="card category shadow" href="new.appr?category=총무">
                         <div class="card-body text-center">
                             <p class="card-text"><i class="far fa-file-alt"></i></p>
                             <h5 class="card-text">총무</h5>
                         </div>
-                    </div>
-                    <div class="card category shadow">
+                    </a>
+                    <a class="card category shadow" href="new.appr?category=인사">
                         <div class="card-body text-center">
                             <p class="card-text"><i class="far fa-file-alt"></i></p>
                             <h5 class="card-text">인사</h5>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <br>
                 <h6>결재양식을 선택 해 주세요</h6>
                 <hr>
                 <br>
-                <form action="main.appr" method="post">
+                <form action="new.appr" method="post">
                     <div class="w3-row-padding">
                         <div class="w3-third">&nbsp;</div>
                         <div class="w3-twothird">
@@ -61,21 +66,23 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">검색분류</span>
                                 </div>
-                                <select class="form-control" name="category">
-                                    <option>전체</option>
-                                    <option>일반</option>
-                                    <option>비용</option>
-                                    <option selected>총무</option>
-                                    <option>인사</option>
-                                </select>
-                                <input type="text" name="docName" class="form-control" placeholder="검색할 제목을 입력하세요" style="width:200px">
-                                <div class="input-group-append">
+                                <select class="form-control" id="sel1" name="category">
+									<option value="전체">전체</option>
+									<option value="일반">일반</option>
+									<option value="비용">비용</option>
+									<option value="총무">총무</option>
+									<option value="인사">인사</option>
+								</select>
+                                <input type="text" name="formName" class="form-control" placeholder="검색할 제목을 입력하세요" style="width:200px">
+                                <input type="hidden" name="currentPage" id="apprCurrentPage" value="1">
+							    <div class="input-group-append">
                                     <button type="submit" class="btn btn-primary btn-sm" style="width: 100px">&nbsp;조회&nbsp;</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </form>
+                <br><br>
                 
                 <!-- 안읽은 문서 건수 안내 끝 -->
                 <!-- 문서리스트 -->
@@ -107,36 +114,66 @@
             
 
                 <br><br>
-               <!--페이징 처리 시작-->
-                 <div id="pagingArea">
+
+
+                <!--페이징 처리 시작-->
+				<div id="pagingArea">
 					<ul class="pagination">
-                        <c:if test="${ pi.currentPage ne 1 }">
-                            <li class="page-item"><a class="page-link" href="approvalNew?currentPage=${ pi.currentPage-1 }">이전</a></li>
-                        </c:if>
-                        <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+						<c:if test="${ pi.currentPage ne 1 }">
+							<li class="page-item"><a class="page-link">이전</a></li>
+						</c:if>
+						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
 							<c:choose>
 								<c:when test="${ pi.currentPage eq p }">
-									<li class="page-item">
-                                        <a class="page-link" style="background-color: lightsteelblue" href="approvalNew?currentPage=${ p }">${ p }</a></li>
+									<li class="page-item"><a class="page-link" style="background-color: lightsteelblue">${ p }</a></li>
 								</c:when>
 								<c:otherwise>
-									<li class="page-item">
-                                        <a class="page-link"  href="approvalNew?currentPage=${ p }">${ p }</a></li>
+									<li class="page-item"><a class="page-link">${ p }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<c:if test="${ pi.currentPage ne pi.maxPage and pi.maxPage ne '0'}">
-                            <li class="page-item">
-                                <a class="page-link" href="approvalNew?currentPage=${ pi.currentPage+1 }">다음</a>
-                            </li>
-                        </c:if>
+							<li class="page-item">
+								<a class="page-link">다음</a>
+							</li>
+						</c:if>
 					</ul>
-           		 </div>
+				</div>
 				<!--페이징 처리 끝-->
+            
             </div>
     	</div>
     </section>
 
+    <script>
+
+		
+
+        // 페이징바 기능
+        $(".page-link").click(function(){
+    
+              var page = $(this).text();
+              if(page =="이전"){   //main.appr?currentPage=${ pi.currentPage-1 }&apprFolder=${apprFolder}
+                $("#apprCurrentPage").val("${ pi.currentPage-1 }");
+              } else if(page=="다음"){
+                $("#apprCurrentPage").val("${ pi.currentPage+1 }");
+              } else {
+                $("#apprCurrentPage").val(page);
+              }
+              $("#new.appr").submit();
+        })
+    
+        $(function(){
+            $(function(){
+            <c:if test="${!empty a.category}">
+                $("#sel1").val("${a.category}").attr("selected", "selected");
+            </c:if>
+            })
+        })
+
+    
+    </script>
+      
   
  	
 </body>

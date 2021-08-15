@@ -2,7 +2,6 @@ package com.kh.thezo.approval.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -77,10 +76,10 @@ public class ApprovalController {
 	// 문서양식 리스트 불러오기
 	@RequestMapping("new.appr")
 	public ModelAndView newApprList(Approval a,ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		
 		int listCount = aService.newApprListCount(a);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		ArrayList<Approval> list = aService.newApprList(a,pi);
-		
 		mv.addObject("list", list)
 		  .addObject("pi", pi)
 		  .setViewName("approval/approvalNew");
@@ -89,7 +88,7 @@ public class ApprovalController {
 	
 	// 문서 작성하는 페이지 
 	@RequestMapping("enrollForm.appr")
-	public ModelAndView enrollApproval(Approval a,ModelAndView mv, HttpSession session, int ano) {
+	public ModelAndView enrollApproval(ModelAndView mv, HttpSession session, int ano) {
 		Approval aTemp = new Approval();
 		Member m = (Member) session.getAttribute("loginUser");
 		aTemp.setMemNo(m.getMemNo()); 
@@ -134,53 +133,12 @@ public class ApprovalController {
 	
 
 	
-	// 임시저장 입력하기
-//	public ModelAndView tempApproval(Approval a,HttpSession session, ModelAndView mv) {
-//		Member m = (Member) session.getAttribute("loginUser");
-//		a.setMemNo(m.getMemNo());
-//		a.setStatus("임시");
-//		System.out.println(a);
-//		
-//		
-//		//임시파일 데이터를 db에 저장
-//		int result = aService.tempApproval(a);
-//		
-//		if(result > 0) { // 저장이 성공했다면
-//			
-//			// 방금 성공한 임시 저장파일의 문서번호를 가져오기 
-//			int docNo= aService.selectRecentTemp(m.getMemNo());
-//			
-//			Approval b = aService.detailApproval(docNo);
-//			ArrayList<Member> empList = aService.employeeList();
-//			ArrayList<ApprovalAccept> aLine = aService.detailApprovalLine(docNo);
-//			System.out.println("임시b"+b);
-//			System.out.println("임시aLine"+aLine);
-//			mv.addObject("a", b) 
-//				.addObject("aLine", aLine) 
-//				.addObject("empList", empList) // 전사원 리스트 
-//				.addObject("aLine", aLine);  // 해당 양식에 저장된 결재선
-//			session.setAttribute("alertMsg", "성공적으로 저장 되었습니다.");
-//			mv.setViewName("approval/approvalEnrollForm");
-//		}else {
-//			mv.addObject("errorMsg", "저장에 실패했습니다");
-//			mv.setViewName("common/errorPage");
-//		}
-//		return mv;
-//		
-//	}
-	
 	
 	// 문서작성후 기안하기 매핑
 	@RequestMapping("insertDocu.appr")
 	public ModelAndView insertApprovalDocument(String tempStatus, Approval a,HttpSession session, MultipartFile[] upfile, ModelAndView mv) {
 		Member m = (Member) session.getAttribute("loginUser");
 		a.setMemNo(m.getMemNo());
-//		System.out.println("insertDocu"+a);
-//		if(tempStatus!=null&&tempStatus.equals("임시")) {
-//			System.out.println("임시로간다");
-//			ModelAndView mvTemp= tempApproval(a,session,upfile,mv);
-//			return mvTemp;
-//		} else {
 			a.setStatus("대기");
 			if (!upfile[0].getOriginalFilename().equals("")) {
 				ArrayList<Attachment> list = new ArrayList<>();

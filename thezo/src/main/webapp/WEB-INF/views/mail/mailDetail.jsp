@@ -11,8 +11,12 @@
     table a{ text-decoration:none !important; cursor: pointer; color: rgb(25, 99, 148)!important;}
     table a:hover{ text-decoration:underline !important; cursor: pointer; }
     table th{text-align: center;}
-    .mailInfo td{width: 800px !important;; border-top:0;border-bottom: 0;border: 0px !important; border-top: 1px solid #dee2e6!important; }
-   .expandEmpBtn{font-weight: normal!important;}
+    table td{padding-left: 10px!important; }
+    .mailInfo td{width: 800px !important; border-top:0;border-bottom: 0;border: 0px !important; border-top: 1px solid #dee2e6!important; }
+   .expandEmpBtn{font-weight: normal!important; height:28px}
+.receiver{line-height: 3 !important; margin-left: 5px;}
+.refReceiver{line-height:3 !important; margin-left: 5px;}
+   
     /* *{border:1px solid red} */
   </style>
 </head>
@@ -26,10 +30,8 @@
         <div class="mailOuter">
           <div align="left">
             <c:if test="${mm.seMailNo eq 0}">
-            <!-- 답장: 보낸사람을 받는사람으로 세팅, ------------origin message ---------추가 -->
               <button type="button" id="replyBtn" class="enrollBtn btn btn-sm btn-secondary">답장</button>
             </c:if>
-             <!-- 전달:  ------------origin message ---------추가 -->
             <button type="button" id="forwardBtn" class="enrollBtn btn btn-sm btn-secondary">전달</button>
             <c:if test="${mm.seMailNo eq 0}">
             <button type="button" id="deleteBtn" class="mainBtn btn btn-sm btn-secondary">삭제</button>
@@ -40,21 +42,35 @@
     
           <table class="table table-bordered" style="word-break: break-all;">
             <tr class="mailInfo">
+              <th style="width:200px!important">발신일</th>
+              <td>${mm.sendDate}${mm.receiveDate}</td>
+            </tr>
+            <tr class="mailInfo">
               <th style="width:200px!important">보낸사람</th>
-              <td>${mm.sender}</td>
+              <td>
+                <span class="btn-sm btn-light" data-placement="bottom" data-toggle="tooltip" title="${mm.sender}" id="sender">${mm.sender}</span>
+             </td>
             </tr>
             <tr class="mailInfo">
               <th>받는사람</th>
-              <td style="display:block; width: 800px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
-                <span><button id="receiveEmp" class="expandEmpBtn w3-button w3-white w3-border w3-padding-small w3-small">펼치기</button>&nbsp;${mm.receiver}</span>
-              </td>
-            </tr>
+              <td id="receiverTd" style="display:block; width:800px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
+              <span>
+                <button id="receiveEmp" class="expandEmpBtn w3-button w3-white w3-border w3-padding-small w3-small">열기</button>
+              </span>
+            </td>
+          </tr>
+
             <tr class="mailInfo">
               <th>참조자</th>
-              <td style="display:block; width: 800px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
-                  <span><button id="referEmp" class="expandEmpBtn w3-button w3-white w3-border w3-padding-small w3-small">펼치기</button>&nbsp;${mm.refReceiver}</span>
+              <td id="refReceiverTd" style="display:block; width:800px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; ">
+                <span>
+                  <button id="referEmp" class="expandEmpBtn w3-button w3-white w3-border w3-padding-small w3-small">열기</button>
+                </span>
               </td>
-            </tr>
+          </tr>
+
+
+
             <tr class="mailInfo">
               <th>제목</th>
               <td>${mm.mailTitle}</td>
@@ -80,32 +96,23 @@
           </div>
           <br>
         </div>
+        <div id="empList" class="empAddZone" style="text-align: center; font-size: 15pt;"></div>
+          
       </div>
     </section>
 
     <script>
       $(function(){
-        $(function(){
-        var refWidth = ($("#referEmp").parent().innerWidth());
-        var receiveWidth = ($("#receiveEmp").parent().innerWidth());
-
-        if(refWidth < 790){
-          $("#referEmp").hide()
-        }
-        if(receiveWidth < 790){
-          $("#receiveEmp").hide();
-        }
-      })
+      
       })
       $(".expandEmpBtn").click(function(){
 
         if($(this).parent().parent().css("white-space")=="nowrap"){
           $(this).html("접기")
-          // $(this).next().html("<br>"+$(this.next().html()));
           $(this).parent().parent().css("white-space","normal");
         }else{
           $(this).parent().parent().css("white-space","nowrap");
-          $(this).html("펼치기")
+          $(this).html("열기")
         }
         
       })
@@ -121,7 +128,6 @@
           } else{
             location.href='mainBtn.mail?btnType='+$(this).attr("id")+'&mailNo=${mm.reMailNo}';
           }
-          
         }
       })
    
@@ -136,6 +142,53 @@
         }
           location.href = 'enrollForm.mail?replyType='+replyType;
         })
+
+
+         // 전사원 리스트 세팅
+      $(function(){
+        $(document).ready(function(){
+         
+          var receiver = "${mm.receiver}".split(",");
+          var refReceiver =  "${mm.refReceiver}".split(",");
+
+          <c:forEach var="p" items="${ empList }" varStatus="status">
+            if('${p.email}' == '${mm.sender}'){
+              $("#sender").text("${p.department} / ${p.memName} ${p.rank}");
+            }
+           
+            for (var i = 0; i < receiver.length; i++) {
+            if('${p.email}' == receiver[i]){
+              $("<span class='receiver btn-sm btn-light' data-placement='bottom' data-toggle='tooltip' data-original-title='${p.email}' title=''>${p.department} / ${p.memName} ${p.rank}</span>").appendTo("#receiverTd");
+            }
+          }
+            
+          for (var i = 0; i < refReceiver.length; i++) {
+            if('${p.email}' == refReceiver[i]){
+              $("<span class='refReceiver btn-sm btn-light' data-placement='bottom' data-toggle='tooltip' data-original-title='${p.email}' title=''>${p.department} / ${p.memName} ${p.rank}</span>").appendTo("#refReceiverTd");
+            }
+          }
+          
+          </c:forEach>
+          $('[data-toggle="tooltip"]').tooltip();
+
+        console.log($(".receiver").text().length);
+        console.log($(".refReceiver").text().length);
+        
+        if($(".receiver").text().length < 70){
+          $("#receiveEmp").hide()
+        }
+        if($(".refReceiver").text().length < 70){
+          $("#referEmp").hide();
+        }
+
+        });
+
+        
+        
+      });
+
+
+        
 </script>
 
 </body>

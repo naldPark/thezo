@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="reservationMapper">
+
+	<resultMap id="resourceResult" type="Resource">
+		<result column="resource_no" property="resourceNo" />
+		<result column="category_no" property="category" />
+		<result column="resource_name" property="resourceName" />
+	</resultMap>
+	
+	<select id="selectResourceList" resultMap="resourceResult">
+		select *
+		  from resources
+		 where category_no = 1
+	</select>
+	
+</mapper>

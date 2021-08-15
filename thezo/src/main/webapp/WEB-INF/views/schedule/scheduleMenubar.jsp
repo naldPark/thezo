@@ -5,11 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<!-- 풀캘린더  -->
-	<link href='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/main.css' rel='stylesheet' />
-	<script src='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/main.js'></script>
-	<!-- 한국어설정 -->
-	<script src='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/locales/ko.js'></script>
 <style>
 	#nav button{margin: 10px;}
 	#nav ul{list-style-type: none; padding-left: 20px;}

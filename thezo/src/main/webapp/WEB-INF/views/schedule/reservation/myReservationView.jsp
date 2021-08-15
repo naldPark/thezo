@@ -7,13 +7,13 @@
 <meta charset="UTF-8">
 <title>예약하기-나의예약목록</title>
 <style>
-
     #myList{
         width: 950px;
         margin: 0;
         float: left;
         box-sizing: border-box;
         padding: 25px;
+        float:right;
     }
     #myList>table{text-align: center; width: 800px;}
     #myList>table th{width: 10%;}  
@@ -27,7 +27,6 @@
         <div class="outer">
 			<!-- 예약관리 메뉴바 -->
             <jsp:include page="rezMenubar.jsp"/>
-
             <div id="myList">
                 &nbsp;&nbsp;&nbsp;
                 <b>나의 예약 목록</b>

@@ -190,10 +190,10 @@ public class ScheduleController {
 		return "schedule/reservation/myReservationView";
 	}
 	
-	@RequestMapping("con.rez")
-	public String conferenceRoom() {
-		return "schedule/reservation/conferenceRezView";
-	}
+	/*
+	 * @RequestMapping("con.rez") public String conferenceRoom() { return
+	 * "schedule/reservation/conferenceRezView"; }
+	 */
 	
 	
 	// 파일 등록 메소드

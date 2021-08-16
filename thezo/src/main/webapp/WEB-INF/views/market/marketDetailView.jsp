@@ -38,9 +38,52 @@
 			    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			    
 			    <script>
+			    	$(document).ready(function(){
+			    		var productLike = ${ mk.productLike };
+			    	
+			    		if(productLike>0){
+			    			console.log(productLike);
+				            $("#heart").prop("src", "resources/images/like2.png");
+				            $(".heart").prop('name', productLike)
+			    		}else{
+			    			console.log(productLike);
+				            $("#heart").prop("src", "resources/images/like1.png");
+				            $(".heart").prop('name',productLike)
+			    		}
+			    	
+			    		$(".heart").on("click", function(){
+			    			$.ajax({
+			    				url:'productLike.mk',
+			    				data:{
+			    					marketNo:${ mk.marketNo },
+			    					memId:'${ loginUser.memId }',
+			    					productLike:${ mk.productLike }
+			    				}, sucess : function(data){
+			    					that.prop('name',data);
+			    					if(data=1){
+			    						$('#heart').prop("src", "/resources/images/like2.png");
+			    					}else{
+			    						$('#heart').prop("src", "/resources/images/like1.png");
+			    					}
+			    				}
+			    				
+			    			
+			    			})
+			    		})
+			    		
+			    		
+			    		
+			    	})
+			    
+			    
+			    </script>
+			    
+			    
+			    <!--
+			    <script>
 				    $(document).ready(function () {
 				
-				        var heartval = ${ mk.productLike };
+				        var heartval = ${ heart };
 				
 				        if(heartval>0) {
 				            console.log(heartval);
@@ -56,14 +99,16 @@
 
 				        $(".heart").on("click", function () {
 
-				            var that = $(".heart");
-
-				            var sendData = {'marketNo' : '${ mk.marketNo }','productLike' : that.prop('name')};
+				            var productLike = $(".heart");
+				            var sendData = {'marketNo' : '${ mk.marketNo }', 'heart' : productLike.prop('name')};
+				            
 				            $.ajax({
-				                url :'/board/heart',
+				                url :'productLike.mk',
 				                type :'POST',
-				                data : sendData,
-				                success : function(data){
+				                data : {
+				                	sendData: sendData,
+				                	memId:'${ loginUser.memId }'
+				                },success : function(data){
 				                    that.prop('name',data);
 				                    if(data==1) {
 				                        $('#heart').prop("src","/resources/images/like2.png");
@@ -79,7 +124,7 @@
 				
 				    });
 				</script>
-							    
+				  -->			    
 			    
 			    
 			    

@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +27,7 @@ import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.market.model.service.MarketService;
 import com.kh.thezo.market.model.vo.Market;
+import com.kh.thezo.market.model.vo.PLike;
 
 @Controller
 public class MarketController {
@@ -258,6 +261,27 @@ public class MarketController {
 	
 	
 	
+	/*
+    @ResponseBody
+    @RequestMapping(value = "productLike.mk", method = RequestMethod.POST, produces = "application/json")
+    public int heart(HttpServletRequest httpRequest, int marketNo, String memId, int productLike) throws Exception {
+    	
+    	System.out.println(marketNo);
+    	System.out.println(memId);
+    	System.out.println(productLike);
+    	
+    	// 찜하기 테이블에 추가하기 
+    	//PLike p = new PLike();
+    	//p.setMarketNo(marketNo);
+    	//p.setMemId(memId);
+    	
+    	// 동시에 market게시글에 productLike를 update해야함
+    	
+    	return productLike;
+    }
+	
+	*/
+	
 	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
 	public String saveFile(HttpSession session, MultipartFile upfile) {
 		// 경로
@@ -279,58 +303,7 @@ public class MarketController {
 		return changeName;
 	}
 		
-	
-	// 벼룩시장 찜하기 (수정중)
-	/*
-	@RequestMapping(value = "/read", method = RequestMethod.GET)
-    public void read(@RequestParam("boardId") int boardId, Model model,
-                     @ModelAttribute("cri") SearchCriteria cri,
-                     @ModelAttribute("category") String category,
-                     HttpServletRequest httpRequest) throws Exception {
 
-        service.increaseViewcnt(boardId, category);
-
-        model.addAttribute(service.readBoard(boardId, category));
-
-        int userid = ((UserVO) httpRequest.getSession().getAttribute("login")).getUserId();
-
-        BoardLikeVO vo = new BoardLikeVO();
-        vo.setBoardId(boardId);
-        vo.setUserId(userid);
-
-        int boardlike = service.getBoardLike(vo);
-        System.out.println(boardlike);
-
-        model.addAttribute("heart",boardlike);
-    }
-
-  @ResponseBody
-    @RequestMapping(value = "/heart", method = RequestMethod.POST, produces = "application/json")
-    public int heart(HttpServletRequest httpRequest) throws Exception {
-
-        int heart = Integer.parseInt(httpRequest.getParameter("heart"));
-        int boardId = Integer.parseInt(httpRequest.getParameter("boardId"));
-        int userid = ((UserVO) httpRequest.getSession().getAttribute("login")).getUserId();
-
-        BoardLikeVO boardLikeVO = new BoardLikeVO();
-
-        boardLikeVO.setBoardId(boardId);
-        boardLikeVO.setUserId(userid);
-
-        System.out.println(heart);
-
-        if(heart >= 1) {
-            service.deleteBoardLike(boardLikeVO);
-            heart=0;
-        } else {
-            service.insertBoardLike(boardLikeVO);
-            heart=1;
-        }
-
-        return heart;
-
-    }
-	*/
 	
 	
 	

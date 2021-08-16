@@ -226,6 +226,12 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.reportSearchList(sqlSession, pi, map);
 	}
 
+	// 신고관리 : 상세조회
+	@Override
+	public Report selectReport(int rpCode) {
+		return bDao.selectReport(sqlSession, rpCode);
+	}
+
 	
 
 	

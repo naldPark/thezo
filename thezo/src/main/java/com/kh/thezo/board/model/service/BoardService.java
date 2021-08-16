@@ -90,4 +90,6 @@ public interface BoardService {
 		public int reportSearchListCount(HashMap<String, String> map);
 		public ArrayList<Report> reportSearchList(PageInfo pi, HashMap<String, String> map);
 		
+		// 3. 신고관리 : 상세조회용
+		Report selectReport(int rpCode);
 }

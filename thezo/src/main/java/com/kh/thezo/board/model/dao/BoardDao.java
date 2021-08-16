@@ -197,6 +197,9 @@ public class BoardDao {
 		return (ArrayList)sqlSession.selectList("boardMapper.reportSearchList", map, rowBounds);
 	}	
 	
-	
+	// 신고관리 : 신고글 상세조회
+	public Report selectReport(SqlSessionTemplate sqlSession, int rpCode) {
+		return sqlSession.selectOne("boardMapper.selectReport", rpCode);
+	}
 	
 }

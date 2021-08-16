@@ -456,6 +456,7 @@ public class BoardController {
 		return "board/boardReport";
 	}
 	
+	/*
 	// 신고관리 리스트페이지 검색바 (관리자)
 	@RequestMapping("reportSearch.bo")
 	public ModelAndView reportSearchList(ModelAndView mv, @RequestParam(value="currentPage", defaultValue="1") int currentPage,
@@ -473,11 +474,33 @@ public class BoardController {
 		mv.addObject("pi", pi)
 		  .addObject("list", list)
 		  .addObject("condition", condition)
-		  .setViewName("board/boardListView");
+		  .addObject("keyword", keyword)
+		  .setViewName("board/boardReport");
 		
 		return mv;
 		
 	}
+	*/
+	
+
+	// 신고관리 상세보기 페이지 포워딩
+	@RequestMapping("adReportDetail.bo")
+	public ModelAndView reportDetail(int rpCode, ModelAndView mv) {
+		
+		Report r = bService.selectReport(rpCode);
+		
+		if( r != null) {
+			mv.addObject("r", r).setViewName("board/reportDetailView");
+		}else {
+			mv.addObject("errorMsg", "신고글 상세조회 실패");
+		}
+		return mv;
+	}
+	
+	
+
+	
+	
 	
 	
 	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성

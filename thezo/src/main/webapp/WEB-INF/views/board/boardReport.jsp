@@ -14,22 +14,13 @@
 	background: white;
 }
 
-#outerHeader>div {
-	float: left;
+#searchForm{
+    width:49%;
 }
-
-.header1, .header2 {
-	width: 50%;
+#searchForm>*{
+    float:left;
+    margin:5px;
 }
-
-.header1 {
-	padding: 3% 1%;
-}
-
-.header2 {
-	padding: 2% 0%;
-}
-
 .select {
 	width: 25%;
 }
@@ -48,62 +39,53 @@ table tbody {
 
 	<jsp:include page="../common/header.jsp" />
 	
-	<script>
-		document.getElementById("admin-header").style.display = "block";
-		document.getElementById("admin-mode").style.color = "red";
-	</script>
+	<c:if test="${loginUser.memId eq 'admin' }">
+		<script>	
+			document.getElementById("admin-header").style.display = "block";
+			document.getElementById("admin-mode").style.color = "red";
+		</script>
+		<br><br><br><br>
+	</c:if>
 	
 	<section>
 
 	<div class="outer">
-		<br><br><br><br>
 		<div class="innerOuter">
 			<h2>
 				<b>신고관리</b>
 			</h2>
 			<br>
-			<div id="outerHeader">
-				<div class="header1">
-					<a class="btn btn-primary btn-sm" id="approval">완료</a>
-				</div>
-
-
-				<div class="header2" align="right">
-					<form id="searchForm" action="" method="Get">
-						<div class="select">
-							<select class="custom-select" name="condition">
-								<option value="wait">대기</option>
-								<option value="complete">완료</option>
-							</select>
-						</div>
-					</form>
-					
-					<!-- 검색 결과 나오게 하기 ㅜㅜ
-					<!-- sql문도 수정하기  -->
-					<script>
-		            	$(function(){
-		            		if("${condition}" != ""){
-		            			$("option[value=${condition}]").attr("selected", true);
-		            		}
-		            	})
-	            	</script>
-	            	
-	            	<script>
-		            	$(function(){
-		            		$("option[value=${condition}]").click(function(){
-		            			location.href="reportSearch.bo";
-		            		})
-		            	})
-		            </script>
-				</div>
-
-			</div>
-
+			<!-- 굳이 필요성이....?
+			<div id="search-area" align="right">
+	        	<form id="searchForm" action="reportSearch.bo" method="Get">
+	            	<div class="select">
+	                	<select class="custom-select" name="condition">
+	                    	<option value="boardType">게시판유형</option>
+	                        <option value="rpType">신고유형</option>
+	                        <option value="status">상태</option>
+	                    </select>
+	                </div>
+	                <div class="text">
+	                    <input type="text" class="form-control" name="keyword">
+	                </div>
+	                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
+	            </form>
+	            <script>
+	            	$(function(){
+	            		if("${condition}" != ""){
+	            			$("option[value=${condition}]").attr("selected", true);
+	            		}
+	            	})
+	            </script>
+	        </div>
+	        
+	        <br><br><br>
+			-->
+			<br><br><br>
 			<!-- 게시글 10개씩 페이징바는 5-->
 			<table id="boardList" class="table table-hover" align="center">
 				<thead>
-					<tr data-toggle="collapse" data-target="#detail">
-						<th>#</th>
+					<tr>
 						<th>신고번호</th>
 						<th>게시판유형</th>
 						<th>신고유형</th>
@@ -116,9 +98,8 @@ table tbody {
 				<tbody>
 					<c:forEach var="rp" items="${ list }">
 						<tr>
-		                   <td scope="row"><input type="checkbox" name="check"></td>
-							<td class="c">${ rp.rpCode }</td>
-							<td class="c">
+							<td class="rpCode">${ rp.rpCode }</td>
+							<td>
 								<c:choose>
 									<c:when test="${ rp.boardType eq 1}">
 										사내게시판
@@ -128,7 +109,7 @@ table tbody {
 									</c:otherwise>
 								</c:choose>
 							</td>
-							<td class="c">
+							<td>
 								<c:choose>
 										<c:when test="${ rp.rpType eq 1}">
 											게시글
@@ -138,10 +119,10 @@ table tbody {
 									</c:otherwise>
 								</c:choose>	
 							</td>
-							<td class="c">${ rp.rpSection }</td>
-							<td class="c">${ rp.rpId }</td>
-							<td class="c">${ rp.rpDate }</td>
-							<td class="c">
+							<td>${ rp.rpSection }</td>
+							<td>${ rp.rpId }</td>
+							<td>${ rp.rpDate }</td>
+							<td>
 								<c:choose>
 										<c:when test="${ rp.status eq 'Y'}">
 											완료
@@ -155,6 +136,15 @@ table tbody {
                     </c:forEach>
 				</tbody>
 			</table>
+			 <script>
+	            	$(function(){
+	            		$("#boardList>tbody>tr").click(function(){
+	            			location.href="adReportDetail.bo?rpCode=" + $(this).children(".rpCode").text();
+	            		})
+	            	})
+	         </script>
+				
+			
 			<br> <br>
 
 			<div id="pagingArea">
@@ -169,7 +159,7 @@ table tbody {
 		                    			<li class="page-item"><a class="page-link" href="boardReport.bo?currentPage=${ pi.currentPage-1 }">Previous</a></li>
 		                    		</c:when>
 		                    		<c:otherwise>
-		                    			<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ pi.currentPage-1 }&condition=${condition}">Previous</a></li>
+		                    			<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ pi.currentPage-1 }&condition=${condition}&keyword=${keyword}">Previous</a></li>
 		                    		</c:otherwise>
 		                    	</c:choose>		
 	                    	</c:otherwise>
@@ -182,7 +172,7 @@ table tbody {
                     			<li class="page-item"><a class="page-link" href="boardReport.bo?currentPage=${ p }">${ p }</a></li>
                     		</c:when>
                     		<c:otherwise>
-                    			<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ p }&condition=${condition}">${ p }</a></li>
+                    			<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ p }&condition=${condition}&keyword=${keyword}">${ p }</a></li>
                     		</c:otherwise>
                     	</c:choose>
                     </c:forEach>
@@ -197,7 +187,7 @@ table tbody {
 		                    		<li class="page-item"><a class="page-link" href="boardReport.bo?currentPage=${ pi.currentPage+1 }">Next</a></li>
 		                    	</c:when>
 		                    	<c:otherwise>
-		                    		<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ pi.currentPage+1 }&condition=${condition}">Next</a></li>
+		                    		<li class="page-item"><a class="page-link" href="reportSearch.bo?currentPage=${ pi.currentPage+1 }&condition=${condition}&keyword=${keyword}">Next</a></li>
 		                    	</c:otherwise>
 		                    </c:choose>		
 		                </c:otherwise>    
@@ -206,19 +196,6 @@ table tbody {
             </div>
 
 
-			<div class="collapse multi-collapse m-0 p-0" id="detail"
-				style="width: 800px;">
-				<h4>신고내역</h4>
-				<hr>
-				<br>
-				<table class="table table-sm table-bordered table-hover">
-					<tbody>
-					</tbody>
-
-				</table>
-			</div>
-			
-			<!--  아래 스크립트 작성하기  -->
 		</div>
 
 	</div>

@@ -104,21 +104,18 @@ public class MarketServiceImpl implements MarketService {
 	// 벼룩시장 찜하기 (수정중)
 	/*
 	 @Override
-	    public void insertBoardLike(BoardLikeVO vo) throws Exception {
-	        dao.insertBoardLike(vo);
-	        dao.updateBoardLike(vo.getBoardId());
-	    }
+	 public void insertMarketLike(PLike pLike) throws Exception {
+	    dao.insertBoardLike(vo);
+	    dao.updateBoardLike(vo.getBoardId());
+	 }
 
-	    @Override
-	    public void deleteBoardLike(BoardLikeVO vo) throws Exception {
-	        dao.deleteBoardLike(vo);
-	        dao.updateBoardLike(vo.getBoardId());
-	    }
+	 @Override
+	 public void deleteMarketLikd(PLike pLike) throws Exception {
+	    dao.deleteMarketLikd(pLike);
+	    dao.updateBoardLike(pLike.getMemId());
+	 }
 	    
-	    @Override
-	    public  int getBoardLike(BoardLikeVO vo) throws Exception {
-	            return dao.getBoardLike(vo);
-	    }
+	   
 	 */
 	
 

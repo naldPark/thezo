@@ -39,36 +39,38 @@
 				url:"selsectCoList.cht",
 				data:{ memNo : ${ loginUser.memNo }},
 		 		success:function(list){
-		 			// 내 이미지쪽 끝 
-		 			$(".my-profile-listarea img").attr("src",(list[0].myImgPath == null) ? "resources/images/basicProfile.png" : list[0].myImgPath);
-					$(".my-profile-listarea img").attr("onclick", "oneClickOpenImage(" + '"' + ((list[0].myImgPath == null) ? "resources/images/basicProfile.png" : list[0].myImgPath) + '"' + ");");
-		 			$(".my-profile-listarea p").html(list[0].myNameAndRank);
-		 			
-		 			//동료 리스트 쪽 
-		 			$("#colleagueCount").html(list.length)
-		 			var value;
-		 			value = '<p>나의 동료 <span style="color:rgb(255,165,0);">' + list.length  + '</span></p>';
-		 			for(var i in list){		 				
-		 				value += '<div ondblclick="clickConnectChatRoom('
-		 					   + list[i].coMemNo +');">'
-		 				       + '<div><img src="' 
-		 				       if(list[i].coImgPath == null){
-		 				 		value += "resources/images/basicProfile.png"; 
-		 				       }else{
-		 				    	  value += list[i].coImgPath;
-		 				       }
-		 				       value += '" '
-		 				       + 'onclick="oneClickOpenImage(' + "'"    
-		 				       if(list[i].coImgPath == null){
-  		 				 	      value += "resources/images/basicProfile.png"; 
-		 				       }else{
-		 				    	  value += list[i].coImgPath;
-		 				       }
-		 				      value +=  "'" + ');"></div><div><p>'
-		 				       + list[i].coNameAndRank
-		 				       + '</p></div><input type="hidden" value=""></div>'
+		 			if(list.length > 0){
+			 			// 내 이미지쪽 끝 
+			 			$(".my-profile-listarea img").attr("src",(list[0].myImgPath == null) ? "resources/images/basicProfile.png" : list[0].myImgPath);
+						$(".my-profile-listarea img").attr("onclick", "oneClickOpenImage(" + '"' + ((list[0].myImgPath == null) ? "resources/images/basicProfile.png" : list[0].myImgPath) + '"' + ");");
+			 			$(".my-profile-listarea p").html(list[0].myNameAndRank);
+			 			
+			 			//동료 리스트 쪽 
+			 			$("#colleagueCount").html(list.length)
+			 			var value;
+			 			value = '<p>나의 동료 <span style="color:rgb(255,165,0);">' + list.length  + '</span></p>';
+			 			for(var i in list){		 				
+			 				value += '<div ondblclick="clickConnectChatRoom('
+			 					   + list[i].coMemNo +');">'
+			 				       + '<div><img src="' 
+			 				       if(list[i].coImgPath == null){
+			 				 		value += "resources/images/basicProfile.png"; 
+			 				       }else{
+			 				    	  value += list[i].coImgPath;
+			 				       }
+			 				       value += '" '
+			 				       + 'onclick="oneClickOpenImage(' + "'"    
+			 				       if(list[i].coImgPath == null){
+	  		 				 	      value += "resources/images/basicProfile.png"; 
+			 				       }else{
+			 				    	  value += list[i].coImgPath;
+			 				       }
+			 				      value +=  "'" + ');"></div><div><p>'
+			 				       + list[i].coNameAndRank
+			 				       + '</p></div><input type="hidden" value=""></div>'
+			 			}
+			 			$(".collegue-profile-listarea").html(value)
 		 			}
-		 			$(".collegue-profile-listarea").html(value)
 		 		},error:function(request,status,error){ // 406 에러가 뜬다.... 뭐냐 json(gson)으로 반환하는 타입 맞지않아서 뜨는오류인데 select문에서 resultMap써줬는지 봐라
 		 	        alert("code = "+ request.status + " message = " + request.responseText + " error = " + error); // 실패 시 처리
 		 			console.log("ajax통신 실패");
@@ -91,14 +93,23 @@
     <div id="my-collegue-list">
         <div class="my-profile-listarea">
             <div>
-                <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDA5MDNfODQg%2FMDAxNTk5MTA5NTgzOTU3.5A9JW8i649B7t2hcKjVpIEf07ndwg6PEIxJfPKDcllYg.kdJJ_jmhwiLpsEtspqeGQGSRGD3Uk1dYP2ho3UG1kREg.JPEG.123kiy00%2F20200903_133730.jpg&type=sc960_832" onclick="oneClickOpenImage();">
+            	<c:choose>
+            		<c:when test="${empty loginUser.path }">
+		                <img src="resources/images/basicProfile.png" onclick="oneClickOpenImage('resources/images/basicProfile.png');">
+            		</c:when>
+            		<c:otherwise>
+            			<img src="resources/images/basicProfile.png" onclick="oneClickOpenImage('resources/images/basicProfile.png');">
+            		</c:otherwise>
+            	</c:choose>
             </div>
             <div>
-                <p>신재원 사원 [개발팀]</p>
+                <p>${loginUser.memName} [${loginUser.rank}]</p>
             </div>
+            
         </div>
 
         <div class="collegue-profile-listarea">
+	        <div><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;동료를 추가해 보세요~ ^^ </b></div>
         </div>
     </div>
 </body>

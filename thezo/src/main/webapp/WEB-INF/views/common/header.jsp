@@ -124,7 +124,6 @@
 		                        <img src="resources/images/TheZoLogo.png">
                     		</c:otherwise>
                     	</c:choose>
-                        
                     </a>
                 </div>
 <%------------------------------------------------------------------------------------------------------------------------ --%>
@@ -201,16 +200,10 @@
                         <!-- 해당 로고 클릭시 turn on --> 
                         <div id="chat-on" ><i class="fas fa-power-off fa-lg w3-animate-opacity"></i></div>
                         <!--★★★★ 여기서의 조건식은 읽지 않은 쪽지와, 채팅을 비교해야하는데 임시로 loginUser박은것-->
-                        <c:choose>
-                            <c:when test="${!empty loginUser }">
-                                <!-- 읽지 않은 메세지 혹은 쪽지가 있을 경우!!!-->
-                                <div id="chat-off" style="display:block"><i class="fas fa-exclamation-circle fa-lg w3-animate-opacity" style="color: rgb(243,156,18);"></i></div>
-                            </c:when>   
-                            <c:otherwise>
-                                <!-- 해당 로고 클릭시 turn off (기본값) -->
-                                <div id="chat-off" style="display:block"><i class="fas fa-power-off fa-lg w3-animate-opacity" style="color: gray;"></i></div>
-                            </c:otherwise>                     
-                        </c:choose>
+                        <!-- 읽지 않은 메세지 혹은 쪽지가 있을 경우!!!-->
+                        <div id="nf-on" style="display:none"><i class="fas fa-exclamation-circle fa-lg w3-animate-opacity" style="color: rgb(243,156,18);"></i></div>
+                        <!-- 해당 로고 클릭시 turn off (기본값) -->
+                        <div id="chat-off" style="display:none"><i class="fas fa-power-off fa-lg w3-animate-opacity" style="color: gray;"></i></div>
 
                         <!-- ★ 여기가 기본적인 messenger영역으로 자리가 잡힐것이다. -->
                         <div id="messenger-outer" class="w3-animate-opacity" onclick="event.cancelBubble=true" style="top: 70px; right: 0px; cursor:auto;">
@@ -219,7 +212,7 @@
                                     <div class="chat-menu w3-animate-opacity" onclick="moveToChat();">
                                         <i class="far fa-comment-dots"></i>
                                         <span>채팅</span>
-                                        <div>99..</div>
+                                        <div class="chatUnreadCount"></div>
                                     </div>
                                     <div class="message-menu w3-animate-opacity" onclick="moveToMessage();">
                                         <i class="fas fa-comment-alt"></i>
@@ -309,9 +302,25 @@
 					}
 				}
 				
+	          	$.ajax({
+			 		url:"checkUnreadMsgAndChat.cht",
+					data:{memNo : ${ loginUser.memNo }
+	            	},
+			 		success:function(result){
+						if(result>0){
+			            	$("#chat-off").hide();
+			                $("#nf-on").show();					
+						}else{
+			            	$("#chat-off").show();
+			                $("#nf-on").hide();										
+						}
+			 		},error:function(){
+			 			console.log("ajax통신 실패");
+			 		}				
+			 	})
+				
 				ajaxBringUnreadedMsgCount();
 			})
-        
         
             // 관리자 메뉴 토글용도! 
             function showAdminNav() {
@@ -332,6 +341,25 @@
                 moveToChat();
                 $("#chat-on").css("display", (showdiv.style.display != 'block'?"none":"block"));
                 $("#chat-off").css("display", (showdiv.style.display != 'block'?"block":"none"));
+                
+                
+	          	$.ajax({
+			 		url:"checkUnreadMsgAndChat.cht",
+					data:{memNo : ${ loginUser.memNo }
+	            	},
+			 		success:function(result){
+						if(result>0){//뭐라도 담겨있는상황 
+			             	$("#chat-off").hide();
+			                $("#nf-on").css("display", (showdiv.style.display != 'block'?"block":"none"));
+   						}else{
+   		                	$("#nf-on").hide();
+   			                $("#chat-off").css("display", (showdiv.style.display != 'block'?"block":"none"));
+						}
+			 		},error:function(){
+			 			console.log("ajax통신 실패");
+			 		}				
+			 	})
+                
                 var adminNav = document.getElementById("admin-header");
                 if(adminNav != null){
                     showdiv.style.top =(adminNav.style.display != 'none'?"114px":"70px");                       

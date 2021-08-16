@@ -65,6 +65,12 @@ public interface ChattingService {
 	// 읽지않은 채팅 총갯수 가져오는 서비스 
 	int totalUnreadCount(int memNo);
 
+	// 읽지않은 쪽지 채팅 총갯수 가져오는 서비스
+	int checkUnreadMsgAndChat(int memNo);
+
+	// 로그인시에 읽지 않은 채팅 갯수 update하는 서비스 얘 또한 unread_count update하는 서비스  
+	void updateMyUnreadChatCount(int memNo);
+
 	
 
 }

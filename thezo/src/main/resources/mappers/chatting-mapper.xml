@@ -94,6 +94,7 @@
 		 where a.room_no = b.room_no
 		   and a.mem_no != #{myMemNo}
 		   and a.mem_no = m.mem_no
+           and m.status in ('Y','A')		   
 		 order 
 		    by chat_for_orderby desc nulls last, start_date desc
 	</select>
@@ -112,6 +113,7 @@
  		 where del_status = 'Y'
  		   and mb2.status != 'N'
  		   and mymem_no = #{memNo} 
+ 		   and mb2.status in ('Y','A')
  		 order
  		    by mb2.mem_name asc  
  	</select>
@@ -334,17 +336,56 @@
 						                       		   and mem_no = #{ memNo} )
 								  and room_no = #{ roomNo }
 								  and mem_no != #{ memNo})
-		   
 		 where room_no = #{roomNo} 
 		   and mem_no = #{memNo}
  	</update>
  	
+ 	<!-- 읽지않은 채팅 총갯수 가져오는 sql문  -->
  	<select id="totalUnreadCount" resultType="_int">
 		select sum(unread_count)
 	      from chat_connect
 	     where conn_status = 'Y'
 	       and mem_no = #{memNo}
  	</select>
-  	
+
+ 	<!-- 읽지않은 채팅과 쪽지 총갯수 가져오는 sql문  -->  	
+  	<select id="checkUnreadMsgAndChat" resultType="_int">
+  	  select sum(a) as total
+ 		from ( select sum(unread_count) as a
+		         from chat_connect
+		        where conn_status = 'Y'
+		          and mem_no = #{memNo}
+		        union
+		       select count(*) 
+		         from message
+		        where read_status = 'N'
+		          and recipient_no = #{memNo}
+		          and to_recycle_bin = 'Y'
+		          and to_del_status = 'Y'
+		          and msg_no not in (select msg_no from msg_report))     	
+  	</select>
+ 	
+ 	<select id="selectAllMyChatRoom" resultType="_int">
+	 select room_no
+       from chat_connect
+      where mem_no = #{memNo}	
+ 	</select>
+ 	
+ 	<update id="updateMyUnreadChatCount" parameterType="java.util.List">
+	    <foreach collection="roomlist" item="roomNo" separator="," open="DECLARE BEGIN" close="; END;">
+	     	update 
+			       chat_connect
+			   set unread_count = (select count(*)
+		  							 from chatlog
+		 							where chatlog_no > (select chatlog_no
+							                     		  from chat_connect
+							                     		 where room_no = ${ roomNo } 
+							                       		   and mem_no = ${ memNo} )
+									  and room_no = ${ roomNo }
+									  and mem_no != ${ memNo})
+			 where room_no = ${roomNo} 
+			   and mem_no = #{memNo}
+	    </foreach>
+    </update>
  	
 </mapper>

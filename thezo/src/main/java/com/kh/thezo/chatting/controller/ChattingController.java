@@ -300,4 +300,14 @@ public class ChattingController {
 		return chatService.totalUnreadCount(memNo);
 	}
 	
+	/** 읽지않은 쪽지 채팅 총갯수 가져오는 Contorller 
+	 * @param memNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="checkUnreadMsgAndChat.cht", produces="application/json; charset=utf-8")
+	public int checkUnreadMsgAndChat(int memNo) {
+		return chatService.checkUnreadMsgAndChat(memNo);
+	}
+
 }

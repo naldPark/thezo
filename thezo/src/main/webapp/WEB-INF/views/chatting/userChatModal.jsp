@@ -445,7 +445,7 @@
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button id="delCoMemBtn" type="button" onclick="">??? 멀넣을까 ???</button>
+                    <button id="delCoMemBtn" style="visibility:hidden;" type="button" onclick="">??? 멀넣을까 ???</button>
                 </div>
             </div>
         </div>

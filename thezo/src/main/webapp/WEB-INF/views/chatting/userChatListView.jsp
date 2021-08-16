@@ -86,10 +86,22 @@
 			 					   + ",'" + 'G' + "'" + ');">'
 			 					   + '<div class="multiProFileImg">';
 			 					   //여기서 for문 돌려줘야해
-			 					   for(var j=0; j<4; j++){
-			 						   value += '<img src="'
-			 						          + (list[i].memList[0].path == null ? "resources/images/basicProfile.png" : list[i].memList[0].path)
-			 						          + '">';
+			 					   if(list[i].memList.length<4){
+				 					   for(var j=0; j<list[i].memList.length; j++){
+				 						   value += '<img src="'
+				 						          + (list[i].memList[j].path == null ? "resources/images/basicProfile.png" : list[i].memList[j].path)
+				 						          + '">';
+				 					   }
+				 					   for(var j=0; j<(4-list[i].memList.length); j++){
+				 						   value += '<img src="resources/images/basicProfile.png">';
+				 					   }
+			 						   
+			 					   }else{
+				 					   for(var j=0; j<4; j++){
+				 						   value += '<img src="'
+				 						          + (list[i].memList[j].path == null ? "resources/images/basicProfile.png" : list[i].memList[j].path)
+				 						          + '">';
+				 					   }
 			 					   }
 			 			    value += '</div><div><p>'
 			 					   + list[i].roomName
@@ -132,12 +144,27 @@
 		 			// 여기서 요소들 마구 선택해서 update 처리해줘야한다. 
 		 			//console.log(totalUnreadCount);
 		 			
-		 			if(totalUnreadCount > 0){
+		 			if(totalUnreadCount > 99){
+			 			$(".mainChatUnreadCount").html("99..건 ");
+			 			$("#notifyNewChat").show();
+
+			 			$(".chatUnreadCount").css("visibility", "visible");
+			 			$(".chatUnreadCount").html("99..");
+			 			
+		 				
+		 			}else if(totalUnreadCount > 0){
 			 			$(".mainChatUnreadCount").html(totalUnreadCount + "건");
 			 			$("#notifyNewChat").show();
+
+			 			$(".chatUnreadCount").css("visibility", "visible");
+			 			$(".chatUnreadCount").html(totalUnreadCount);
+		 		
 		 			}else{
 			 			$(".mainChatUnreadCount").html("");
 			 			$("#notifyNewChat").hide();
+			 			
+			 			$(".chatUnreadCount").html("");
+			 			$(".chatUnreadCount").css("visibility", "hidden");
 		 			}
 		 			
 		 		},error:function(){
@@ -145,7 +172,6 @@
 		 		}				
 		 	});
         }
-
     	
     	$(function(){
     		showMyChatList();

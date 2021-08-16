@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.thezo.chatting.model.dao.ChattingDao;
-import com.kh.thezo.chatting.model.vo.ChatConnect;
 import com.kh.thezo.chatting.model.vo.ChatDailyBasic;
 import com.kh.thezo.chatting.model.vo.ChatLog;
 import com.kh.thezo.chatting.model.vo.ChatRoom;
@@ -163,6 +162,26 @@ public class ChattingServiceImpl implements ChattingService{
 	@Override
 	public int totalUnreadCount(int memNo) {
 		return chatDao.totalUnreadCount(sqlSession, memNo) ;
+	}
+
+	/** 읽지않은 쪽지 채팅 총갯수 가져오는 서비스 
+	 */
+	@Override
+	public int checkUnreadMsgAndChat(int memNo) {
+		return chatDao.checkUnreadMsgAndChat(sqlSession, memNo) ;
+	}
+
+	/** 로그인시에 읽지 않은 채팅 갯수 update하는 서비스 얘 또한 unread_count update하는 서비스  
+	 */
+	@Override
+	public void updateMyUnreadChatCount(int memNo) {
+		int test1 = chatDao.selectAllMyChatRoom(sqlSession, memNo); 
+		//System.out.println(roomlist);
+		//HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		//hm.put("memNo",  memNo);
+		//hm.put("roomlist",  roomlist);
+		//System.out.println(hm);
+		//chatDao.updateMyUnreadChatCount(sqlSession, hm) ;
 	}
 
 	

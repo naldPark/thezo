@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import javax.mail.MessagingException;
 //@author Jaewon.s
 import javax.servlet.http.HttpSession;
 
@@ -22,16 +21,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.thezo.approval.model.service.ApprovalService;
-import com.kh.thezo.approval.model.vo.Approval;
 import com.kh.thezo.attendance.model.service.AttendanceService;
 import com.kh.thezo.attendance.model.vo.Attendance;
+import com.kh.thezo.chatting.model.service.ChattingService;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.mail.controller.MailController;
 import com.kh.thezo.mail.model.service.MailService;
 import com.kh.thezo.member.model.service.MemberService;
 import com.kh.thezo.member.model.vo.Member;
-import com.kh.thezo.message.model.service.MessageService;
 import com.kh.thezo.notification.model.service.NotificationService;
 
 @Controller
@@ -52,7 +50,7 @@ public class MemberController {
 	@Autowired
 	private NotificationService nfService;
 	@Autowired
-	private MessageService msgService;
+	private ChattingService chatService;
 
 	
 	@RequestMapping("logout.me")
@@ -108,6 +106,9 @@ public class MemberController {
 		if(nfCount != 0) {
 			session.setAttribute("unreadNotification", nfCount);
 		}
+		// 일단 로그인 해서 
+		// 로그인 하자마자 읽직안은 채팅들 update하는 용도 
+		chatService.updateMyUnreadChatCount(loginUser.getMemNo());
 		
 		return mv;			
 	}

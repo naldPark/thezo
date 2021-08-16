@@ -194,8 +194,37 @@ public class ChattingDao {
 	public int totalUnreadCount(SqlSessionTemplate sqlSession, int memNo) {
 		return sqlSession.selectOne("chattingMapper.totalUnreadCount", memNo);
 	}
+
+	/** 읽지않은 쪽지 채팅 총갯수 가져오는 
+	 * @param sqlSession
+	 * @param memNo
+	 * @return
+	 */
+	public int checkUnreadMsgAndChat(SqlSessionTemplate sqlSession, int memNo) {
+		return sqlSession.selectOne("chattingMapper.checkUnreadMsgAndChat", memNo);
+	}
+
+	/** 내가 들어가있는 모든 채팅방 번호를 배열에 담아오는 DAO
+	 * @param sqlSession
+	 * @param memNo
+	 * @return
+	 */
+	public int selectAllMyChatRoom(SqlSessionTemplate sqlSession, int memNo) {
+	    ArrayList<String> roomlist = (ArrayList)sqlSession.selectList("chattingMapper.selectAllMyChatRoom", memNo);
+		//System.out.println(roomlist);
+		HashMap<Object, Object> hm = new HashMap<Object, Object>();
+		hm.put("memNo", memNo);
+		hm.put("roomlist",roomlist);
+		//System.out.println(hm);
+		return sqlSession.update("chattingMapper.selectAllMyChatRoom", memNo);
+	}
 	
-
-
+	/** 로그인시에 읽지 않은 채팅 갯수 update하는 DAO 얘 또한 unread_count update하는 DAO
+	 * @param sqlSession
+	 * @param memNo
+	 */
+	//public void updateMyUnreadChatCount(SqlSessionTemplate sqlSession,HashMap<Object, Object> hm) {
+	//	sqlSession.update("chattingMapper.updateMyUnreadChatCount", hm);
+	//}
 	
 }

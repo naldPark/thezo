@@ -50,7 +50,7 @@
             <div class="sideOuter">
                     <div class="card border-0">
                       <div class="card-body">
-                        <form action="editNewDocu.appr" method="post" enctype="Multipart/form-data" id="form">
+                        <form action="insertNewDocu.appr" method="post" enctype="Multipart/form-data" id="form">
                           <h3 style="margin-bottom: 25px;">문서양식 수정</h3>
                           <div class="w3-row">
                             <div class="w3-col" style="width:82%">
@@ -58,22 +58,21 @@
                                 <span class="input-group-text bg-white border-0">등록상태</span>
                                 <div class="form-check-inline">
                                   <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" value="Y" name="usingStatus" id="usingForm">사용
+                                    <input type="radio" class="form-check-input" value="Y" name="usingStatus" checked>사용
                                   </label>
                                 </div>
                                 <div class="form-check-inline">
                                   <label class="form-check-label">
-                                    <input type="radio" class="form-check-input" value="N" name="usingStatus" id="unusingForm">미사용                              </label>
+                                    <input type="radio" class="form-check-input" value="N" name="usingStatus">미사용                             
+                                  </label>
                                 </div>
                               </div>
                             </div>
-                            <div class="w3-col" style="width:18%">
-                              <span class="input-group-text bg-white border-0">최종 등록일 ${a.createDate}</span>
-                            </div>
+                         
                           </div>
                           <div class="input-group mb-3">
                           <span class="input-group-text bg-white border-0">양식분류</span>
-                            <select name="category" id="sel1" class="custom-select">
+                            <select name="category" class="custom-select">
                               <option value="일반">일반</option>
                               <option value="비용">비용</option>
                               <option value="총무">총무</option>
@@ -85,21 +84,20 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text bg-white border-0">양식명</span>
                             </div>
-                            <input type="text" class="form-control" name="formName" id="formName" value="${a.formName}">
-                            <input type="hidden" name="formNo" value="${a.formNo}">
+                            <input type="text" id="formName" name="formName" class="form-control">
                           </div>
                           <div class="input-group mb-3">
                             <div class="input-group-prepend">
                               <span class="input-group-text bg-white border-0">양식설명</span>
                             </div>
-                            <input type="text" class="form-control" name="formInfo" id="formInfo" value="${a.formInfo}">
+                            <input type="text" id="formInfo" name="formInfo" class="form-control">
                           </div>
                           <div class="form-group">
-                              <textarea class="form-control" name="formContent" id="summernote" maxlength="140" rows="7" autocomplete="off">${a.formContent}</textarea>
+                              <textarea class="form-control" name="formContent" id="summernote" maxlength="140" rows="7" autocomplete="off"></textarea>
                           </div>
                           <br>
                           <div class="row justify-content-center">
-                            <button type="submit" id="submitBtn" class="btn btn-primary">수정하기</button>&nbsp;
+                            <button type="submit" id="submitBtn" class="btn btn-primary" onclick="return validate();">등록하기</button>&nbsp;
                             <button type="button" onclick="location.href='adminMain.appr'" class="btn btn-secondary">취소</button>
                           </div>
       
@@ -110,42 +108,9 @@
             </div>
     	</div>
 
-        <div class="modal" id="delete">
-            <div class="modal-dialog">
-              <div class="modal-content" style="width:400px">
-                <div class="modal-body" align="center"><br>
-	                <form action="" method="post">
-	                    <h4><b>ㅇㅇㅇ문서 삭제</b></h4><br>삭제 이후 복원이 불가합니다.<br>해당문서를 삭제하시겠습니까?<br><br>
-	                    <button type="submit" class="btn btn-primary" class="deleteButton">삭제</button>
-	                    <button type="button" class="btn btn-secondary"  data-dismiss="modal">취소</button>
-	               </form>
-                   <br>
-                </div>
-              </div>
-            </div>
-        </div>
         <br>
     </section>
-
-      <script>
-        $(function(){
-          $(function(){
-          <c:if test="${!empty a.category}">
-            $("#sel1").val("${a.category}").attr("selected", "selected");
-          </c:if>
-          <c:choose>
-            <c:when test="${a.status eq 'N'}">
-              $("#unusingForm").attr("checked", "checked");
-            </c:when>
-            <c:otherwise>
-              $("#usingForm").attr("checked", "checked");
-            </c:otherwise>
-          </c:choose>
-          })
-        })
-      </script>
-  
-  <script>
+<script>
 
     function validate(){
      
@@ -167,6 +132,8 @@
       }
   }
 </script>
+
+      
  	
 </body>
 </html>

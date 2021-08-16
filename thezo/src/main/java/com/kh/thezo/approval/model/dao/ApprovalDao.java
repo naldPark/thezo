@@ -183,7 +183,21 @@ public class ApprovalDao {
 		return sqlSession.update("approvalMapper.setApprovalStatus",a);
 	}
 	
+	// 관리자페이지에서 양식 수정 또는 신규로 입력
+		
+	public int insertNewDocument(SqlSessionTemplate sqlSession, Approval a){
+		return sqlSession.insert("approvalMapper.insertNewDocument",a);
+	}
 	
+	
+	public int editNewDocument(SqlSessionTemplate sqlSession, Approval a) {
+		return sqlSession.update("approvalMapper.editNewDocument",a);
+	}
+	
+	public int deleteForm(SqlSessionTemplate sqlSession, int formNo) {
+		return sqlSession.delete("approvalMapper.deleteForm",formNo);
+	}
+		
 }
 
 

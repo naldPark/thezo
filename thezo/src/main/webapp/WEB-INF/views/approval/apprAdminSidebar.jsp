@@ -15,20 +15,19 @@
     </head>
 
     <body>
-
       <nav class="w3-sidebar" style="width:160px;"><br>
         <div class="w3-bar-block">
           <a href="adminMain.appr" class="w3-bar-item w3-button w3-padding"><i class="fas fa-folder"></i> &nbsp; 결제
             HOME</a>
-          <a href="new.appr" class="w3-bar-item w3-button w3-padding"><i class="far fa-minus-square"></i>  신규양식</a>
+          <a href="editForm.appr?formNo=0" class="w3-bar-item w3-button w3-padding"><i class="far fa-minus-square"></i>  신규양식</a>
           <a class="w3-bar-item w3-button w3-padding" onclick="extend('sendDocu')"><i
               class="far fa-caret-square-down"></i>  양식관리</a>
           <div id="sendDocu" class="w3-bar-block w3-hide w3-show">
-            <a href="reportDocu.appr" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i>
+            <a href="adminMain.appr" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i>
               &nbsp;&nbsp;전체</a>
-            <a href="reportFinDocu.appr" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i>
+            <a href="adminMain.appr?apprStatus=Y" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i>
               &nbsp;&nbsp;사용중</a>
-            <a href="tempDocu.appr" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i>
+            <a href="adminMain.appr?apprStatus=N" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i>
               &nbsp;&nbsp;미사용</a>
           </div>
           <a class="w3-bar-item w3-button w3-padding" onclick="extend('receiveDocu')"><i

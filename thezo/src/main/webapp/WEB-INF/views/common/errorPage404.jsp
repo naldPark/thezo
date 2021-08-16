@@ -27,7 +27,7 @@
 			style="padding:38px 16px; border: 0.5px solid lightgrey;margin: 50px">
 			<h1 class="w3-xlarge">Ooooops !</h1>
 			<br>
-			<h1><img src="resources/images/404.png" style="width:30%; padding-right:30px;">Error</h1>
+			<h1><img src="resources/images/404.PNG" style="width:30%; padding-right:30px;">Error</h1>
 			
 			<br><br>
 			<hr>

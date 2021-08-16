@@ -54,7 +54,7 @@
 									<option value="일반">일반</option>
 									<option value="비용">비용</option>
 									<option value="총무">총무</option>
-									<option value="인사	">인사</option>
+									<option value="인사">인사</option>
 								</select>
 								<input type="text" name="docName" class="form-control" placeholder="검색할 제목을 입력하세요" style="width:200px">
 								<input type="hidden" name="apprFolder" value="${apprFolder}">

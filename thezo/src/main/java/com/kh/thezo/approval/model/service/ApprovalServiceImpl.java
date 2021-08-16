@@ -185,4 +185,22 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	
+	// 관리자페이지에서 양식 수정 또는 신규로 입력
+	@Override
+	public int insertNewDocument(Approval a){
+		return aDao.insertNewDocument(sqlSession, a);
+	}
+	
+	@Override
+	public int editNewDocument(Approval a) {
+		return aDao.editNewDocument(sqlSession, a);
+	}
+	
+	@Override
+	public int deleteForm(int formNo) {
+		return aDao.deleteForm(sqlSession, formNo);
+	}
+	
+	
+	
 }

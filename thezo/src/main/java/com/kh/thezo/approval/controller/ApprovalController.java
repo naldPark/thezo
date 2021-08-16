@@ -260,16 +260,83 @@ public class ApprovalController {
 			return mv;	
 		}
 		
-	
+	//관리자
 	@RequestMapping("adminMain.appr") //관리자 페이지 메인
-	public String adminMainApproval() {
-		return "approval/apprAdmin";
+	public ModelAndView adminMainApproval(Approval a,ModelAndView mv, String apprStatus, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		int listCount = aService.newApprListCount(a);
+		if(apprStatus!=null) {
+			a.setStatus(apprStatus);
+		}
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		ArrayList<Approval> list = aService.newApprList(a,pi);
+		mv.addObject("list", list)
+		  .addObject("pi", pi)
+		  .setViewName("approval/apprAdmin");
+		return mv;
 	}
 	
 	@RequestMapping("editForm.appr")  //관리자 페이지에서 양식 수정 매핑
-	public String adminEditFormApproval() {
-		return "approval/apprAdminEditForm";
+	public ModelAndView adminEditFormApproval(ModelAndView mv, HttpSession session, int formNo) {
+				
+		if(formNo!=0) {	
+		Approval aTemp = new Approval();
+		Member m = (Member) session.getAttribute("loginUser");
+		aTemp.setFormNo(formNo);
+		Approval a = aService.enrollApproval(aTemp);
+		mv.addObject("a", a); // 문서 포맷
+		mv.setViewName("approval/apprAdminEditForm");
+		}else {
+		mv.setViewName("approval/apprAdminEnrollForm");
+		}
+		return mv;
 	}
 	
+	@RequestMapping("insertNewDocu.appr")  //관리자 페이지에서 신규양식 등록
+	public ModelAndView insertNewDocument(ModelAndView mv, HttpSession session, Approval a, String usingStatus) {
+		a.setStatus(usingStatus);
+		
+		int result=  aService.insertNewDocument(a);
+		if(result > 0) { // 성공
+			session.setAttribute("alertMsg", "성공적으로 등록 되었습니다.");
+			mv.setViewName("redirect:adminMain.appr");
+		}else {
+			mv.addObject("errorMsg", "등록에 실패했습니다");
+			mv.setViewName("common/errorPage");
+		}
+		return mv;		
+	}
+	
+	@RequestMapping("editNewDocu.appr") // 관리자 페이지에서 신규양식 등록
+	public ModelAndView editNewDocument(ModelAndView mv, HttpSession session, Approval a, String usingStatus) {
+		a.setStatus(usingStatus);
+		int result = aService.editNewDocument(a);
+		
+		if (result > 0) { // 성공
+			session.setAttribute("alertMsg", "성공적으로 수정 되었습니다.");
+			mv.setViewName("redirect:adminMain.appr");
+		} else {
+			mv.addObject("errorMsg", "수정에 실패했습니다");
+			mv.setViewName("common/errorPage");
+		}
+
+		return mv;
+	}
+	
+	@RequestMapping("deleteForm.appr") // 관리자 페이지에서 신규양식 등록
+	public ModelAndView deleteForm(ModelAndView mv, HttpSession session, int formNo) {
+		int result = aService.deleteForm(formNo);
+		
+		if (result > 0) { // 성공
+			session.setAttribute("alertMsg", "성공적으로 삭제 되었습니다.");
+			mv.setViewName("redirect:adminMain.appr");
+		} else {
+			mv.addObject("errorMsg", "삭제에 실패했습니다");
+			mv.setViewName("common/errorPage");
+		}
+
+		return mv;
+	}
 	
 }
+	

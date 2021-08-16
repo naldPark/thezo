@@ -45,4 +45,5 @@ public class Approval {
 	private String apprFolder; // 폴더명
 	private String searchSDate;  // 검색시작일
 	private String searchEDate;  // 검색종료일
+	private String createDate; // 폼 마지막 수정일
 }

@@ -65,12 +65,9 @@ public interface ApprovalService {
 	// 문서 회수
 	int cancelDocu(Approval a);
 	
-	// 임시저장했을때 docNo 출력해오는 select
-	//	int selectRecentTemp(int memNo);
 	
-
-	// 신규 임시저장 insert 메소드
-	//	int tempApproval(Approval a);
-
-
+	// 관리자페이지에서 양식 수정 또는 신규로 입력
+	int insertNewDocument(Approval a);
+	int editNewDocument(Approval a);
+	int deleteForm(int formNo);
 }

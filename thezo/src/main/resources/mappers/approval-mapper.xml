@@ -22,6 +22,7 @@
 		<result column="ref_mem_no" property="refMemNo"/>
 		<result column="SORT" property="sort"/>
 		<result column="leave_count" property="leaveCount"/>
+		<result column="create_date" property="createDate"/>
 		
 	</resultMap>
 	
@@ -251,20 +252,26 @@
 		select
 			 count(*)
 			from appr_form
-			where status IN ('A', 'Y')
-			<if test='category!=null'>
+			where form_name is not null
+			<if test='status!=null and status!=""'>
+				and status like #{status}
+			</if>
+			<if test='category!=null and category!="전체"'>
 				and category=#{category}
 			</if>
-			<if test='formName!=null'>
+			<if test='formName!=null and formName!=""'>
 			and form_name like '%' || #{formName} || '%'
 			</if>
 	</select>
 	
 	<!-- 신규작성을 위한 문서 양식 리스트 조회  -->
 	<select id="newApprList" resultMap="approvalResult">
-		select FORM_NO, CATEGORY, FORM_NAME, FORM_INFO
+		select FORM_NO, CATEGORY, FORM_NAME, FORM_INFO, status
 			from appr_form
-			where status IN ('A', 'Y')
+			where form_name is not null
+			<if test='status!=null and status!=""'>
+				and status like #{status}
+			</if>
 			<if test='category!=null and category!="전체"'>
 				and category=#{category}
 			</if>
@@ -275,7 +282,14 @@
 	
 	<!-- 신규작성 페이지  -->
 	<select id="enrollApproval" resultMap="approvalResult">
-		select form_no, category, form_name, form_content
+		select 
+				  form_no
+				, category
+				, form_info
+				, form_name
+				, form_content
+				,TO_CHAR(create_date, 'YYYY-MM-DD') create_date
+				,status
 			from appr_form
 			where form_no =#{formNo}
 			
@@ -642,4 +656,47 @@
              and REF_MEM_NO = #{memNo} 
 	</update>
 	
+	<!-- 관리자 양식 등록 insert -->
+	<insert id="insertNewDocument">
+				INSERT
+		      INTO APPR_FORM
+		      (
+		        FORM_NO
+				,CATEGORY
+				,FORM_NAME
+				,FORM_INFO
+				,FORM_CONTENT
+				,CREATE_DATE
+				,STATUS
+		      )
+		      VALUES
+		      (
+		        SEQ_FONO.NEXTVAL
+		      , #{category}
+		      , #{formName}
+		      , #{formInfo}
+		      , #{formContent}
+		      , sysdate
+		      , #{status}
+		      )
+	</insert>
+	
+	<!-- 관리자 양식 update -->
+	<update id="editNewDocument">
+			update APPR_FORM
+				set
+			     CATEGORY = #{category}
+			    ,FORM_NAME=#{formName}
+			    ,FORM_INFO=#{formInfo}
+			    ,FORM_CONTENT=#{formContent}
+				,CREATE_DATE=sysdate
+				,status=#{status}
+			where form_no = #{formNo}
+	</update>
+	
+	<!-- 관리자 양식 delete -->
+	<delete id="deleteForm">
+			DELETE FROM appr_form
+			WHERE form_no = #{formNo}
+	</delete>
 </mapper>

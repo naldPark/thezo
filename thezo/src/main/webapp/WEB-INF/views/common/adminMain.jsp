@@ -22,7 +22,6 @@
 	.admion-Info p{font-size: 17px; font-weight: bold; text-align: center; vertical-align: middle; margin: 0px; padding: 5px 0px ;}
 	.admion-Info button{width: 64px; height: 22px; font-size: 12px; line-height: 16px; border: none; border-radius: 3px; background-color: rgb(224,224,224);}	
 	.btn-area>button{width: 166px; height: 38px; color: white; font-size: 15px; border: none; border-radius: 5px; margin-top: 3px; margin-bottom: 15px; background-color: rgb(94,94,94);}
-	
 	.info-box>div, .info-content>div {width: 180px; margin: auto; background-color: rgb(20,70,104); }
 	.info-box>div {height: 63px; margin-bottom: 10px;}
 	.info-content>div{height: 238px; display: flex; align-items: center; flex-direction: column;}
@@ -38,7 +37,7 @@
 	#modification-content::-webkit-scrollbar-thumb {border: 2px solid transparent; border-radius: 5px; background-clip: padding-box; background-color: rgb(20,70,104);}
 	#modification-content::-webkit-scrollbar-track {border-radius: 5px; box-shadow: inset 0px 0px 5px white; background-color: lightgrey;}
 	/* ----------------------- 사이트 관리 기록 모달 css 시작 ---------------------------------- */	
-	#sitelog-enroll-modal .modal-body form{position: absolute; top: 15px; left: 50%; transform: translateX(-49%);}
+	#sitelog-enroll-modal .modal-body>div{position: absolute; top: 15px; left: 50%; transform: translateX(-49%);}
 	#sitelog-enroll-modal .modal-body input{width: 145px; font-size: 14px; height: 22px; margin-bottom: 15px;}
 	#sitelog-enroll-modal .modal-body p{font-weight: bold; margin: 0px; padding-left: 5px;}
 	#sitelog-enroll-modal .modal-footer button{width: 50%; height: 100%; margin: 0px; padding: 0px; border: none; background-color: white}
@@ -46,7 +45,6 @@
 	#sitelog-enroll-modal .modal-footer button:nth-child(2){color: rgb(41,128,185);}
 	#sitelog-enroll-modal .modal-footer button:hover{font-weight: bold;background-color: rgb(224,224,224);}
 	#sitelog-enroll-modal .modal-footer button:focus{outline:none;}
-
 	.sitelog-modal{transform: translate(-220px,200px);}
 	#dev-context {width: 145px; height: 150px; font-size: 14px;
     	-ms-overflow-style: none; /* IE and Edge */
@@ -81,14 +79,37 @@
 			var adminNav = document.getElementById("admin-header");
 			$("section").css("margin-top", (adminNav.style.display != 'none'?"115px":"70px"));
 		})
-
 		document.getElementById("admin-header").style.display ="block"; 
         document.getElementById("admin-mode").style.color = "red";
-        
         $(function(){
         	$(".notification-innerline").show();
         })
-
+        
+       	function insertSimpleDevLog(){
+       		if($("#developerName").val().trim() == ""){
+       			alert("성함을 입력해주세요");
+       			$("#developerName").focus();
+       		}else if($("#dev-context").val().trim() == ""){
+       			alert("개발 내역을 입력해주세요.");
+       			$("#dev-context").focus();
+       		}else{
+       			/*
+                $.ajax({
+    		 		url:"insertDevLog.ad",
+    		 		success:function(result){
+    		 			if(result>0){
+    		 				alert("사이트 관리 기록작성에 성공하였습니다.\n 확인해주세요");
+    		 			}else{
+    		 				alert("사이트 관리 기록작성에 실패하였습니다.\n 개발자에게 문의해주세요.")
+    		 			}
+			 			$("#sitelog-enroll-modal").modal('hide');
+    		 		},error:function(){
+    		 			console.log("ajax통신 실패");
+    		 		}				
+    		 	});
+       			*/
+       		}
+       	}
 	</script>
 	
 	<section>
@@ -164,7 +185,6 @@
 		</div>
 	</section>
 
-
 	<%-- -------------------------------------------------------  사이트 관리 기록 모달영역 사작  --------------------------------------------------------- --%>
 	<!-- The Modal -->
 	<div class="modal fade" id="sitelog-enroll-modal">
@@ -173,20 +193,18 @@
 						
 				<!-- Modal body -->
 				<div class="modal-body" style="padding: 5px;">
-
-					<form action="" method="post">
+					<div>
 						<p>마지막 수정 개발자</p>
-						<input type="text" name="" placeholder="성함을 입력해주세요" required>
+							<input type="text" id="developerName" placeholder="성함을 입력해주세요">
 						<p>간단한 수정내역</p>
-						<textarea id="dev-context" name="" style="resize: none;" placeholder="수정내역을                작성해주세요" required></textarea>				   
-					</div>
-					<!-- Modal footer -->
-					<div class="modal-footer" style="width:100%; height: 49px; padding: 0px; margin: 0px;">
-						<button type="button" data-dismiss="modal" >취소</button>
-						<button type="button" data-dismiss="modal" onclick="">삭제</button>
-					</div>				
-				</form>
-
+							<textarea id="dev-context" style="resize: none;" placeholder="수정내역을                작성해주세요"></textarea>
+					</div>				   
+				</div>
+				<!-- Modal footer -->
+				<div class="modal-footer" style="width:100%; height: 49px; padding: 0px; margin: 0px;">
+					<button type="button" data-dismiss="modal" >취소</button>
+					<button type="button" onclick="insertSimpleDevLog();">기록</button>
+				</div>				
 			</div>
 		</div>
 	</div>

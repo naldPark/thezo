@@ -8,8 +8,8 @@
 		<result column="mymem_no" property="myMemNo"/>	
 		<result column="comem_no" property="coMemNo"/>	
 		<result column="del_status" property="delStatus"/>	
-		<result column="my-img-path" property="myImgPath"/>	
-		<result column="co-img-path" property="coImgPath"/>	
+		<result column="my_img_path" property="myImgPath"/>	
+		<result column="co_img_path" property="coImgPath"/>	
 		<result column="my_name_and_rank" property="myNameAndRank"/>	
 		<result column="co_name_and_rank" property="coNameAndRank"/>	
 		<result column="room_no" property="roomNo"/>	
@@ -102,8 +102,8 @@
  	<select id="ajaxSelectColleagueList" resultMap="colleagueResult">
  		select mymem_no
  		     , comem_no
- 		     , mb1.path as myImgPath
- 		     , mb2.path as coImgPath
+ 		     , mb1.path as my_img_path
+ 		     , mb2.path as co_img_path
   	         , mb1.mem_name || ' [' || mb1.rank || ']' as my_name_and_rank
   	         , mb2.mem_name || ' [' || mb2.rank || ']' as co_name_and_rank
  		  from colleague co

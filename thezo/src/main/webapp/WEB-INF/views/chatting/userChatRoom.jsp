@@ -88,17 +88,32 @@
 </head>
 <body>
     <script>
-
-        // 뒤로가기 페이지 
-        function backToChatList(){
-            $("#open-chat-Room").hide();
-            $("#chatting-outer").show();
-            $("#chatting-list-area-page").show();
-            $("#colleague-area-page").hide();
-            $(".chatting-list-area").css("color","rgb(241,196,15)").css("background","rgb(56,77,97)");
-            $(".colleague-area").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");
-            showMyChatList();
-        }
+        // 글자수 제한 스크립트 
+	    $(document).ready(function() {
+	        $('#writeChatContent').on('keyup', function() {
+	            if($(this).val().length > 1300) {
+	                $(this).val($(this).val().substring(0, 1300));
+	            }
+	        });	        
+	        
+	        $('#writeChatContent').on('keydwon', function() { // 복붙으로 넣을때도 
+	            if($(this).val().length > 1300) {
+	                $(this).val($(this).val().substring(0, 1300));
+	            }
+	        });	        
+	    });
+	    
+		// 엔터로 이벤트 실행 하는 동시에 해당 기본기능 막고 ! 오직 shift+enter를 했을떄 개행하게 하는것 
+	    function onEnterChange() {
+	     if(event.shiftKey && event.keyCode == "13") {
+	    	 return false;
+	     }else if(event.keyCode == "13"){
+	    	 event.preventDefault(); 
+	    	 sendMessage();
+	         return false;
+	     }else
+	         return true;
+	    }				
         
         // AJAX 재사용을 위한 함수로 오직 채팅 기록만 보이게 하는 함수 
 		function showChatlog(roomNo){
@@ -151,8 +166,21 @@
 		 			console.log("ajax통신 실패");
 		 		}				
 		 	})
+		 	// 실시간으로 session에 담긴 방번호 비교를 위해서 한번터 controller호출후에 담기 	        
+		 	bringSessRoomNo();
 		}
-		
+        
+		// 내가 페이지를 만들기를 ajax로 만들어서 현재 session에 담긴 roomNo을 넘기기 위한 장치 
+	    function bringSessRoomNo(){
+            $.ajax({
+		 		url:"bringSessRoomNo.cht",
+		 		success:function(roomNo){
+		 			$("#check-room-member").val(roomNo);
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	});
+	    }
         
         // ★★★★★★★★★ 만약에 ! 방에 들어간다면 !! 소켓 만들어주는 시점은 여기다!  
 		// 방에 정보를 보여주며서  입장하는 함수로서  방번호와 방이 단체 채팅방인지 개인 채팅방인지 넘겨서 정보를 가져오는 함수 
@@ -160,7 +188,6 @@
 	        $("#chatting-outer").hide();
 	        $("#open-chat-Room").show();
 	        $("#chat-content-body").scrollTop($("#chat-content-body")[0].scrollHeight);//채팅창 맨아래로 내리는 용도 
-	        	        
 			// 채팅 목록 방에서 갠톡으로 넘어온 경우 
 	        if(groupStatus=='P'){
                 $(".personal-chat-header").show();
@@ -234,73 +261,94 @@
 	        $("#writeChatContent").val("");
 	    }
 		
-        //--------------------------------------------------------------------------------------------
-        //--------------------------------------------------------------------------------------------
 		// ------------------------ ★★★★★★★★★★ 구현해 줘야할 부분 ★★★★★★★★------------------------------------------------------ 
+        // 에초에 stomp를 쓰면서 만들었어야 고도화가 가능했는데 지금 내실력과 시간으로는 불가하다. 
+        // 야매로라도 가상의 방을 구현행야한다. 
+        // 접속한 모든 사람이 몇명일지 모른다 최소 100명 이라고 가정하면 한놈이 채팅 보내면 나머지 99명이 다받아버린다. 
+        // 즉 방의 개념이 없는것이다. 해당 방에 있는 인원한테만 쪽지를 보내는 것을 생각을 해줘야하는데 음 .. 어거지로 해놔서 맘에 안든다... 애초에 
+        // 전제 조건 자체가 방에 들어가고 나가고가 dom요소가 새로이 조건에 따라서 맞을때 즉 (재로딩되었을때가 기준이다. 즉 페이지 자체를 이같이 나처럼 header에 심으면 어쩔수가없다...)
+		// 나중에 다시 공부하자. 
         
-        // 1순위 ★★★★★★★★★★★★★★★★★★ 1330자 까지 들어간다 내부적으로 proparedStatement 객체를 사용하나보다
-        // ★★★★★★ 글자수도 막아야 한다.  (test로다가 몇자까지 들어가는지 알아보고 집어넣어라 ! 테스트는 spring 프로젝트에서! )
-
-        // 2순위
-        // ★★★★★★ text area enter처리하는것도 해야한다!  (어딘가 해놓았다 가서 가져오자 아마 태그안에서 속성으로 끝내버릴수도 있다.)
-        
-        //------------------------------------------------------------------------------------------
- 
 	    //★★★★★★★ 소켓 부분 이다 ★★★★★★★★★★★★★★★★
-	    // 헤딩 버튼 클릭하여 타고 들어갔을때!! 
-	   	// 생성자의 매개변수에는 자신의 url과 EchoHandler를 맵핑한 주소를 적어주면된다. 
-		let sock = new SockJS("http://localhost:8888/thezo/echo/");// 소켓을 생성한것이다. 
-		// 다른 함수에서도 쓸수 있게 전역변수로 만든것이다. 
-		
-		// 아래의 코드는 websocket 서버에서 메세지를 보내면 자동으로 실행된다는것이다.
-		// 아래는 ! 데이터가 나한테 전달 되었을때 자동으로 실행되는 function이라는것이다. 
-		sock.onmessage = onMessage;
-		
-        // 아래와 같이 활용도 가능한듯하다. 
-        // onmessage : message를 받았을 때의 callback
-        //sock.onmessage = function (e) {
-        //    var content = JSON.parse(e.data);
-        //    chatBox.append('<li>' + content.message + '(' + content.writer + ')</li>')
-        //}
-		
+		let sock = new SockJS("http://localhost:8888/thezo/echo/");// 소켓을 생성한것이다. 다른 함수에서도 쓸수 있게 전역변수로 만든것이다. 
 		
 		// websocket과 연결을 끊고 싶을때 실행하는 메소드 이다. 
 		sock.onclose = onClose;		
-		//접속만 해주는것이다. 
-	    //★★★★★★★ 소켓 부분 이다 ★★★★★★★★★★★★★★★★
-	    
+		
+		// 전송했을때. 	    
    		$("#chatSend").click(function() {
 			sendMessage(); // 아래의 sendMessage함수 실행하라는것이고   
-			$('#writeChatContent').val('') // 얘는 채팅창 비우라는것이다. 
+			$('#writeChatContent').val(''); // 얘는 채팅창 비우라는것이다.
+			// 여기서 insert처리가 아니다. handler쪽에서 insert 처리를 곧바로 한다
 		});
 	
 		// 클라이언트가 메시지 전송할때  (소켓으로 보내겠다는 것이다. )
 		function sendMessage() {
-			// append 혹은 += 를 활용해서 값을 넣어줘야한다,. 
-			
-			sock.send($("#writeChatContent").val());
-			// sock에 send라는 메소드를 이용해서 보내라는 것이다.
-			
-			// 반대로 서버가 데이터를 뽑아줄때가 좀 중요하다. 
+			if($("#writeChatContent").val().trim() != ''){// 어떤 값이 있을때만 보내기 
+				// sock에 send라는 메소드를 이용해서 보내라는 것이다.
+				//console.log("보낼때 해당방의 roomNO" + $("#inner-room-no-area").val());
+				sock.send($("#inner-room-no-area").val() + ',' + $("#writeChatContent").val());
+			}
+			// 채팅창 비워주고 스크롤 내려주기 
+			$("#writeChatContent").val("");
+			$("#writeChatContent").focus();
+			$("#chat-content-body").scrollTop($("#chat-content-body")[0].scrollHeight);
 		}
 		
-		// 서버로부터 메시지를 받았을 때
-	    //msg 파라미터는 웹소켓을 보내준 데이터다.(자동으로 들어옴)(즉 서버쪽에서 알아서 보내준게 들어가있는것이다.)
+		sock.onmessage = onMessage;
+		// 서버로부터 메시지를 받았을 때 (화면단에 뿌려주는것을 모두 컨트롤 하는것이다)
 		function onMessage(msg) {
-			var data = msg.data;// 해당 메세지 데이터!가 담긴것이다.
-			$("#chat-content-body").append(data + "<br/>");
+			var rcChat = msg.data;// 해당 메세지 데이터!가 담긴것이다.
+			var rcChatInfo = rcChat.split(",", 6);
+			var sessionRN = $("#check-room-member").val();
+
+			if(rcChatInfo[0] != null && sessionRN !=null & rcChatInfo[0] == sessionRN){
+				var value='';
+				if(rcChatInfo[1] != ${loginUser.memNo}){// 채팅을 받는 사람들용 화면  
+					value += '<div class="col-chat-Log-Area"><div class="col-chat-log-profile">'
+					       + '<img src="' + rcChatInfo[2] + '" onclick="oneClickOpenImage(' + "'" ;
+				    value += rcChatInfo[2] + "'" + ');">'
+					       + '</div>'
+					       + '<div class="col-chat-log-box"><p>' + rcChatInfo[3] + '</p>'
+					       + '<div class="col-balloon"><pre>' + rcChatInfo[5] + '</pre></div></div>'
+					       + '<div class="col-chat-log-info"><p>' + rcChatInfo[4] + '</p></div>'
+					       +'</div>';
+				}else{//내가 보낸 채팅이 나한테 보여지는 형식 
+					value += '<div class="my-chat-log-area"><div class="my-chat-log-info"><p>'
+					       + rcChatInfo[4]
+					       + '</p></div><div class="my-chat-log-box"><div class="my-balloon"><pre>'
+					       + rcChatInfo[5]
+					       + '</pre></div></div></div>'
+				}
+				$("#chat-content-body").append(value); // append로 뿌려줄것
+				$("#chat-content-body").scrollTop($("#chat-content-body")[0].scrollHeight); // 스크롤 내려 주기 
+			}
 		}
 		// 서버와 연결을 끊었을 때
 		function onClose(evt) {
 			$("#chat-content-body").append("연결 끊김");
-	
 		}
+		
+		//-----------------------------------------------------------------------------------------
+		//-----------------------------------------------------------------------------------------
+        // 뒤로가기 페이지 
+        function backToChatList(){
+            $("#open-chat-Room").hide();
+            $("#chatting-outer").show();
+            $("#chatting-list-area-page").show();
+            $("#colleague-area-page").hide();
+            $(".chatting-list-area").css("color","rgb(241,196,15)").css("background","rgb(56,77,97)");
+            $(".colleague-area").css("color","rgb(51,51,51)").css("background","rgb(224,224,224)");
+            showMyChatList();
+            $("#check-room-member").val("");
+        }
     </script>
 
 <%------------------------------------------------------------------------------------------------------------------- --%>
 
     <div id="chat-room">
     	<input type="hidden" id="inner-room-no-area"> 
+    	<input type="hidden" id="check-room-member">
         <!-- 둘중 어떤 채팅 header가 보일지는 자바스크립트로 해결한다.! -->
         <div class="personal-chat-header" style="display: none;">
             <div class="chatSingleProFile">
@@ -332,7 +380,7 @@
         </div>
         <!-- 채팅 작성영역 -->
         <div id="chat-typing-area">
-            <textarea id="writeChatContent" name=""></textarea>
+            <textarea id="writeChatContent" onKeypress="onEnterChange();" spellcheck="false"></textarea>
             <div class="chat-btn-area">
                 <button type="button" id="chatSend" value="submit" onclick="sendMessage();">전송</button>
                 <button type="button" onclick="">+</button>

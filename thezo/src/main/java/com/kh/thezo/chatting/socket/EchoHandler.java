@@ -48,10 +48,8 @@ public class EchoHandler extends TextWebSocketHandler{// TextWebSocketHandler를
         // httpSession에 담긴값도 뽑아오기 위해서 Servlet-context수정해줬다. 
         //System.out.println("session.getId()로 뽑은값 :" + session.getId()); // 랜덤값이 나온다. 랜덤하게 id같은게 부여되는 형식이다.
     }
-
     
     //클라이언트가 웹소켓 서버로 메시지를 전송했을 때 실행하는 메소드이다. (뭔짓을 해도 오직 한곳에서만 전송을 할수가 있다. 즉 여기서 어떡해서든 값을 뽑아와야하는데 )
-    // 자바스크립트로 생성된 sock.send메소드로는 값을 뽑아올수가 없다. 
     // DB에 insert시키고자 할떄 ! 
     // 넣어야할값들은 
     // 채팅기록번호(자동으로들어감), 사원번호(httpSession에서 뽑을수있음)
@@ -63,21 +61,43 @@ public class EchoHandler extends TextWebSocketHandler{// TextWebSocketHandler를
     
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String memName = ((Member)(session.getAttributes().get("loginUser"))).getMemName();
-        int memNo = ((Member)(session.getAttributes().get("loginUser"))).getMemNo();
-        int roomNo = 1; // 나중에 화면단에서 뽑아서 session에 담아둬야한다. 
+        // 아래 변수들은 단지 웹소켓으로 상대방에게 보여질때 넘겨줄 나의 정보들 
+    	String memName = ((Member)(session.getAttributes().get("loginUser"))).getMemName();
+        String rank = ((Member)(session.getAttributes().get("loginUser"))).getRank();
+        String checkPath = ((Member)(session.getAttributes().get("loginUser"))).getPath();
+        String path = "resources/images/basicProfile.png";
+        if(checkPath != null) {path = checkPath;}
+        String nameAndRank = memName + " " + rank;
+        String[] extractRoomNo = message.getPayload().split(",",2);
+        int roomNo = Integer.parseInt(extractRoomNo[0]);
+        
+        // 아래 변수들은 db적재용 변수임
+        int memNo = ((Member)(session.getAttributes().get("loginUser"))).getMemNo(); // 얘는 채팅 보여질때도 정채성을 나타내기 위해서 쓰임 
         
         //logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload()); // 여기서 {}얘는 SQL에 홀더같은 느낌이다. 
-        logger.info("{}로 부터 서버로 메시지 → {} 받음", memName, getTime() + message.getPayload()); // 여기서 {}얘는 SQL에 홀더같은 느낌이다. 
+        
+        // 굳이 콘솔에 남길필요는 없어짐 
+        //logger.info("{}로 부터 서버로 메시지 → {} 받음", memName, getFullDate() + message.getPayload()); // 여기서 {}얘는 SQL에 홀더같은 느낌이다. 
         // logger는 말그대로 log를 남기기위한 것으로 pinrtln메소드마냥 console에 찍어준다. 
-       
+
         //System.out.println(message.getPayload());// 얘가 쪽지 내용이다. 
         
-        // 얘가 중요하다! 
-        //모든 유저에게 메세지 출력을 해주는것이다. 
+        // 얘가 중요하다!  모든 유저에게 메세지 출력을 해주는것이다.  구분자를 통해서 3개를 넘겨야한다. 보낸 사람의 이름과, path, 시간을 넘겨줘야한다. 
         for(WebSocketSession sess : sessionList){
         	//((Member)sess.getAttributes().get("loginUser")).get
-            sess.sendMessage(new TextMessage(getTime() + message.getPayload() + memNo)); // 새로이 메세지 생성해서 나머지 유저들한테 뿌려주겠다 라는것이다. 
+        	// ,를 구분자로 사용할것이다. 문제는 없는데 뿌리지기전에 낚아채서 작업을 할것이기에 내가 원하는 형식으로 뽑으면 된다. 
+            sess.sendMessage(new TextMessage(roomNo
+            								 + ","  
+            								 + memNo
+            								 + ","
+            								 + path
+            								 + ","
+            		                         + nameAndRank
+            		                         + "," 
+            		                         + getTime()
+            		                         + ","
+            		                         + extractRoomNo[1]
+            		          )); // 새로이 메세지 생성해서 나머지 유저들한테 뿌려주겠다 라는것이다. 
         }
         // 만약 여기서 읽음처리를 하고자 한다면 !!! 접속하는 시점이랑 나가는 시점을 !!! 채팅방 나갈때를 기준으로 잡아줘야한다!!! 
         
@@ -97,14 +117,21 @@ public class EchoHandler extends TextWebSocketHandler{// TextWebSocketHandler를
 
         sessionList.remove(session);
         //logger.info("{} 연결 끊김.(채팅방 나감)", session.getId());
-        logger.info("{} 연결 끊김.(채팅방 나감)", memNameAndRank);
+        logger.info("{} 연결 끊김.(채팅방 나감)", getFullDate() + memNameAndRank);
         
        //System.out.println("채팅방 퇴장자 : " + session.getPrincipal().getName());
     }
     
-    static String getTime() {
-    	SimpleDateFormat sdf = new SimpleDateFormat("[hh:mm:ss]");
+    // 콘솔용 시간 뽑아서 넣는 형식 
+    static String getFullDate() {
+    	SimpleDateFormat sdf = new SimpleDateFormat("[yy년 MM월 dd일  hh:mm:ss]");
     	return sdf.format(new Date());
     }
+
+    static String getTime() {
+    	SimpleDateFormat sdf = new SimpleDateFormat("aa hh:mm");
+    	return sdf.format(new Date());
+    }
+
     
 }

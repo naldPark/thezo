@@ -3,6 +3,8 @@ package com.kh.thezo.chatting.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -207,7 +209,10 @@ public class ChattingController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="bringRoomHeader.cht", produces="application/json; charset=utf-8")
-	public String ajaxBringRoomHeaderList(int myMemNo, int roomNo){
+	public String ajaxBringRoomHeaderList(int myMemNo, int roomNo, HttpSession session){
+		session.setAttribute("roomNo", roomNo); // 방에 접속했다는 의미
+		//System.out.println("Session에 담은값" + session.getAttribute("roomNo"));
+
 		ChatLog memAndRoomNo = new ChatLog();
 		memAndRoomNo.setMemNo(myMemNo);
 		memAndRoomNo.setRoomNo(roomNo);
@@ -228,6 +233,17 @@ public class ChattingController {
 	    return new Gson().toJson(list);
 	}
 
+	/** 일단은 바로바로 세션에서 번호뽑아오기 위한 Controller
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="bringSessRoomNo.cht", produces="application/json; charset=utf-8")
+	public String ajaxBringSessRoomNo(HttpSession session){
+		//System.out.println("controller에서 실시간 방번호 뽑기" + session.getAttribute("roomNo"));
+	    return new Gson().toJson(session.getAttribute("roomNo"));
+	}
+	
 	//----------------------------------------------------------------------
 	//----------------------------------------------------------------------
 

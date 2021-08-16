@@ -68,9 +68,6 @@ public class MailController {
 			mm.setFolder(folder);
 			ArrayList<Mail> mList = new ArrayList<>();
 			
-			
-			
-			
 			// 받은편지함만 해당
 			if (folder.equals("받은")) {
 				// 해당 두 계정만 서버와 연동시켰기 때문에 조건처리했습니다.

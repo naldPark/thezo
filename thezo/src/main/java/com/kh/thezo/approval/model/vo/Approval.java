@@ -46,4 +46,5 @@ public class Approval {
 	private String searchSDate;  // 검색시작일
 	private String searchEDate;  // 검색종료일
 	private String createDate; // 폼 마지막 수정일
+	private String searchType; // 관리자여부확인
 }

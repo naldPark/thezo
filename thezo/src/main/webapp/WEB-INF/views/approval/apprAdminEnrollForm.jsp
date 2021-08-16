@@ -42,10 +42,10 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
-	
+	<br><br>
    	 <section>
         <div class="outer">    
-            <p class="pageTitle">  관리자모드 <b> 전자결재</b></p>
+          <p class="pageTitle"> <span style="color:red">관리자모드</span><b> 전자결재</b></p>
             <jsp:include page="apprAdminSidebar.jsp"/>
             <div class="sideOuter">
                     <div class="card border-0">

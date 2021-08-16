@@ -22,7 +22,6 @@
     <div id="sendDocu" class="w3-bar-block w3-hide w3-show">
       <a href='main.appr?apprFolder=send' id="sendnav" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i> &nbsp;&nbsp;상신문서</a>
       <a href='main.appr?apprFolder=sendFin' id="sendFinnav" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i> &nbsp;&nbsp;완료문서</a>
-      <a href='main.appr?apprFolder=temp' id="tempnav" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"></i> &nbsp;&nbsp;임시저장</a>
     </div>
     <a class="w3-bar-item w3-button w3-padding" onclick="extend('receiveDocu')"><i class="far fa-caret-square-down"></i>  결재수신함</a>
     <div id="receiveDocu" class="w3-bar-block w3-hide w3-show">

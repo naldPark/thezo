@@ -202,15 +202,21 @@
 		 	 <if test='category != "전체" and category!=null'>
 		 			and category like '%' || #{category} || '%'
 		 	 </if> 
+		 	 <if test='docName!=null'>
                     and doc_name like '%' || #{docName} || '%'
-				--상신문서
-				<if test='apprFolder.equals("send")'>and mem_no = #{memNo}
-				and status != '완료'</if>
-				--상신 문서 중 완료문서
-				<if test='apprFolder.equals("sendFin")'>and mem_no = #{memNo}
-				and status = '완료'</if>
-				--임시저장
-			  <choose>
+             </if>
+			 --상신문서
+			 <if test='apprFolder.equals("send")'>
+			 		and mem_no = #{memNo}
+					and status != '완료'
+			</if>
+			--상신 문서 중 완료문서
+			<if test='apprFolder.equals("sendFin")'>
+				and mem_no = #{memNo}
+				and status = '완료'
+			</if>
+			--임시저장
+			<choose>
 				<when test='apprFolder.equals("temp")'>
 	      	 		and mem_no = #{memNo}
 					and status = '임시'
@@ -218,13 +224,13 @@
 				<otherwise>
 					and status != '임시'
 				</otherwise>
-		 	  </choose>   
-				--결재대기
-				<if test='apprFolder.equals("waiting")'>and mem_no = #{memNo}  and status ='대기'</if>
-				--결재자가 결재
-				<if test='apprFolder.equals("approved")'>and mem_no_fin like '%,' || #{memNo} || ',%'</if>
-				--참조
-				<if test='apprFolder.equals("refer")'>and ref_mem_no like '%,' || #{memNo} || ',%'</if>
+		 	 </choose>   
+			--결재대기
+			<if test='apprFolder.equals("waiting")'>and mem_no = #{memNo}  and status ='대기'</if>
+			--결재자가 결재
+			<if test='apprFolder.equals("approved")'>and mem_no_fin like '%,' || #{memNo} || ',%'</if>
+			--참조
+			<if test='apprFolder.equals("refer")'>and ref_mem_no like '%,' || #{memNo} || ',%'</if>
 			order by doc_date desc
 			
 	</select>
@@ -699,4 +705,54 @@
 			DELETE FROM appr_form
 			WHERE form_no = #{formNo}
 	</delete>
+	
+	<!-- 관리자 결재 문서 관리 count -->
+		<select id ="adminAllListCount" resultType="_int">
+				select 
+					count(*)
+				from vw_approval vw
+			where status like '%' ||#{status} || '%'
+			<if test='searchSDate != null'>
+		 			and doc_date between #{searchSDate} and #{searchEDate}
+		 	 </if> 
+		 	 <if test='category != "전체" and category!=null'>
+		 			and category like '%' || #{category} || '%'
+		 	 </if> 
+		 	 <if test='docName!=null'>
+                    and doc_name like '%' || #{docName} || '%'
+             </if> 
+	</select>
+	
+	<!-- 관리자 결재 문서 관리 select -->
+		<select id ="adminAllList" resultMap="approvalResult">
+				select 
+				vw.DOC_NO
+			        ,FORM_NO
+			        ,MEM_NAME
+			        ,MEM_NO
+			        ,CURRENT_ORDER_LEVEL
+			        ,REF_MEM_NO
+			        ,MEM_NO_FIN
+			        ,DEPARTMENT
+			        ,DOC_NAME
+			        ,CATEGORY
+			        ,FORM_NAME
+			        ,DOC_CONTENT
+			        ,DOC_DATE
+			        ,STATUS
+			        ,LINE
+			        ,SORT
+				from vw_approval vw
+			where status like '%' ||#{status} || '%'
+			<if test='searchSDate != null'>
+		 			and doc_date between #{searchSDate} and #{searchEDate}
+		 	 </if> 
+		 	 <if test='category != "전체" and category!=null'>
+		 			and category like '%' || #{category} || '%'
+		 	 </if> 
+		 	 <if test='docName!=null'>
+                    and doc_name like '%' || #{docName} || '%'
+             </if> 
+	</select>
+	
 </mapper>

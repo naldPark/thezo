@@ -20,11 +20,11 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
+  <br><br>
     <section>
         <div class="outer">    
-          <p class="pageTitle">  approval <b> 전자결재</b></p>
-    
-            <jsp:include page="apprSidebar.jsp"/>
+          <p class="pageTitle"> <span style="color:red">관리자모드</span><b> 전자결재</b></p>
+          <jsp:include page="apprAdminSidebar.jsp" />
             <div class="sideOuter row ">
               <div class="card border-0" style=" width:80%">
                 <div class="card-body">

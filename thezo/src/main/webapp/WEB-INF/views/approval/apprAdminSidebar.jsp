@@ -10,7 +10,7 @@
       <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
       <link rel="stylesheet" href="resources/css/apprAmail.css">
       <style>
-        /* *{border:1px solid red} */
+        #admin-header{display: block !important;}
       </style>
     </head>
 
@@ -33,12 +33,14 @@
           <a class="w3-bar-item w3-button w3-padding" onclick="extend('receiveDocu')"><i
               class="far fa-caret-square-down"></i>  문서관리</a>
           <div id="receiveDocu" class="w3-bar-block w3-hide w3-show">
-            <a href="waiting.appr" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"> </i>
+            <a href="main.appr?searchType=admin" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"> </i>
               &nbsp;&nbsp;전체</a>
-            <a href="approved.appr" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"> </i>
+            <a href="main.appr?searchType=admin&&apprFolder=승인" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"> </i>
               &nbsp;&nbsp;진행중</a>
-            <a href="reference.appr" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"> </i>
+            <a href="main.appr?searchType=admin&&apprFolder=완료" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"> </i>
               &nbsp;&nbsp;완료</a>
+              <a href="main.appr?searchType=admin&&apprFolder=반려" class="w3-bar-item w3-button ml-2"><i class="far fa-folder-open"> </i>
+                &nbsp;&nbsp;반려</a>
           </div>
         </div>
       </nav>

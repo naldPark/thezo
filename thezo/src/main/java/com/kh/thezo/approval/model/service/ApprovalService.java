@@ -70,4 +70,8 @@ public interface ApprovalService {
 	int insertNewDocument(Approval a);
 	int editNewDocument(Approval a);
 	int deleteForm(int formNo);
+	int adminAllListCount(Approval a);
+	ArrayList<Approval> adminAllList(Approval a, PageInfo pi);
 }
+
+

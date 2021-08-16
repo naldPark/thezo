@@ -13,11 +13,11 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
-	
+	<br><br>
    	 <section>
         <div class="outer" align="center">    
-            <p class="pageTitle">  approval <b> 전자결재</b></p>
-            <jsp:include page="apprSidebar.jsp"/>
+			<p class="pageTitle"> <span style="color:red">관리자모드</span><b> 전자결재</b></p>
+            <jsp:include page="apprAdminSidebar.jsp" />
 			<script src="resources/js/datepicker.min.js"></script>
 			<script src="resources/js/datepicker.ko.js"></script>
             <div class="sideOuter">
@@ -59,7 +59,6 @@
 								<input type="text" name="docName" class="form-control" placeholder="검색할 제목을 입력하세요" style="width:200px">
 								<input type="hidden" name="apprFolder" value="${apprFolder}">
 								<input type="hidden" name="currentPage" id="apprCurrentPage" value="1">
-								<input type="hidden" name="searchType" value="user">
 								<div class="input-group-append">
 									<button type="submit" class="btn btn-primary btn-sm" style="width: 100px">&nbsp;조회&nbsp;</button>
 								</div>
@@ -81,7 +80,7 @@
                 <c:forEach var="a" items="${ list }">
 	                <!-- 문서리스트 -->
 					<div class="apprList shadow p-4 mb-3 bg-white w3-cell-row" id="${a.docNo}doclist"
-						onclick="location.href='detailDocu.appr?docNo=${a.docNo}'">
+						onclick="location.href='detailDocu.appr?docNo=${a.docNo}&&searchType=admin'">
 						<div class="w3-cell" style="width:10%">
 							<h3 class="w3-cell">
 								<c:choose>
@@ -180,7 +179,7 @@
 	$(".page-link").click(function(){
 
 		  var page = $(this).text();
-		  if(page =="이전"){   //main.appr?currentPage=${ pi.currentPage-1 }&apprFolder=${apprFolder}
+		  if(page =="이전"){ 
 			$("#apprCurrentPage").val("${ pi.currentPage-1 }");
 		  } else if(page=="다음"){
 			$("#apprCurrentPage").val("${ pi.currentPage+1 }");

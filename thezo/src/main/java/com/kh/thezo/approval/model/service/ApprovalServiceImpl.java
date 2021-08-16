@@ -201,6 +201,16 @@ public class ApprovalServiceImpl implements ApprovalService {
 		return aDao.deleteForm(sqlSession, formNo);
 	}
 	
+	@Override
+	public int adminAllListCount(Approval a) {
+		return aDao.adminAllListCount(a, sqlSession);
+	}
+	
+	@Override
+	public ArrayList<Approval> adminAllList(Approval a, PageInfo pi) {
+		 return aDao.adminAllList(a, sqlSession, pi);
+	}
+	
 	
 	
 }

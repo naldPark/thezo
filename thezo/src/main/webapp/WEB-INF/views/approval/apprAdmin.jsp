@@ -10,16 +10,16 @@
 
 <link rel="stylesheet"  href="resources/css/datepicker.min.css">
 <style>
-	    .fa-file-alt{font-size:50pt;}
+	.fa-file-alt{font-size:50pt;}
     #newApprnav{background:rgb(20,70,104)!important; color: white!important;}
 </style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
-	
+	<br><br>
    	 <section>
         <div class="outer" align="center">    
-            <p class="pageTitle">  approval <b> 전자결재</b></p>
+			<p class="pageTitle"> <span style="color:red">관리자모드</span><b> 전자결재</b></p>
 			<jsp:include page="apprAdminSidebar.jsp" />
 			<script src="resources/js/datepicker.min.js"></script>
 			<script src="resources/js/datepicker.ko.js"></script>
@@ -102,7 +102,8 @@
             
 	                <!-- 문서리스트 -->
 					<c:forEach var="a" items="${ list }">
-					<div class="apprList shadow p-4 mb-3 bg-white w3-cell-row">
+					<div class="apprList shadow p-4 mb-3 bg-white w3-cell-row"
+					onclick="location.href='editForm.appr?formNo=${a.formNo}'">
 						<div class="w3-cell" style="width:10%">
 							<h3 class="w3-cell">
 								<c:choose>
@@ -173,7 +174,7 @@
 					<div class="modal-content" style="width:400px">
 						<div class="modal-body" align="center"><br>
 							<form action="deleteForm.appr" method="post">
-								<h4><b id="deleteFormName">ㅇㅇㅇ문서 삭제</b></h4><br>삭제 이후 복원이 불가합니다.<br>해당문서를 삭제하시겠습니까?<br><br>
+								<h4><b id="deleteFormName"></b>문서 삭제</h4><br>삭제 이후 복원이 불가합니다.<br>해당문서를 삭제하시겠습니까?<br><br>
 								<input type="hidden" id="deleteFormNo" name="formNo" value="">
 								<button type="submit" class="btn btn-primary" class="deleteButton">삭제</button>
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>

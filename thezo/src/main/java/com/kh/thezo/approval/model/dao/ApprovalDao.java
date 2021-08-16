@@ -183,6 +183,11 @@ public class ApprovalDao {
 		return sqlSession.update("approvalMapper.setApprovalStatus",a);
 	}
 	
+	
+	/**
+	 *  관리자페이지
+	 */
+	
 	// 관리자페이지에서 양식 수정 또는 신규로 입력
 		
 	public int insertNewDocument(SqlSessionTemplate sqlSession, Approval a){
@@ -197,6 +202,19 @@ public class ApprovalDao {
 	public int deleteForm(SqlSessionTemplate sqlSession, int formNo) {
 		return sqlSession.delete("approvalMapper.deleteForm",formNo);
 	}
+	
+	//  전자결재 리스트 카운트
+	public int adminAllListCount(Approval a, SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("approvalMapper.adminAllListCount", a);
+	}
+
+	// 결재리스트 불러오기
+	public ArrayList<Approval> adminAllList(Approval a, SqlSessionTemplate sqlSession, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList) sqlSession.selectList("approvalMapper.adminAllList", a, rowBounds);
+	}
+
 		
 }
 

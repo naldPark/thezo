@@ -11,20 +11,13 @@
     .mailOuter{padding:10px 20px 0px 220px;}
     a{ text-decoration:none !important; cursor: pointer; }
     a:hover{ text-decoration:none !important; cursor: pointer; color : white;}
-    /* header{
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 999; 
-    }  */
     .pageTitle{font-size: 20pt; font-weight: bolder; color:rgb(241,196,15)!important; margin-top: 30px; margin-left: 20px; text-align: left; }
     .pageTitle b{color: rgb(20,70,104); font-size: 25pt;}
     .w3-sidebar{        
       z-index: 0; text-align: center; padding: 10px;  line-height: 30px; margin: auto; position: absolute !important; height: auto !important;}
     .pagination > .active>a{background:rgb(20,70,104)!important; color: white!important;}
     .pagination>li>a{color: rgb(20,70,104)!important;}
-	 #pagingArea{width:fit-content;margin:auto;}
+	  #pagingArea{width:fit-content;margin:auto;}
     .pjtWN{background-color: rgb(20,70,104)!important; color: white!important;}
     .pjtNY{background-color: rgb(20,70,104)!important; color: rgb(241,196,15)!important}
     .pjtN{color:rgb(20,70,104)!important;}
@@ -36,8 +29,6 @@
     .table-primary, .table-primary td, .table-primary th{background-color: rgb(20,70,104)!important; color: white!important; border-color:rgb(20,70,104)!important;}
     .table-hover{cursor: pointer;}
     .selectBoxCustom{padding:2px; border:0.5px solid lightgray; font-weight: lighter;}
-    /* #admin-header{display: block !important;} */
-    /* #admin-nav{display: block !important; margin-top:30px} */
     
     /*메인페이지꺼임*/
     .board > tbody  > tr > td:nth-child(1) {

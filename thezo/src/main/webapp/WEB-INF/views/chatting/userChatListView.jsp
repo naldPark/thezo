@@ -115,12 +115,38 @@
 			 				}
 			 			}	
 		 			$("#my-chat-list-area").html(value);
+					totalUnreadCount();// 읽지 않는 채팅 전채갯수 뿌려주는것
+
 		 		},error:function(){
 		 			console.log("ajax통신 실패");
 		 		}				
 		 	})
     	}
     
+        function totalUnreadCount(){
+			// 내가 채팅을 치고있든 아니든 상관없이 ! unread_count 총갯수 구해서 뿌려준 Ajax
+			$.ajax({
+		 		url:"totalUnreadCount.cht",
+				data:{memNo : ${ loginUser.memNo }},
+		 		success:function(totalUnreadCount){
+		 			// 여기서 요소들 마구 선택해서 update 처리해줘야한다. 
+		 			//console.log(totalUnreadCount);
+		 			
+		 			if(totalUnreadCount > 0){
+			 			$(".mainChatUnreadCount").html(totalUnreadCount + "건");
+			 			$("#notifyNewChat").show();
+		 			}else{
+			 			$(".mainChatUnreadCount").html("");
+			 			$("#notifyNewChat").hide();
+		 			}
+		 			
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	});
+        }
+
+    	
     	$(function(){
     		showMyChatList();
     	})

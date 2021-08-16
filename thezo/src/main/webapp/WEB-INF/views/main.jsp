@@ -121,7 +121,8 @@
 
                             </div>
                             <div class="col text-left">
-                                <span onclick="mainOpenUnreadChat();">대화하기 
+                                <span onclick="mainOpenUnreadChat();">채팅하기
+                                <span class="mainChatUnreadCount"></span> 
                                 <i id="notifyNewChat" class="fas fa-exclamation-circle" style="color:red"></i>
                                 </span>
                             </div>
@@ -386,6 +387,8 @@
 
     // @Author: Jaewon.S    
     function mainOpenUnreadChat(){
+		showMessengerArea();
+    	moveTochatListArea();
     }
     
     // @Author: Jaewon.S

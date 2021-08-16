@@ -166,6 +166,9 @@
     		 						//console.log("마지막 채팅 번호" + $("#last-chat-log-no").val());
 	    		 					updateLastChat(roomNo, ${ loginUser.memNo } ,list[i].chatList[j].chatlogNo);
     		 					}
+    		 					
+    		 			        totalUnreadCount(); //채팅방 입장 할때 한번  메인 고쳐주기
+
     		 				}//안 for문 끝
 		 				}//밖 for문  끝
 		 			}
@@ -268,6 +271,7 @@
     		 		}				
     		 	})
 	        }
+
 	        $("#writeChatContent").val("");
 	    }
         
@@ -405,25 +409,6 @@
 			 		}				
 			 	});
 			}
-			
-			// 내가 채팅을 치고있든 아니든 상관없이 ! unread_count 총갯수 구해서 뿌려준 Ajax
-			$.ajax({
-		 		url:"totalUnreadCount.cht",
-				data:{memNo : ${ loginUser.memNo }},
-		 		success:function(totalUnreadCount){
-		 			// 여기서 요소들 마구 선택해서 update 처리해줘야한다. 
-		 			// console.log(totalUnreadCount);
-		 			
-		 			
-		 			
-		 			
-		 			
-		 			
-		 		},error:function(){
-		 			console.log("ajax통신 실패");
-		 		}				
-		 	});
-			
 		}
         
 		// 서버와 연결을 끊었을 때

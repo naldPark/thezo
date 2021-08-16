@@ -80,8 +80,6 @@
           <span style="color: blue; font-weight: bold;">
             	관리자는 status a로 되어있는 admin입니다          
         </span>
-
     </div>
-
 </body>
 </html>

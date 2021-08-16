@@ -14,75 +14,111 @@
 <script>
 	
 	document.addEventListener('DOMContentLoaded', function() {
-	  var calendarEl = document.getElementById('calendar');
+		var calendarEl = document.getElementById('calendar');
 	
-	  var calendar = new FullCalendar.Calendar(calendarEl, {
-		schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',	
-	    initialView: 'resourceTimeGridDay',
-	    editable: true,
-	    selectable: true,
-	    dayMaxEvents: true, // allow "more" link when too many events
-	    dayMinWidth: 200,
-	    themeSystem: 'bootstrap', // 테마 설정
-	    locale: 'ko', // 한국어 설정
-	    headerToolbar: {
-	      left: 'prev,next today',
-	      center: 'title',
-	      right: 'resourceTimeGridDay,resourceTimeGridWeek,dayGridMonth'
-	    },
-	    views: {
-	      resourceTimeGridTwoDay: {
-	        type: 'resourceTimeGrid',
-	        duration: { days: 2 },
-	        buttonText: '2 days',
-	      }
-	    },
-	
-	    //// uncomment this line to hide the all-day slot
-	    allDaySlot: false,
-	
-	    resources: [
-	      { id: 'a', title: 'Room A' },
-	      { id: 'b', title: 'Room B', eventColor: 'green' },
-	      { id: 'c', title: 'Room C', eventColor: 'orange' },
-	      { id: 'd', title: 'Room D', eventColor: 'red' }
-	    ],
-	    events: [
-	      { id: '1', resourceId: 'a', start: '2021-08-12', end: '2021-08-12', title: 'event 1' },
-	      { id: '2', resourceId: 'a', start: '2021-08-12T09:00:00', end: '2021-08-12T14:00:00', title: 'event 2' },
-	      { id: '3', resourceId: 'b', start: '2021-08-12T12:00:00', end: '2021-08-12T06:00:00', title: 'event 3' },
-	      { id: '4', resourceId: 'c', start: '2021-08-12T07:30:00', end: '2021-08-12T09:30:00', title: 'event 4' },
-	      { id: '5', resourceId: 'd', start: '2021-08-12T10:00:00', end: '2021-08-12T15:00:00', title: 'event 5' }
-	    ],
-	
-	    select: function(arg) {
-	      console.log(
-	        'select',
-	        arg.startStr,
-	        arg.endStr,
-	        arg.resource ? arg.resource.id : '(no resource)'
-	      );
-	    },
-	    dateClick: function(arg) {
-	      console.log(
-	        'dateClick',
-	        arg.date,
-	        arg.resource ? arg.resource.id : '(no resource)'
-	      );
-	    },
-	    eventClick: function(arg){
-			console.log('eventClick', arg)	    	
-	    }
-	  });
-	
-	  calendar.render();
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',	
+			initialView: 'resourceTimeGridDay',
+			editable: true,
+			selectable: true,
+			dayMaxEvents: true, // allow "more" link when too many events
+			dayMinWidth: 200,
+			themeSystem: 'bootstrap', // 테마 설정
+			locale: 'ko', // 한국어 설정
+			headerToolbar: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'resourceTimeGridDay,resourceTimeGridWeek,dayGridMonth'
+			},
+			// uncomment this line to hide the all-day slot
+			allDaySlot: false,
+
+			eventOverlap: function(stillEvent, movingEvent) { // 예약이 겹치지 않도록
+				return stillEvent.allDay && movingEvent.allDay;
+			},
+
+			// 클릭 이벤트 (일정추가)
+			select: function(arg) { // date를 드래그하여 일정추가
+				var rezDate = arg.start.getFullYear() 
+							+ "-" + (arg.start.getMonth() >= 10 ? arg.start.getMonth() + 1 : '0' + (arg.start.getMonth() + 1)) 
+							+ "-" + (arg.start.getDate() >= 10 ? arg.start.getDate() : '0' + arg.start.getDate()); 
+				var startTime = (arg.start.getHours() >= 10 ? arg.start.getHours() : '0' + arg.start.getHours())
+								+ ':'
+								+ (arg.start.getMinutes() >= 10 ? arg.start.getMinutes() : '0' + arg.start.getMinutes());
+				var endTime = (arg.end.getHours() >= 10 ? arg.end.getHours() : '0' + arg.end.getHours())
+								+ ':'
+								+ (arg.end.getMinutes() >= 10 ? arg.end.getMinutes() : '0' + arg.end.getMinutes());
+				//console.log(rezDate);
+				//console.log(startTime);
+				$('#rezDate').val(rezDate);
+				$('#startTime').val(startTime);
+				$('#endTime').val(endTime);
+				
+				$('#resourceName option').each(function(){
+					if($(this).text() == arg.resource._resource.title){
+						$(this).attr("selected", true);
+					}
+				})
+				$('#insertRez').modal();
+			},
+			  
+			dateClick: function(arg) { // date 클릭
+				$('#rezDate').val(arg.dateStr.substring(0,10));
+				$('#insertRez').modal();
+			},
+			  
+			eventClick: function(arg){
+				var rezNo = arg.event._def.publicId;
+				var option = "width = 700, height = 350, top = 100, left = 200, location = no";
+				window.open("detail.rez?rezNo=" + rezNo, "자원예약 상세조회", option);
+			}
+		  
+		});
+	  
+		$.ajax({
+			url :'select.re',
+			cache: false,
+			success:function(list){
+				var resourceList = Object.values(JSON.parse(list));
+				//console.log(resourceList);
+				for(var i=0; i<resourceList.length; i++){
+					//resourceList[i].color = '#148CFF';
+					calendar.addResource({
+						id: resourceList[i].resourceNo,
+						title: resourceList[i].resourceName,
+						category: resourceList[i].category
+					});
+					//console.log(resourceList[i]);
+				}
+			},error: function(){
+				console.log("자원예약 조회용 ajax 통신 실패");
+			}
+		});
+		  
+		$.ajax({
+			url :'select.rez',
+			cache: false,
+			success:function(list){
+				var rezList = Object.values(JSON.parse(list));
+				//console.log(rezList);
+				for(var i=0; i<rezList.length; i++){
+					//resourceList[i].color = '#148CFF';
+					calendar.addEvent({
+						id: rezList[i].rezNo,
+						resourceId: rezList[i].resourceNo,
+						title: rezList[i].rezWriter + (rezList[i].useFor == undefined ? "" : ' - ' + rezList[i].useFor),
+						start: rezList[i].rezDate + 'T' + rezList[i].startTime,
+						end: rezList[i].rezDate + 'T' +rezList[i].endTime,
+					});
+				}
+			},error: function(){
+				console.log("자원예약 조회용 ajax 통신 실패");
+			}
+		})
+		  
+		calendar.render();
 	});
 	
-</script>
-<script>
-	$(function(){
-		console.log(${resourceList})
-	})
 </script>
 <style>
 	#calendar {width: 80%; margin-left: 250px;}
@@ -93,7 +129,6 @@
 <body>
 	<!-- 메뉴바 -->
     <jsp:include page="../../common/header.jsp"/>
-	
     <section>
 	    <div class="outer">
 	    	<!-- 예약관리 네비바 -->
@@ -104,5 +139,7 @@
 	    	
 	    </div>
     </section>
+    
+    <jsp:include page="rezInsertView.jsp"/>
 </body>
 </html>

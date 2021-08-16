@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.thezo.reservation.model.dao.ReservationDao;
 import com.kh.thezo.reservation.model.vo.Reservation;
-import com.kh.thezo.reservation.model.vo.Resource;
+import com.kh.thezo.reservation.model.vo.Resources;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -20,14 +20,12 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	@Override
 	public ArrayList<Reservation> selectReservationList() {
-		// TODO Auto-generated method stub
-		return null;
+		return rDao.selectReservationList(sqlSession);
 	}
 
 	@Override
-	public int insertReservation() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int insertReservation(Reservation rez) {
+		return rDao.insertReservation(sqlSession, rez);
 	}
 
 	@Override
@@ -43,8 +41,13 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public ArrayList<Resource> selectResourceList() {
+	public ArrayList<Resources> selectResourceList() {
 		return rDao.selectResourceList(sqlSession);
+	}
+
+	@Override
+	public Reservation selectReservationDetail(int rezNo) {
+		return rDao.selectReservationDetail(sqlSession, rezNo);
 	}
 
 }

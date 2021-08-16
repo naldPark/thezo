@@ -2,16 +2,98 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="reservationMapper">
 
-	<resultMap id="resourceResult" type="Resource">
+	<resultMap id="resourceResult" type="Resources">
 		<result column="resource_no" property="resourceNo" />
 		<result column="category_no" property="category" />
 		<result column="resource_name" property="resourceName" />
 	</resultMap>
 	
+	<resultMap id="reservationResult" type="Reservation">
+		<result column="rez_no" property="rezNo" />
+		<result column="resource_no" property="resourceNo" />
+		<result column="resource_name" property="resourceName" />
+		<result column="mem_no" property="memNo" />
+		<result column="rez_writer" property="rezWriter" />
+		<result column="use_for" property="useFor" />
+		<result column="rez_date" property="rezDate" />
+		<result column="rez_starttime" property="startTime" />
+		<result column="rez_endtime" property="endTime" />
+		<result column="apply_date" property="applyDate" />
+		<result column="status" property="status" />
+	</resultMap>
+	
 	<select id="selectResourceList" resultMap="resourceResult">
-		select *
+		select resource_no
+			 , category_name
+			 , resource_name
 		  from resources
+		  join re_category using (category_no)
 		 where category_no = 1
 	</select>
+	
+	<select id="selectReservationList" resultMap="reservationResult">
+		select rez_no
+			 , re.resource_no
+		     , re.resource_name
+		     , mem_no
+		     , mem_name as rez_writer
+		     , use_for
+		     , rez_date
+		     , rez_starttime
+		     , rez_endtime
+		     , apply_date
+		     , r.status
+		  from reservation r
+		  join resources re on (re.resource_no = r.resource_name)
+		  join member m on (mem_no = rez_writer)
+		 where r.status = 'Y'
+	</select>
+	
+	<select id="selectReservationDetail" resultMap="reservationResult">
+		select rez_no
+			 , re.resource_no
+		     , re.resource_name
+		     , mem_no
+		     , mem_name as rez_writer
+		     , use_for
+		     , rez_date
+		     , rez_starttime
+		     , rez_endtime
+		     , apply_date
+		     , r.status
+		  from reservation r
+		  join resources re on (re.resource_no = r.resource_name)
+		  join member m on (mem_no = rez_writer)
+		 where r.status = 'Y'
+		   and rez_no = #{rezNo}
+	</select>
+	
+	<insert id="insertReservation">
+		insert
+		  into reservation
+		  	   (
+		  	     rez_no
+		  	   , resource_name
+		  	   , rez_writer
+		  	   , use_for
+		  	   , rez_date
+		  	   , rez_starttime
+		  	   , rez_endtime
+		  	   , apply_date
+		  	   , status
+		  	   )
+		 values
+		 	   (
+		 	     seq_rreno.nextval
+		 	   , #{resourceName}
+		 	   , #{rezWriter}
+		 	   , #{useFor}
+		 	   , #{rezDate}
+		 	   , #{startTime}
+		 	   , #{endTime}
+		 	   , sysdate
+		 	   , 'Y'
+		 	   )
+	</insert>
 	
 </mapper>

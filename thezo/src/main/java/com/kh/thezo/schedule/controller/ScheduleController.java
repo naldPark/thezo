@@ -182,18 +182,6 @@ public class ScheduleController {
 		}
 	}
 		
-		
-	
-	// 자원예약 기능
-	@RequestMapping("myList.rez")
-	public String reservationList() {
-		return "schedule/reservation/myReservationView";
-	}
-	
-	/*
-	 * @RequestMapping("con.rez") public String conferenceRoom() { return
-	 * "schedule/reservation/conferenceRezView"; }
-	 */
 	
 	
 	// 파일 등록 메소드

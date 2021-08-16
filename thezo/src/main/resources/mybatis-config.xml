@@ -35,7 +35,7 @@
 		<typeAlias type="com.kh.thezo.department.model.vo.Department" alias="Department"/>
 		<typeAlias type="com.kh.thezo.document.model.vo.DocCategory" alias="DocCategory"/>
 		<typeAlias type="com.kh.thezo.reservation.model.vo.Reservation" alias="Reservation"/>
-		<typeAlias type="com.kh.thezo.reservation.model.vo.Resource" alias="Resource"/>
+		<typeAlias type="com.kh.thezo.reservation.model.vo.Resources" alias="Resources"/>
 	</typeAliases>
 	
 	<mappers>

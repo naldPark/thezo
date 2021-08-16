@@ -87,6 +87,7 @@
 	    		$('#startDate').val(date.dateStr);
 	    		$('#endDate').val(date.dateStr);
 	    		$('#insertSc').modal();
+	    		console.log(date);
 	    	},
 	    	
 	    	eventClick: function(info) {

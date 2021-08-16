@@ -3,24 +3,25 @@ package com.kh.thezo.reservation.model.service;
 import java.util.ArrayList;
 
 import com.kh.thezo.reservation.model.vo.Reservation;
-import com.kh.thezo.reservation.model.vo.Resource;
+import com.kh.thezo.reservation.model.vo.Resources;
 
 public interface ReservationService {
 	
 	// 1. 조회
 	// 자원 예약 전체 조회
-	//int selectListCount();
+	// 자원 조회
 	ArrayList<Reservation> selectReservationList();
-	ArrayList<Resource> selectResourceList();
+	ArrayList<Resources> selectResourceList();
 	
 	// 예약 상세조회
+	Reservation selectReservationDetail(int rezNo);
 	
 	// 자원 카테고리 조회(RE_CATEGORY)
 	//ArrayList<ReCategory> selectCategoryList();
 	
 	
 	// 2. 예약 등록
-	int insertReservation();
+	int insertReservation(Reservation rez);
 	
 	// 3. 예약 삭제
 	int deleteReservation();

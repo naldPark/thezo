@@ -41,18 +41,18 @@
 				<b>자원예약</b><a class="back" href="main.sc" data-toggle="tooltip" title="일정관리로 돌아가기"><i class='fas fa-reply' style='font-size:15px;'></i></a>
 			</div>
 			
-			<button class="btn btn-primary" style="width: 180px;" align="center" data-toggle="modal" data-target="#insertSc">
+			<button class="btn btn-primary" style="width: 180px;" align="center" data-toggle="modal" data-target="#insertRez">
 				자원예약하기
 			</button>
 			<script>
 				$(document).ready(function(){
-				  $('[data-toggle="tooltip"]').tooltip();   
+					$('[data-toggle="tooltip"]').tooltip();   
 				});
 			</script>
 			<hr>
 			<div class="rezMenu">
 				<a class="w3-bar-item w3-button" href="myList.rez"><b>나의 예약 목록</b></a>
-				<a class="w3-bar-item w3-button" href="con.rez">회의실</a>
+				<a class="w3-bar-item w3-button" href="main.rez">회의실</a>
 				<a class="w3-bar-item w3-button" href="sup.rez">비품</a>
 				<a class="w3-bar-item w3-button" href="car.rez">차량</a>
 			</div>
@@ -95,6 +95,7 @@
 		
 	</div>
 	  
+	
 	
 
 	

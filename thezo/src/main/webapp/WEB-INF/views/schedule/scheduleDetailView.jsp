@@ -80,9 +80,6 @@
 				})
 			</script>
 		</div>
-		
-		
-		
 		<br>
 		<div id="btn-area" align="right">
 			<button type="button" class="btn" id="hideRep" hidden>

@@ -139,10 +139,31 @@ public class ChattingServiceImpl implements ChattingService{
 	// ----------------------------------------------------------------------
 	/** 단순하게 채팅로그 insert시켜버리는 서비스
 	 */
-	//@Override
-	//public void InsertChatContent(HashMap<Object, Object> hm) {
-	//	chatDao.InsertChatContent(sqlSession, hm) ;
-	//}
+	@Override
+	public int InsertChatContent(ChatLog chatlog) {
+		return chatDao.InsertChatContent(sqlSession, chatlog) ;
+	}
+
+	/** 마지막으로 읽은 채팅 바꾸는 서비스 (채팅번호와 unread_count 0으로 만드는)
+	 */
+	@Override
+	public int updateConnLastChat(ChatLog chatlog) {
+		return chatDao.updateConnLastChat(sqlSession, chatlog) ;
+	}
+
+	/** 마지막으로 읽은 채팅과 비교하여 unread_count update하는 서비스  (비즈니스 로직 처리하는 곳으로 여기서 비교를 진행해야한다.)
+	 */
+	@Override
+	public int updateUnreadCount(ChatLog chatlog) {
+		return chatDao.updateUnreadCount(sqlSession, chatlog) ;
+	}
+
+	/** 읽지않은 채팅 총갯수 가져오는 서비스 
+	 */
+	@Override
+	public int totalUnreadCount(int memNo) {
+		return chatDao.totalUnreadCount(sqlSession, memNo) ;
+	}
 
 	
 

@@ -160,14 +160,41 @@ public class ChattingDao {
 	
 	//-----------------------------------------------------------------------------------------
 	// ----------------------------본게임 시작이다 ! ! ----------------------------------------------
-	//public void InsertChatContent(SqlSessionTemplate sqlSession, HashMap<Object, Object> hm) {
-		//if(sqlSession.insert("chattingMapper.InsertChatContent", hm)>0) {
-		//	System.out.println("성공적으로 채팅 로그 기록했어");
-		//}else {
-		//	System.out.println("채팅 기록에 실패함 ");
-		//}
-	//	System.out.println(hm);
-	//}
+	public int InsertChatContent(SqlSessionTemplate sqlSession, ChatLog chatlog) {
+		if(sqlSession.insert("chattingMapper.InsertChatContent", chatlog) >0) {
+			return chatlog.getChatlogNo();
+		}else {
+			return 0;
+		}
+	}
+
+	/** 마지막으로 읽은 채팅 바꾸는 DAO (채팅번호와 unread_count 0으로 만드는)
+	 * @param sqlSession
+	 * @param chatlog
+	 * @return
+	 */
+	public int updateConnLastChat(SqlSessionTemplate sqlSession, ChatLog chatlog) {
+		return sqlSession.update("chattingMapper.updateConnLastChat", chatlog);
+	}
+
+	/** 읽지않은 채팅갯수 조회해와서 unread_count에 update 하는 dao
+	 * @param sqlSession
+	 * @param count
+	 * @return
+	 */
+	public int updateUnreadCount(SqlSessionTemplate sqlSession, ChatLog chatlog) {
+		return sqlSession.update("chattingMapper.updateUnreadCount", chatlog);
+	}
+
+	/** 읽지않은 채팅 총갯수 가져오는 DAO
+	 * @param sqlSession
+	 * @param memNo
+	 * @return
+	 */
+	public int totalUnreadCount(SqlSessionTemplate sqlSession, int memNo) {
+		return sqlSession.selectOne("chattingMapper.totalUnreadCount", memNo);
+	}
+	
 
 
 	

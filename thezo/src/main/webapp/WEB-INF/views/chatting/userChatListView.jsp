@@ -63,7 +63,9 @@
 			 					   + (list[i].memList[0].path == null ? "resources/images/basicProfile.png" : list[i].memList[0].path)
 			 					   + '"></div><div><p>'
 			 					   + list[i].roomName
-			 					   + '</p><span></span><br><span>'
+			 					   + '</p><span></span><br><span id="room-for-lastchat'
+			 					   + list[i].roomNo
+			 					   + '">'
 			 					   + (list[i].lastChatContent == null ? "새로운 채팅방이에요!" : list[i].lastChatContent)
 			 					   + '</span></div><div><span>'
 			 					   + (list[i].lastChatDate == null ? "" : list[i].lastChatDate)
@@ -93,7 +95,9 @@
 			 					   + list[i].roomName
 			 					   + '</p><span>' 
 			 					   + (list[i].memList.length + 1) 
-			 					   + '</span><br><span>'
+			 					   + '</span><br><span id="room-for-lastchat'
+			 					   + list[i].roomNo
+			 					   + '">'
 			 					   + (list[i].lastChatContent == null ? "새로운 채팅방이에요!" : list[i].lastChatContent)
 			 					   + '</span></div><div><span>'
 			 					   + (list[i].lastChatDate == null ? "" : list[i].lastChatDate)

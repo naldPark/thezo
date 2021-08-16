@@ -246,17 +246,58 @@ public class ChattingController {
 	
 	//----------------------------------------------------------------------
 	//----------------------------------------------------------------------
-
-	/*
-	public void insertChatContent(int memNo, int roomNo, String msgContent) {
-		// 가공처리하자. 
-		HashMap<Object, Object> hm = new HashMap<Object, Object>();
-		hm.put("memNo",memNo);		
-		hm.put("roomNo",roomNo);
-		hm.put("msgContent",msgContent);
-		chatService.InsertChatContent(hm);
+	/** 채팅을 기록하는 동시에 ! 해당 ! chatting 번호 가져오는 controller
+	 * @param chatlog
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="bringChatlogNo.cht", produces="application/json; charset=utf-8")
+	public int insertChatContent(int memNo, int roomNo, String chatContent) {
+	    ChatLog chatlog = new ChatLog();
+	    chatlog.setMemNo(memNo);
+	    chatlog.setRoomNo(roomNo);
+	    chatlog.setChatContent(chatContent);
+		return chatService.InsertChatContent(chatlog);
 	}
-	*/
 
+	/** 마지막으로 읽은 채팅 바꾸는 것으로 읽지않은 채팅 갯수도 0으로 만드는 Controller 
+	 * @param memNo
+	 * @param roomNo
+	 * @param chatlogNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="updateConnLastChat.cht", produces="application/json; charset=utf-8")
+	public int updateConnLastChat(int memNo, int roomNo, int chatlogNo) {
+	    ChatLog chatlog = new ChatLog();
+	    chatlog.setMemNo(memNo);
+	    chatlog.setRoomNo(roomNo);
+	    chatlog.setChatlogNo(chatlogNo);
+		return chatService.updateConnLastChat(chatlog);
+	}
+	
+	/** 읽지않은 채팅수 업데이트 하는 Controller 
+	 * @param memNo
+	 * @param roomNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="updateUnreadCount.cht", produces="application/json; charset=utf-8")
+	public int updateUnreadCount(int memNo, int roomNo) {
+	    ChatLog chatlog = new ChatLog();
+	    chatlog.setMemNo(memNo);
+	    chatlog.setRoomNo(roomNo);
+		return chatService.updateUnreadCount(chatlog);
+	}
+	
+	/** 화면쪽에 뿌려주기 위한 실시간 읽지않은 채팅 총갯수 가져오는 Controller 
+	 * @param memNo
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="totalUnreadCount.cht", produces="application/json; charset=utf-8")
+	public int totalUnreadCount(int memNo) {
+		return chatService.totalUnreadCount(memNo);
+	}
 	
 }

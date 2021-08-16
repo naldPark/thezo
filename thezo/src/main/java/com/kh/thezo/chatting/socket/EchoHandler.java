@@ -15,13 +15,12 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.kh.thezo.chatting.controller.ChattingController;
+import com.kh.thezo.chatting.model.vo.ChatLog;
 import com.kh.thezo.member.model.vo.Member;
 
 // EchoHandler 클래스.
 @RequestMapping("/echo") // 메핑은 /echo로 해둠 serlet-context에서 path와 일치시킨것  
 public class EchoHandler extends TextWebSocketHandler{// TextWebSocketHandler를 상속박아야한다.
-	@Autowired
-	private ChattingController chatController;
 	
 	// 필드부 작성 	
     // 1. sessionList 필드 생성  WebSocketSession형태의 제네릭을 가진 List를 필드로서 생성한다. 
@@ -68,11 +67,11 @@ public class EchoHandler extends TextWebSocketHandler{// TextWebSocketHandler를
         String path = "resources/images/basicProfile.png";
         if(checkPath != null) {path = checkPath;}
         String nameAndRank = memName + " " + rank;
-        String[] extractRoomNo = message.getPayload().split(",",2);
-        int roomNo = Integer.parseInt(extractRoomNo[0]);
-        
-        // 아래 변수들은 db적재용 변수임
+        String[] extractRoomNo = message.getPayload().split(",",3); // 0번이 방번호 1번이 채팅 번호 2번이 내용물 
+        int roomNo = Integer.parseInt(extractRoomNo[0]);        
+        int chatlogNo = Integer.parseInt(extractRoomNo[1]);
         int memNo = ((Member)(session.getAttributes().get("loginUser"))).getMemNo(); // 얘는 채팅 보여질때도 정채성을 나타내기 위해서 쓰임 
+        
         
         //logger.info("{}로 부터 {} 받음", session.getId(), message.getPayload()); // 여기서 {}얘는 SQL에 홀더같은 느낌이다. 
         
@@ -81,12 +80,14 @@ public class EchoHandler extends TextWebSocketHandler{// TextWebSocketHandler를
         // logger는 말그대로 log를 남기기위한 것으로 pinrtln메소드마냥 console에 찍어준다. 
 
         //System.out.println(message.getPayload());// 얘가 쪽지 내용이다. 
-        
+
         // 얘가 중요하다!  모든 유저에게 메세지 출력을 해주는것이다.  구분자를 통해서 3개를 넘겨야한다. 보낸 사람의 이름과, path, 시간을 넘겨줘야한다. 
         for(WebSocketSession sess : sessionList){
         	//((Member)sess.getAttributes().get("loginUser")).get
         	// ,를 구분자로 사용할것이다. 문제는 없는데 뿌리지기전에 낚아채서 작업을 할것이기에 내가 원하는 형식으로 뽑으면 된다. 
             sess.sendMessage(new TextMessage(roomNo
+            								 + ","
+            								 + chatlogNo
             								 + ","  
             								 + memNo
             								 + ","
@@ -96,15 +97,9 @@ public class EchoHandler extends TextWebSocketHandler{// TextWebSocketHandler를
             		                         + "," 
             		                         + getTime()
             		                         + ","
-            		                         + extractRoomNo[1]
-            		          )); // 새로이 메세지 생성해서 나머지 유저들한테 뿌려주겠다 라는것이다. 
+            		                         + extractRoomNo[2]
+            )); // 새로이 메세지 생성해서 나머지 유저들한테 뿌려주겠다 라는것이다. 
         }
-        // 만약 여기서 읽음처리를 하고자 한다면 !!! 접속하는 시점이랑 나가는 시점을 !!! 채팅방 나갈때를 기준으로 잡아줘야한다!!! 
-        
-        
-        // 아래가 선생님이 요청하신 메세지 insert시키는 메소드 호출이다. 
-        //chatController.insertChatContent(memNo , roomNo, message.getPayload());
-        
     }    
 
     //클라이언트 연결을 끊었을 때 실행 

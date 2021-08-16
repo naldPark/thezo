@@ -54,7 +54,16 @@ public interface ChattingService {
 	//----------------------------------------------------------------------
 	//----------------------------------------------------------------------
 	// 체팅 내용 넣는 서비스이다. 단순하게 채팅로그 insert시켜버리는 서비스
-	//void InsertChatContent(HashMap<Object, Object> hm);
+	int InsertChatContent(ChatLog chatlog);
+
+	// 마지막으로 읽은 채팅 바꾸는 서비스 (채팅번호와 unread_count 0으로 만드는)
+	int updateConnLastChat(ChatLog chatlog);
+
+	// 마지막으로 읽은 채팅과 비교하여 unread_count update하는 서비스 
+	int updateUnreadCount(ChatLog chatlog);
+
+	// 읽지않은 채팅 총갯수 가져오는 서비스 
+	int totalUnreadCount(int memNo);
 
 	
 

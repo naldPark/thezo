@@ -158,10 +158,20 @@
     		 						       + list[i].chatList[j].chatContent
     		 						       + '</pre></div></div></div>'
     		 					}
+    		 					
+    		 					if(i == (list.length -1) && j == (list[i].chatList.length -1)){
+	    		 					$("#last-chat-mem-no").val(list[i].chatList[j].memNo);       
+    		 						$("#last-chat-log-no").val(list[i].chatList[j].chatlogNo);       
+    		 						//console.log("마지막 채팅 보낸 사람 번호" + $("#last-chat-mem-no").val());
+    		 						//console.log("마지막 채팅 번호" + $("#last-chat-log-no").val());
+	    		 					updateLastChat(roomNo, ${ loginUser.memNo } ,list[i].chatList[j].chatlogNo);
+    		 					}
     		 				}//안 for문 끝
 		 				}//밖 for문  끝
 		 			}
 		 			$("#chat-content-body").html(value);
+					$("#chat-content-body").scrollTop($("#chat-content-body")[0].scrollHeight);
+
 		 		},error:function(){
 		 			console.log("ajax통신 실패");
 		 		}				
@@ -260,6 +270,22 @@
 	        }
 	        $("#writeChatContent").val("");
 	    }
+        
+        // 이미 chact_connect에 행은 만들어져있어서 ! 해당 방 입장시 혹은 ! 보낼떄 받을때! 실행을 시켜줘야할 메소드이다. 
+        function updateLastChat(roomNo, memNo ,chatlogNo){
+            $.ajax({
+		 		url:"updateConnLastChat.cht",
+				data:{memNo : memNo
+          		 	, roomNo : roomNo
+          		 	, chatlogNo : chatlogNo
+            	},
+		 		success:function(result){
+		 			//console.log("성공적으로 마지막 채팅 기록함")
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	})	        	
+        }
 		
 		// ------------------------ ★★★★★★★★★★ 구현해 줘야할 부분 ★★★★★★★★------------------------------------------------------ 
         // 에초에 stomp를 쓰면서 만들었어야 고도화가 가능했는데 지금 내실력과 시간으로는 불가하다. 
@@ -285,45 +311,121 @@
 		// 클라이언트가 메시지 전송할때  (소켓으로 보내겠다는 것이다. )
 		function sendMessage() {
 			if($("#writeChatContent").val().trim() != ''){// 어떤 값이 있을때만 보내기 
-				// sock에 send라는 메소드를 이용해서 보내라는 것이다.
-				//console.log("보낼때 해당방의 roomNO" + $("#inner-room-no-area").val());
-				sock.send($("#inner-room-no-area").val() + ',' + $("#writeChatContent").val());
+				//보내기전에 insert처리를 여기서 해줘야한다. 
+				var roomNo = $("#inner-room-no-area").val();
+				var chatContent = $("#writeChatContent").val();
+				// insert처리하는 동시에 방번호 가져오는 ajax
+	            $.ajax({
+			 		url:"bringChatlogNo.cht",
+					data:{memNo : ${ loginUser.memNo }
+	          		 	, roomNo : roomNo
+	          		 	, chatContent : chatContent
+	            	},
+			 		success:function(chatNo){
+						//console.log("내가 방금 보낸 chatNo번호" + chatNo);
+	 					$("#last-chat-mem-no").val(${ loginUser.memNo });       
+						$("#last-chat-log-no").val(chatNo);       
+						//console.log("내가 보낸  나의 사람 번호" + $("#last-chat-mem-no").val());
+						//console.log("내가보낸 마지막 채팅 번호" + $("#last-chat-log-no").val());
+						
+						updateLastChat(roomNo, ${ loginUser.memNo } ,chatNo);
+						// -----------------------------insert후에 나머지 애들한테 뿌려주라는것 ! 
+						// sock에 send라는 메소드를 이용해서 보내라는 것이다.
+						//console.log("보낼때 해당방의 roomNO" + $("#inner-room-no-area").val());
+						sock.send(roomNo + ',' + chatNo + ',' + chatContent);
+			 		},error:function(){
+			 			console.log("ajax통신 실패");
+			 		}				
+			 	});
 			}
 			// 채팅창 비워주고 스크롤 내려주기 
 			$("#writeChatContent").val("");
 			$("#writeChatContent").focus();
 			$("#chat-content-body").scrollTop($("#chat-content-body")[0].scrollHeight);
-		}
+		};
+		
+		//-------------------------------------------------------------------------------------------
 		
 		sock.onmessage = onMessage;
+        // ★★★★ 문자 받을때!!! 읽음 처리하는 메소드를 실행시켜줘야한다.   
+		
 		// 서버로부터 메시지를 받았을 때 (화면단에 뿌려주는것을 모두 컨트롤 하는것이다)
 		function onMessage(msg) {
 			var rcChat = msg.data;// 해당 메세지 데이터!가 담긴것이다.
-			var rcChatInfo = rcChat.split(",", 6);
+			var rcChatInfo = rcChat.split(",", 7);
 			var sessionRN = $("#check-room-member").val();
 
-			if(rcChatInfo[0] != null && sessionRN !=null & rcChatInfo[0] == sessionRN){
+			if(rcChatInfo[0] != null && sessionRN !=null && rcChatInfo[0] == sessionRN){ // 방에 들어와있는 상태 이다. 
 				var value='';
-				if(rcChatInfo[1] != ${loginUser.memNo}){// 채팅을 받는 사람들용 화면  
+				if(rcChatInfo[2] != ${loginUser.memNo}){// 채팅을 받는 사람들용 화면  
 					value += '<div class="col-chat-Log-Area"><div class="col-chat-log-profile">'
-					       + '<img src="' + rcChatInfo[2] + '" onclick="oneClickOpenImage(' + "'" ;
-				    value += rcChatInfo[2] + "'" + ');">'
+					       + '<img src="' + rcChatInfo[3] + '" onclick="oneClickOpenImage(' + "'" ;
+				    value += rcChatInfo[3] + "'" + ');">'
 					       + '</div>'
-					       + '<div class="col-chat-log-box"><p>' + rcChatInfo[3] + '</p>'
-					       + '<div class="col-balloon"><pre>' + rcChatInfo[5] + '</pre></div></div>'
-					       + '<div class="col-chat-log-info"><p>' + rcChatInfo[4] + '</p></div>'
+					       + '<div class="col-chat-log-box"><p>' + rcChatInfo[4] + '</p>'
+					       + '<div class="col-balloon"><pre>' + rcChatInfo[6] + '</pre></div></div>'
+					       + '<div class="col-chat-log-info"><p>' + rcChatInfo[5] + '</p></div>'
 					       +'</div>';
 				}else{//내가 보낸 채팅이 나한테 보여지는 형식 
 					value += '<div class="my-chat-log-area"><div class="my-chat-log-info"><p>'
-					       + rcChatInfo[4]
-					       + '</p></div><div class="my-chat-log-box"><div class="my-balloon"><pre>'
 					       + rcChatInfo[5]
+					       + '</p></div><div class="my-chat-log-box"><div class="my-balloon"><pre>'
+					       + rcChatInfo[6]
 					       + '</pre></div></div></div>'
 				}
 				$("#chat-content-body").append(value); // append로 뿌려줄것
-				$("#chat-content-body").scrollTop($("#chat-content-body")[0].scrollHeight); // 스크롤 내려 주기 
+				$("#chat-content-body").scrollTop($("#chat-content-body")[0].scrollHeight); // 스크롤 내려 주기
+				//var updateArea = document.getElementById("room-for-lastchat" + rcChatInfo[0]);
+				//console.log(document.getElementById("room-for-lastchat" + rcChatInfo[0]));
+				
+				// 방에 들어와 있는 상태이다. 
+				$("#last-chat-mem-no").val(rcChatInfo[2]);       
+				$("#last-chat-log-no").val(rcChatInfo[1]);       
+				updateLastChat(rcChatInfo[0], ${ loginUser.memNo } ,rcChatInfo[1]);
 			}
+			
+			//document.getElementById("room-for-lastchat" + rcChatInfo[0]).innerHTML = rcChatInfo[5];// 마지막 채팅 보여지게하기
+			if((sessionRN == null && rcChatInfo[2] != ${loginUser.memNo}) || (sessionRN != null && rcChatInfo[0] != sessionRN && rcChatInfo[2] != ${loginUser.memNo})){
+				// 막약 현재 session에 roomNo이 담겨있지 않거나 혹은 담겨있는데 받은 문자들이 현재 내가 가진 세션의 방번호와 일치 하지 않는다면 
+				// 또한 공통 조건이 나의 사원 번호와 보낸 사원 번호가 동일하면 안된다.
+				// 방에서 나가 있는 상태 
+				// 여기서 현재 나의 chat_connect에서 마지막 읽은 채팅이랑 chat_log 비교해서 읽지않은 갯수 update해주는 ajax 실행해야함 
+				$.ajax({
+			 		url:"updateUnreadCount.cht",
+					data:{memNo : ${ loginUser.memNo }
+	          		 	, roomNo : rcChatInfo[0]
+	            	},
+			 		success:function(result){
+			 			if(result>0){
+			 				//console.log("제대로 읽지 않은 갯수 올라 갔어!"); 
+							showMyChatList();
+			 			}
+			 		},error:function(){
+			 			console.log("ajax통신 실패");
+			 		}				
+			 	});
+			}
+			
+			// 내가 채팅을 치고있든 아니든 상관없이 ! unread_count 총갯수 구해서 뿌려준 Ajax
+			$.ajax({
+		 		url:"totalUnreadCount.cht",
+				data:{memNo : ${ loginUser.memNo }},
+		 		success:function(totalUnreadCount){
+		 			// 여기서 요소들 마구 선택해서 update 처리해줘야한다. 
+		 			// console.log(totalUnreadCount);
+		 			
+		 			
+		 			
+		 			
+		 			
+		 			
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	});
+			
 		}
+        
 		// 서버와 연결을 끊었을 때
 		function onClose(evt) {
 			$("#chat-content-body").append("연결 끊김");
@@ -349,6 +451,8 @@
     <div id="chat-room">
     	<input type="hidden" id="inner-room-no-area"> 
     	<input type="hidden" id="check-room-member">
+    	<input type="hidden" id="last-chat-mem-no">    	
+    	<input type="hidden" id="last-chat-log-no">    	
         <!-- 둘중 어떤 채팅 header가 보일지는 자바스크립트로 해결한다.! -->
         <div class="personal-chat-header" style="display: none;">
             <div class="chatSingleProFile">

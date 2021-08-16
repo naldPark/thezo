@@ -290,15 +290,61 @@
  		
 	<!-- ============================================================================================ -->
 	<!-- ======================================여기서 부터 웹소켓 가지고 노는 구간! =============================  -->  
-	<!--
  	<insert id="InsertChatContent">
+	 	insert 
+		  into chatlog
+		  (
+		    chatlog_no
+		  , mem_no
+		  , room_no
+		  , chat_content
+		  )
+		  values
+		  (
+		    seq_chno.nextval
+		  , #{ memNo }  
+		  , #{ roomNo }  
+		  , #{ chatContent }  
+		  )
+		<selectKey keyProperty="chatlogNo" resultType="int" order="AFTER">  
+        	select seq_chno.currval FROM dual  
+     	</selectKey>
  	</insert>
- 	-->
  	
  	
+ 	<!-- chat_connect에 마지막으로 읽은 채팅 update하는 sql문   -->
+ 	<update id="updateConnLastChat">
+		update
+		       chat_connect
+		   set chatlog_no = #{chatlogNo} ,
+		       unread_count = 0
+		 where room_no = #{roomNo} 
+		   and mem_no = #{memNo}
+ 	</update>
  	
-  	
-    	
+ 	<!-- 읽지않은 채팅갯수 조회해와서 unread_count에 update 하는 sql문 -->
+ 	<update id="updateUnreadCount">
+ 		update 
+		       chat_connect
+		   set unread_count = (select count(*)
+	  							 from chatlog
+	 							where chatlog_no > (select chatlog_no
+						                     		  from chat_connect
+						                     		 where room_no = #{ roomNo } 
+						                       		   and mem_no = #{ memNo} )
+								  and room_no = #{ roomNo }
+								  and mem_no != #{ memNo})
+		   
+		 where room_no = #{roomNo} 
+		   and mem_no = #{memNo}
+ 	</update>
+ 	
+ 	<select id="totalUnreadCount" resultType="_int">
+		select sum(unread_count)
+	      from chat_connect
+	     where conn_status = 'Y'
+	       and mem_no = #{memNo}
+ 	</select>
   	
  	
 </mapper>

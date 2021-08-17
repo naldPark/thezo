@@ -28,6 +28,7 @@ import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.market.model.service.MarketService;
 import com.kh.thezo.market.model.vo.Market;
 import com.kh.thezo.market.model.vo.PLike;
+import com.kh.thezo.member.model.vo.Member;
 
 @Controller
 public class MarketController {
@@ -259,16 +260,16 @@ public class MarketController {
 		}
 	}
 	
-	/*
+
 	 // 벼룩시장 : 찜하기 
 	 @ResponseBody
 	 @RequestMapping(value = "productLike.mk", method = RequestMethod.POST, produces = "application/json")
-	    public int heart(HttpServletRequest httpRequest, String memId) throws Exception {
+	    public int heart(HttpServletRequest httpRequest) throws Exception {
 
 	        int heart = Integer.parseInt(httpRequest.getParameter("heart"));
 	        int marketNo = Integer.parseInt(httpRequest.getParameter("marketNo"));
-	        // String memId = ((Member) httpRequest.getSession().getAttribute("loginUser")).getMemId();
-	       
+	        String memId = ((Member)httpRequest.getSession().getAttribute("loginUser")).getMemId();
+	        
 	        PLike p = new PLike();
 	        p.setMarketNo(marketNo);
 	        p.setMemId(memId);
@@ -286,7 +287,8 @@ public class MarketController {
 	        return heart;
 
 	    }
-	*/
+	 
+	 
 	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
 	public String saveFile(HttpSession session, MultipartFile upfile) {
 		// 경로

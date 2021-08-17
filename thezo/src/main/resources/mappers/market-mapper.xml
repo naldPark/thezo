@@ -42,6 +42,14 @@
 		<result column="status" property="status"/>
 	</resultMap>
 	
+	<resultMap id="PLikeResult" type="PLike">
+		<result column="like_no" property="likeNo"/>
+		<result column="market_no" property="marketNo"/>
+		<result column="mem_id" property="memId"/>
+		<result column="like_date" property="likeDate"/>
+	</resultMap>
+	
+	
 	
 	<!-- 사용자 : 벼룩시장 글 총 갯수  -->
 	<select id="marketListCount" resultType="_int">
@@ -263,18 +271,20 @@
 		 	 )   
         </insert>
 
-        <delete id="deleteBoardLike">
-            DELETE FROM tbl_board_like
-            WHERE board_id = #{boardId} AND user_id = #{userId}
-        </delete>
+     <delete id="deleteBoardLike">
+     	delete
+          from p_like
+         where market_no = #{marketNo}
+           and mem_id = #{memId} 
+     </delete>
 
-        <select id="updateBoardLike">
-            UPDATE tbl_board
-            SET
-            board_likecnt = (SELECT COUNT(*)
-            FROM tbl_board_like
-            WHERE board_id = #{boardId})
-            WHERE board_id = #{boardId}
+     <select id="updateBoardLike">
+        update market
+           set p_like = (select count(*)
+        	   			   from p_like
+        	   			   where market_no = #{marketNo} 
+				         ) 
+         where market_no = #{marketNo}
         </select>
 
 </mapper>

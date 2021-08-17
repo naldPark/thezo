@@ -34,42 +34,42 @@
             <h2><b>더조마켓</b></h2>
             <div align="center">
                 <a class="btn heart">
-			    	<img id="heart" src="" style="width:20px;height:20px;">
+			    	<img id="heart" name="heart" src="" style="width:20px;height:20px;">
 			    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			    
 			    <script>
 			    	$(document).ready(function(){
-			    		var productLike = ${ mk.productLike };
+			    		
+			    		var heartval = ${ mk.productLike };
 			    	
-			    		if(productLike>0){
-			    			console.log(productLike);
+			    		if(heartval>0){
+			    			console.log(heartval);
 				            $("#heart").prop("src", "resources/images/like2.png");
-				            $(".heart").prop('name', productLike)
+				            $(".heart").prop('name', heartval)
 			    		}else{
-			    			console.log(productLike);
+			    			console.log(heartval);
 				            $("#heart").prop("src", "resources/images/like1.png");
-				            $(".heart").prop('name',productLike)
+				            $(".heart").prop('name', heartval)
 			    		}
 			    	
 			    		$(".heart").on("click", function(){
 			    			
-			    			 var that = $(".heart");
-			    			 var sendData = {'marketNo' : '${ mk.marketNo }','heart' : that.prop('name')};
-			    			
 			    			$.ajax({
 			    				url:'productLike.mk',
 			    				data: {
-			    					sendData,
-			    					memId:'${ loginUser.memId }'
-			    				}
-			    				sucess : function(data){
+			    					marketNo:${mk.marketNo},
+			    					heart:that.prop('name'),
+			    					memId:'${loginUser.memId}'
+			    				},sucess : function(data){
 			    					that.prop('name',data);
-			    					if(data=1){
+			    					if(data==1){
 			    						$('#heart').prop("src", "/resources/images/like2.png");
 			    					}else{
 			    						$('#heart').prop("src", "/resources/images/like1.png");
 			    					}
-			    				}
+			    				},error:function(){
+									console.log("찜하기 ajax통신 실패");
+								}
 			    				
 			    			})
 			    		})

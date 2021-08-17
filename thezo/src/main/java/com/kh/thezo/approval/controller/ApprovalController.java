@@ -67,8 +67,6 @@ public class ApprovalController {
 			}
 			// 관리자페이지에서 접속한경우 관리자 모드 메소드로 이동
 			if (searchType.equals("admin")) {
-				System.out.println("난관리자야");
-				System.out.println(a);
 				mv = adminAllList(mv, a, currentPage, apprFolder, m.getStatus());
 			} else {
 
@@ -435,15 +433,11 @@ public class ApprovalController {
 	
 	public ModelAndView adminAllList(ModelAndView mv, Approval a, int currentPage, String apprFolder,
 			String loginStatus) {
-		System.out.println(a);
 		if(apprFolder.equals("main")) {
 			a.setStatus("%");
 		}else {
 			a.setStatus(apprFolder);
 		}
-		System.out.println(currentPage);
-		System.out.println(apprFolder);
-		System.out.println(loginStatus);
 		if (loginStatus.equals("A")) {
 			int listCount = aService.adminAllListCount(a);
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);

@@ -75,7 +75,6 @@ public class CheckInbox {
 						String subject = msg.getSubject();
 						mm.setMailTitle(subject);
 
-						String dateTest = "";
 						if (msg.getSentDate() != null) {
 							mm.setSendDate(new SimpleDateFormat("yyyy-MM-dd").format(msg.getSentDate()));
 							mm.setReceiveDate(new SimpleDateFormat("yyyy-MM-dd").format(msg.getSentDate()));

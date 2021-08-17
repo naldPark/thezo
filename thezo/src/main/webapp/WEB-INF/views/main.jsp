@@ -150,7 +150,7 @@
                     <div style="padding:12px;">
                         <div class="input-group-prepend" style="justify-content: left;">
                             <a href="main.appr?apprFolder=waiting" class="btn btn-sm btn-outline-primary">
-                                결재대기 ${mainApprCount.get("REFERREAD")}건
+                                결재대기 ${mainApprCount.get("WAITINGAPPR")}건
                                 <c:if test='${mainApprCount.get("WAITINGAPPR") ne 0}'>
                                     <i class="fas fa-exclamation-circle" style="color:red"></i>
                                 </c:if>

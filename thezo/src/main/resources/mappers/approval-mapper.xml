@@ -75,7 +75,7 @@
                (SELECT 
                     count(*)
                 FROM reference
-                where ref_no = #{memNo}
+                where ref_mem_no = #{memNo}
                 and read ='N') referRead,
                  -- 결재대기
                 (SELECT count(*)
@@ -150,7 +150,7 @@
 				</otherwise>
 		 	  </choose>   
 				--결재대기
-				<if test='apprFolder.equals("waiting")'>and mem_no = #{memNo}  and status ='대기'</if>
+				<if test='apprFolder.equals("waiting")'>and clmem_no = #{memNo}  and status ='대기'</if>
 				--결재자가 결재
 				<if test='apprFolder.equals("approved")'>and mem_no_fin like '%,' || #{memNo} || ',%'</if>
 				--참조
@@ -226,7 +226,7 @@
 				</otherwise>
 		 	 </choose>   
 			--결재대기
-			<if test='apprFolder.equals("waiting")'>and mem_no = #{memNo}  and status ='대기'</if>
+			<if test='apprFolder.equals("waiting")'>and clmem_no = #{memNo}  and status ='대기'</if>
 			--결재자가 결재
 			<if test='apprFolder.equals("approved")'>and mem_no_fin like '%,' || #{memNo} || ',%'</if>
 			--참조

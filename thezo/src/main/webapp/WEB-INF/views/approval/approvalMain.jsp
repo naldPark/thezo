@@ -33,7 +33,7 @@
 					  </div>
 					</c:when>
 					<c:otherwise>
-				<form action="main.appr" method="post">
+				<form action="main.appr" id="mainAppr" method="post">
 					<div class="w3-row-padding">
 						<div class="w3-third">
 							<div class="input-group mb-3">
@@ -187,7 +187,7 @@
 		  } else {
 			$("#apprCurrentPage").val(page);
 		  }
-		  $("#main.appr").submit();
+		  $("#mainAppr").submit();
 	})
 
 	$(function(){

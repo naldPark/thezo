@@ -33,7 +33,7 @@
 					  </div>
 					</c:when>
 					<c:otherwise>
-				<form action="main.appr" method="post">
+				<form action="main.appr" id="mainAppr" method="post">
 					<div class="w3-row-padding">
 						<div class="w3-third">
 							<div class="input-group mb-3">
@@ -59,6 +59,7 @@
 								<input type="text" name="docName" class="form-control" placeholder="검색할 제목을 입력하세요" style="width:200px">
 								<input type="hidden" name="apprFolder" value="${apprFolder}">
 								<input type="hidden" name="currentPage" id="apprCurrentPage" value="1">
+								<input type="hidden" name="searchType" value="admin">
 								<div class="input-group-append">
 									<button type="submit" class="btn btn-primary btn-sm" style="width: 100px">&nbsp;조회&nbsp;</button>
 								</div>
@@ -186,7 +187,7 @@
 		  } else {
 			$("#apprCurrentPage").val(page);
 		  }
-		  $("#main.appr").submit();
+		  $("#mainAppr").submit();
 	})
 
 	$(function(){

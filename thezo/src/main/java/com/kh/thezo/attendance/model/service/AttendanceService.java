@@ -1,6 +1,10 @@
 package com.kh.thezo.attendance.model.service;
 
+import java.util.ArrayList;
+
 import com.kh.thezo.attendance.model.vo.Attendance;
+import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.leave.model.vo.Leave;
 import com.kh.thezo.member.model.vo.Member;
 
 public interface AttendanceService {
@@ -15,5 +19,10 @@ public interface AttendanceService {
 	Attendance attendanceData(int memNo);
 	
 	Attendance attendanceData2(Member m);
+
+	// 회원 근태 관리 조회
+	int memberListCount();
+	ArrayList<Member> selectMember(PageInfo pi);
+	ArrayList<Leave> selectLeaveData(PageInfo pi);
 	
 }

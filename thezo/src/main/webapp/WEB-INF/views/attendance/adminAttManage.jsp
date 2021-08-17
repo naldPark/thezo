@@ -68,6 +68,8 @@
     #restEditTable th{text-align: center; background-color: rgb(234,234,234)}
     #restEditTable button{padding:5% !important; height: 4%; font-size: 12px;}
     #restEditBtn{float: right; margin-right: 40px; margin-top: 500px; width: 7%;}
+    #pagingArea{width:fit-content; margin-top: 30px;}
+    .currentPage{background-color: rgb(234,234,234) !important;}
 
     .modal-lg{max-width: 500px !important; overflow: hidden;}
     .modal-sm{max-width: 400px !important; overflow: hidden;}
@@ -76,7 +78,7 @@
     #myModalLabel{color: white; font-size: 14px; font-weight: bold;}
     #rest-history-table{width: 95%;}
     #rest-history-table th, #rest-history-table td{border: 1px solid lightgray;}
-    #rest-history-table th{text-align: center; background-color: rgb(234,234,234)}
+    #rest-history-table th{text-align: center; background-color: rgb(234,234,234);}
     #rest-used-history {
         font-weight: bold;
         font-size: 20px;
@@ -149,6 +151,7 @@
         resize: none;
         padding-left: 10px;
     }
+    #restEditTable td{text-align: center;}
     #rest-history-table{width: 465px;}
     #rest-history-table th, #rest-history-table td{border: 1px solid lightgray;}
     #rest-history-table th{text-align: center; background-color: rgb(234,234,234)}
@@ -215,31 +218,54 @@
                                 <th>휴가잔여일수</th>
                                 <th></th>
                             </tr>
-                            <tr>
-                                <td>대표</td>
-                                <td style="text-align: center;">김한우</td>
-                                <td></td>
-                                <td style="text-align: center;"><input type="number" class="form-control form-control-sm" value="20"></td>
-                                <td style="text-align: center;"><button type="button" class="btn btn-secondary" data-toggle="modal" href="#rest-used">휴가 사용 현황</button></td>
-                            </tr>
-                            <tr>
-                                <td>상무이사</td>
-                                <td style="text-align: center;">박성우</td>
-                                <td>총무팀</td>
-                                <td style="text-align: center;"><input type="number" class="form-control form-control-sm" value="13"></td>
-                                <td style="text-align: center;"><button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal">휴가 사용 현황</button></td>
-                            </tr>
-                            <tr>
-                                <td>팀장</td>
-                                <td style="text-align: center;">전선영</td>
-                                <td></td>
-                                <td style="text-align: center;"><input type="number" class="form-control form-control-sm" value="13"></td>
-                                <td style="text-align: center;"><button type="button" class="btn btn-secondary">휴가 사용 현황</button></td>
-                            </tr>
-                            <!--페이지네이션-->
+                            <c:forEach var="at" items="${ list }">
+	                            <tr>
+	                                <td>${ at.rank }</td>
+	                                <td>${ at.memName }</td>
+	                                <td>${ at.department }</td>
+	                                <td><input type="number" class="form-control form-control-sm" value="${ at.memTotalDate }"></td>
+	                                <td><button type="button" class="btn btn-secondary leaveHistory" onclick="history_click()" data-toggle="modal">휴가 사용 현황</button></td>
+	                            </tr>
+                            </c:forEach>
                         </table>
                     </form>
                     <button class="btn btn-dark" id="restEditBtn">저장</button>
+                    <!-- 페이징바 -->
+                    <div id="pagingArea">
+		                <ul class="pagination">
+		                	<c:choose>
+			                		<c:when test="${ pi.currentPage eq 1 }">
+				                   		<li class="page-item disabled"><a class="page-link">Previous</a></li>
+				                    </c:when>
+				                    <c:otherwise>
+		                    			<li class="page-item"><a class="page-link" href="adminAtt.ma?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+			                    	</c:otherwise>
+		                    </c:choose>
+		                    
+		                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+		                    		<c:choose>
+		                    			<c:when test="${ p eq pi.currentPage }">
+			                    			<li class="page-item"><a class="page-link currentPage" href="adminAtt.ma?currentPage=${ p }">${ p }</a></li>
+		                    			</c:when>
+		                    			<c:otherwise>
+			                    			<li class="page-item"><a class="page-link" href="adminAtt.ma?currentPage=${ p }">${ p }</a></li>
+		                    			</c:otherwise>
+		                    		</c:choose>
+		                    </c:forEach>
+		                    
+		                    <c:choose>
+		                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+				                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+				                </c:when>
+				                <c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="adminAtt.ma?currentPage=${ pi.currentPage+1 }">Next</a></li>
+				                </c:otherwise>    
+				            </c:choose>        
+		                </ul>
+		            </div>
+			               
+			      <br clear="both"><br>
+                    
                 </div>
 
                 <!--근태조정신청내역 탭-->
@@ -342,49 +368,66 @@
                     <div class="modal-title" id="myModalLabel"><i class="fas fa-bars"></i> 대표 김한우 휴가 사용 현황</div>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div id="rest-form">
-                            <table id="rest-history-table">
-                                <tr>
-                                    <th>입사일</th>
-                                    <td>2010-04-08</td>
-                                    <th>휴가 총 사용일</th>
-                                    <td width="60">10일</td>
-                                </tr>
-                                <tr>
-                                    <th>휴가 지급일수</th>
-                                    <td>30일</td>
-                                    <th>휴가잔여일</th>
-                                    <td>20일</td>
-                                </tr>
-                            </table>
-                            <br>
-                            <p id="rest-used-history">휴가 사용 내역</p>
-                            <br><br>
-                            <table id="rest-history-table">
-                                <tr>
-                                    <th>휴가종류</th>
-                                    <th>휴가일수</th>
-                                    <th>사용기간</th>
-                                    <th>사유보기</th>
-                                </tr>
-                                <tr>
-                                    <td>연차</td>
-                                    <td style="text-align: right;">2일</td>
-                                    <td style="text-align: center;">2021-07-01 ~ 2021-07-02</td>
-                                    <td style="text-align: center;">개인사유</td>
-                                </tr>
-                            </table>
-                            <!--페이지네이션-->
-                        </div>
-                    </form>
+                    <div id="rest-form">
+                        <table id="rest-history-table">
+                            <tr>
+                                <th>입사일</th>
+                                <td id="enrollDate">2010-04-08</td>
+                                <th>휴가 총 사용일</th>
+                                <td width="60" id="memTotalDate"></td>
+                            </tr>
+                            <tr>
+                                <th>휴가 지급일수</th>
+                                <td id="memVacDate">30일</td>
+                                <th>휴가잔여일</th>
+                                <td id="memTotalDate">20일</td>
+                            </tr>
+                        </table>
+                        <br>
+                        <p id="rest-used-history">휴가 사용 내역</p>
+                        <br><br>
+                        <table id="rest-history-table">
+                            <tr>
+                                <th>휴가종류</th>
+                                <th>휴가일수</th>
+                                <th>사용기간</th>
+                                <th>사유보기</th>
+                            </tr>
+                            <tr>
+                                <td id="leaveCate">연차</td>
+                                <td style="text-align: right;" id="leaveCount">2일</td>
+                                <td style="text-align: center;" id="leaveDate">2021-07-01 ~ 2021-07-02</td>
+                                <td style="text-align: center;" id="leaveContent">개인사유</td>
+                            </tr>
+                        </table>
+                        <!--페이지네이션-->
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <a href="#" data-dismiss="modal" style="color: lightslategray;">닫기</a>
                 </div>
             </div>
+            
         </div>
     </div>
+    
+    <script>
+       $(document).on("click", ".leaveHistory", function(){
+	       	var enrollDate = $(list.)
+	       	var memTotalDate = $(this).parent().prev().children().val();
+	       	console.log(memTotalDate);
+	       	$(".modal-body #memTotalDate").text( memTotalDate + "일" );
+       })
+       
+       function history_click(){
+    	   $.ajax({
+    		   url:"history.att?"
+    	   })
+       }
+       
+       
+       
+    </script>
 
     <!--근태조정신청확인 모달-->
     <div class="modal fade" id="enrcode-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

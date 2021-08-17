@@ -18,6 +18,8 @@ import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.department.model.service.DepartmentService;
 import com.kh.thezo.department.model.vo.Department;
+import com.kh.thezo.leave.model.vo.Leave;
+import com.kh.thezo.member.model.vo.Member;
 
 @Controller
 public class AttendanceController{
@@ -47,8 +49,19 @@ public class AttendanceController{
 		return "attendance/adminDeptManage";
 	}
 	
+	//근태관리 페이지(관리자)
 	@RequestMapping("adminAtt.ma")
-	public String attManage() {
+	public String attManage(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		int listCount = aService.memberListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Member> list = aService.selectMember(pi);
+		ArrayList<Leave> lData = aService.selectLeaveData(pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
+		model.addAttribute("lData", lData);
+		
 		return "attendance/adminAttManage";
 	}
 	

@@ -12,6 +12,49 @@
 		<result column="att_status" property="status"/>
 	</resultMap>
 	
+	<resultMap id="memberResult" type="Member">
+		<result column="mem_no" property="memNo"/>
+		<result column="mem_name" property="memName"/>
+		<result column="mem_id" property="memId"/>
+		<result column="mem_Pwd" property="memPwd"/>
+		<result column="gender" property="gender"/>
+		<result column="phone" property="phone"/>
+		<result column="email" property="email"/>
+		<result column="birth" property="birth"/>
+		<result column="zip_code" property="zipCode"/>
+		<result column="address" property="address"/>
+		<result column="address_extra" property="addressExtra"/>
+		<result column="address_detail" property="addressDetail"/>
+		<result column="enroll_date" property="enrollDate"/>
+		<result column="gender" property="gender"/>
+		<result column="resign_date" property="resignDate"/>
+		<result column="dep_no" property="depNo"/>
+		<result column="department" property="department"/>
+		<result column="job" property="job"/>
+		<result column="rank" property="rank"/>
+		<result column="extension_no" property="extensionNo"/>
+		<result column="origin_name" property="originName"/>
+		<result column="path" property="path"/> 
+		<result column="mem_vac_date" property="memVacDate"/> 
+		<result column="mem_used_date" property="memUsedDate"/> 
+		<result column="mem_total_date" property="memTotalDate"/> 
+		<result column="notice_auth" property="noticeAuth"/> 
+		<result column="status" property="status"/>
+		<result column="msg_restrict" property="msgRestrict"/> 
+	</resultMap>
+	
+	<resultMap id="LeaveResult" type="Leave">
+		<result column="doc_no" property="docNo"/>
+		<result column="mem_no" property="memnO"/>
+		<result column="start_date" property="startDate"/>
+		<result column="end_date" property="endDate"/>
+		<result column="leave_count" property="leaveCount"/>
+		<result column="leave_cate" property="leaveCate"/>
+		<result column="leave_content" property="leaveContent"/>
+		<result column="leave_enr_date" property="enrDate"/>
+		<result column="leave_status" property="leaveStatus"/>
+	</resultMap>
+	
 	<!-- 출근 버튼 입력 -->
 	<insert id="insertAtt">
 		insert
@@ -47,5 +90,41 @@
 	     where att_date = to_char(sysdate, 'yy/mm/dd')
 		   and mem_no = #{ memNo }
 	</select>
+	
+	<!-- 휴가일수 조회 페이지  리스트 조회 -->
+	<select id="attendanceListCount" resultType="_int">
+		select
+			   count(*)
+	      from member
+	</select>
+	
+	<!-- 휴가일수 조회 페이지 회원 정보 조회 -->
+	<select id="selectMember" resultMap="memberResult">
+		select
+			   mem_no
+			 , mem_name
+			 , enroll_date
+			 , department
+			 , rank
+			 , mem_total_date
+		  from member
+		 order
+		    by mem_no
+	</select>
+	
+	<!-- 휴가 사용 내역 조회 -->
+	<select id="selectLeaveData" resultMap="LeaveResult">
+		select
+			   start_date
+			 , end_date
+			 , leave_count
+			 , leave_content
+			 , leave_cate
+			 , leave_enr_date
+			 , leave_status
+	      from leave
+	     where mem_no = #{ memNo }
+	</select>
+	
 	
 </mapper>

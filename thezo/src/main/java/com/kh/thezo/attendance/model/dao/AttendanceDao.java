@@ -1,9 +1,14 @@
 package com.kh.thezo.attendance.model.dao;
 
+import java.util.ArrayList;
+
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.thezo.attendance.model.vo.Attendance;
+import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.leave.model.vo.Leave;
 import com.kh.thezo.member.model.vo.Member;
 
 @Repository
@@ -26,5 +31,23 @@ public class AttendanceDao {
 	
 	public Attendance attendanceData2(SqlSessionTemplate sqlSession, Member m) {
 		return sqlSession.selectOne("attendanceMapper.selectAttendance", m);
+	}
+	
+	public int memberListCount(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("attendanceMapper.attendanceListCount");
+	}
+	
+	public ArrayList<Member> selectMember(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectMember", null, rowBounds);
+	}
+	
+	public ArrayList<Leave> selectLeaveData(SqlSessionTemplate sqlSession, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectLeaveData", null, rowBounds);
 	}
 }

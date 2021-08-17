@@ -8,8 +8,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter @Setter
 @ToString
-public class Resource {
-	private int resourceNo;
-	private String category;
-	private String resourceName;
+public class ReCategory {
+	
+	private int categoryNo;
+	private String categoryName;
+	
 }

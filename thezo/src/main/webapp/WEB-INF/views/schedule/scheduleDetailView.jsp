@@ -167,9 +167,11 @@
 		<!-- Modal footer -->
 		<div class="modal-footer center">
 			<div class="button-area">
-				<button class="btn btn-secondary" data-dismiss="modal">취소</button>
-				<button class="btn btn-primary" type="button" id="updateSc">수정</button>
-				<button class="btn btn-danger" type="button" id="deleteModal" data-toggle="modal" data-target="#deleteSc">삭제</button>
+				<button class="btn btn-secondary" onclick="window.close();">취소</button>
+				<c:if test="${ loginUser.memNo eq sc.memNo }">
+					<button class="btn btn-primary" type="button" id="updateSc">수정</button>
+					<button class="btn btn-danger" type="button" id="deleteModal" data-toggle="modal" data-target="#deleteSc">삭제</button>
+				</c:if>
 			</div>
 			
 			<!-- The Modal -->

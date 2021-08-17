@@ -13,6 +13,7 @@ import lombok.ToString;
 public class Schedule {
 	
 	private int scNo;
+	private int memNo;
 	private String scWriter;
 	private String title;
 	private String scContent;

@@ -19,7 +19,7 @@
 		var calendar = new FullCalendar.Calendar(calendarEl, {
 			schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',	
 			initialView: 'resourceTimeGridDay',
-			editable: true,
+			editable: false,
 			selectable: true,
 			dayMaxEvents: true, // allow "more" link when too many events
 			dayMinWidth: 200,
@@ -76,25 +76,30 @@
 		});
 	  
 		$.ajax({
-			url :'select.re',
+			url :'select.re?caNo=' + ${ param.caNo },
 			cache: false,
 			success:function(list){
 				var resourceList = Object.values(JSON.parse(list));
-				//console.log(resourceList);
 				for(var i=0; i<resourceList.length; i++){
-					//resourceList[i].color = '#148CFF';
+					if(resourceList[i].resourceNo == 1){
+						resourceList[i].eventBackgroundColor = '#00BFFF';
+					}else if(resourceList[i].resourceNo == 2){
+						resourceList[i].eventBackgroundColor = '#FF8E99';
+					}else{
+						resourceList[i].eventBackgroundColor = '#FFAF0A';
+					}
 					calendar.addResource({
 						id: resourceList[i].resourceNo,
 						title: resourceList[i].resourceName,
-						category: resourceList[i].category
+						category: resourceList[i].category,
+						eventColor: resourceList[i].eventBackgroundColor
 					});
-					//console.log(resourceList[i]);
 				}
 			},error: function(){
-				console.log("자원예약 조회용 ajax 통신 실패");
+				console.log("자원 조회용 ajax 통신 실패");
 			}
 		});
-		  
+		
 		$.ajax({
 			url :'select.rez',
 			cache: false,
@@ -102,7 +107,6 @@
 				var rezList = Object.values(JSON.parse(list));
 				//console.log(rezList);
 				for(var i=0; i<rezList.length; i++){
-					//resourceList[i].color = '#148CFF';
 					calendar.addEvent({
 						id: rezList[i].rezNo,
 						resourceId: rezList[i].resourceNo,

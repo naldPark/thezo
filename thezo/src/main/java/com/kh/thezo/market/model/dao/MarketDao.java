@@ -11,6 +11,7 @@ import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.vo.Market;
+import com.kh.thezo.market.model.vo.PLike;
 
 @Repository
 public class MarketDao {
@@ -87,22 +88,17 @@ public class MarketDao {
 	}
 	
 	// 벼룩시장 찜하기 (수정중)
-	/*
-	
-    @Override
-    public void insertMarketLike(PLike pLike) throws Exception {
-        session.insert("marketMapper.createMarketLike",pLike);
+    public void insertMarketLike(SqlSessionTemplate sqlSession, PLike p) throws Exception {
+        sqlSession.insert("marketMapper.insertMarketLike",p);
     }
 
-    @Override
-    public void deleteMarketLike(PLike pLike) throws Exception {
-        session.delete("marketMapper.deleteMarketLike",pLike);
+    public void deleteMarketLike(SqlSessionTemplate sqlSession,PLike p) throws Exception {
+    	sqlSession.delete("marketMapper.deleteMarketLike",p);
     }
 
-    @Override
-    public void updateMarketLike(int memId) throws Exception {
-        session.update("marketMapper.updateMarketLike",memId);
+    public void updateMarketLike(SqlSessionTemplate sqlSession, String memId) throws Exception {
+    	sqlSession.update("marketMapper.updateMarketLike", memId);
     }
-    */
+    
 
 }

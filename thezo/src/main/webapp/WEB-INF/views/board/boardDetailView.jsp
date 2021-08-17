@@ -159,13 +159,10 @@ table {
 		        				for(var i in list){
 		        					value += "<tr>"
 				                              + "<th>" + list[i].replyWriter +"</th>"
-				                              + "<td><form id='postform' action='' method='post'>"
-				                                +"<input type='text' name='replyNo' id='replyNo' value='"
-				                                + list[i].replyNo +
-				                                + "'></form></td>"
 				                              + "<td style='width: 400px;'>" + list[i].replyContent + "</td>"
 				                              + "<td>" + list[i].createDate + "</td>"
-				                              + "<td><a href='' data-toggle='modal' data-target='#bReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
+				                              + "<td><input type='hidden' name='replyNo' id='replyNo' value='" + list[i].replyNo 
+				                              + "'> <a href='' data-toggle='modal' data-target='#bReplyReportForm'><img src='resources/images/warning.png' width='20' height='20' onclick='replyNo();'></a></td>"
 				                              + "<td><a href='deleteReply.bo?replyNo=" + list[i].replyNo + "&bno=" + ${ b.boardNo } + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
 				                           + "</tr>";
 		        				}
@@ -176,6 +173,12 @@ table {
 		        				console.log("댓글 리스트 조회용 ajax 통신 실패");
 		        			}
 		        		})
+		        		
+		        		/*
+		        		function replyNo(){
+		        			$(this).prev().val() 
+		        		}
+		        		*/
 		        	}
 		        </script>
 			
@@ -266,7 +269,8 @@ table {
 								<form action="boardReplyReport.bo" method="post">
 									<!-- 신고할 내용 입력 -->
 									<input type="hidden" name="rpId" value="${ loginUser.memId }"> 
-									<input type="hidden" name="rpNo" value="${ b.boardNo}">
+									<input type="hidden" name="rpNo" value="${ b.boardNo}"> 
+									<!-- 게시글 번호가 아니라 해당 댓글번호를 넣고싶은데..? (replyNo) -->
 									<input type="hidden" name="boardType" value="1">
 									<input type="hidden" name="rpType" value="2"> 
 									<b>신고구분</b><br><br>

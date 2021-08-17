@@ -259,29 +259,34 @@ public class MarketController {
 		}
 	}
 	
-	
-	
 	/*
-    @ResponseBody
-    @RequestMapping(value = "productLike.mk", method = RequestMethod.POST, produces = "application/json")
-    public int heart(HttpServletRequest httpRequest, int marketNo, String memId, int productLike) throws Exception {
-    	
-    	System.out.println(marketNo);
-    	System.out.println(memId);
-    	System.out.println(productLike);
-    	
-    	// 찜하기 테이블에 추가하기 
-    	//PLike p = new PLike();
-    	//p.setMarketNo(marketNo);
-    	//p.setMemId(memId);
-    	
-    	// 동시에 market게시글에 productLike를 update해야함
-    	
-    	return productLike;
-    }
-	
+	 // 벼룩시장 : 찜하기 
+	 @ResponseBody
+	 @RequestMapping(value = "productLike.mk", method = RequestMethod.POST, produces = "application/json")
+	    public int heart(HttpServletRequest httpRequest, String memId) throws Exception {
+
+	        int heart = Integer.parseInt(httpRequest.getParameter("heart"));
+	        int marketNo = Integer.parseInt(httpRequest.getParameter("marketNo"));
+	        // String memId = ((Member) httpRequest.getSession().getAttribute("loginUser")).getMemId();
+	       
+	        PLike p = new PLike();
+	        p.setMarketNo(marketNo);
+	        p.setMemId(memId);
+	        
+	        System.out.println(heart);
+
+	        if(heart >= 1) {
+	            mkService.deleteMarketLike(p);
+	            heart=0;
+	        } else {
+	            mkService.insertMarketLike(p);
+	            heart=1;
+	        }
+
+	        return heart;
+
+	    }
 	*/
-	
 	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
 	public String saveFile(HttpSession session, MultipartFile upfile) {
 		// 경로

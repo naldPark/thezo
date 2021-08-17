@@ -247,6 +247,34 @@
 			  )  
 	</insert>
 
-	
+	<insert id="insertMarketLike">
+		insert 
+		  into p_like
+		     (
+		       like_no
+		     , market_no
+		     , mem_id  
+		     )
+		 values
+		 	 (
+		 	   seq_lkno.nextval
+		 	 , #{marketNo}
+		 	 , #{memId}    
+		 	 )   
+        </insert>
+
+        <delete id="deleteBoardLike">
+            DELETE FROM tbl_board_like
+            WHERE board_id = #{boardId} AND user_id = #{userId}
+        </delete>
+
+        <select id="updateBoardLike">
+            UPDATE tbl_board
+            SET
+            board_likecnt = (SELECT COUNT(*)
+            FROM tbl_board_like
+            WHERE board_id = #{boardId})
+            WHERE board_id = #{boardId}
+        </select>
 
 </mapper>

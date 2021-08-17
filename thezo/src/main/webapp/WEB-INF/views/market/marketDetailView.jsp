@@ -52,13 +52,17 @@
 			    		}
 			    	
 			    		$(".heart").on("click", function(){
+			    			
+			    			 var that = $(".heart");
+			    			 var sendData = {'marketNo' : '${ mk.marketNo }','heart' : that.prop('name')};
+			    			
 			    			$.ajax({
 			    				url:'productLike.mk',
-			    				data:{
-			    					marketNo:${ mk.marketNo },
-			    					memId:'${ loginUser.memId }',
-			    					productLike:${ mk.productLike }
-			    				}, sucess : function(data){
+			    				data: {
+			    					sendData,
+			    					memId:'${ loginUser.memId }'
+			    				}
+			    				sucess : function(data){
 			    					that.prop('name',data);
 			    					if(data=1){
 			    						$('#heart').prop("src", "/resources/images/like2.png");
@@ -67,67 +71,13 @@
 			    					}
 			    				}
 			    				
-			    			
 			    			})
 			    		})
 			    		
-			    		
-			    		
 			    	})
-			    
-			    
 			    </script>
 			    
-			    
-			    <!--
-			    <script>
-				    $(document).ready(function () {
-				
-				        var heartval = ${ heart };
-				
-				        if(heartval>0) {
-				            console.log(heartval);
-				            $("#heart").prop("src", "resources/images/like2.png");
-				            $(".heart").prop('name',heartval)
-				        }
-				        else {
-				            console.log(heartval);
-				            $("#heart").prop("src", "resources/images/like1.png");
-				            $(".heart").prop('name',heartval)
-				        }
-				        
-
-				        $(".heart").on("click", function () {
-
-				            var productLike = $(".heart");
-				            var sendData = {'marketNo' : '${ mk.marketNo }', 'heart' : productLike.prop('name')};
-				            
-				            $.ajax({
-				                url :'productLike.mk',
-				                type :'POST',
-				                data : {
-				                	sendData: sendData,
-				                	memId:'${ loginUser.memId }'
-				                },success : function(data){
-				                    that.prop('name',data);
-				                    if(data==1) {
-				                        $('#heart').prop("src","/resources/images/like2.png");
-				                    }
-				                    else{
-				                        $('#heart').prop("src","/resources/images/like1.png");
-				                    }
-
-
-				                }
-				            });
-				        });
-				
-				    });
-				</script>
-				  -->			    
-			    
-			    
-			    
+			  
                 <a href="" data-toggle="modal" data-target="#marketReportForm" style="text-decoration:none;">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <!--게시글 작성자만 보이도록-->
 				<c:if test="${ loginUser.memId eq mk.marketWriter}">

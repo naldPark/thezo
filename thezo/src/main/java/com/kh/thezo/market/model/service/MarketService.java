@@ -7,6 +7,7 @@ import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.vo.Market;
+import com.kh.thezo.market.model.vo.PLike;
 
 public interface MarketService {
 	
@@ -43,5 +44,7 @@ public interface MarketService {
 	// 10. 사용자 : 벼룩시장 댓글 삭제 
 	int deleteMarketReply(int replyNo);
 			
-
+	// 11. 사용자 : 벼룩시장 찜하기 
+	public void insertMarketLike(PLike p);
+	public void deleteMarketLike(PLike p);
 }

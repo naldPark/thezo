@@ -12,6 +12,7 @@ import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.dao.MarketDao;
 import com.kh.thezo.market.model.vo.Market;
+import com.kh.thezo.market.model.vo.PLike;
 
 @Service
 public class MarketServiceImpl implements MarketService {
@@ -102,23 +103,38 @@ public class MarketServiceImpl implements MarketService {
 
 	
 	// 벼룩시장 찜하기 (수정중)
-	/*
-	 @Override
-	 public void insertMarketLike(PLike pLike) throws Exception {
-	    dao.insertBoardLike(vo);
-	    dao.updateBoardLike(vo.getBoardId());
-	 }
+	@Override
+	public void insertMarketLike(PLike p) {
+		try {
+			mkDao.insertMarketLike(sqlSession, p);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			mkDao.updateMarketLike(sqlSession, p.getMemId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-	 @Override
-	 public void deleteMarketLikd(PLike pLike) throws Exception {
-	    dao.deleteMarketLikd(pLike);
-	    dao.updateBoardLike(pLike.getMemId());
-	 }
+	@Override
+	public void deleteMarketLike(PLike p) {
+		try {
+			mkDao.deleteMarketLike(sqlSession, p);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			mkDao.updateMarketLike(sqlSession, p.getMemId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	    
-	   
-	 */
-	
-
 	
 
 }

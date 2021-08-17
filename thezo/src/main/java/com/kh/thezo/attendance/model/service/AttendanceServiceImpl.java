@@ -58,7 +58,12 @@ public class AttendanceServiceImpl implements AttendanceService{
 	public ArrayList<Leave> selectLeaveData(PageInfo pi) {
 		return aDao.selectLeaveData(sqlSession, pi);
 	}
-	
+
+	// 회원 휴가 정보 조회(모달용)
+	@Override
+	public Leave selectLeaveData2(int memNo) {
+		return aDao.selectLeaveData2(sqlSession, memNo);
+	}
 	
 
 }

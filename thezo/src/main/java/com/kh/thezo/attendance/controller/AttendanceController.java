@@ -112,4 +112,17 @@ public class AttendanceController{
 		return new Gson().toJson(attData);			
 	}
 	
+	//휴가 내역 조회
+	@ResponseBody
+	@RequestMapping(value="history.att", produces="application/json; charset=utf-8")
+	public String attHistory(int memNo, HttpSession session) {
+		Leave lData = aService.selectLeaveData2(memNo);
+		session.setAttribute("lData", lData);
+		return new Gson().toJson(lData);
+	}
+	
+	
+	
+	
+	
 }

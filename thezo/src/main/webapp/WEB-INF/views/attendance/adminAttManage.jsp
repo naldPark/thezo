@@ -220,6 +220,7 @@
                             </tr>
                             <c:forEach var="at" items="${ list }">
 	                            <tr>
+	                            	<td style="visibility:hidden">${ at.memNo }</td>
 	                                <td>${ at.rank }</td>
 	                                <td>${ at.memName }</td>
 	                                <td>${ at.department }</td>
@@ -413,15 +414,22 @@
     
     <script>
        $(document).on("click", ".leaveHistory", function(){
-	       	var enrollDate = $(list.)
 	       	var memTotalDate = $(this).parent().prev().children().val();
 	       	console.log(memTotalDate);
 	       	$(".modal-body #memTotalDate").text( memTotalDate + "일" );
        })
        
        function history_click(){
+    	   var rname = $(this).parent().prev().prev().prev().prev().prev().val();
+    	   
     	   $.ajax({
-    		   url:"history.att?"
+    		   url: "history.att",
+    		   data:
+    			   memNo : rname
+    		   
+    		   success:function(lData){
+    			   $(".modal-body #leaveCate").text(lData.leaveCate);
+    		   }
     	   })
        }
        

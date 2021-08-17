@@ -357,7 +357,7 @@
     			console.log(attData);
     			alert("퇴근 완료!!\n오늘도 수고하셨습니다");
     			var value = attData.finTime;
-    						$("#finTime").html(value);
+				$("#finTime").html(value);
 		    	document.getElementById("finish").disabled = true;
     		},error:function(){
     			alert("출근 입력 실패!!\n관리자에게 문의바랍니다"); 			

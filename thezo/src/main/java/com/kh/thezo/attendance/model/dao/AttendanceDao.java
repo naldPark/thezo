@@ -50,4 +50,12 @@ public class AttendanceDao {
 		
 		return (ArrayList)sqlSession.selectList("attendanceMapper.selectLeaveData", null, rowBounds);
 	}
+	
+	public Leave selectLeaveData2(SqlSessionTemplate sqlSession, int memNo) {
+		return sqlSession.selectOne("attendanceMapper.selectLeaveData2");
+	}
+	
+	
+	
+	
 }

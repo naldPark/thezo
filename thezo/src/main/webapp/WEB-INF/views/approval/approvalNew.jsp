@@ -58,7 +58,7 @@
                 <h6>결재양식을 선택 해 주세요</h6>
                 <hr>
                 <br>
-                <form action="new.appr" method="post">
+                <form action="new.appr" id="newApprForm" method="post">
                     <div class="w3-row-padding">
                         <div class="w3-third">&nbsp;</div>
                         <div class="w3-twothird">
@@ -152,6 +152,8 @@
         $(".page-link").click(function(){
     
               var page = $(this).text();
+              console.log("왜이럼");
+
               if(page =="이전"){   //main.appr?currentPage=${ pi.currentPage-1 }&apprFolder=${apprFolder}
                 $("#apprCurrentPage").val("${ pi.currentPage-1 }");
               } else if(page=="다음"){
@@ -159,7 +161,7 @@
               } else {
                 $("#apprCurrentPage").val(page);
               }
-              $("#new.appr").submit();
+              $("#newApprForm").submit();
         })
     
         $(function(){

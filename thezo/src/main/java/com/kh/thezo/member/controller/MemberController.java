@@ -171,7 +171,7 @@ public class MemberController {
 		return mv;
 	}
 	
-	/*
+	
 	// 회원정보관리(사원등록,수정):관리자 -이성경
 	// 회원 정보 수정
 	@RequestMapping("adMemberUpdate.me")
@@ -205,7 +205,7 @@ public class MemberController {
 			return "common/erroPage";
 		}
 	}
-	*/
+	
 	
 	
 	

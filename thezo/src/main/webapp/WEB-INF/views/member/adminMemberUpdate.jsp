@@ -187,16 +187,16 @@
                                     <td colspan="2">
                                         <div class="form-group" class="form-row" align="left">
                                             <label for="sel1" align="left">부서</label>
-                                            <select class="form-control" name="department" style="width: 100%;" id="department" required>
-                                              <option>인사팀</option>
-                                              <option>총무팀</option>
-                                              <option>회계팀</option>
-                                              <option>개발1팀</option>
-                                              <option>개발2팀</option>
-                                              <option>인프라팀</option>
-                                              <option>운영팀</option>
-                                              <option>영업팀</option>
-                                              <option>구매팀</option>
+                                            <select class="form-control" name="department" style="width: 100%;" id="department"  required>
+                                              <option value="인사팀">인사팀</option>
+                                              <option value="총무팀">총무팀</option>
+                                              <option value="회계팀">회계팀</option>
+                                              <option value="개발1팀">개발1팀</option>
+                                              <option value="개발2팀">개발2팀</option>
+                                              <option value="인프라팀">인프라팀</option>
+                                              <option value="운영팀">운영팀</option>
+                                              <option value="영업팀">영업팀</option>
+                                              <option value="구매팀">구매팀</option>
                                             </select>
                                         </div>
                                     </td>
@@ -207,22 +207,22 @@
                                             <label for="sel1">직책</label>
                                             <select class="form-control" name="job" id="job" align="center">
                                                 <option></option>
-                                                <option>팀장</option>
-                                                <option>본부장</option>
-                                                <option>대표이사</option>
+                                                <option value="팀장">팀장</option>
+                                                <option value="본부장">본부장</option>
+                                                <option value="대표이사">대표이사</option>
                                             </select>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="form-group" class="form-row" align="left">
                                             <label for="sel1" align="left">직급</label>
-                                            <select class="form-control" name="rank"  id="rank" align="center">
-                                                <option>사원</option>
-                                                <option>대리</option>
-                                                <option>과장</option>
-                                                <option>부장</option>
-                                                <option>상무</option>
-                                                <option>대표이사</option>
+                                            <select class="form-control" name="rank"  id="rank" align="center" >
+                                                <option value="사원">사원</option>
+                                                <option value="대리">대리</option>
+                                                <option value="과장">과장</option>
+                                                <option value="부장">부장</option>
+                                                <option value="상무">상무</option>
+                                                <option value="대표이사">대표이사</option>
                                             </select>
                                         </div>
                                     </td>
@@ -235,30 +235,36 @@
                                 </tr>
                             </table>
                             
+                            
                             <script>
-                            	$(function(){
-                            		var department = "${ m.department }"
-                            		var job = "${ m.job }"
-                            		var rank = "${ m.rank }"
-                            		
-                            		$("#department option").each(function(indext,e){
-                            			if(department.indexOf($(this).val()) != -1){
-                            				$(this).prop("selected",true);
-                            			}
-                            		})
-                            		$("#job option").each(function(index,e){
-                            			if(job.indexOf($(this).val()) != -1){
-                            				$(this).prop("selected",true);
-                            			}
-                            		})
-                            		$("#rank option").each(function(index,e){
-                            			if(rank.indexOf($(this).val()) != -1){
-                            				$(this).prop("selected",true);
-                            			}
-                            		})
+                            	var $department = "${ m.department }"
+                            	
+                            	$("#department>option").each(function(){
+                    	            if($(this).val() == $department){
+                    	                $(this).attr("selected",true);
+                    	               }
+                    	        })
+                    	        
+                    	        var $job = "${ m.job }"
+                    	        
+                            	$("#job>option").each(function(){
+                    	            if($(this).val() == $job){
+                    	                $(this).attr("selected",true);
+                    	               }
+                    	        })
+                    	        
+                    	        var $rank = "${ m.rank }"
+                    	        
+                            	$("#rank>option").each(function(){
+                    	            if($(this).val() == $rank){
+                    	                $(this).attr("selected",true);
+                    	               }
+                    	        })
+                            	
                             
                             </script>
                             
+                            	
                         </div>
 
 

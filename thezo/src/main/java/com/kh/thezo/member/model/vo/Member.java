@@ -35,7 +35,7 @@ public class Member {
 	private String rank;
 	private String extensionNo;
 	private Date enrollDate;
-	private Date resignDate;
+	private String resignDate;
 	private String originName;
 	private String path;
 	private int memVacDate;

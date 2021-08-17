@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.mail.MessagingException;
 //@author Jaewon.s
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.thezo.approval.model.service.ApprovalService;
+import com.kh.thezo.approval.model.vo.Approval;
 import com.kh.thezo.attendance.model.service.AttendanceService;
 import com.kh.thezo.attendance.model.vo.Attendance;
 import com.kh.thezo.chatting.model.service.ChattingService;
@@ -70,27 +72,27 @@ public class MemberController {
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("attData", attData);
 			
-//			// 전자결재 파트 시작 (DB 확정되고 테스트 단계에서 주석 지우겠습니다)
-//				HashMap<String, Integer> mainApprCount= apprService.mainApprCount(loginUser.getMemNo());
-//				Approval appr = new Approval();
-//				appr.setStatus("");
-//				appr.setMemNo(loginUser.getMemNo());
-//				appr.setApprFolder("main");
-//				ArrayList<Approval> apprList = apprService.selectApprovalMain(appr);
-//				session.setAttribute("apprList", apprList);
-//				session.setAttribute("mainApprCount", mainApprCount);
-//			// 전자결재 파트 끝
-//			
-//			// 이메일 파트 시작 (DB 확정되고 테스트 단계에서 주석 지우겠습니다)
-//			try {
-//				mailController.mailReceivecheck(loginUser.getEmail(),loginUser.getMemNo(), session);
-//			} catch (MessagingException e) {
-//				e.printStackTrace();
-//			}
-//				
-//				int mainMailCount= mailService.mainMailCount(loginUser.getMemNo());
-//				session.setAttribute("mainMailCount", mainMailCount);
-//			// 이메일 파트 끝
+			// 전자결재 파트 시작 (DB 확정되고 테스트 단계에서 주석 지우겠습니다)
+				HashMap<String, Integer> mainApprCount= apprService.mainApprCount(loginUser.getMemNo());
+				Approval appr = new Approval();
+				appr.setStatus("");
+				appr.setMemNo(loginUser.getMemNo());
+				appr.setApprFolder("main");
+				ArrayList<Approval> apprList = apprService.selectApprovalMain(appr);
+				session.setAttribute("apprList", apprList);
+				session.setAttribute("mainApprCount", mainApprCount);
+			// 전자결재 파트 끝
+			
+			// 이메일 파트 시작 (DB 확정되고 테스트 단계에서 주석 지우겠습니다)
+			try {
+				mailController.mailReceivecheck(loginUser.getEmail(),loginUser.getMemNo(), session);
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+				
+				int mainMailCount= mailService.mainMailCount(loginUser.getMemNo());
+				session.setAttribute("mainMailCount", mainMailCount);
+			// 이메일 파트 끝
 
 			mv.setViewName("redirect:/");
 			

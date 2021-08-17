@@ -531,6 +531,7 @@
 		    by rp_code desc
 	</select>
 	
+	<!-- 신고관리 : 상세조회 -->
 	<select id="selectReport" resultMap="reportResult">
 		select
 		       rp_code
@@ -546,5 +547,22 @@
           from report
          where rp_code=#{rpCode}    
 	</select>
+	
+	<!-- 신고관리 : 해당 신고참조글이 삭제가 되면 처리완료로 상태 변경-->
+	<update id="reportBoardUpdate">
+		update
+			   report
+		   set 
+               status = #{status}
+		 where rp_code = #{rpCode}
+	</update>
 
+
+	<!-- 신고관리 : 해당 신고참조글 STATUS='N'으로  변경 -->
+	<update id="updateBoardStatus">
+		update
+				  board
+			  set status = 'N'
+			where board_no = #{rpNo}  
+	</update>
 </mapper>

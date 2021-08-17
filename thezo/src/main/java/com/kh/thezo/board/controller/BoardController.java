@@ -26,6 +26,7 @@ import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
+import com.kh.thezo.member.model.vo.Member;
 
 @Controller
 public class BoardController {
@@ -327,7 +328,7 @@ public class BoardController {
 		return "board/boardUpdateForm";
 	}
 		
-	// 공지사항 수정하기 (사용자) 
+	// 사내게시판 수정하기 (사용자) 
 	@RequestMapping("boardUpdate.bo")
 	public String updateBoard(BoardFile bf, Board b, MultipartFile reupfile, HttpSession session, Model model) {
 		
@@ -497,6 +498,54 @@ public class BoardController {
 		return mv;
 	}
 	
+	// 신고관리 처리하기 
+	@RequestMapping("reportUpdate.bo")
+	public String reportUpdate(Report r , int rpNo, HttpSession session, Model model) {
+		
+		// 해당 신고참조 게시글 상태를 N으로 변경
+		int result1 = bService.updateBoardStatus(rpNo);
+		
+		if(result1 > 0) {
+			// report의 상태 : N => Y로 변경
+			int result2 = bService.reportBoardUpdate(r);
+			
+			System.out.println(result2);
+			
+			if(result2 > 0) {
+				session.setAttribute("alertMsg", "성공적으로 신고 처리되었습니다.");
+				return "redirect:boardReport.bo";
+			}else {
+				model.addAttribute("errorMsg", "신고처리 실패");
+				return "common/erroPage";
+			}
+			
+		}else{
+			model.addAttribute("errorMsg", "신고처리 실패");
+			return "common/erroPage";
+		}
+		
+		
+		/*
+		if(r.getRpType() == 1) { // 게시글인 경우
+			
+			// report의 상태 : N => Y로 변경
+			int result1 = bService.reportBoardUpdate(r);
+			// 해당 신고참조 게시글 상태를 N으로 변경
+			int result2 = bService.updateBoardStatus(rpNo);
+			
+			if(result1 > 0 && result2>0) {
+				session.setAttribute("alertMsg", "성공적으로 신고 처리되었습니다.");
+				return "redirect:boardReport.bo";
+			}else{
+				model.addAttribute("errorMsg", "신고처리실패");
+				return "common/erroPage";
+			}
+		}else {
+			
+		}
+		*/
+		
+	}
 	
 
 	

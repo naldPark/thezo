@@ -202,4 +202,14 @@ public class BoardDao {
 		return sqlSession.selectOne("boardMapper.selectReport", rpCode);
 	}
 	
+	// 신고관리 : 신고글 status => Y(처리완료)
+	public int reportBoardUpdate(SqlSessionTemplate sqlSession, Report r) {
+		return sqlSession.update("boardMapper.reportBoardUpdate", r);
+	}
+
+	// 신고관리 : 신고 참조글 상태 N으로 변경
+	public int updateBoardStatus(SqlSessionTemplate sqlSession, int rpNo) {
+		return sqlSession.update("boardMapper.updateBoardStatus", rpNo);
+	}
+	
 }

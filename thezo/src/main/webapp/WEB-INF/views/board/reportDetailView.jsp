@@ -48,7 +48,7 @@ table {
 			</h2>
 			
 			<br><br><br><br>
-			<form action="" id="reportUpdateForm" method="post">
+			<form action="reportUpdate.bo" id="reportUpdateForm" method="post">
 				<table align="center">
 					<tr>
 						<th>신고번호</th>
@@ -112,6 +112,8 @@ table {
 				<br><br>
 
 				<div align="center">
+					<input type="hidden" name="rpNo" value="${ r.rpNo }">
+					<input type="hidden" name="rpCode" value="${ r.rpCode }">
 					<a class="btn btn-secondary" href="boardReport.bo">목록</a> 
 					<button type="submit" class="btn btn-secondary">확인</button>
 				</div>
@@ -119,14 +121,20 @@ table {
 				
 			</form>
 			
+			<script>
+			 
+	            var $status = "${ r.status }"
+	                
+	            $("#status>option").each(function(){
+	            	if($(this).val() == $status){
+	                	$(this).attr("selected",true);
+	                }
+	            })
+              </script>
 			
 			
 			
 		</div>
-		
-		
-		
-		
 		
 		
 	</div>

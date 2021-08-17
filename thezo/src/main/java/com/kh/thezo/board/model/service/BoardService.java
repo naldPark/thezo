@@ -92,4 +92,9 @@ public interface BoardService {
 		
 		// 3. 신고관리 : 상세조회용
 		Report selectReport(int rpCode);
+		
+		// 4. 신고관리 : 신고 처리(게시글)
+		int reportBoardUpdate(Report r);
+		int updateBoardStatus(int rpNo);
+		
 }

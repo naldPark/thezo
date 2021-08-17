@@ -232,6 +232,18 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.selectReport(sqlSession, rpCode);
 	}
 
+	// 신고관리 : 신고글 status => Y(처리완료)
+	@Override
+	public int reportBoardUpdate(Report r) {
+		return bDao.reportBoardUpdate(sqlSession, r);
+	}
+
+	// 신고관리 : 신고 참조글 상태 N으로 변경
+	@Override
+	public int updateBoardStatus(int rpNo) {
+		return bDao.updateBoardStatus(sqlSession, rpNo);
+	}
+
 	
 
 	

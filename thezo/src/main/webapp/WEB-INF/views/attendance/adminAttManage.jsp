@@ -10,11 +10,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script>
-    window.onload = function(){
-        $("#tab-1").click();
-    }
-</script>
+
 <style>
     .outer-wrap{height: 200px;}
     .sub-menu{float: left; width: 30%; height: 100%;}
@@ -42,16 +38,6 @@
 
     .content-other{display: none;}
 
-    .cbtn{
-        font-size: 14px;
-        background-color: gray;
-        color: white;
-        border: 0;
-        padding-left : 3%;
-        padding-right : 3%;
-    }
-    #tab-1 {width: 30%; height: 100%;}
-    #tab-2 {width: 40%; height: 100%;}
 
     .content{height: 800px;}
 
@@ -174,18 +160,7 @@
 		document.getElementById("admin-header").style.display ="block"; 
         document.getElementById("admin-mode").style.color = "red";
 	</script>
-    <script>
-
-        function changetab1(){
-            document.all.restEditTap.style.display = 'block';
-            document.all.adminenrstatement.style.display = 'none';
-        }
-
-        function changetab2(){
-            document.all.restEditTap.style.display = 'none';
-            document.all.adminenrstatement.style.display = 'block';
-        }
-    </script>
+    
 
     <section>
 		<div class="outer" align="center">
@@ -193,24 +168,18 @@
                 <div class="sub-menu">
                     <div id="sub-name"><i class="fas fa-laptop-house"></i> 근태관리</div>
                     <div class="tab" id="sub-button">
-                        <button onclick="changetab1()" id="tab-1" type="button" class="cbtn">휴가일수 수정</button>&nbsp;
-                        <button onclick="changetab2()" id="tab-2" type="button" class="cbtn">근태조정신청내역</button>&nbsp;
+                        <button onclick="location.href='adminAtt.ma'" id="tab-1" type="button" class="btn btn-secondary focus">휴가일수 수정</button>&nbsp;
+                        <button onclick="location.href='adminAttFixRequest.ma'" id="tab-2" type="button" class="btn btn-secondary">근태조정신청내역</button>&nbsp;
                     </div>
                 </div>
-                <script>
-                    $(".cbtn").click(function(){
-                        $(".cbtn").removeClass("focus");
-    
-                        $(this).addClass("focus");
-                    })
-                </script>
+                
             </div>
 
             <div class="content">
                 <!--휴가일수 수정 탭-->
                 <div id="restEditTap">
                     <form>
-                        <table id="restEditTable">
+                        <table id="restEditTable" class="table table-bordered">
                             <tr>
                                 <th width="200">직책</th>
                                 <th width="100">이름</th>
@@ -268,95 +237,7 @@
                     
                 </div>
 
-                <!--근태조정신청내역 탭-->
-                <div id="adminenrstatement">
-                    <div id="enr-top">
-                        <div id="enr-front">검색기간</div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="total" name="condition" checked> 
-                            <label class="form-check-label" style="margin-right: 5%;">
-                            전체
-                            </label>
-                            <input class="form-check-input" type="radio" name="condition" value="1" style="margin-left: 5%;"> 
-                            <label class="form-check-label" style="margin-left: 23%;">
-                            기간
-                            </label>
-                        </div>
-                        <div class="term" id="total-search">
-                            <input type="date" id="start">&nbsp;
-                            ~
-                            &nbsp;<input type="date" id="end">
-                        </div>
-                        <script>
-                            $('input[type=radio][name=condition]').on('click',function(){
-                                var chkValue = $('input[type=radio][name=condition]:checked').val();
-        
-                                if(chkValue == '1'){
-                                    $('.term').css('display', 'block');
-                                    $('.total').css('display', 'none');
-                                } else{
-                                    $('.term').css('display', 'none');
-                                    $('.total').css('display', 'block');
-                                }
-                            });
-                        </script>
-                    </div>
-                    <div id="enr-content">
-                        <div class="total"> <!--전체 버튼 클릭시-->
-                            <table id="enr-table">
-                                <thead>
-                                    <tr>
-                                        <th width="100">No.</th>
-                                        <th width="250">작성일</th>
-                                        <th width="580">내용</th>
-                                        <th width="230">진행상황</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><a class="enr-code" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#enrcode-modal">314</a></td>
-                                        <td>2021.07.01</td>
-                                        <td>출근</td>
-                                        <td>조정중</td>
-                                    </tr>
-                                    <tr>
-                                        <td>313</td>
-                                        <td>2021.06.15</td>
-                                        <td>지각(2021/06/15/ 화 08:31:02)</td>
-                                        <td>승인완료</td>
-                                    </tr>
-                                    <tr>
-                                        <td>312</td>
-                                        <td>2021.04.12</td>
-                                        <td>퇴근</td>
-                                        <td>조정중</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <!--페이지네이션 추가-->
-                        </div>
-                        <div class="term" style="display: none;"> <!--기간 버튼 클릭시-->
-                            <table id="enr-table">
-                                <thead>
-                                    <tr>
-                                        <th width="100">No.</th>
-                                        <th width="250">작성일</th>
-                                        <th width="580">내용</th>
-                                        <th width="230">진행상황</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><a class="enr-code" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#enrcode-modal">314</a></td>
-                                        <td>2021.07.01</td>
-                                        <td>출근</td>
-                                        <td>조정중</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>
@@ -429,52 +310,7 @@
        
     </script>
 
-    <!--근태조정신청확인 모달-->
-    <div class="modal fade" id="enrcode-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header" id="myModalheader2">
-                    <div class="modal-title" id="myModalLabel"><i class="fas fa-bars"></i> 근태 조정 신청</div>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div id="enr-form">
-                            <table id="enr-modal-table">
-                                <tr>
-                                    <th width="100">신청 날짜</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="2021년 7월 1일 (월요일)" disabled></td>
-                                </tr>
-                                <tr>
-                                    <th>현재 상태</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="출근 (2021/07/01 월) 13:45" disabled></td>
-                                </tr>
-                                <tr>
-                                    <th>사유</th>
-                                    <td>
-                                        <div class="form-group">
-                                            <textarea class="form-control" disabled>출근 시간이 잘못 입력되었습니다.</textarea>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>출근</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="13:45" ></td>
-                                </tr>
-                                <tr>
-                                    <th>퇴근</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="20:30" ></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <a href="" style="color: rgb(26,188,156);">수정하기</a>&nbsp;
-                    <a href="#" data-dismiss="modal" style="color: lightslategray;">취소하기</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <!--모달 기능-->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

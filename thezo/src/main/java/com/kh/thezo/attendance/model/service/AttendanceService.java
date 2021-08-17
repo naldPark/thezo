@@ -1,6 +1,7 @@
 package com.kh.thezo.attendance.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.thezo.attendance.model.vo.Attendance;
 import com.kh.thezo.common.model.vo.PageInfo;
@@ -24,5 +25,16 @@ public interface AttendanceService {
 	int memberListCount();
 	ArrayList<Member> selectMember(PageInfo pi);
 	ArrayList<Leave> selectLeaveData(PageInfo pi);
+	
+	// (날드)관리자 : 근태조정신청내역 조회 카운트
+		
+	public int selectAdminFixRequestListCount(HashMap<String,String> searchDate);
+			
+	// (날드)관리자 : 근태조정신청내역 조회
+	public ArrayList<Attendance> selectAdminFixRequestList(HashMap<String,String> searchDate, PageInfo pi);
+	
+	// (날드)관리자 : 근태조정신청내역 조회
+	public int updateAdminFixRequest(Attendance a);
+		
 	
 }

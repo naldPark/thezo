@@ -1,6 +1,7 @@
 package com.kh.thezo.attendance.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,28 @@ public class AttendanceServiceImpl implements AttendanceService{
 	@Override
 	public ArrayList<Leave> selectLeaveData(PageInfo pi) {
 		return aDao.selectLeaveData(sqlSession, pi);
+	}
+	
+	// (날드)관리자 : 근태조정신청내역 조회 카운트
+	@Override
+	public int selectAdminFixRequestListCount(HashMap<String,String> searchDate) {
+		return aDao.selectAdminFixRequestListCount(sqlSession,searchDate);
+	}
+		
+	// (날드)관리자 : 근태조정신청내역 조회
+	@Override
+	public ArrayList<Attendance> selectAdminFixRequestList(HashMap<String,String> searchDate, PageInfo pi) {
+		return aDao.selectAdminFixRequestList(sqlSession, searchDate,pi);
+	}
+	
+	// (날드)관리자 : 근태조정신청내역 업데이트
+	@Override
+	public int updateAdminFixRequest(Attendance a) {
+		int result= 0;
+		result = aDao.updateAdminFixRequest(sqlSession, a);
+		result = result*aDao.updateAdminFixRequest2(sqlSession, a);
+		result = result*aDao.updateAdminFixRequest3(sqlSession, a);
+		return result;
 	}
 	
 	

@@ -19,5 +19,9 @@ public class Attendance {
 	private String finTime;
 	private int totalTime;
 	private String status;
+	// 근태조정신청내역 area
+	private String attBoardStatus;
+	private int attBoardNo;
+	private String attStaContent;
 	
 }

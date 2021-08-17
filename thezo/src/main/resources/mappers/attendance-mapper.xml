@@ -10,6 +10,11 @@
 		<result column="att_fin_time" property="finTime"/>
 		<result column="att_total_time" property="totalTime"/>
 		<result column="att_status" property="status"/>
+		<!-- 근태조정신청내역 area -->
+		<result column="ATT_BOARD_STATUS" property="attBoardStatus"/>
+		<result column="ATT_BOARD_NO" property="attBoardNo"/>
+		<result column="att_sta_content" property="attStaContent"/>		
+		<!-- 근태조정신청내역 area 끝 -->
 	</resultMap>
 	
 	<resultMap id="memberResult" type="Member">
@@ -126,5 +131,67 @@
 	     where mem_no = #{ memNo }
 	</select>
 	
+	
+		
+	<select id="selectAdminFixRequestListCount" resultType="_int">
+		select 
+		 count(*)
+		from att_board
+		where enr_date between #{startDate} and #{endDate}
+	</select>
+		
+	<select id="selectAdminFixRequestList" resultMap="attendanceResult">
+	select 
+		ATT_BOARD_NO
+		,MEM_NO
+		,mem_name
+		,att_date
+		,ATT_NO
+		,ATT_STA_CONTENT
+		,ENR_DATE
+		,ATT_BOARD_STATUS
+		,ATT_STR_TIME
+		,ATT_FIN_TIME
+		,ATT_TOTAL_TIME
+		,ATT_STATUS
+		from att_board
+		join attendance using(att_no)
+		join member using(mem_no)
+		where enr_date between #{startDate} and #{endDate}
+
+	</select>
+	
+	<update id="updateAdminFixRequest">
+		update attendance
+			set
+			att_str_time = #{strTime}
+			,att_fin_time=#{finTime}
+		where att_no = #{attNo}
+	</update>
+	
+	<update id="updateAdminFixRequest2">
+	    update attendance
+	    set 
+	    att_status =
+	       (select
+	       case 
+            when att_str_time is null then '결근'
+            when att_fin_time is null then '결근'
+            when to_number(substr(att_str_time,1,2))<![CDATA[>]]>9 then '지각'
+            when to_number(substr(att_str_time,1,2))<![CDATA[>=]]>9 and to_number(substr(att_str_time,4,5))>0 then '지각'
+            when to_number(substr(att_fin_time,1,2))<![CDATA[<]]>18 then '조퇴'
+            else '정상출근'
+            end update_STATUS
+        	 from attendance a where att_no=#{attNo})
+         where att_no=#{attNo}
+	
+	</update>
+	
+	<update id="updateAdminFixRequest3">
+	 update att_board
+	    set 
+	    att_board_status='승인완료'	
+	    where att_no=#{attNo}
+	 	</update>
 	
 </mapper>

@@ -15,7 +15,6 @@
 	.btn>b{font-size: 18px; margin: 10px;}
 	.fa-reply{color: black;}
 	.fa-reply:hover{color:rgb(243,156,18);}
-	a>b{color:rgb(243,156,18);}
 	
 	#rezMenu{margin: 0px;}
 </style>
@@ -39,7 +38,7 @@
 			
 			<div class="subject">
 				<i class='far fa-calendar-alt' style='font-size:20px'></i>
-				<b>자원예약</b><a class="back" href="main.sc" data-toggle="tooltip" title="일정관리로 돌아가기"><i class='fas fa-reply' style='font-size:15px;'></i></a>
+				<b>자원예약</b>
 			</div>
 			
 			<button class="btn btn-primary" style="width: 180px;" align="center" data-toggle="modal" data-target="#insertRez">
@@ -52,43 +51,26 @@
 			</script>
 			<hr>
 			<div class="rezMenu">
-				<a class="w3-bar-item w3-button" id="myList" href="myList.rez"><b>나의 예약 목록</b></a>
+				<a class="w3-bar-item w3-button" id="myRezMenu" href="myList.rez?memNo=${ loginUser.memNo }">나의 예약 목록</a>
 				<c:forEach var="c" items="${ caList }">
 					<a class="w3-bar-item w3-button" id="${ c.categoryNo }" href="main.rez?caNo=${ c.categoryNo }">${ c.categoryName }</a>
 				</c:forEach>
 			</div>
 			
-			<%-- 일정 관련 메뉴 ------------------------------------------------------ --%>
+			<%-- 일정관리 관련 메뉴들 ----------------------------------------------- --%>
 			<hr>
 			<button class="w3-button w3-block w3-left-align" onclick="menu();">
 				<i class="fa fa-caret-down"></i> 메뉴 바로가기 
 			</button>
-			
 			<div id="menu" class="w3-hide w3-white w3-card">
-				<a class="w3-bar-item w3-button" href="list.note?memNo=${ loginUser.memNo }" id="note-list">노트 목록</a>
-				
-				<a class="w3-bar-item w3-button" href="" id="note-list">업무 보고</a>
+				<a class="w3-bar-item w3-button" href="main.sc">일정 관리</a>
+			
+				<a class="w3-bar-item w3-button" href="list.note?memNo=${ loginUser.memNo }">노트 목록</a>
 					
-				<a class="w3-bar-item w3-button" href="myList.rez" id="note-list">자원 예약</a>
+				<a class="w3-bar-item w3-button" href="myList.rez?memNo=${ loginUser.memNo }">자원 예약</a>
 			</div>
-			<hr>
-			<!-- 사용자 == 관리자일때 !!-->
-			<button class="btn btn-primary" style="width: 180px;" align="center">자원 관리하기</button>
+
 			<script>
-				$(function(){
-					$.each($("#rezMenu>a"), function(index, value){
-						console.log($(this).href);
-						console.log(index);
-						if($(this).id() == caNo){
-							$(this).css('color', 'rgb(243,156,18)');
-							$(this).css('font-weight', 'bold');
-						}else{
-							$("#myList").css('color', 'rgb(243,156,18)');
-							$("#myList").css('font-weight', 'bold');
-						}
-					})
-				})
-				
 				function menu() {
 					var x = document.getElementById("menu");
 					if (x.className.indexOf("w3-show") == -1) {
@@ -102,6 +84,31 @@
 				}
 
 			</script>
+			<hr>
+			<!-- 사용자 == 관리자일때 !!-->
+			<button class="btn btn-primary" style="width: 180px;" align="center" data-toggle="modal" data-target="#rezManage">자원 관리하기</button>
+			
+			
+			
+			
+			<script>
+				$(function(){
+					var caNo = '${ caNo }';
+					$.each($(".rezMenu a"), function(index, value){
+						if(caNo == value.href.split('caNo=')[1]){
+							$(this).css('color', 'rgb(243,156,18)');
+							$(this).css('font-weight', 'bold');
+						}
+						
+						if(caNo == ''){
+							// 예약목록
+							$("#myRezMenu").css('color', 'rgb(243,156,18)');
+							$("#myRezMenu").css('font-weight', 'bold');
+						}
+					})
+				})
+
+			</script>
 
 			<hr>
 			
@@ -110,7 +117,7 @@
 		
 	</div>
 	  
-	
+	<jsp:include page="rezManagementView.jsp"/>
 	
 
 	

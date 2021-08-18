@@ -52,8 +52,8 @@
 	                        <br>
 	                        <textarea class="w3-input w3-border w3-animate-input" name="noteContent" style="width:100%; height: 400px; resize: none;" placeholder="내용을 입력하세요"></textarea>
 	                        <br>
-	                        <b>관련일정을 선택하세요</b> <br>
-	                        <select class="w3-select" name="noteSc">
+	                       	* 관련일정을 선택하세요 <br>
+	                        <select class="w3-select" name="noteSc" style="font-size:15px;">
 	                        	<option value="" selected>선택안함</option>
 	                        	<c:forEach var="sc" items="${ scList }">
 	                            	<option value="${ sc.scNo }">

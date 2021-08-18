@@ -236,8 +236,8 @@
             <div class="outer-wrap" style="width:23%">
                 <div class="wrap">
                     <div class="boxTitle">캘린더<a href="main.sc" type="button" class="btn badge-secondary btn-sm more">more</a></div>
-                    <div style="padding: 20px; text-align: center;">
-                        <table id="calendar" border="0" align="center" width="230" height="230" style="font-size:12pt;">
+                    <div style="padding: 20px; padding-top:10px; text-align: center; width:100%; height:100%;">
+                        <!-- <table id="calendar" border="0" align="center" width="230" height="230" style="font-size:12pt;">
                             <tr>
                               <td align ="center"> <label onclick="prevClaendar()">&lt;</label> </td>
                               <td colspan="5" align ="center" id="calendarYM">yyyy년 m월</td>
@@ -252,7 +252,8 @@
                               <td align="center">금</td>
                               <td align="center">토</td>
                             </tr>
-                          </table>
+                          </table> -->
+						<jsp:include page="schedule/mainCalendar.jsp"/>
                     </div>
                 </div>
                 <div class="wrap">

@@ -9,6 +9,6 @@ import lombok.ToString;
 @Getter @Setter
 @ToString
 public class DocCategory {
-	private int depNo;
+	private String depNo;
 	private String depName;
 }

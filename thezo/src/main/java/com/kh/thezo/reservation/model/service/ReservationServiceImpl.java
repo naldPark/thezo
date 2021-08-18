@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.reservation.model.dao.ReservationDao;
 import com.kh.thezo.reservation.model.vo.ReCategory;
 import com.kh.thezo.reservation.model.vo.Reservation;
@@ -52,6 +53,16 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public ArrayList<ReCategory> selectCategoryList() {
 		return rDao.selectCategoryList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Reservation> selectMyReservationList(PageInfo pi, int memNo) {
+		return rDao.selectMyReservationList(sqlSession, pi, memNo);
+	}
+
+	@Override
+	public int selectListCount(int memNo) {
+		return rDao.selectListCount(sqlSession, memNo);
 	}
 
 }

@@ -30,7 +30,6 @@
 			<div class="subject">
 				<i class='fas fa-pencil-alt' style='font-size:20px'></i>
 				<b>노트관리</b>
-				<a class="back" href="main.sc" data-toggle="tooltip" title="일정관리로 돌아가기"><i class='fas fa-reply' style='font-size:15px'></i></a>
 			</div>
 			
 			<a href="insertForm.note?memNo=${ loginUser.memNo }" class="btn btn-primary" style="width: 180px; margin:10px;">
@@ -38,39 +37,33 @@
 			</a>
 			<hr>
 			
-			<button class="btn down_sc" onclick="slideDown_sc();" style="font-size: 20px; margin: 3px; padding: 3px;">
-				<i class='fas fa-caret-down'></i><b>오늘 일정</b>
-			</button>
-			<button class="btn up_sc" onclick="slideUp_sc();" style="font-size: 20px; margin: 3px; padding: 3px;" hidden>
-				<i class='fas fa-caret-right'></i><b>오늘 일정</b>
-			</button>
-			
-			
-			<div class="slide_sc">
-				 <ul id="todaySchedule">
-					<!-- 오늘일정 수만큼 li태그가 반복되는 반복문 -->
-					<li><input type="checkbox">Conference</li>
-					<li><input type="checkbox">Meeting</li>
-					<li><input type="checkbox">Lunch</li>
-			
-				</ul>
+			<%-- 오늘 일정 뜨게 하는 영역 -----------------------------------------------------------------%>
+			<div style="margin-left:30px;">
+				<b>오늘 일정 &nbsp;
+				<span id="todayDate"></span></b>
 			</div>
-			
-			<hr>
-			<button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
-				메뉴 바로가기 <i class="fa fa-caret-down"></i>
-			</button>
-			<div id="demoAcc" class="w3-hide w3-white w3-card">
-				<a class="w3-bar-item w3-button" href="list.note?memNo=${ loginUser.memNo }" id="note-list">노트 목록</a>
+			<div id="todayScCalendar">
+				<jsp:include page="../todayScView.jsp"/>
+			</div>		
 				
-				<a class="w3-bar-item w3-button" href="" id="note-list">업무 보고</a>
+			<hr>
+			
+			<%-- 일정관리 관련 메뉴들 ----------------------------------------------- --%>
+			<hr>
+			<button class="w3-button w3-block w3-left-align" onclick="menu();">
+				<i class="fa fa-caret-down"></i> 메뉴 바로가기 
+			</button>
+			<div id="menu" class="w3-hide w3-white w3-card">
+				<a class="w3-bar-item w3-button" href="main.sc">일정 관리</a>
+			
+				<a class="w3-bar-item w3-button" href="list.note?memNo=${ loginUser.memNo }">노트 목록</a>
 					
-				<a class="w3-bar-item w3-button" href="myList.rez" id="note-list">자원 예약</a>
+				<a class="w3-bar-item w3-button" href="myList.rez?memNo=${ loginUser.memNo }">자원 예약</a>
 			</div>
 
 			<script>
-				function myAccFunc() {
-					var x = document.getElementById("demoAcc");
+				function menu() {
+					var x = document.getElementById("menu");
 					if (x.className.indexOf("w3-show") == -1) {
 						x.className += " w3-show";
 						x.previousElementSibling.className += " w3-gray";

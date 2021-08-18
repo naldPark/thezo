@@ -106,7 +106,7 @@
 									$("#boardList>tbody>tr").click(function(){
 				            			location.href="detail.bo?bno=" + $(this).children(".bno").text();
 				            		})
-									location.href = "detail.note?noteNo=" + $(this).children().eq(0).val(); // 노트번호
+									location.href = "detail.note?noteNo=" + $(this).children().eq(0).val() + "&memNo=" + ${ loginUser.memNo }; // 노트번호
 								})
 							})
 						</script>

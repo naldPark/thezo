@@ -2,9 +2,11 @@ package com.kh.thezo.reservation.model.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.reservation.model.vo.ReCategory;
 import com.kh.thezo.reservation.model.vo.Reservation;
 import com.kh.thezo.reservation.model.vo.Resources;
@@ -37,6 +39,16 @@ public class ReservationDao {
 	
 	public ArrayList<ReCategory> selectCategoryList(SqlSession sqlSession){
 		return (ArrayList)sqlSession.selectList("reservationMapper.selectCategoryList");
+	}
+	
+	public ArrayList<Reservation> selectMyReservationList(SqlSession sqlSession, PageInfo pi, int memNo){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("reservationMapper.selectMyReservationList", memNo);
+	}
+	
+	public int selectListCount(SqlSession sqlSession, int memNo) {
+		return sqlSession.selectOne("reservationMapper.selectListCount", memNo);
 	}
 	
 }

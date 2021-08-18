@@ -8,8 +8,9 @@
 <title>자원예약하기</title>
 </head>
 <body>
-	<form action="insert.rez">
+	<form action="insert.rez" method="post">
 		<input type="hidden" name="rezWriter" value="${ loginUser.memNo }">
+		<input type="hidden" name="caNo" value="${ param.caNo }">
 	    <!-- The Modal -->
 	    <div class="modal" id="insertRez">
 	        <div class="modal-dialog">

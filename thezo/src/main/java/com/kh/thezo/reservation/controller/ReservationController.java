@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.kh.thezo.common.model.vo.PageInfo;
+import com.kh.thezo.common.template.Pagination;
+import com.kh.thezo.document.model.vo.DocCategory;
+import com.kh.thezo.document.model.vo.Document;
 import com.kh.thezo.reservation.model.service.ReservationService;
 import com.kh.thezo.reservation.model.vo.ReCategory;
 import com.kh.thezo.reservation.model.vo.Reservation;
@@ -30,18 +34,31 @@ public class ReservationController {
 	 */
 	@RequestMapping("main.rez")
 	public String reservationMainView(Model model, int caNo) {
+		ArrayList<Resources> reList = rService.selectResourceList(caNo);
 		ArrayList<ReCategory> caList = rService.selectCategoryList();
 		model.addAttribute("caList", caList);
-		return "schedule/reservation/conferenceRezView";
+		model.addAttribute("reList", reList);
+		model.addAttribute("caNo", caNo);
+		return "schedule/reservation/rezMainView";
 	}
 	
 	/**
 	 *  나의 예약 목록 조회
 	 */
 	@RequestMapping("myList.rez")
-	public String reservationList(Model model) {
+	public String reservationList(Model model, int memNo,
+			@RequestParam(value="currentPage", defaultValue="1")int currentPage) {
+		
+		int listCount = rService.selectListCount(memNo);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		
 		ArrayList<ReCategory> caList = rService.selectCategoryList();
+		ArrayList<Reservation> myRezList = rService.selectMyReservationList(pi, memNo);
+		
+		model.addAttribute("pi", pi);
 		model.addAttribute("caList", caList);
+		model.addAttribute("myRezList", myRezList);
+		
 		return "schedule/reservation/myReservationView";
 	}
 	
@@ -84,14 +101,14 @@ public class ReservationController {
 	 *  자원예약 등록
 	 */
 	@RequestMapping("insert.rez")
-	public String insertReservation(HttpSession session, Reservation rez) {
+	public String insertReservation(HttpSession session, Reservation rez, int caNo) {
 		int result = rService.insertReservation(rez);
 		if(result > 0) {
 			session.setAttribute("alertMsg", "자원 예약이 완료되었습니다.");
-			return "redirect:/main.rez";
+			return "redirect:/main.rez?caNo=" + caNo;
 		}else {
 			session.setAttribute("alertMsg", "자원 예약이 실패했습니다. 다시 시도해주세요.");
-			return "redirect:/main.rez";
+			return "redirect:/main.rez?caNo="+ caNo;
 		}
 	}
 	
@@ -124,6 +141,16 @@ public class ReservationController {
 		int result = rService.deleteReservation(rezNo);
 		session.setAttribute("alertMsg", "성공적으로 삭제되었습니다.");
 		return "schedule/quitView";
+	}
+	
+	/**
+	 *  자원예약 삭제(예약 목록)
+	 */
+	@RequestMapping("delete2.rez")
+	public String deleteReservation2(int rezNo, int memNo, HttpSession session) {
+		int result = rService.deleteReservation(rezNo);
+		session.setAttribute("alertMsg", "성공적으로 삭제되었습니다.");
+		return "redirect:/myList.rez?memNo=" + memNo;
 	}
 	
 	

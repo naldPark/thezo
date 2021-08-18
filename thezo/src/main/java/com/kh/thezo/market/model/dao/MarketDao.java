@@ -42,6 +42,27 @@ public class MarketDao {
 		return (ArrayList)sqlSession.selectList("marketMapper.marketSearchList", map, rowBounds);
 	}
 	
+	
+	// 사용자 : 찜하기 글 갯수 조회
+	public int likeListCount(SqlSessionTemplate sqlSession, String memId) {
+		return sqlSession.selectOne("marketMapper.likeListCount", memId);
+	}
+		
+	// 사용자 : 찜하기 리스트 조회
+	public ArrayList<Market> selectLiketList(SqlSessionTemplate sqlSession, PageInfo pi, String memId){
+		int offset =(pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+			
+		return (ArrayList)sqlSession.selectList("marketMapper.selectLiketList", memId , rowBounds );
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	// 사용자 : 벼룩시장 상세 조회용(조회수)
 	public int increaseMarketCount(SqlSessionTemplate sqlSession, int marketNo) {
 		return sqlSession.update("marketMapper.increaseMarketCount", marketNo);
@@ -96,8 +117,8 @@ public class MarketDao {
     	sqlSession.delete("marketMapper.deleteMarketLike",p);
     }
 
-    public void updateMarketLike(SqlSessionTemplate sqlSession, String memId) throws Exception {
-    	sqlSession.update("marketMapper.updateMarketLike", memId);
+    public void updateMarketLike(SqlSessionTemplate sqlSession, int marketNo) throws Exception {
+    	sqlSession.update("marketMapper.updateMarketLike", marketNo);
     }
     
     public int selectMarketLike(SqlSessionTemplate sqlSession, HashMap<String,String> likeCheck) {

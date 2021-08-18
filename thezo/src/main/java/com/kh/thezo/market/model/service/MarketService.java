@@ -19,6 +19,11 @@ public interface MarketService {
 	public int marketSearchListCount(HashMap<String, String> map);
 	public ArrayList<Market> marketSearchList(PageInfo pi, HashMap<String, String> map);
 			
+	// * 사용자 : 찜하기 목록
+	int likeListCount(String memId);
+	ArrayList<Market> selectLiketList(PageInfo pi, String memId);
+			
+	
 	// 3. 사용자 : 벼룩시장 상세조회용
 	int increaseMarketCount(int marketNo);
 	Market selectMarket(int marketNo);

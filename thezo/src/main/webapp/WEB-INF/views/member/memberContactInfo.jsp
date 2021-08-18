@@ -184,7 +184,6 @@
 			$(document).ready(function(){
 			  $("#searchInput").on("keyup", function() {
 				var value = $(this).val().toLowerCase();
-				console.log($(this).text());
 				$("#searchList li").filter(function() {
 				  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
 				});
@@ -199,6 +198,7 @@
 		$(".employee").each(function(){
 			if($(this).text()==value){
 				$(this).parent().parent().toggle(true);
+				$(this).parent().parent().css("border-top","1px solid lightgrey")
 			}
 		})
 	});

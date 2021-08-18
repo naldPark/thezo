@@ -153,7 +153,13 @@
                         <%-- 메일함 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
                         <li><a href="main.mail">메일함</a></li>
                         <li><a href="main.appr">전자결재</a></li>
-                        <li><a href="main.sc">일정관리</a></li>
+                        <li><a href="main.sc">일정관리</a>
+                            <ul>
+                                <li><a href="main.sc">일정관리</a></li>
+                                <li><a href="list.note?memNo=${ loginUser.memNo }">노트관리</a></li>
+                                <li><a href="myList.rez?memNo=${ loginUser.memNo }">자원예약</a></li>
+                            </ul>
+                        </li>
 
                         <c:if test="${loginUser.memId eq 'admin' }">
                             <li><a href="javascript:showAdminNav()" style="font-size: 17px; color: gray;" id="admin-mode">관리자모드</a></li>
@@ -269,13 +275,7 @@
                             </ul>
                         </li>
                         <li><a href="adminMain.appr">전자결재관리</a></li>
-                        <li><a href="main.sc">일정관리</a>
-                        	<ul>
-                                <li><a href="main.sc">일정관리</a></li>
-                                <li><a href="list.note?memNo=${ loginUser.memNo }">노트관리</a></li>
-                                <li><a href="myList.rez?memNo=${ loginUser.memNo }">자원예약</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="main.sc">일정관리</a></li>
         
                         <%-- 재원(내꺼) urlMapping값 넣으면됨~ --%> 
                         <li><a href="list.adms">메신저</a>

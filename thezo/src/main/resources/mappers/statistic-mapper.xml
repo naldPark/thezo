@@ -11,6 +11,15 @@
 		<result column="enroll_date" property="enrollDate"/>
 	</resultMap>
 
+	<!-- vo새로만드는것보다  기존에 있는 것 활용 -->
+	<resultMap id="adminRightSideResult" type="Department">
+		<result column="countbymaxmem" property="depNo"/>
+		<result column="dep_mem_count" property="depNo"/>
+		<result column="dep_name" property="depName"/>
+		<result column="dep_class" property="depClass"/>
+	</resultMap>
+
+	<!-- adminLog 조회용 sql문  -->
 	<select id="ajaxSelectAdminLog" resultMap="adminLogResult">
 		select 
 				log_no
@@ -26,6 +35,7 @@
 		  where rownum = 1    
 	</select>
 
+	<!-- adminLog insert용 sql문  -->
 	<insert id="ajaxInsertAdminLog">
 		insert 
 		  into admin_log
@@ -41,6 +51,43 @@
 		       , #{ modificationContent }  
 		       )		 
 	</insert>
+	
+	<!--관리자페이지 메인 오른쪽 상단 부서별 인원현황 데이터 가져오는 controller -->
+	<select id="ajaxSelectRightTopDept" resultMap="adminRightSideResult">
+		select 
+		    dp.dep_name  
+		  , round((count(dep_name)/(select max(count(department)) from member where status in ('Y','A') group by department))* 100) as countByMaxMem
+		  from department dp
+		  join (select department from member where status in ('Y','A')) mb
+		    on(dp.dep_name = mb.department)   
+		group by dp.dep_name
+		having dep_name != '대표이사'
+		order by
+		  (case dep_name when '경영관리본부' then '1' when '인사팀' then '2'
+		   when '총무팀' then '3' when '회계팀' then '4' when '개발본부' then '5'
+		   else '6' end), (case dep_name  when '개발1팀' then '1' when '개발2팀' then '2'
+		   when '인프라팀' then '3' when '운영본부' then '4' when '운영팀' then '5'
+		   when '구매팀' then '6' else '7'end)
+	</select>
+	
+	<!-- 관리자페이지 메인 오른쪽 하단 전체 인원수와 pie차트에 담은 데이터 조회용 sql문  -->
+	<select id="aelectRightBottomChart" resultMap="adminRightSideResult">
+		select 
+		    dp.dep_name as dep_name 
+		  , count(dep_name) as dep_mem_count
+		  , (select count(*) from member where status in ('Y','A')) as dep_class
+		  from department dp
+		  join (select department from member where status in ('Y','A')) mb
+		    on(dp.dep_name = mb.department)   
+		group by dp.dep_name
+		having dep_name != '대표이사'
+		order by
+		  (case dep_name when '경영관리본부' then '1' when '인사팀' then '2'
+		   when '총무팀' then '3' when '회계팀' then '4' when '개발본부' then '5'
+		   else '6' end), (case dep_name  when '개발1팀' then '1' when '개발2팀' then '2'
+		   when '인프라팀' then '3' when '운영본부' then '4' when '운영팀' then '5'
+		   when '구매팀' then '6' else '7'end)		
+	</select>
 
 
 </mapper>

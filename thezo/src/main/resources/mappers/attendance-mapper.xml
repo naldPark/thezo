@@ -126,7 +126,13 @@
 	     where mem_no = #{ memNo }
 	</select>
 	
-	<!-- 휴가 일수 조회(모달) -->
+	<update id="setLeave">
+		update
+			   member
+		   set mem_total_date = #{ memTotalDate }
+		 where mem_no = #{ memNo }
+	</update>
+	<!-- 휴가 일수 조회(모달) 차후
 	<select id="selectLeaveData2" resultMap="LeaveResult">
 		select
 			   start_date
@@ -138,4 +144,6 @@
 		  from leave
 		 where mem_no = #{ memNo }
 	</select>
+	-->
+	
 </mapper>

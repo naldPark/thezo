@@ -51,9 +51,15 @@ public class AttendanceDao {
 		return (ArrayList)sqlSession.selectList("attendanceMapper.selectLeaveData", null, rowBounds);
 	}
 	
-	public Leave selectLeaveData2(SqlSessionTemplate sqlSession, int memNo) {
-		return sqlSession.selectOne("attendanceMapper.selectLeaveData2");
+	public int setLeave(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("attendanceMapper.setLeave", m);
 	}
+	
+	/* 차후
+	public Leave selectLeaveData2(SqlSessionTemplate sqlSession, int memNo) {
+		return sqlSession.selectOne("attendanceMapper.selectLeaveData2", memNo);
+	}
+	*/
 	
 	
 	

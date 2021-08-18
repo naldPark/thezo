@@ -24,7 +24,11 @@ public interface AttendanceService {
 	int memberListCount();
 	ArrayList<Member> selectMember(PageInfo pi);
 	ArrayList<Leave> selectLeaveData(PageInfo pi);
+	
+	// 휴가 정보 수정
+	int setLeave(Member m);
 
-	// 회원 휴가 정보 조회(모달용)
+	/* 회원 휴가 정보 조회(모달용 차후)
 	Leave selectLeaveData2(int memNo);
+	*/
 }

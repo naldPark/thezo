@@ -212,4 +212,9 @@ public class BoardDao {
 		return sqlSession.update("boardMapper.updateBoardStatus", rpNo);
 	}
 	
+	// 신고관리 : 신고 댓글 status => Y(처리완료)
+	public int updateBoardReplyStatus(SqlSessionTemplate sqlSession, int rpNo) {
+		return sqlSession.update("boardMapper.updateBoardReplyStatus", rpNo);
+	}
+	
 }

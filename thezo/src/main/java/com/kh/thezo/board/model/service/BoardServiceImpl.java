@@ -244,6 +244,12 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.updateBoardStatus(sqlSession, rpNo);
 	}
 
+	// 신고관리 : 신고 댓글 status => Y(처리완료)
+	@Override
+	public int updateBoardReplyStatus(int rpNo) {
+		return bDao.updateBoardReplyStatus(sqlSession, rpNo);
+	}
+
 	
 
 	

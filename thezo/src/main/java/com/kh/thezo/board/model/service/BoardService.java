@@ -96,5 +96,6 @@ public interface BoardService {
 		// 4. 신고관리 : 신고 처리(게시글)
 		int reportBoardUpdate(Report r);
 		int updateBoardStatus(int rpNo);
+		int updateBoardReplyStatus(int rpNo);
 		
 }

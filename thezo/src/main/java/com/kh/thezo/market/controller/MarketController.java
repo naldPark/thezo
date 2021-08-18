@@ -233,7 +233,7 @@ public class MarketController {
 		
 	// 사용자 : 벼룩시장 댓글 신고하기 
 	@RequestMapping("marketReplyReport.bo")
-	public String BoardReplyReport(Report rp, HttpSession session, Model model) {
+	public String marketReplyReport(Report rp, HttpSession session, Model model) {
 				
 		int result = mkService.marketReport(rp);
 				

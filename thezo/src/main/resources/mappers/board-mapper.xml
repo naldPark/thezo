@@ -558,11 +558,19 @@
 	</update>
 
 
-	<!-- 신고관리 : 해당 신고참조글 STATUS='N'으로  변경 -->
+	<!-- 신고관리 : 해당 신고글 참조게시글 STATUS='N'으로  변경 -->
 	<update id="updateBoardStatus">
 		update
 				  board
 			  set status = 'N'
 			where board_no = #{rpNo}  
+	</update>
+	
+	<!-- 신고관리 : 해당 신고글 참조 댓글 status = 'N'으로 변경 -->
+	<update id="updateBoardReplyStatus">
+		update
+				  reply
+			  set status = 'N'
+			where reply_no = #{rpNo}  
 	</update>
 </mapper>

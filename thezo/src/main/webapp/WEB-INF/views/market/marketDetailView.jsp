@@ -153,7 +153,7 @@
                 <p style="color: rebeccapurple;">${ mk.price }원</p>
               
 	            <div>
-		                      작성자 : ${ mk.marketWriter }<br>
+		                      작성자 : ${ mk.department }&nbsp;&nbsp;${ mk.memName }&nbsp;${ mk.rank }<br>
 		                      작성일 : ${ mk.marketDate }
 		            <p style="font-size: small;">
 			        	<img src="resources/images/countView.png" width="20" height="20">&nbsp;&nbsp;${ mk.count }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -167,12 +167,12 @@
             </div>
             
             <br><br><br><br>
-            <!-- 메세지로 연결해야하는데...? -->
+            <!-- 메세지로 연결해야하는데...? 
             <div align="center">
             	<a class="btn btn-primary" href="">거래하기</a>
             </div>
           	<br><br>
-           
+            -->
 			<table id="replyArea" class="table-borderless" align="center">
 				<thead>
 					<tr>
@@ -248,8 +248,11 @@
 				                             + "<th>" + list[i].replyWriter + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>"
 				                             + "<td colspan='2' style='width: 400px;'>" + list[i].replyContent + "</td>"
 				                             + "<td>" + list[i].createDate + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
-				                             + "<td><a href='' data-toggle='modal' data-target='#mReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
+				                             + "<td><input type='hidden' name='replyNo' class='replyNo' value='" + list[i].replyNo 
+				                             + "'><a href='' class='reportMarketReply' data-toggle='modal' data-target='#mReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
+				                             + "<c:if test='${ loginUser.memId eq mk.marketWriter}'>"
 				                             + "<td><a href='deleteReply.mk?replyNo=" + list[i].replyNo + "&mkno=" + ${ mk.marketNo } + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
+				                             + "</c:if>"
 				                          + "</tr>";
 		        			}
 		        				
@@ -260,6 +263,12 @@
 		        		}
 		        	})
 		        }
+		        $(document).on("click", ".reportMarketReply", function(){
+	                
+                    $("#rpNo1").val($(this).prev().val());
+               		$("#rpNo2").val($(this).prev().val());
+                    
+                 })
 		      </script>
 		      
 
@@ -305,18 +314,18 @@
 							<form action="memMarketReport.bo" method="post">
 								<!-- 신고할 내용 입력 -->
 								<input type="hidden" name="rpId" value="${ loginUser.memId }"> 
-								<input type="hidden" name="rpNo" value="${ mk.marketNo}">
+								<input type="hidden" name="rpNo" id="rpNo1" value="${ mk.marketNo}">
 								<input type="hidden" name="boardType" value="2">
 								<input type="hidden" name="rpType" value="1"> 
 								<b>신고구분</b><br><br>
-								<select id="rpSection" name="rpSection"  class="form-control" style="width:130px;">
+								<select id="rpSection1" name="rpSection"  class="form-control" style="width:130px;">
 									<option value="욕설/비방">욕설/비방</option>
 									<option value="음란/유해">음란/유해</option>
 									<option value="도배/스팸">도배/스팸</option>
 								</select> <br>
 								<br> 
 								<b>신고 내용 입력</b><br><br>
-								<textarea name="rpContent" id="rpContent" cols="50" row="1"
+								<textarea name="rpContent" id="rpContent1" cols="50" row="1"
 									style="resize: none" class="form-control"></textarea>
 								<br><br>
 								<button type="submit" class="btn btn-danger btb-sm">신고하기</button>
@@ -347,17 +356,17 @@
 							<form action="marketReplyReport.bo" method="post">
 								<!-- 신고할 내용 입력 -->
 								<input type="hidden" name="rpId" value="${ loginUser.memId }"> 
-								<input type="hidden" name="rpNo" value="">
+								<input type="hidden" name="rpNo" id="rpNo2" value="${ mk.marketNo}">
 								<input type="hidden" name="boardType" value="2">
 								<input type="hidden" name="rpType" value="2"> 
 								<b>신고구분</b><br><br>
-								<select id="rpSection" name="rpSection"  class="form-control" style="width:130px;">
+								<select id="rpSection2" name="rpSection"  class="form-control" style="width:130px;">
 									<option value="욕설/비방">욕설/비방</option>
 									<option value="음란/유해">음란/유해</option>
 									<option value="도배/스팸">도배/스팸</option>
 								</select> <br><br>
 								<b>신고 내용 입력</b><br><br>
-								<textarea name="rpContent" id="rpContent" cols="50" row="1" style="resize: none" class="form-control"></textarea>
+								<textarea name="rpContent" id="rpContent2" cols="50" row="1" style="resize: none" class="form-control"></textarea>
 								<br><br>
 								<button type="submit" class="btn btn-danger btb-sm">신고하기</button>
 	

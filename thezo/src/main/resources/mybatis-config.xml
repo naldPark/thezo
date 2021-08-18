@@ -18,6 +18,7 @@
 		<typeAlias type="com.kh.thezo.notification.model.vo.Notification" alias="Notification"/>
 		<typeAlias type="com.kh.thezo.notification.model.vo.NfCheck" alias="NfCheck"/>
 		<typeAlias type="com.kh.thezo.statistic.model.vo.Statistic" alias="Statistic"/>
+		<typeAlias type="com.kh.thezo.statistic.model.vo.AdminLog" alias="AdminLog"/>
 		<typeAlias type="com.kh.thezo.document.model.vo.Document" alias="Document"/>
 		<typeAlias type="com.kh.thezo.approval.model.vo.Approval" alias="Approval"/>
 		<typeAlias type="com.kh.thezo.mail.model.vo.Mail" alias="Mail"/>

@@ -50,8 +50,12 @@
 		<result column="mem_name" property="memName"/>
 		<result column="mem_id" property="memId"/>
 		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="path" property="path"/>
+		<result column="extension_no" property="extensionNo"/>
 		<result column="gender" property="gender"/>
 		<result column="department" property="department"/>
+		<result column="parent_dep" property="parentDep"/>
 		<result column="job" property="job"/>
 		<result column="rank" property="rank"/>
 		<result column="MEM_VAC_DATE" property="memVacDate"/>
@@ -303,11 +307,12 @@
 
 	<!-- 결재라인 조회를 위한 전사원 리스트  -->
 	<select id="employeeList" resultMap="memberResult">
-		select mem_no, mem_name, EMAIL, dep_no, department, job, rank
+		select mem_no, mem_name, EMAIL, dep_class,dep_no, department, parent_dep, job, rank, extension_no, phone, path, mem_id
 			from member
+            join department using(dep_no)
 			where status IN ('A', 'Y')
 				and resign_date is null
-			order by DEP_NO
+			order by DEP_class
 	            ,JOB NULLS LAST
 	            ,decode(rank,'대표이사',1,'상무',2,'부장',3,'과장',4,'대리',5)
 	            ,mem_name

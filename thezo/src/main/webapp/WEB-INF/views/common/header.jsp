@@ -143,10 +143,9 @@
                         </li>
 
                         <%-- 연락처 담당하시는분 아래 href에 ! url mapping값 달아주세요~  --%>
-                        <li><a href="contactInfo.me">연락처</a>
+                        <li><a href="contactInfo.me">조직도</a>
                             <ul>
-                                <li><a href="contactInfo.me">직원 연락처</a></li>
-                                <li><a href="">조직도</a></li>
+                                <li><a href="contactInfo.me">조직도</a></li>
                                 <li><a href="company.info">회사정보</a></li>
                             </ul>
                         </li>
@@ -281,7 +280,6 @@
                         </li>
         
                         <%-- 해당영역 맡으신분들 ~ urlMapping값 넣어주세요~ --%> 
-                        <li><a href="">조직도</a></li>
 	                	<li><a href="adminCompanyInfo.st">회사정보설정</a></li>
                     </ul>
                 </div>

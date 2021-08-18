@@ -78,6 +78,24 @@ public class MarketController {
 		
 	}
 	
+	// 찜목록 
+	@RequestMapping("likeList.mk")
+	public String marketLikeList(Model model, HttpSession session, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		
+		String memId = ((Member)session.getAttribute("loginUser")).getMemId();
+		
+		int listCount = mkService.likeListCount(memId);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 6);
+		ArrayList<Market> list = mkService.selectLiketList(pi, memId);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
+		
+		return "market/marketListView";
+		
+	}
+	
 	// 벼룩시장 상세조회(사용자)
 	@RequestMapping("marketDetail.bo")
 	public ModelAndView marketDetail(HttpSession session, int mkno, ModelAndView mv) {

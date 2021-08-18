@@ -68,7 +68,7 @@
 			<div id="search-area" align="center">
 				<div>
 					<img src="resources/images/heart.png" width="20" height="20">
-					<a href="" align="left" style="text-decoration:none;">찜 목록</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="likeList.mk" align="left" style="text-decoration:none;">찜 목록</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				</div>
 				
 				<br><br>

@@ -4,4 +4,43 @@
 
 	<!-- @author Jaewon.s -->
 
+	<resultMap id="adminLogResult" type="AdminLog">
+		<result column="log_no" property="logNo"/>
+		<result column="developer_name" property="developerName"/>
+		<result column="modification_content" property="modificationContent"/>
+		<result column="enroll_date" property="enrollDate"/>
+	</resultMap>
+
+	<select id="ajaxSelectAdminLog" resultMap="adminLogResult">
+		select 
+				log_no
+			  , developer_name
+			  , modification_content
+			  , to_char(enroll_date, 'YYYY-MM-DD') as enroll_date
+			  
+		  from (
+		        select log_no, developer_name, modification_content,enroll_date
+		          from admin_log
+		         order 
+		            by rownum desc)
+		  where rownum = 1    
+	</select>
+
+	<insert id="ajaxInsertAdminLog">
+		insert 
+		  into admin_log
+		       (
+		   		  log_no
+		   	    , developer_name
+		   	    , modification_content
+		   		)
+		values
+		       (
+		         seq_adlgno.nextval
+		       , #{ developerName }
+		       , #{ modificationContent }  
+		       )		 
+	</insert>
+
+
 </mapper>

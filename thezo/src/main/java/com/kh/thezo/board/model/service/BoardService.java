@@ -10,7 +10,14 @@ import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 
 public interface BoardService {
-
+	
+		// main
+		// 공지사항
+		ArrayList<Board> mainBoard();
+	
+	
+	
+		//------------------------------------------------------
 		// 1. 사용자 : 공지사항 리스트 페이지 조회용
 		int noticeListCount();
 		ArrayList<Board> selectNoticeList(PageInfo pi);

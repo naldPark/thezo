@@ -16,7 +16,16 @@ import com.kh.thezo.common.model.vo.PageInfo;
 @Repository
 public class BoardDao {
 
+	// main
+	public ArrayList<Board> mainBoard(SqlSessionTemplate sqlSession){
+		return (ArrayList)sqlSession.selectList("boardMapper.mainBoard");
+	}
 	
+	
+	
+	
+	
+	// -------------------------------------------------------------------------
 	// 사용자 : 공지사항 글 갯수 조회
 	public int noticeListCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("boardMapper.noticeListCount");

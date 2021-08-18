@@ -197,7 +197,7 @@ public class MemberController {
 		
 		if(result > 0) {
 			
-			session.setAttribute("loginUser", mService.loginMember(m));
+			//session.setAttribute("loginUser", mService.loginMember(m));
 			session.setAttribute("alertMsg", "성공적으로 정보 수정되었습니다.");
 			
 			return "redirect:memberInfo.me";

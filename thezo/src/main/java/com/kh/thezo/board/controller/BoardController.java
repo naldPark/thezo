@@ -26,7 +26,6 @@ import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
-import com.kh.thezo.member.model.vo.Member;
 
 @Controller
 public class BoardController {
@@ -34,7 +33,19 @@ public class BoardController {
 	@Autowired
 	private BoardService bService;
 	
+	// main
+	@ResponseBody
+	@RequestMapping(value="mainBoard.bo", produces="application/json; charset=utf-8")
+	public String mainBoard() {
+		return new Gson().toJson(bService.mainBoard());
+	}
 	
+	
+	
+	
+	
+	
+	// ------------------------------------
 	// 공지사항 리스트 페이지(사용자)
 	@RequestMapping("noticeList.bo")
 	public String selectNoticeList(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
@@ -49,6 +60,8 @@ public class BoardController {
 		
 		return "board/noticeListView";
 	}
+	
+	
 	
 	// 공지사항 리스트페이지 검색바 (사용자)
 	@RequestMapping("noticeSearch.bo")

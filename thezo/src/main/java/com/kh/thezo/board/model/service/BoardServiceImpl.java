@@ -22,6 +22,13 @@ public class BoardServiceImpl implements BoardService{
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
+	// main
+	public ArrayList<Board> mainBoard(){
+		return bDao.mainBoard(sqlSession);
+	}
+	
+	
+	// -----------------------------------------------------
 	
 	// 사용자 : 공지사항 글 갯수 조회
 	@Override
@@ -251,6 +258,5 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	
-
 	
 }

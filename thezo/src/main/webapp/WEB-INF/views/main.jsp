@@ -198,38 +198,61 @@
                     </table>
                 </div>
                 <div class="wrap">
-                    <div class="boxTitle">게시판<button type="button" class="btn badge-secondary btn-sm more">more</button></div>
+                    <div class="boxTitle">게시판<a href="noticeList.bo" class="btn badge-secondary btn-sm more">more</a></div>
                     <div class="input-group-prepend mt-2" style="justify-content: left;">
-                        <button type="button" class="btn border-bottom-0 btn-sm btn-outline-secondary">공지사항</button> &nbsp;
-                        <button type="button" class="btn border-bottom-0 btn-sm btn-outline-secondary">자유게시판</button> &nbsp;
-                        <button type="button" class="btn border-bottom-0 btn-sm btn-outline-secondary">벼룩시장</button>
+                        <a href="noticeList.bo" class="btn border-bottom-0 btn-sm btn-outline-secondary">공지사항</a> &nbsp;
+                        <a href="boardList.bo" class="btn border-bottom-0 btn-sm btn-outline-secondary">자유게시판</a> &nbsp;
+                        <a href="marketList.bo" class="btn border-bottom-0 btn-sm btn-outline-secondary">벼룩시장</a>
                     </div>  
-                    <table class="table table-sm board table-hover" style="text-align: center;" >
+                    <table id="mainBoardList" class="table table-sm board table-hover" style="text-align: center;" >
                         <thead>
                             <tr>
+                            	<th hidden></th>
                                 <th>제목</th>
                                 <th>작성자</th>
                                 <th>날짜</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>나는야게시판이당<span class="badge badge-danger" style="margin-left:5px;">new</span></td>
-                                <td>김개똥이</td>
-                                <td>2020-01-01</td>
-                            </tr>
-                            <tr>
-                                <td>나는야게시판이당<span class="badge badge-danger" style="margin-left:5px;">new</span></td>
-                                <td>이말똥</td>
-                                <td>2020-01-01</td>
-                            </tr>
-                            <tr>
-                                <td>나는야게시판이당</td>
-                                <td>웋헿헤</td>
-                                <td>2020-01-01</td>
-                            </tr>
                         </tbody>
                     </table>
+                    
+                    <script>
+				    	$(function(){
+				    		boardListMain();
+				    		setInterval(boardListMain, 1000);
+				    		
+				    		$(document).on("click", "#mainBoardList tbody tr", function(){
+				    			location.href = "noticeDetail.bo?bno=" + $(this).children(".bno").text();
+				    		})
+				    		
+				    	})
+				    	
+				    	function boardListMain(){
+				    		$.ajax({
+				    			url:"mainBoard.bo",
+				    			success:function(list){
+				    				var value = "";
+				    				
+				    				for(var i in list){
+				    					value += '<tr>'
+							                       + '<td class="bno" hidden>' + list[i].boardNo + '</td>'
+							                       + '<td style="width:50%;">' + list[i].boardTitle + '</td>'
+							                       + '<td>' + list[i].boardWriter + '</td>'
+							                       + '<td>' + list[i].boardDate + '</td>'
+							                       + '<td>';
+							                       
+							            value += '</td></tr>';
+				    				}
+				    				
+				    				$("#mainBoardList tbody").html(value);
+				    				
+				    			},error:function(){
+				    				console.log("조회용 ajax 통신 실패");
+				    			}
+				    		})
+				    	}
+				    </script>
                 </div>
               
             </div>

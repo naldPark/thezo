@@ -61,9 +61,10 @@
 			<p class="pageTitle"> contact <b> 조직도(연락처)</b></p>
 			<div class="row  justify-content-center">
 				<br><br>
-				<h3><i class="far fa-building"></i>조직도</h3>
+				
 				<hr>
 				<div class="p-3" style=" width:300px;">
+					<h3><i class="far fa-building"></i>&nbsp;&nbsp;조직도</h3>
 					<ul id="apprOrgTree">
 						<li class="eachPerson" id="ceoCheck"></li>
 						<ul>

@@ -271,20 +271,28 @@
 		 	 )   
         </insert>
 
-     <delete id="deleteBoardLike">
+     <delete id="deleteMarketLike">
      	delete
           from p_like
          where market_no = #{marketNo}
            and mem_id = #{memId} 
      </delete>
 
-     <select id="updateBoardLike">
+     <update id="updateMarketLike">
         update market
            set p_like = (select count(*)
         	   			   from p_like
         	   			   where market_no = #{marketNo} 
 				         ) 
          where market_no = #{marketNo}
-        </select>
+      </update>
+        
+        
+      <select id="selectMarketLike" resultType="_int">
+	      select count(*)
+	      from p_like
+	       where market_no = #{marketNo}
+      </select>
+        
 
 </mapper>

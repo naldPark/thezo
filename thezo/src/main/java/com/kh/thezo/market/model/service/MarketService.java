@@ -47,4 +47,5 @@ public interface MarketService {
 	// 11. 사용자 : 벼룩시장 찜하기 
 	public void insertMarketLike(PLike p);
 	public void deleteMarketLike(PLike p);
+	public int selectMarketLike(HashMap<String,String> likeCheck);
 }

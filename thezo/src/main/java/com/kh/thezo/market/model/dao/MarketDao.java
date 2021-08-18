@@ -100,5 +100,9 @@ public class MarketDao {
     	sqlSession.update("marketMapper.updateMarketLike", memId);
     }
     
+    public int selectMarketLike(SqlSessionTemplate sqlSession, HashMap<String,String> likeCheck) {
+    	return sqlSession.selectOne("marketMapper.selectMarketLike", likeCheck);
+    }
+    
 
 }

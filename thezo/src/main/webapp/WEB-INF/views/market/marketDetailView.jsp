@@ -33,15 +33,65 @@
         <div class="innerOuter">
             <h2><b>더조마켓</b></h2>
             <div align="center">
-                <a class="btn heart">
-			    	<img id="heart" name="heart" src="" style="width:20px;height:20px;">
-			    </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a class="btn heart" id="like1">
+					<img id="heart" name="heart" class="like" src="resources/images/like1.png" style="width:20px;height:20px;">
+				</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			    
-			    <script>
+			<script>
+			var like = '<img id="heart" name="heart" class="like" src="resources/images/like2.png" style="width:20px;height:20px;">';
+			var unlike = '<img id="heart" name="heart" class="like" src="resources/images/like1.png" style="width:20px;height:20px;">';
+			
+			var likeClass=$("#like1");
+			console.log(likeClass);
+			
+			$(function(){
+				$(function(){
+			   if("${like}"!=0){
+				likeClass.html(like);
+			   }else{
+				likeClass.html(unlike);
+			   }
+			})
+			})
+			
+			
+							$(".heart").click(function(){ 
+								var marketNo = "${mk.marketNo}";
+								var currentStatus="";
+								//안조아하고있으면
+								if(likeClass.html()==unlike){
+									currentStatus = "insert";
+								}else{ //조아하고있으면 해제
+									currentStatus = "delete";
+								}
+								$.ajax({
+									url:"productLike.mk",
+									data:{
+										marketNo:marketNo,
+										currentStatus: currentStatus					
+									},
+									type:"post",
+									success:function(result){			
+										if(result>1){
+											likeClass.html(unlike);
+											alert("찜하기 해제 되었습니다");
+										}else{
+											likeClass.html(like);
+											alert("찜하기 추가되었습니다");
+										}
+									},error:function(){
+										console.log("ajax통신 실패");
+									}
+								});
+								});
+			
+			</script>
+
+			    <!-- <script>
 			    	$(document).ready(function(){
 			    		
 			    		var heartval = ${ mk.productLike };
-			    	
+			    	console.log("sdadasdas");
 			    		if(heartval>0){
 			    			console.log(heartval);
 				            $("#heart").prop("src", "resources/images/like2.png");
@@ -53,16 +103,27 @@
 			    		}
 			    	
 			    		$(".heart").on("click", function(){
+							var status= $(this).attr('id');
+							var tempSrc2="/resources/images/like2.png"; //2가 좋아요임!!
+							var tempSrc1="/resources/images/like1.png";		
+							var changeValue ="";					
+							if( status =='like1'){
+								changeValue =tempSrc2;
+							}else{
+								changeValue =tempSrc1;
+								$(this).prop('id', 'like2');
+							}
+			    			var that = $(".heart");
 			    			
 			    			$.ajax({
 			    				url:'productLike.mk',
 			    				data: {
 			    					marketNo:${mk.marketNo},
-			    					heart:that.prop('name'),
-			    					memId:'${loginUser.memId}'
-			    				},sucess : function(data){
-			    					that.prop('name',data);
-			    					if(data==1){
+			    					heart:heartval,
+									memId:'${loginUser.memId}'
+			    				},sucess : function(result){
+			    					that.prop('name',result);
+			    					if(result>1){
 			    						$('#heart').prop("src", "/resources/images/like2.png");
 			    					}else{
 			    						$('#heart').prop("src", "/resources/images/like1.png");
@@ -75,7 +136,7 @@
 			    		})
 			    		
 			    	})
-			    </script>
+			    </script> -->
 			    
 			  
                 <a href="" data-toggle="modal" data-target="#marketReportForm" style="text-decoration:none;">신고</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -96,7 +157,7 @@
 		                      작성일 : ${ mk.marketDate }
 		            <p style="font-size: small;">
 			        	<img src="resources/images/countView.png" width="20" height="20">&nbsp;&nbsp;${ mk.count }&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			            <img src="resources/images/heart.png" width="20" height="20">&nbsp;&nbsp;${ mk.productLike}<!-- 찜: 하트이미지 바꾸기-->
+			            <img src="resources/images/heart.png" width="20" height="20">&nbsp;&nbsp;${ like }<!-- 찜: 하트이미지 바꾸기-->
 		            </p>
 	            </div>
             	<hr width="700">

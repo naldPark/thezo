@@ -134,6 +134,18 @@ public class MarketServiceImpl implements MarketService {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public int selectMarketLike(HashMap<String,String> likeCheck) {
+		int result=0;
+		try {
+			result= mkDao.selectMarketLike(sqlSession, likeCheck);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 	    
 	
 

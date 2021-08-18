@@ -220,12 +220,12 @@
                             </tr>
                             <c:forEach var="at" items="${ list }">
 	                            <tr>
-	                            	<td style="visibility:hidden">${ at.memNo }</td>
+	                            	<td hidden>${ at.memNo }</td>
 	                                <td>${ at.rank }</td>
 	                                <td>${ at.memName }</td>
 	                                <td>${ at.department }</td>
 	                                <td><input type="number" class="form-control form-control-sm" value="${ at.memTotalDate }"></td>
-	                                <td><button type="button" class="btn btn-secondary leaveHistory" onclick="history_click()" data-toggle="modal">휴가 사용 현황</button></td>
+	                                <td><button type="button" class="btn btn-secondary leaveHistory" data-toggle="modal" data-bs-target="#rest-used">휴가 사용 현황</button></td>
 	                            </tr>
                             </c:forEach>
                         </table>
@@ -361,7 +361,7 @@
             </div>
         </div>
     </section>
-    <!-- 부서등록 모달-->
+    
     <div class="modal fade" id="rest-used" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -415,74 +415,25 @@
     <script>
        $(document).on("click", ".leaveHistory", function(){
 	       	var memTotalDate = $(this).parent().prev().children().val();
-	       	console.log(memTotalDate);
 	       	$(".modal-body #memTotalDate").text( memTotalDate + "일" );
-       })
-       
-       function history_click(){
-    	   var rname = $(this).parent().prev().prev().prev().prev().prev().val();
+    	  	var rname = $(this).parent().prev().prev().prev().prev().prev().val();
     	   
-    	   $.ajax({
-    		   url: "history.att",
-    		   data:
-    			   memNo : rname
-    		   
-    		   success:function(lData){
-    			   $(".modal-body #leaveCate").text(lData.leaveCate);
-    		   }
-    	   })
-       }
+    	   	console.log(rname);
+	   	    $.ajax({
+	   		   url: "history.att",
+	   		   data:{
+	   			   memNo : rname
+	   		   }, success:function(lData){
+	   			   $(".modal-body #leaveCate").text(lData.leaveCate);
+	   		   }, error:function(){
+	   			   console.log("조회용 ajax통신 실패");
+	   		   }
+	   	    })
+	     })
        
        
        
     </script>
-
-    <!--근태조정신청확인 모달-->
-    <div class="modal fade" id="enrcode-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header" id="myModalheader2">
-                    <div class="modal-title" id="myModalLabel"><i class="fas fa-bars"></i> 근태 조정 신청</div>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div id="enr-form">
-                            <table id="enr-modal-table">
-                                <tr>
-                                    <th width="100">신청 날짜</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="2021년 7월 1일 (월요일)" disabled></td>
-                                </tr>
-                                <tr>
-                                    <th>현재 상태</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="출근 (2021/07/01 월) 13:45" disabled></td>
-                                </tr>
-                                <tr>
-                                    <th>사유</th>
-                                    <td>
-                                        <div class="form-group">
-                                            <textarea class="form-control" disabled>출근 시간이 잘못 입력되었습니다.</textarea>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>출근</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="13:45" ></td>
-                                </tr>
-                                <tr>
-                                    <th>퇴근</th>
-                                    <td><input type="text" class="form-control form-control-sm" value="20:30" ></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <a href="" style="color: rgb(26,188,156);">수정하기</a>&nbsp;
-                    <a href="#" data-dismiss="modal" style="color: lightslategray;">취소하기</a>
-                </div>
-            </div>
-        </div>
-    </div>
     <!--모달 기능-->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

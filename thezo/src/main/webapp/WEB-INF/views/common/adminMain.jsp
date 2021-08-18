@@ -78,12 +78,27 @@
 		$(function(){
 			var adminNav = document.getElementById("admin-header");
 			$("section").css("margin-top", (adminNav.style.display != 'none'?"115px":"70px"));
+        	$(".notification-innerline").show();
+			// 마지막 사이트 로그 가져오는 함수 호출 
+        	AjaxSelectAdminLog();
+        	
 		})
 		document.getElementById("admin-header").style.display ="block"; 
         document.getElementById("admin-mode").style.color = "red";
-        $(function(){
-        	$(".notification-innerline").show();
-        })
+        
+        
+        function AjaxSelectAdminLog(){
+            $.ajax({
+		 		url:"selectDevLog.ad",
+		 		success:function(adminLog){
+		 			$("#last-developer-name").html(adminLog.developerName);
+		 			$("#last-developer-date").html(adminLog.enrollDate);
+		 			$("#modification-content").html(adminLog.modificationContent);
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	});
+        }
         
        	function insertSimpleDevLog(){
        		if($("#developerName").val().trim() == ""){
@@ -93,12 +108,15 @@
        			alert("개발 내역을 입력해주세요.");
        			$("#dev-context").focus();
        		}else{
-       			/*
                 $.ajax({
     		 		url:"insertDevLog.ad",
+    				data:{developerName : $("#developerName").val()
+          		 		, modificationContent : $("#dev-context").val()
+            		},
     		 		success:function(result){
     		 			if(result>0){
     		 				alert("사이트 관리 기록작성에 성공하였습니다.\n 확인해주세요");
+    		 				AjaxSelectAdminLog();
     		 			}else{
     		 				alert("사이트 관리 기록작성에 실패하였습니다.\n 개발자에게 문의해주세요.")
     		 			}
@@ -107,9 +125,17 @@
     		 			console.log("ajax통신 실패");
     		 		}				
     		 	});
-       			*/
        		}
        	}
+       	
+       	// 모달닫았을때 
+        $(document).ready(function(){   
+	        $("#sitelog-enroll-modal").on('hidden.bs.modal', function () {
+ 				$("#developerName").val("");
+ 				$("#dev-context").val("");
+	       	})
+        })
+
 	</script>
 	
 	<section>
@@ -134,7 +160,7 @@
 				<div class="info-box">
 					<div>
 						<p>마지막 수정 개발자</p>
-						<div>
+						<div id="last-developer-name">
 							신재원
 						</div>
 					</div>
@@ -142,7 +168,7 @@
 				<div class="info-box">
 					<div>
 						<p>최근 업데이트</p>
-						<div>
+						<div id="last-developer-date">
 							2021-08-20
 						</div>
 					</div>

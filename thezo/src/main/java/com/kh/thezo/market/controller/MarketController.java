@@ -99,16 +99,28 @@ public class MarketController {
 	// 벼룩시장 상세조회(사용자)
 	@RequestMapping("marketDetail.bo")
 	public ModelAndView marketDetail(HttpSession session, int mkno, ModelAndView mv) {
+		
+		System.out.println(mkno);
 		int result = mkService.increaseMarketCount(mkno);
+		
 		String memId = ((Member)session.getAttribute("loginUser")).getMemId();
+		System.out.println(memId);
 		HashMap<String,String> likeCheck = new HashMap<>();
 		likeCheck.put("memId", memId);
 		likeCheck.put("marketNo", String.valueOf(mkno));
 		int like = mkService.selectMarketLike(likeCheck);
+		
+		System.out.println(like);
+		
+		
 		if(result>0) { 
 			Market mk = mkService.selectMarket(mkno); 
+			//PLike p = mkService.selectPLike(mkno);
+			
+			
 			mv.addObject("like", like);
 			mv.addObject("mk", mk).setViewName("market/marketDetailView");
+			//mv.addObject("p", p).setViewName("market/marketDetailView");
 				
 		}else {
 			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");

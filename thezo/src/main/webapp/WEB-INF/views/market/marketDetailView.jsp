@@ -46,7 +46,8 @@
 			
 			$(function(){
 				$(function(){
-			   if("${like}"!=0){
+			   //if("${like}"!=0 && "${ p.memId eq loginUser.memId }"){
+			  if("${like}"!=0){
 				likeClass.html(like);
 			   }else{
 				likeClass.html(unlike);

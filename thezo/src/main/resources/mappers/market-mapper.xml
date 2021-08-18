@@ -17,6 +17,7 @@
 		<result column="mem_name" property="memName"/>
 		<result column="department" property="department"/>
 		<result column="rank" property="rank"/>
+		<result column="mem_id" property="memId"/>
 	</resultMap>
 	
 	<resultMap id="replyResult" type="Reply">
@@ -165,25 +166,34 @@
 	<!-- 사용자 : 벼룩시장 상세 조회 -->
 	<select id="selectMarket" resultMap="marketResult">
 		select
-			   market_no
-		     , market_title
-		     , market_writer
+            market_no
+           , market_title
+           , market_writer
              , mem_name
              , department
              , rank
-		     , market_content
-		     , to_char(market_date, 'YYYY-MM-DD') as market_date
-		     , market_section
+           , market_content
+           , to_char(market_date, 'YYYY-MM-DD') as market_date
+           , market_section
              , price
              , p_img as productImg
              , p_like
              , count
- 		  from market mk
+         from market mk
           left outer join member using (mem_no)
-		 where market_no = #{marketNo}
-           and mk.status = 'Y'
+	       where market_no =#{market_no}
+	           and mk.status = 'Y'
+	   
 	</select>
 	
+	<!-- 사용자 : 벼룩시장 좋아요 조회 -->
+	<!--
+	<select id="selectPLike" resultMap="PLikeResult">
+		select mem_id
+		  from p_like
+		 where mem_id = #{memId}
+	</select>
+	  -->
 		
 	<!-- 사용자 : 벼룩시장 글 등록 -->
 	<insert id="insertMarket">
@@ -324,6 +334,7 @@
 	      select count(*)
 	      from p_like
 	       where market_no = #{marketNo}
+	         and mem_id = #{memId}
       </select>
         
 

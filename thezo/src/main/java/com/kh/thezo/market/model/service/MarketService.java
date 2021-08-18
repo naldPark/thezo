@@ -27,6 +27,7 @@ public interface MarketService {
 	// 3. 사용자 : 벼룩시장 상세조회용
 	int increaseMarketCount(int marketNo);
 	Market selectMarket(int marketNo);
+	PLike selectPLike(int marketNo);
 	
 	// 4. 사용자 : 벼룩시장 등록용
 	int insertMarket(Market mk);

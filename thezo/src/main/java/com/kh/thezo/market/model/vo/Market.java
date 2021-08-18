@@ -31,5 +31,6 @@ public class Market {
 	private String memName;
 	private String department;
 	private String rank;
+	private String memId;
 	
 }

@@ -73,6 +73,11 @@ public class MarketDao {
 		return sqlSession.selectOne("marketMapper.selectMarket", marketNo);
 	}
 	
+	public PLike selectPLike(SqlSessionTemplate sqlSession, int marketNo) {
+		return sqlSession.selectOne("marketMapper.selectPLike", marketNo);
+	}
+	
+	
 	// 사용자 : 벼룩시장 글 등록 
 	public int insertMarket(SqlSessionTemplate sqlSession, Market mk) {
 		return sqlSession.insert("marketMapper.insertMarket", mk);

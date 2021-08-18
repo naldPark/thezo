@@ -75,6 +75,12 @@ public class MarketServiceImpl implements MarketService {
 	public Market selectMarket(int marketNo) {
 		return mkDao.selectMarket(sqlSession, marketNo);
 	}
+	
+	// 사용자 : 벼룩시장 좋아요 조회
+	@Override
+	public PLike selectPLike(int marketNo) {
+		return mkDao.selectPLike(sqlSession, marketNo);
+	}
 
 	// 사용자 : 벼룩시장 등록(글)
 	@Override
@@ -163,6 +169,7 @@ public class MarketServiceImpl implements MarketService {
 		}
 		return result;
 	}
+
 
 	
 	

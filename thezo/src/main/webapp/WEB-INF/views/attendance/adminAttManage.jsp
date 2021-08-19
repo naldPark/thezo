@@ -204,7 +204,7 @@
                             </tr>
                             <c:forEach var="at" items="${ list }">
                                <tr>
-                                   <td hidden>${ at.memNo }"></td>
+                                   <td hidden><input type="text" name="memNo" value="${ at.memNo }"></td>
                                    <td>${ at.rank }</td>
                                    <td>${ at.memName }</td>
                                    <td>${ at.department }</td>

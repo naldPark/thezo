@@ -57,6 +57,7 @@ public class AttendanceController{
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<Member> list = aService.selectMember(pi);
 		ArrayList<Leave> lData = aService.selectLeaveData(pi);
+		System.out.println(list);
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);

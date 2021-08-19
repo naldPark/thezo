@@ -16,7 +16,7 @@
 <!-- 한국어설정 -->
 <script src='${pageContext.request.contextPath}/resources/fullcalendar-5.8.0/lib/locales/ko.js'></script> 
 <script>
-
+/*
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -58,9 +58,9 @@
         });
         calendar.render();
       });
-      
+*/      
     window.onload = function(){
-        $("#tab-1").click();
+        $("#tab-4").click();
         printTime();
     }
 </script>
@@ -98,9 +98,11 @@
         padding-left : 3%;
         padding-right : 3%;
     }
+    /*
     #tab-1, #tab-2 {width: 14%; height: 100%;}
     #tab-3 {height: 100%;}
-    #tab-4 {width: 26%; height: 100%;}
+    */
+    #tab-4 {width: 26%; height: 100%; float: left; margin-left: 10%;}
 
     .sub-time{float: right; width: 30%; height: 100%;}
     #sub-curtime{
@@ -259,7 +261,7 @@
 <body>
 	<jsp:include page="../common/header.jsp"/>
 	<script>
-
+	/*
         function changetab1(){
             document.all.monthly.style.display = 'block';
             document.all.yearly.style.display = 'none';
@@ -281,7 +283,7 @@
             document.all.resthistory.style.display = 'none';
 
         }
-
+	*/
         function changetab4(){
             document.all.monthly.style.display = 'none';
             document.all.yearly.style.display = 'none';
@@ -298,9 +300,9 @@
                 <div class="sub-menu">
                     <div id="sub-name"><i class="fas fa-briefcase"></i> 근태관리</div>
                     <div class="tab" id="sub-button">
-                        <button onclick="changetab1()" id="tab-1" type="button" class="cbtn">월간</button>&nbsp;
-                        <button onclick="changetab2()" id="tab-2" type="button" class="cbtn">연간</button>&nbsp;
-                        <button onclick="changetab3()" id="tab-3" type="button" class="cbtn">근태조정신청내역</button>&nbsp;
+                        <!-- <button onclick="changetab1()" id="tab-1" type="button" class="cbtn">월간</button>&nbsp; -->
+                        <!-- <button onclick="changetab2()" id="tab-2" type="button" class="cbtn">연간</button>&nbsp; -->
+                        <!-- <button onclick="changetab3()" id="tab-3" type="button" class="cbtn">근태조정신청내역</button>&nbsp; -->
                         <button onclick="changetab4()" id="tab-4" type="button" class="cbtn">내 휴가기록</button>&nbsp;
                     </div>
                 </div>
@@ -544,7 +546,6 @@
                         </div>
                     </div>
                 </div>
-
                 <!--내 휴가기록-->
                 <div id="resthistory">
                     <div id="rest-inform">
@@ -553,15 +554,15 @@
                         <table id="myinform-table">
                             <tr>
                                 <th height="40">입사일</th>
-                                <td width="150">2021-07-01</td>
+                                <td width="150">${ loginUser.enrollDate }</td>
                             </tr>
                             <tr>
                                 <th>연차 지급일수</th>
-                                <td>0일</td>
+                                <td>${ loginUser.memVacDate }</td>
                                 <th>연차 총 사용일</th>
-                                <td width="150">0일</td>
+                                <td width="150">${ loginUser.memUsedDate }</td>
                                 <th>연차 잔여일수</th>
-                                <td width="150">0일</td>
+                                <td width="150">${ loginUser.memTotalDate }</td>
                             </tr>
                         </table>
                     </div>
@@ -588,45 +589,21 @@
                         <br><br>
                         <table id="histroy-table">
                             <tr>
-                                <th width="300">No</th>
                                 <th width="300">신청일</th>
                                 <th width="300">신청종류</th>
                                 <th width="300">휴가일</th>
                                 <th width="300">사용일수</th>
                                 <th width="300">승인여부</th>
                             </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>2021-07-02</td>
-                                <td>정기휴가</td>
-                                <td>2021-07-05</td>
-                                <td>1일</td>
-                                <td>미승인</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>2021-07-02</td>
-                                <td>정기휴가</td>
-                                <td>2021-07-05</td>
-                                <td>1일</td>
-                                <td>미승인</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>2021-07-02</td>
-                                <td>정기휴가</td>
-                                <td>2021-07-05</td>
-                                <td>1일</td>
-                                <td>미승인</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>2021-07-02</td>
-                                <td>정기휴가</td>
-                                <td>2021-07-05</td>
-                                <td>1일</td>
-                                <td>미승인</td>
-                            </tr>
+                            <c:forEach var="at" items="${ lData }">
+                               <tr>
+                                   <td>${ at.enrDate }</td>
+                                   <td>${ at.leaveCate }</td>
+                                   <td>${ at.startDate } ~ ${ at.endDate }</td>
+                                   <td>${ at.leaveCount }</td>
+                                   <td>${ at.leaveStatus }</td>
+                               </tr>
+                            </c:forEach>
                         </table>
                     </div>
                 </div>

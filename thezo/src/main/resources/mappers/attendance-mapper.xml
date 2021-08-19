@@ -132,6 +132,22 @@
 		   set mem_total_date = #{ memTotalDate }
 		 where mem_no = #{ memNo }
 	</update>
+	
+	<!-- 사용자 근태관리 정보 조회 -->
+	<select id="leaveData" resultMap="LeaveResult">
+		select
+			   mem_no
+			 , start_date
+			 , end_date
+			 , leave_count
+			 , leave_content
+			 , leave_cate
+			 , leave_enr_date
+		  from leave
+		 where mem_no = #{ memNo }
+		 order
+		    by start_date desc
+	</select>
 	<!-- 휴가 일수 조회(모달) 차후
 	<select id="selectLeaveData2" resultMap="LeaveResult">
 		select

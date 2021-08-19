@@ -26,7 +26,10 @@
 		<result column="rank" property="rank"/>
 		<result column="extension_no" property="extensionNo"/>
 		<result column="origin_name" property="originName"/>
-		<result column="path" property="path"/> 
+		<result column="mem_vac_date" property="memVacDate"/> 
+		<result column="mem_used_date" property="memUsedDate"/> 
+		<result column="mem_total_date" property="memTotalDate"/> 
+		<result column="path" property="path"/>
 		<result column="notice_auth" property="noticeAuth"/> 
 		<result column="status" property="status"/>
 		<result column="msg_restrict" property="msgRestrict"/> 

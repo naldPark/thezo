@@ -41,8 +41,16 @@ public class StatisticDao {
 	 * @param sqlSession
 	 * @return
 	 */
-	public ArrayList<Department> aelectRightBottomChart(SqlSessionTemplate sqlSession) {
-		return (ArrayList)sqlSession.selectList("statisticMapper.aelectRightBottomChart");
+	public ArrayList<Department> selectRightBottomChart(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("statisticMapper.selectRightBottomChart");
+	}
+
+	/** table 형태의 표에 자료를 가져오는 DAO
+	 * @param sqlSession
+	 * @return
+	 */
+	public ArrayList<Department> selectTableAreaDate(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("statisticMapper.selectTableAreaDate");
 	}
 
 }

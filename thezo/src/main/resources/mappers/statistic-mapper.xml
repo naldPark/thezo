@@ -12,12 +12,16 @@
 	</resultMap>
 
 	<!-- vo새로만드는것보다  기존에 있는 것 활용 -->
-	<resultMap id="adminRightSideResult" type="Department">
+	<resultMap id="adminDeptResult" type="Department">
 		<result column="countbymaxmem" property="depNo"/>
 		<result column="dep_mem_count" property="depNo"/>
 		<result column="dep_name" property="depName"/>
+		<result column="parent_dep" property="parentDep"/>
 		<result column="dep_class" property="depClass"/>
+		<result column="total_employee" property="depClass"/>
+		<result column="total_officer" property="parDepclass"/>
 	</resultMap>
+
 
 	<!-- adminLog 조회용 sql문  -->
 	<select id="ajaxSelectAdminLog" resultMap="adminLogResult">
@@ -53,7 +57,7 @@
 	</insert>
 	
 	<!--관리자페이지 메인 오른쪽 상단 부서별 인원현황 데이터 가져오는 controller -->
-	<select id="ajaxSelectRightTopDept" resultMap="adminRightSideResult">
+	<select id="ajaxSelectRightTopDept" resultMap="adminDeptResult">
 		select 
 		    dp.dep_name  
 		  , round((count(dep_name)/(select max(count(department)) from member where status in ('Y','A') group by department))* 100) as countByMaxMem
@@ -71,7 +75,7 @@
 	</select>
 	
 	<!-- 관리자페이지 메인 오른쪽 하단 전체 인원수와 pie차트에 담은 데이터 조회용 sql문  -->
-	<select id="aelectRightBottomChart" resultMap="adminRightSideResult">
+	<select id="selectRightBottomChart" resultMap="adminDeptResult">
 		select 
 		    dp.dep_name as dep_name 
 		  , count(dep_name) as dep_mem_count
@@ -89,5 +93,32 @@
 		   when '구매팀' then '6' else '7'end)		
 	</select>
 
+	<!-- table 형태의 표에 자료를 가져오는 sql문 -->
+	<select id="selectTableAreaDate" resultMap="adminDeptResult">
+		select 
+                case when dp.parent_dep = '대표이사' then dep_name else dp.parent_dep end as parent_dep 
+		      , dp.dep_name as dep_name
+              , count(mem_no) - count(case when rank = '상무' or rank = '대표이사' then '임원' end) as total_employee
+              , count(case when rank = '상무' or rank = '대표이사' then '임원' end) as total_officer
+		  from department dp 
+          join member mb on(mb.department = dp.dep_name) 
+          where mb.status in ('Y','A')
+        group by dp.dep_name, dp.parent_dep 
+        order by 
+                 case when dep_name = '경영관리본부' then 1 
+                      when dep_name = '인사팀' then 2
+                      when dep_name = '총무팀' then 3
+                      when dep_name = '회계팀' then 4
+                      when dep_name = '개발본부' then 5
+                      when dep_name = '개발1팀' then 6
+                      when dep_name = '개발2팀' then 7
+                      when dep_name = '인프라팀' then 8
+                      when dep_name = '운영본부' then 9
+                      when dep_name = '운영팀' then 10
+                      when dep_name = '영업팀' then 11
+                      when dep_name = '구매팀' then 12
+                 end      
+                 NULLS first
+	</select>
 
 </mapper>

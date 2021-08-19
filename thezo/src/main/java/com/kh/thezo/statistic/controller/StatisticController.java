@@ -58,8 +58,19 @@ public class StatisticController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="selectRightBottomChart.ad", produces="application/json; charset=utf-8")
-	public String aelectRightBottomChart() {
-		ArrayList<Department> statistic = statService.aelectRightBottomChart(); 
+	public String selectRightBottomChart() {
+		ArrayList<Department> statistic = statService.selectRightBottomChart(); 
+		return new Gson().toJson(statistic);
+	}
+
+	
+	/** table 형태의 표에 자료를 가져오는 Controller
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="selectTableAreaDate.ad", produces="application/json; charset=utf-8")
+	public String selectTableAreaDate() {
+		ArrayList<Department> statistic = statService.selectTableAreaDate(); 
 		return new Gson().toJson(statistic);
 	}
 

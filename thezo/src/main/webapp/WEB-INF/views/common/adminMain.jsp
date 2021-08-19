@@ -27,7 +27,7 @@
 	.info-content>div{height: 238px; display: flex; align-items: center; flex-direction: column;}
 	.info-box>div>p, .info-content>div>p {color: white; font-size: 15px; text-align: center; line-height: 20px; margin: 0px; padding-top: 6px; padding-bottom: 3px; }
 	.info-box>div>div{width: 161px; height: 25px; text-align: center; margin: auto; padding-top: 2px; background-color: white;}
-	.info-content>div>pre{width: 170px; height: 198px; margin: 8px 0px 0px 0px; background-color: white;
+	.info-content>div>pre{width: 170px; height: 198px; margin: 8px 0px 0px 0px; background-color: white; font-family:'Noto Sans KR', sans-serif;
 		letter-spacing: -0.5px;
 		white-space:pre-wrap; 
 		word-break:keep-all;
@@ -63,14 +63,13 @@
 	.table-chart{width: 300px;}
 	.table-chart>p{height: 25px; color: tomato; font-weight: bold; margin: 0px;}
 	.table-chart>div{width: 100% ;height: 255px;}
-
 	/* 오른쪽 박스 영역 */
 	.right-section{width: 205px;}
 	.memstat-table{height: 190px;margin-top: 8px; }
 	.deptstat-table{height: 392px; overflow-y: auto;}
-	.deptstat-table::-webkit-scrollbar, #recycle-bin-page::-webkit-scrollbar {width: 10px; display: block;}
-	.deptstat-table::-webkit-scrollbar-thumb {border: 2px solid transparent; border-radius: 5px; background-clip: padding-box; background-color: rgb(41,128,185);}
-	.deptstat-table::-webkit-scrollbar-track {border-radius: 5px; box-shadow: inset 0px 0px 5px white; background-color: rgb(215, 238, 247);}
+	.deptstat-table::-webkit-scrollbar, #inner-table-area::-webkit-scrollbar {width: 10px; display: block;}
+	.deptstat-table::-webkit-scrollbar-thumb, #inner-table-area::-webkit-scrollbar-thumb {border: 2px solid transparent; border-radius: 5px; background-clip: padding-box; background-color: rgb(41,128,185);}
+	.deptstat-table::-webkit-scrollbar-track, #inner-table-area::-webkit-scrollbar-track {border-radius: 5px; box-shadow: inset 0px 0px 5px white; background-color: rgb(215, 238, 247);}
 	/*오른쪽 상단 박스 영역*/ 
 	#ad-progress-area .progress{width: 85%; margin:auto; margin-bottom:1.8px;}
 	#ad-progress-area .progress-bar{border-radius: 0 3px 3px 0;}
@@ -91,39 +90,21 @@
 	#ad-progress-area{line-height: 18px;}
 	#ad-progress-area span:nth-of-type(2), #ad-progress-area span:nth-of-type(4n+2) {color: black; font-weight: bolder;}
 	/*오른쪽 하단 박스영역*/
-	.memstat-table>p{
-		margin-bottom: 0px;
-		font-size: 15px; 
-		font-weight: bolder;
-		margin-left: 12px;
-		position: absolute;
-		z-index: 100;
-	}
+	.memstat-table>p{font-size: 15px; font-weight: bolder; margin-left: 12px; margin-bottom: 0px; position: absolute; z-index: 100;}
+	.memstat-table{position: relative; overflow: hidden;}
+	.memstat-table>div:nth-child(2){position: absolute; top: 30px; left:25px;}
+	.memstat-table>div:nth-child(3){ margin-left:5px; font-size: 25px; font-weight: bolder; color: rgb(171,235,198); letter-spacing: 2px; position: absolute; top: 90px; left: 50%; z-index: 50; transform: translateX(-50%); text-shadow: -1px 0 green, 0 1px green, 1px 0 green, 0 -1px green;}
+	.memstat-table>div:nth-child(2):hover+div{display:none;}
 
-	.memstat-table{
-		position: relative; 
-		overflow: hidden;
-	}
-	 
-	.memstat-table>div:nth-child(2){
-		position: absolute;
-		top: 20px;
-		left: 50%;
-		transform: translateX(-50%);
-		z-index: 50;
-		font-size: 25px;
-		font-weight: bolder;
-		color: rgb(171,235,198);
-		letter-spacing: 2px;
-		text-shadow: -1px 0 green, 0 1px green, 1px 0 green, 0 -1px green;
-	}
-	.memstat-table>div:nth-child(3){
-		position: absolute;
-		top: 12px;
-	}
-	.memstat-table>div:nth-child(3):hover{
-		z-index: 75;;
-	}
+	/* 중앙 오른쪽 하단 table 영역 css*/
+	.table-chart table{width: 95%; height: 95%; margin: auto; transform: translateY(4px); text-align: center; font-size: 11px; line-height: 11px; border-color: #212529; border-collapse: collapse; border: 1px solid  #212529;}	
+	.table-chart table>tr, .table-chart table th, .table-chart table td {border: 1px solid  #212529; border-collapse: collapse}
+	.table-chart tbody>tr>td:first-child{border: none;}
+	.total-Td{border-bottom: none; font-weight: bold;}
+	.parentDeptItem>td:nth-child(2){color: rgb(52, 185, 230); font-weight: bold; border-bottom: none;}
+	.deptItems>td:nth-child(2){border: none; border-left: 1px solid #212529;}
+	#inner-table-area{overflow-y: scroll;}
+
 
 	/* ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 위에 레이아웃 요소 싸그리 끝낸것!! ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑*/
 </style>
@@ -153,19 +134,23 @@
 		console.log("tttt");
 		}
 		*/
-	
+		//--------------------------------------------------------------------------------------------------------------------------------	
+		// 로딩되자마자 실행할것들
 		$(function(){
 			var adminNav = document.getElementById("admin-header");
 			$("section").css("margin-top", (adminNav.style.display != 'none'?"115px":"70px"));
         	$(".notification-innerline").show();
 			// 마지막 사이트 로그 가져오는 함수 호출 
-        	ajaxSelectAdminLog();
-        	ajaxSelectRightTopDept();
-        	ajaxSelectRightBottomChart();
-		})
+        	ajaxSelectAdminLog(); // 사이트관리 기록 조회
+        	ajaxSelectRightTopDept(); // progress bar
+        	ajaxSelectRightBottomChart(); // 도넛차트
+        	ajaxSelectTableAreaDate();// table형태의 영역데이터 조회
+        	ajaxBringBarChartDate();
+        	ajaxBringLineChartDate();        	
+        })
 		document.getElementById("admin-header").style.display ="block"; 
         document.getElementById("admin-mode").style.color = "red";
-        
+		//--------------------------------------------------------------------------------------------------------------------------------        
         // adminlog 가져오는 함수 
         function ajaxSelectAdminLog(){
             $.ajax({
@@ -179,7 +164,7 @@
 		 		}				
 		 	});
         }
-        
+		//--------------------------------------------------------------------------------------------------------------------------------		        
         // adminlog 삽입하는 함수 
        	function insertSimpleDevLog(){
        		if($("#developerName").val().trim() == ""){
@@ -208,7 +193,7 @@
     		 	});
        		}
        	}
-       	
+		//--------------------------------------------------------------------------------------------------------------------------------       	
        	// adminlog 모달닫았을때 
         $(document).ready(function(){   
 	        $("#sitelog-enroll-modal").on('hidden.bs.modal', function () {
@@ -216,7 +201,7 @@
  				$("#dev-context").val("");
 	       	})
         })
-        
+		//--------------------------------------------------------------------------------------------------------------------------------        
        // 부서별 인원현황 가져오는 함수  
        function ajaxSelectRightTopDept(){
             $.ajax({
@@ -239,32 +224,35 @@
 		 		}				
 		 	});
         }
-
+		//--------------------------------------------------------------------------------------------------------------------------------
+       	// 오른쪽 하단 차트 
 		function ajaxSelectRightBottomChart(){
             $.ajax({
 		 		url:"selectRightBottomChart.ad",
 		 		success:function(dept){
 		 				$("#total-mem-count").html(dept[0].depClass + "명");
 		 				
+		 				const array = dept;
+		 				// data
+						let depNo = [];
+		 				array.forEach((item) => {depNo.push(item.depNo);});
+		 			
+		 				// labels
+						let depName = [];
+		 				array.forEach((item) => {depName.push(item.depName);});
+							
 		 				//chart js는!! data에 담을때!!! 반복문으로 var arr=[] 안에 for in문으로다가 하나하나 넣은 값을 뽑을수가 있다. 
-						var ctx = document.getElementById('myChart2').getContext('2d');
 						const data = {
-						  labels: [
-						    'Red',
-						    'Blue',
-						    'Yellow'
-						  ],
+						  labels: depName,
 						  datasets: [{
-						    data: [300, 50, 100],
-						    backgroundColor: [
-						      'rgb(255, 99, 132)',
-						      'rgb(54, 162, 235)',
-						      'rgb(255, 205, 86)'
-						    ],
+						    data: depNo,
+						    backgroundColor: ['rgb(251,175,138)', 'rgb(190,255,165)', 'rgb(255,255,141)',
+						                      'rgb(227,255,159)', 'rgb(162,201,252)', 'rgb(240,140,224)'],
 						    hoverOffset: 4
 						  }]
 						};
-								 				
+
+						var ctx = document.getElementById('totalMemCountChart').getContext('2d');
 						var myChart = new Chart(ctx, {
 							  type: 'doughnut',
 							  data: data,
@@ -276,18 +264,109 @@
 							                    color: 'rgb(255, 99, 132)'
 							                }
 							            }
-							        }
+							     }
 							}
 						})
 		 		},error:function(){
 		 			console.log("ajax통신 실패");
 		 		}				
 		 	});
-
 		}
+		//--------------------------------------------------------------------------------------------------------------------------------
 
-
-
+		function ajaxSelectTableAreaDate(){
+            $.ajax({
+		 		url:"selectTableAreaDate.ad",
+		 		success:function(dept){
+		 			//console.log(dept);
+		 			$("#headOfficer").html((dept[0].parDepclass != 0 ? dept[0].parDepclass : ""));
+		 			$("#sumHeadOfficer").html((dept[0].parDepclass != 0 ? dept[0].parDepclass : ""));		 			
+		 			
+		 			var value;
+		 			var totalEmployee = 0;
+		 			var totalOfficer = 0;
+		 			for(var i in dept){
+		 				if(dept[i].parentDep == null){
+		 					value += '';
+		 				}else{
+			 				if(dept[i].depName == dept[i].parentDep){
+				 				value += '<tr class="parentDeptItem">'
+			 						   + '<td width="30"></td>'
+			 						   + '<td colspan="3">' + dept[i].depName + '</td>'
+			 						   + '<td>' + (dept[i].parDepclass != 0 ? dept[i].parDepclass : "") + '</td>'
+			 						   + '<td>' + (dept[i].depClass != 0 ? dept[i].depClass : "") + '</td>'
+			 						   + '<td>' + (dept[i].parDepclass + dept[i].depClass) +'</td></tr>';
+			 				}else{
+			 					value += '<tr class="deptItems">'
+			 					       + '<td></td><td width="40"></td>'
+			 					       + '<td colspan="2">' + dept[i].depName + '</td>'
+			 						   + '<td>' + (dept[i].parDepclass != 0 ? dept[i].parDepclass : "") + '</td>'
+			 						   + '<td>' + (dept[i].depClass != 0 ? dept[i].depClass : "") + '</td>'
+			 						   + '<td>' + (dept[i].parDepclass + dept[i].depClass) +'</td></tr>';
+			 				}
+		 				}
+		 				totalEmployee += dept[i].depClass;
+	 					totalOfficer += dept[i].parDepclass;
+		 			}		 			
+		 			$("#sum-executive").html(totalOfficer);
+		 			$("#sum-employee").html(totalEmployee);
+		 			$("#sum-total-mem").html(totalOfficer + totalEmployee);
+		 			$("#tableChart").html(value);
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	});
+		}
+		
+		//---------------------------------------------------------	
+		function ajaxBringBarChartDate(){
+					
+			// 우선 컨텍스트를 가져오고 
+			var ctx = document.getElementById("join-resign-chart").getContext('2d');
+			
+			// Chart를 생성하면서, 
+			// ctx(context라는 의미)를 첫번째 argument로 넘겨주고, 
+			// 두번째 argument로 그림을 그릴때 필요한 요소들을 모두 넘겨준다. 
+			var JRChart = new Chart(ctx, {
+			    type: 'bar',
+			    data: {
+			        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+			        datasets: [{label: '# of Votes',
+			            data: [12, 19, 3, 5, 2, 3],
+			            backgroundColor: [
+			                'rgba(255, 99, 132, 0.2)',
+			                'rgba(54, 162, 235, 0.2)',
+			                'rgba(255, 206, 86, 0.2)',
+			                'rgba(75, 192, 192, 0.2)',
+			                'rgba(153, 102, 255, 0.2)',
+			                'rgba(255, 159, 64, 0.2)'
+			            ],
+			            borderColor: [
+			                'rgba(255,99,132,1)',
+			                'rgba(54, 162, 235, 1)',
+			                'rgba(255, 206, 86, 1)',
+			                'rgba(75, 192, 192, 1)',
+			                'rgba(153, 102, 255, 1)',
+			                'rgba(255, 159, 64, 1)'
+			            ],
+			            borderWidth: 1
+			        }]
+			    },
+			    options: {
+			        maintainAspectRatio: false, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
+			        scales: {
+			            yAxes: [{
+			                ticks: {
+			                    beginAtZero:true
+			                }
+			            }]
+			        }
+			    }
+			});
+		}
+		//join-resign-chart
+		//attendance-chart
+		
 	</script>
 	
 	<section>
@@ -338,15 +417,39 @@
 			<%-- 가운데 박스 영역 --%>
 			<div class="center-section">
 				<div class="dal-chart" >
-					<!-- <canvas id="myChart" width="400" height="270"></canvas> -->
+					  <canvas id="myChart"></canvas>					
 				</div>
 
 				<div class="some-chart">
+					<canvas id="join-resign-chart"></canvas>
 				</div>
 
 				<div class="table-chart">
-					<p>회사 부서서 인원 관련 표 (동적 생성)</p>
-					<div>
+					<p>※ 조직 인원 현황 표 </p>
+					<div id="inner-table-area">
+						<table>
+							<thead style="background: rgb(191, 230, 243);">
+								<th colspan="4" width="170">구분</th>
+								<th width="35">임원</th>
+								<th width="35">직원</th>
+								<th width="35">계</th>
+							</thead>
+							<tr>
+								<td class="total-Td" colspan="4">전체</td>
+								<td id="headOfficer"></td>	
+								<td></td>	
+								<td id="sumHeadOfficer"></td>	
+							</tr>
+							<!-- 반복문 돌려서 생성은 일단 tbody부터 생성하면서 들어간다.-->
+							<tbody id="tableChart">
+							</tbody>
+							<tfoot style="background: rgb(191, 230, 243);"> 
+								<th colspan="4">소계</th>
+								<th id="sum-executive"></th>
+								<th id="sum-employee"></th>
+								<th id="sum-total-mem"></th>
+							</tfoot>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -362,8 +465,8 @@
 				<!--오른 쪽 하단 차트 -->
 				<div class="memstat-table">
 					<p>※ 전체 인원수 </p>
-					<div id="total-mem-count"> 49명</div>
-					<div><canvas id="myChart2" style="width:100%;max-width:160px"></canvas></div>
+					<div><canvas id="totalMemCountChart" style="width:160px;max-width:180px;"></canvas></div>
+					<div id="total-mem-count" class="w3-animate-opacity"></div>
 				</div>
 			</div>
 			<%-- -------------------------------------------------------  오른쪽 차트영역 끝 --------------------------------------------------------- --%>
@@ -394,77 +497,5 @@
 		</div>
 	</div>
 	<%-- -------------------------------------------------------  사이트 관리 기록 모달영역 끝  --------------------------------------------------------- --%>
-<!-- 
-<script>
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-            label: '# of Votes',
-            data: [0, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
-    }
-});
-</script>
- -->
- 
-<!-- <script>
-const labels = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-];
-const data = {
-  labels: labels
-  datasets: [{
-    label: 'My First dataset',
-    backgroundColor: 'rgb(255, 99, 132)',
-    borderColor: 'rgb(255, 99, 132)',
-    data: [0, 10, 5, 2, 20, 30, 45],
-  }]
-};	  
-	  
-const config = {
-		  type: 'bar',
-		  data,
-		  options: {}
-		};	  
-	  
-  var myChart = new Chart(
-    document.getElementById('myChart'),
-    config
-  );
-
-</script> -->
-
 </body>
 </html>

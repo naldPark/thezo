@@ -48,8 +48,16 @@ public class StatisticServiceImpl implements StatisticService{
 	/** 관리자페이지 메인 오른쪽 하단 전체 인원수와 pie차트에 담은 데이터 조회용 서비스
 	 */
 	@Override
-	public ArrayList<Department> aelectRightBottomChart() {
-		return statDao.aelectRightBottomChart(sqlSession);
+	public ArrayList<Department> selectRightBottomChart() {
+		return statDao.selectRightBottomChart(sqlSession);
+	}
+
+
+	/** table 형태의 표에 자료를 가져오는 서비스
+	 */
+	@Override
+	public ArrayList<Department> selectTableAreaDate() {
+		return statDao.selectTableAreaDate(sqlSession);
 	}
 
 	

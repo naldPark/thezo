@@ -188,14 +188,16 @@ public class MemberController {
 		// 새로 넘어온 첨부파일이 있을 경우
 		if(!reupfile.getOriginalFilename().equals("")) {
 			// 기본에 첨부파일이 있었을 경우 => 기존의 첨부파일 지우기
-			if(m.getOriginName() != null) {
+			if(m.getPath() != null) {
 				new File(session.getServletContext().getRealPath(m.getOriginName())).delete();
 				// 새로 넘어온 첨부파일 서버 업로드 시키기
-				String changeName = saveFile(session, reupfile); 
-				m.setOriginName(changeName);
+				String changeName = saveFile(session, reupfile);
+				m.setPath(reupfile.getOriginalFilename());
+				m.setOriginName("resources/uploadFiles/" + changeName);
 			}else {
 				String changeName = saveFile(session, reupfile); 
-				m.setOriginName(changeName);
+				m.setPath(reupfile.getOriginalFilename());
+				m.setOriginName("resources/uploadFiles/" + changeName);
 			}
 		}
 	
@@ -305,14 +307,16 @@ public class MemberController {
 		// 새로 넘어온 첨부파일이 있을 경우
 		if(!reupfile.getOriginalFilename().equals("")) {
 			// 기본에 첨부파일이 있었을 경우 => 기존의 첨부파일 지우기
-			if(m.getOriginName() != null) {
+			if(m.getPath() != null) {
 				new File(session.getServletContext().getRealPath(m.getOriginName())).delete();
 				// 새로 넘어온 첨부파일 서버 업로드 시키기
 				String changeName = saveFile(session, reupfile); 
-				m.setOriginName(changeName);
+				m.setPath(reupfile.getOriginalFilename());
+				m.setOriginName("resources/uploadFiles/" + changeName);
 			}else {
 				String changeName = saveFile(session, reupfile); 
-				m.setOriginName(changeName);
+				m.setPath(reupfile.getOriginalFilename());
+				m.setOriginName("resources/uploadFiles/" + changeName);
 			}
 		}
 	
@@ -359,8 +363,9 @@ public class MemberController {
 		
 		if(!upfile.getOriginalFilename().equals("")) {
 			
-			String changeName = saveFile(session, upfile); 
-			m.setOriginName(changeName);
+			String changeName = saveFile(session, upfile);
+			m.setPath(upfile.getOriginalFilename());
+			m.setOriginName("resources/uploadFiles/" + changeName);
 		}
 		
 		int result = mService.insertMember(m);

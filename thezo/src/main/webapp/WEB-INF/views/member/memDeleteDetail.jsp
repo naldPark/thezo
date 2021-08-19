@@ -55,7 +55,7 @@
                         			<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="resources/images/userProfile.png">
                         		</c:when>
                         		<c:otherwise>
-                        			<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="resources/uploadFiles/${ m.originName }">
+                        			<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="${ m.originName }">
                         		</c:otherwise>
 							</c:choose>
 							

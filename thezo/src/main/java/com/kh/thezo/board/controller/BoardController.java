@@ -122,7 +122,7 @@ public class BoardController {
 			
 			String changeName = saveFile(session, upfile); 
 			bf.setOriginName(upfile.getOriginalFilename());  
-			bf.setChangeName(changeName); 
+			bf.setChangeName("resources/uploadFiles/" + changeName); 
 		}
 		
 		int result = bService.insertNotice(b);
@@ -185,14 +185,14 @@ public class BoardController {
 				String changeName = saveFile(session, reupfile);
 				// bf에 새로 넘어온 첨부파일에 대한 정보 담기
 				bf.setOriginName(reupfile.getOriginalFilename());
-				bf.setChangeName(changeName);
+				bf.setChangeName("resources/uploadFiles/" + changeName);
 			}else {
 				
 				// 새로 넘어온 첨부파일 서버 업로드 시키기
 				String changeName = saveFile(session, reupfile);
 				// bf에 새로 넘어온 첨부파일에 대한 정보 담기
 				bf.setOriginName(reupfile.getOriginalFilename());
-				bf.setChangeName(changeName);
+				bf.setChangeName( "resources/uploadFiles/" + changeName);
 				
 				bService.insertNoticeRefile(bf);
 			}
@@ -289,7 +289,7 @@ public class BoardController {
 			
 			String changeName = saveFile(session, upfile); 
 			bf.setOriginName(upfile.getOriginalFilename());  
-			bf.setChangeName(changeName); 
+			bf.setChangeName("resources/uploadFiles/" + changeName); 
 		}
 		
 		int result = bService.insertBoard(b);
@@ -354,14 +354,14 @@ public class BoardController {
 				String changeName = saveFile(session, reupfile);
 				// bf에 새로 넘어온 첨부파일에 대한 정보 담기
 				bf.setOriginName(reupfile.getOriginalFilename());
-				bf.setChangeName(changeName);
+				bf.setChangeName("resources/uploadFiles/" + changeName);
 			}else {
 				
 				// 새로 넘어온 첨부파일 서버 업로드 시키기
 				String changeName = saveFile(session, reupfile);
 				// bf에 새로 넘어온 첨부파일에 대한 정보 담기
 				bf.setOriginName(reupfile.getOriginalFilename());
-				bf.setChangeName(changeName);
+				bf.setChangeName("resources/uploadFiles/" + changeName);
 				
 				bService.insertBoardRefile(bf);
 			}

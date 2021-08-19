@@ -63,7 +63,7 @@
 	                        		<input style="display: block;" type="file" id="input-image" name="reupfile">
 	                        	</c:when>
 	                        	<c:otherwise>
-	                        		<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="resources/uploadFiles/${ m.originName }">
+	                        		<img style="width: 200px;border-radius:50%; object-fit:cover;" id="preview-image" src="${ m.originName }">
 	                        		<input style="display: block;" type="file" id="input-image" name="reupfile">
 	                        	</c:otherwise>
 	                        </c:choose>	

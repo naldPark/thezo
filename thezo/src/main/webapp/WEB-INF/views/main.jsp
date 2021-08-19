@@ -175,7 +175,7 @@
                                 </c:if>
                             </a>
                         </div>
-                    </div>
+                    </div>               
                     <table id="apprTable" class="table table-sm board table-hover" style="text-align: center;">
                         <thead>
                             <tr>
@@ -197,6 +197,15 @@
                         </tbody>
                     </table>
                 </div>
+                <script>
+                // approval Link
+                $(function () {
+                    $("#apprTable>tbody>tr").click(function () {
+                    var mno = $(this).children().eq(0).text();
+                    location.href = 'detailDocu.appr?docNo=' + mno;
+                    })
+                })
+                </script>
                 <div class="wrap">
                     <div class="boxTitle">게시판<a href="noticeList.bo" class="btn badge-secondary btn-sm more">more</a></div>
                     <div class="input-group-prepend mt-2" style="justify-content: left;">
@@ -421,13 +430,7 @@
     	moveToMessage();    	
     }
 
-    // approval Link
-    $(function () {
-        $("#apprTable>tbody>tr").click(function () {
-        var mno = $(this).children().eq(0).text();
-        location.href = 'detailDocu.appr?docNo=' + mno;
-        })
-    })
+
     
     </script>
  	

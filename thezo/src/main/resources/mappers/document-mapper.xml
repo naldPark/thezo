@@ -15,7 +15,7 @@
 		<result column="status" property="status"/>
 	</resultMap>
 	
-	<resultMap id="categoryResult" type="DocCategory">
+	<resultMap id="docCategoryResult" type="DocCategory">
 		<result column="dep_no" property="depNo"/>
 		<result column="dep_name" property="depName"/>
 	</resultMap>
@@ -117,7 +117,7 @@
 		 </if>
 	</select>
 	
-	<select id="selectCategoryList" resultMap="categoryResult">
+	<select id="selectCategoryList" resultMap="docCategoryResult">
 		select dep_no
 			 , dep_name
 		  from department

@@ -30,6 +30,7 @@
 				center: 'title',
 				right: 'resourceTimeGridDay,resourceTimeGridWeek,dayGridMonth'
 			},
+			scrollTime: '09:00',
 			// uncomment this line to hide the all-day slot
 			allDaySlot: false,
 			//dayHeaderFormat: {day : 'numeric'},

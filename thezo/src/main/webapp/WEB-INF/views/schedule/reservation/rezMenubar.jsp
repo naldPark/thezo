@@ -86,9 +86,18 @@
 			</script>
 			<hr>
 			<!-- 사용자 == 관리자일때 !!-->
-			<button class="btn btn-primary" style="width: 180px;" align="center" data-toggle="modal" data-target="#rezManage">자원 관리하기</button>
+			<c:if test="${ loginUser.status == 'A' }">
+				<button class="btn btn-primary" style="width: 180px;" align="center" onclick="manage();">
+					자원 관리하기
+				</button>
+			</c:if>
 			
-			
+			<script>
+				function manage(){
+					var option = "width = 600, height = 350, top = 100, left = 200, location = no";
+					window.open("manage.rez", "자원예약 상세조회", option);
+				}
+			</script>
 			
 			
 			<script>
@@ -117,11 +126,5 @@
 		
 	</div>
 	  
-	<jsp:include page="rezManagementView.jsp"/>
-	
-
-	
-
-	
 </body>
 </html>

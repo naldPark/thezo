@@ -51,4 +51,24 @@ public class ReservationDao {
 		return sqlSession.selectOne("reservationMapper.selectListCount", memNo);
 	}
 	
+	public ArrayList<Resources> selectResourcesManage(SqlSession sqlSession){
+		return (ArrayList)sqlSession.selectList("reservationMapper.selectResourcesManage");
+	}
+	
+	public int updateReCategory(SqlSession sqlSession, Resources re) {
+		return sqlSession.update("reservationMapper.updateReCategory", re);
+	}
+	
+	public int updateResource(SqlSession sqlSession, Resources re) {
+		return sqlSession.update("reservationMapper.updateResource", re);
+	}
+	
+	public int insertReCategory(SqlSession sqlSession, Resources re) {
+		return sqlSession.insert("reservationMapper.insertReCategory", re);
+	}
+	
+	public int insertResource(SqlSession sqlSession, Resources re) {
+		return sqlSession.insert("reservationMapper.insertResource", re);
+	}
+	
 }

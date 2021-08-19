@@ -64,5 +64,30 @@ public class ReservationServiceImpl implements ReservationService {
 	public int selectListCount(int memNo) {
 		return rDao.selectListCount(sqlSession, memNo);
 	}
+	
+	public ArrayList<Resources> selectResourcesManage(){
+		return rDao.selectResourcesManage(sqlSession);
+	}
+
+	@Override
+	public int updateReCategory(Resources re) {
+		return rDao.updateReCategory(sqlSession, re);
+	}
+
+	@Override
+	public int updateResource(Resources re) {
+		return rDao.updateResource(sqlSession, re);
+	}
+
+	@Override
+	public int insertReCategory(Resources re) {
+		return rDao.insertReCategory(sqlSession, re);
+	}
+
+	@Override
+	public int insertResource(Resources re) {
+		return rDao.insertResource(sqlSession, re);
+	}
+	
 
 }

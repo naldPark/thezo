@@ -28,7 +28,6 @@
 	        	year: 'numeric',
 	            month: '2-digit',
          	},
-         	aspectRatio: 2,
          	initialView: 'dayGridMonth',
 	        lazyFetching : 'false',
 	        themeSystem: 'bootstrap', // 테마 설정
@@ -46,34 +45,31 @@
 						cache: false,
 						success:function(list){
 							var scList = Object.values(JSON.parse(list));
-							scList[i].color = '#378006';
-							mainCalendar.addEvent(scList[i]);
-							console.log(scList);
+							for(var i=0; i<scList.length; i++){
+								scList[i].color = '#378006';
+								mainCalendar.addEvent(scList[i]);
+							}
 						},error: function(){
 							console.log("일정 조회용 ajax 통신 실패");
 						}
 					})
 				]
 	        }],
-			eventDisplay: 'background'
+			eventDisplay: 'list-item',
+			displayEventTime: false,
+			dayMaxEventRows: 1
 		});
 	    
 	    $(function(){
 			$("#mainCalendar .btn").addClass("btn-sm");
 			$("#mainCalendar .btn").removeClass("btn-primary");
-			$("#mainCalendar .fc-list-day-text").hide();
-			$("#mainCalendar .fc-toolbar-title").
-			/* $(".fc-daygrid-day-events").remove();
-
-			$.each($(".fc-daygrid-day-number"), function(index, value){
-				var replace = $(this).text().replace("일", "");
-				$(this).text(replace);
-			}) */
 		});
-	    mainCalendar.setOption('height', 290);
-	    mainCalendar.setOption('contentHeight', 50);
+	    mainCalendar.setOption('height', 280);
+	    mainCalendar.setOption('contentHeight', 30);
 	    mainCalendar.render();
 	});
+	// 1. 이벤트 하나만 나오게 (점 하나만..)
+	// 2. 셀 정사각형 만들기
 </script>
 <style>
 	#mainCalendar .fc-toolbar-title{font-size:16px; font-family: 'Noto Sans KR', sans-serif;}
@@ -93,7 +89,11 @@
 	/* 요일 셀 */
 	#mainCalendar .fc-col-header-cell-cushion{font-size:12px;}
 	#mainClaendar .fc-col-header-cell{background: rgb(20,70,104);}
-	.fc-daygrid-day-events{display:none;}
+	.fc-daygrid-day{height:15px;}
+	/* .fc-daygrid-day-events{display:none;} */
+	
+	/* event 제목 숨기기 */
+	.fc-event-title{visibility: hidden; /* hides event title */}
 </style>
 </head>
 <body>

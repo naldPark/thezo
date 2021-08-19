@@ -34,7 +34,7 @@
 	        	year: 'numeric',
 	            month: 'long',
 	            day: 'numeric'
-	         },
+	        },
 	        lazyFetching : 'false',
 	        initialView: 'listDay',
 	        locale: 'ko', // 한국어 설정

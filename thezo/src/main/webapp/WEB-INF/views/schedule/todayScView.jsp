@@ -44,7 +44,7 @@
 				events: [ // ajax로 일정 불러오기
 					$.ajax({
 						url :'list.sc',
-						data : {scType:"all", memNo:${loginUser.memNo}},
+						data : {scType:"all", memNo:${ loginUser.memNo }},
 						cache: false,
 						success:function(list){
 							var scList = Object.values(JSON.parse(list));
@@ -65,15 +65,19 @@
 				]
 	        }]
 		});
-	    
+	    todayScCalendar.setOption('height', 280);
 	    todayScCalendar.render();
 	});
 </script>
 <style>
-	#todayScCalendar .fc-toolbar-title{font-size:16px; font-family: 'Noto Sans KR', sans-serif;}
+	/* title */
+	#todayScCalendar .fc-toolbar-title{font-size:15px; font-family: 'Noto Sans KR', sans-serif;}
+	
 	#todayScCalendar .fc-list-event-time{width:60px; height:60px;}
 	#todayScCalendar td{white-space: normal;}
 	#todayScCalendar .fc-list-day-cushion{display:none;}
+	#todayScCalendar .fc-list-event-time{font-size:13px;}
+	#todayScCalendar .fc-list-event-title{font-size:14px;}
 </style>
 </head>
 <body>
@@ -81,7 +85,7 @@
 <script>
 	$(function(){
 		$("#todayScCalendar .btn").addClass("btn-sm");
-		$("#todayScCalendar .btn").addClass("btn-secondary");
+		$("#todayScCalendar .btn").removeClass("btn-primary");
 		$("#todayScCalendar .fc-list-day-text").hide(); 
 	})
 </script>

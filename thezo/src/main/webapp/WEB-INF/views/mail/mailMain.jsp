@@ -86,7 +86,7 @@
                           </td>
                           <td style="width:180px;" class="sender"
                             data-placement="bottom" data-toggle="tooltip" title="${m.sender}" id="sender${vs.index+1}">
-                            <div style="width:160px;" class="tableBreakWord">
+                            <div style="width:180px;" class="tableBreakWord">
                               ${m.sender}
                             </div>
                           </td>

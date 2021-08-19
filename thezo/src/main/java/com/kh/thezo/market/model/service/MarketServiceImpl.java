@@ -12,6 +12,7 @@ import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.dao.MarketDao;
 import com.kh.thezo.market.model.vo.Market;
+import com.kh.thezo.market.model.vo.PLike;
 
 @Service
 public class MarketServiceImpl implements MarketService {
@@ -46,6 +47,23 @@ public class MarketServiceImpl implements MarketService {
 		return mkDao.marketSearchList(sqlSession, pi, map);
 	}
 	
+	
+	// 사용자 : 찜하기 목록
+	@Override
+	public int likeListCount(String memId) {
+		return mkDao.likeListCount(sqlSession, memId);
+	}
+
+	@Override
+	public ArrayList<Market> selectLiketList(PageInfo pi, String memId) {
+		return mkDao.selectLiketList(sqlSession, pi, memId);
+	}
+	    
+	
+	
+	
+	//-----------------------
+	
 	// 사용자 : 벼룩시장 상세 조회용(조회수)
 	@Override
 	public int increaseMarketCount(int marketNo) {
@@ -56,6 +74,12 @@ public class MarketServiceImpl implements MarketService {
 	@Override
 	public Market selectMarket(int marketNo) {
 		return mkDao.selectMarket(sqlSession, marketNo);
+	}
+	
+	// 사용자 : 벼룩시장 좋아요 조회
+	@Override
+	public PLike selectPLike(int marketNo) {
+		return mkDao.selectPLike(sqlSession, marketNo);
 	}
 
 	// 사용자 : 벼룩시장 등록(글)
@@ -102,23 +126,52 @@ public class MarketServiceImpl implements MarketService {
 
 	
 	// 벼룩시장 찜하기 (수정중)
-	/*
-	 @Override
-	 public void insertMarketLike(PLike pLike) throws Exception {
-	    dao.insertBoardLike(vo);
-	    dao.updateBoardLike(vo.getBoardId());
-	 }
+	@Override
+	public void insertMarketLike(PLike p) {
+		try {
+			mkDao.insertMarketLike(sqlSession, p);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			mkDao.updateMarketLike(sqlSession, p.getMarketNo());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-	 @Override
-	 public void deleteMarketLikd(PLike pLike) throws Exception {
-	    dao.deleteMarketLikd(pLike);
-	    dao.updateBoardLike(pLike.getMemId());
-	 }
-	    
-	   
-	 */
+	@Override
+	public void deleteMarketLike(PLike p) {
+		try {
+			mkDao.deleteMarketLike(sqlSession, p);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			mkDao.updateMarketLike(sqlSession, p.getMarketNo());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
+	@Override
+	public int selectMarketLike(HashMap<String,String> likeCheck) {
+		int result=0;
+		try {
+			result= mkDao.selectMarketLike(sqlSession, likeCheck);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 
+
+	
 	
 
 }

@@ -26,7 +26,6 @@ import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
-import com.kh.thezo.member.model.vo.Member;
 
 @Controller
 public class BoardController {
@@ -34,7 +33,19 @@ public class BoardController {
 	@Autowired
 	private BoardService bService;
 	
+	// main
+	@ResponseBody
+	@RequestMapping(value="mainBoard.bo", produces="application/json; charset=utf-8")
+	public String mainBoard() {
+		return new Gson().toJson(bService.mainBoard());
+	}
 	
+	
+	
+	
+	
+	
+	// ------------------------------------
 	// 공지사항 리스트 페이지(사용자)
 	@RequestMapping("noticeList.bo")
 	public String selectNoticeList(Model model, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
@@ -49,6 +60,8 @@ public class BoardController {
 		
 		return "board/noticeListView";
 	}
+	
+	
 	
 	// 공지사항 리스트페이지 검색바 (사용자)
 	@RequestMapping("noticeSearch.bo")
@@ -502,48 +515,58 @@ public class BoardController {
 	@RequestMapping("reportUpdate.bo")
 	public String reportUpdate(Report r , int rpNo, HttpSession session, Model model) {
 		
-		// 해당 신고참조 게시글 상태를 N으로 변경
-		int result1 = bService.updateBoardStatus(rpNo);
-		
-		if(result1 > 0) {
-			// report의 상태 : N => Y로 변경
-			int result2 = bService.reportBoardUpdate(r);
+		// 신고글 => 게시판 삭제하기일 경우
+		if(r.getRpType() == 1) {
+			// 해당 신고게시글 참조 게시글 상태를 N으로 변경
+			int result1 = bService.updateBoardStatus(rpNo);
 			
-			System.out.println(result2);
+			if(result1 > 0) {
+				// report의 상태 : N => Y로 변경
+				int result2 = bService.reportBoardUpdate(r);
+				
+				System.out.println(result2);
+				
+				if(result2 > 0) {
+					session.setAttribute("alertMsg", "성공적으로 신고 처리되었습니다.");
+					return "redirect:boardReport.bo";
+				}else {
+					model.addAttribute("errorMsg", "신고처리 실패");
+					return "common/erroPage";
+				}
+				
+			}else{
+				model.addAttribute("errorMsg", "신고처리 실패");
+				return "common/erroPage";
+			}
 			
-			if(result2 > 0) {
-				session.setAttribute("alertMsg", "성공적으로 신고 처리되었습니다.");
-				return "redirect:boardReport.bo";
+		}else { // 신고글 => 댓글 삭제할 경우
+			
+			// 해당 신고게시글 참조 댓글상태를 N으로 변경
+			
+			int result1 = bService.updateBoardReplyStatus(rpNo);
+			
+			if(result1 > 0) {
+				// report의 상태 : N => Y로 변경
+				int result2 = bService.reportBoardUpdate(r);
+				
+				System.out.println(result2);
+				
+				if(result2 > 0) {
+					session.setAttribute("alertMsg", "성공적으로 신고 처리되었습니다.");
+					return "redirect:boardReport.bo";
+				}else {
+					model.addAttribute("errorMsg", "신고처리 실패");
+					return "common/erroPage";
+				}
+				
 			}else {
 				model.addAttribute("errorMsg", "신고처리 실패");
 				return "common/erroPage";
 			}
 			
-		}else{
-			model.addAttribute("errorMsg", "신고처리 실패");
-			return "common/erroPage";
 		}
 		
 		
-		/*
-		if(r.getRpType() == 1) { // 게시글인 경우
-			
-			// report의 상태 : N => Y로 변경
-			int result1 = bService.reportBoardUpdate(r);
-			// 해당 신고참조 게시글 상태를 N으로 변경
-			int result2 = bService.updateBoardStatus(rpNo);
-			
-			if(result1 > 0 && result2>0) {
-				session.setAttribute("alertMsg", "성공적으로 신고 처리되었습니다.");
-				return "redirect:boardReport.bo";
-			}else{
-				model.addAttribute("errorMsg", "신고처리실패");
-				return "common/erroPage";
-			}
-		}else {
-			
-		}
-		*/
 		
 	}
 	

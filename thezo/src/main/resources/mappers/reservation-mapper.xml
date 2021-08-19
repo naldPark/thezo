@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="reservationMapper">
-
+	
+	<resultMap id="reCategoryResult" type="ReCategory">
+		<result column="category_no" property="categoryNo" />
+		<result column="category_name" property="categoryName" />
+	</resultMap>
+	
 	<resultMap id="resourceResult" type="Resources">
 		<result column="resource_no" property="resourceNo" />
 		<result column="category_no" property="category" />
@@ -28,12 +33,12 @@
 			 , resource_name
 		  from resources
 		  join re_category using (category_no)
-		 where category_no = 1
+		 where category_no = #{caNo}
 	</select>
 	
 	<select id="selectReservationList" resultMap="reservationResult">
 		select rez_no
-			 , re.resource_no
+		     , re.resource_no
 		     , re.resource_name
 		     , mem_no
 		     , mem_name as rez_writer
@@ -43,6 +48,7 @@
 		     , rez_endtime
 		     , apply_date
 		     , r.status
+		     , category_no
 		  from reservation r
 		  join resources re on (re.resource_no = r.resource_name)
 		  join member m on (mem_no = rez_writer)
@@ -66,6 +72,11 @@
 		  join member m on (mem_no = rez_writer)
 		 where r.status = 'Y'
 		   and rez_no = #{rezNo}
+	</select>
+	
+	<select id="selectCategoryList" resultMap="reCategoryResult">
+		select *
+		  from re_category
 	</select>
 	
 	<insert id="insertReservation">
@@ -95,5 +106,24 @@
 		 	   , 'Y'
 		 	   )
 	</insert>
+	
+	<update id="updateReservation">
+		update reservation
+		   set 
+		   	   resource_name = #{resourceName}
+		   	 , use_for 		 = #{useFor}
+		   	 , rez_date 	 = #{rezDate}
+		   	 , rez_starttime = #{startTime}
+		   	 , rez_endtime   = #{endTime}
+		   	 , apply_date 	 = sysdate
+		 where 
+		 	   rez_no = #{rezNo}
+	</update>
+	
+	<update id="deleteReservation">
+		update reservation
+		   set status = 'N'
+		 where rez_no = #{rezNo}
+	</update>
 	
 </mapper>

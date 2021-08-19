@@ -13,76 +13,6 @@
 	.slide_menu>a:hover{color: rgb(243,156,18);}
 	.btn>b{font-size: 18px; margin: 10px;}
 	.scColorBox{width:15px; height: 15px; border-radius:5px; display: inline-block;}
-	#todayCalendar{width:200px; height:200px;}
-</style>
-<script>
-	$(function(){
-		$("#todayScCalendar .fc-toolbar-title").css('font-size', '15px');
-		$("#todayScCalendar .fc-header-toolbar").css('margin', '0');
-		$("#todayScCalendar .btn").addClass("btn-sm");
-	})
-</script>
-
-<script>
-	document.addEventListener('DOMContentLoaded', function() {
-	    var tdCalendar = document.getElementById('todayScCalendar');
-	    var todayScCalendar = new FullCalendar.Calendar(tdCalendar, {
-    	
-	    	eventClick: function(info) {
-	        	// 이벤트 클릭했을 시 기능 설정
-	        	// 일정 내용과 보고서가 보여져야 함!!
-	        	var scNo = info.event._def.extendedProps.scNo;
-	        	var option = "width = 680, height = 700, top = 100, left = 200, location = no";
-				window.open("detail.sc?scNo=" + scNo, "일정상세정보", option);
-	        },
-	    	
-	      	headerToolbar: { // 헤더설정
-				left: 'prev',
-				center: 'title',
-				right: 'next'
-	        },
-	        titleFormat: {
-	            month: 'long',
-	            day: 'numeric'
-	         },
-	        lazyFetching : 'false',
-	        initialView: 'listDay',
-	        locale: 'ko', // 한국어 설정
-	        themeSystem: 'bootstrap', // 테마 설정
-	        eventSources:[
-        		{
-				events: [ // ajax로 일정 불러오기
-					$.ajax({
-						url :'list.sc',
-						data : {scType:"all", memNo:${loginUser.memNo}},
-						cache: false,
-						success:function(list){
-							var scList = Object.values(JSON.parse(list));
-							for(var i=0; i<scList.length; i++){
-								if(scList[i].scType == '개인'){
-									scList[i].color = '#148CFF';
-								}else if(scList[i].scType == '회사'){
-									scList[i].color = '#378006';
-								}else{
-									scList[i].color = '#7B68EE';
-								}
-								todayScCalendar.addEvent(scList[i]);
-							}
-						},error: function(){
-							console.log("일정 조회용 ajax 통신 실패");
-						}
-					})
-				]
-	        }]
-		});
-	    
-	    todayScCalendar.render();
-	});
-	
-</script>
-<style>
-	#todayScCalendar{width:200px;}
-	.fc-list-event{font-size:10px;}
 </style>
 </head>
 <body>
@@ -108,19 +38,21 @@
 				<b>오늘 일정 &nbsp;
 				<span id="todayDate"></span></b>
 			</div>
-			<!-- <ul id="todaySchedule" style="list-style-type: square; margin-left:5px;"></ul> -->
-			<div id="todayScCalendar"></div>
+			<div id="todayScCalendar">
+				<jsp:include page="todayScView.jsp"/>
+			</div>
 			
+			<%-- 일정관리 관련 메뉴들 ----------------------------------------------- --%>
 			<hr>
 			<button class="w3-button w3-block w3-left-align" onclick="menu();">
 				<i class="fa fa-caret-down"></i> 메뉴 바로가기 
 			</button>
 			<div id="menu" class="w3-hide w3-white w3-card">
-				<a class="w3-bar-item w3-button" href="list.note?memNo=${ loginUser.memNo }" id="note-list">노트 목록</a>
-				
-				<a class="w3-bar-item w3-button" href="" id="note-list">업무 보고</a>
+				<a class="w3-bar-item w3-button" href="main.sc">일정 관리</a>
+			
+				<a class="w3-bar-item w3-button" href="list.note?memNo=${ loginUser.memNo }">노트 목록</a>
 					
-				<a class="w3-bar-item w3-button" href="myList.rez" id="note-list">자원 예약</a>
+				<a class="w3-bar-item w3-button" href="myList.rez?memNo=${ loginUser.memNo }">자원 예약</a>
 			</div>
 
 			<script>

@@ -17,43 +17,51 @@
 	body{font-family:'Noto Sans KR', sans-serif;}
 </style>    
 <body>
-	<div class="detail-area w3-panel w3-border w3-round">
-		<button type="button" class="close" onclick="window.close();">&times;</button>
-		<h4 class="text-left">자원예약 수정</h4>
-		<table class="text-left">
-			<tr>
-				<th width="150px">자원 이름</th>
-				<td>
-					<select name="resourceName" id="resourceName">
-						<c:forEach var="r" items="${ reList }">
-							<option value="${ r.resourceNo }">${ r.resourceName }</option>
-						</c:forEach>
-					</select>
-				</td>
-			</tr>
-
-			<tr>
-				<th>예약 날짜</th>
-				<td><input type="date" name="rezDate" id="rezDate" value="${rez.rezDate}"></td>
-			</tr>
-			<tr>
-				<th>예약 시간</th>
-				<td>
-					<input type="time" name="startTime" id="startTime" step="900" value="${rez.startTime}"> 
-					~ <input type="time" name="endTime" id="endTime" step="900" value="${rez.endTime}">
-				</td>
-			</tr>
-			<tr>
-				<th>사용 용도</th>
-				<td><textarea name="useFor" cols="40" rows="5" style="resize:none">${rez.useFor}</textarea></td>
-			</tr>
-			
-		</table>
-	</div>
+	<form action="update.rez">
+		<div class="detail-area w3-panel w3-border w3-round">
+			<button type="button" class="close" onclick="window.close();">&times;</button>
+			<h4 class="text-left">자원예약 수정</h4>
+			<input type="hidden" name="rezNo" value="${ rez.rezNo }">
+			<input type="hidden" name="rezWriter" value="${ loginUser.memNo }">
+			<table class="text-left">
+				<tr>
+					<th width="150px">자원 이름</th>
+					<td>
+						<select name="resourceName" id="resourceName">
+							<c:forEach var="r" items="${ reList }">
+								<option value="${ r.resourceNo }">${ r.resourceName }</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
 	
+				<tr>
+					<th>예약 날짜</th>
+					<td><input type="date" name="rezDate" id="rezDate" value="${ rez.rezDate }"></td>
+				</tr>
+				<tr>
+					<th>예약 시간</th>
+					<td>
+						<input type="time" name="startTime" id="startTime" step="900" value="${ rez.startTime }"> 
+						~ <input type="time" name="endTime" id="endTime" step="900" value="${ rez.endTime }">
+					</td>
+				</tr>
+				<tr>
+					<th>사용 용도</th>
+					<td><textarea name="useFor" cols="40" rows="5" style="resize:none">${ rez.useFor }</textarea></td>
+				</tr>
+				
+			</table>
+			
+			<div class="btn-area" align="center">
+				<button type="submit" class="btn btn-primary">확인</button>
+				<button class="btn btn-secondary" onclick="window.close();">취소</button>
+			</div>
+		</div>
+	</form>
 	<script>
 		$(function(){
-			$("select[name=resourceName] option[value=${rez.resourceNo}]").attr("selected", true);
+			$("select[name=resourceName] option[value=${ rez.resourceNo }]").attr("selected", true);
 		})
 	</script>
 </body>

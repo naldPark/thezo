@@ -33,7 +33,7 @@
                 <hr>
                 &nbsp;&nbsp;&nbsp;
                 <b>예약 현황</b><br><br>
-                <table class="table table-hover table-sm" align="center">
+                <table class="table table-hover table-sm" id="myRez" align="center">
                     <thead class="thead-light">
                         <tr>
                             <th width="100px">분류</th>
@@ -44,123 +44,117 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>회의실</td>
-                            <td>회의실A(401호)</td>
-                            <td>2021-07-01 오전09:00 ~ 2021-07-01 오전10:00</td>
-                            <td>
-                                <a href="" data-toggle="modal" data-target="#rez-del">삭제</a>
-                                | 
-                                <a href="" data-toggle="modal" data-target="#rez-detail">상세보기</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>회의실</td>
-                            <td>회의실A(401호)</td>
-                            <td>2021-07-01 오전09:00 ~ 2021-07-01 오전10:00</td>
-                            <td>
-                                <a href="">삭제</a>
-                                | 
-                                <a href="">상세보기</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>회의실</td>
-                            <td>회의실A(401호)</td>
-                            <td>2021-07-01 오전09:00 ~ 2021-07-01 오전10:00</td>
-                            <td>
-                                <a href="">삭제</a>
-                                | 
-                                <a href="">상세보기</a>
-                            </td>
-                        </tr>
+                    	<c:choose>
+                    		<c:when test="${ empty myRezList }">
+                    			<tr><td>예약 내역이 없습니다.</td></tr>
+                    		</c:when>
+                    		<c:otherwise>
+                    			<c:forEach var="r" items="${ myRezList }">
+	                    			<tr>
+		                    			<input type="hidden" id="rezNo" value="${ r.rezNo }">
+		                    			<td>${ r.categoryName }</td>
+		                    			<td>${ r.resourceName }</td>
+		                    			<td>${ r.rezDate } ${ r.startTime } ~ ${ r.endTime }</td>
+		                    			<td>
+		                    				<button class="btn" onclick="delete1(${r.rezNo});">삭제</button>
+		                                	| 
+		                                	<button class="btn" onclick="detail(${r.rezNo});">상세보기</button>
+		                                </td>
+		                    		</tr>
+                    			</c:forEach>
+                    		</c:otherwise>
+                    	</c:choose>
+                    	
                     </tbody>
                 </table>
+                <br>
+				<c:if test="${ !empty myRezList }">
+			        <%-- 페이징바 ------------------------------------------------------------------------ --%>
+			        <div class="paging-area">
+			            <ul class="pagination justify-content-center">
+			            	<c:choose>
+			            		<c:when test="${ pi.currentPage eq 1 }">
+				            		<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+				            	</c:when>
+				            	<c:otherwise>
+		                			<li class="page-item"><a class="page-link" href="myList.rez?memNo=${ loginUser.memNo }&currentPage=${ pi.currentPage - 1 }">Previous</a></li>
+				                </c:otherwise>
+				            </c:choose>
+				            
+		               		<c:choose>
+		               			<c:when test="${ empty condition }">
+		               				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+		               					<c:choose>
+		               						<c:when test="${ pi.currentPage eq p }">
+		               							<li class="page-item active"><a class="page-link" href="myList.rez?memNo=${ loginUser.memNo }&currentPage=${ p }">${ p }</a></li>
+		               						</c:when>
+		               						<c:otherwise>
+		               							<li class="page-item"><a class="page-link" href="myList.rez?memNo=${ loginUser.memNo }&currentPage=${ p }">${ p }</a></li>
+		               						</c:otherwise>
+		               					</c:choose>
+		               				</c:forEach>
+		               			</c:when>
+		               		
+	              			</c:choose>
+				                			
+				            <c:choose>
+				            	<c:when test="${ pi.currentPage eq pi.maxPage }">
+				            		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+				            	</c:when>
+				            	<c:otherwise>
+				                	<li class="page-item"><a class="page-link" href="myList.rez?memNo=${ loginUser.memNo }&currentPage=${ pi.currentPage + 1 }">Next</a></li>
+			            		</c:otherwise>
+			                </c:choose>
+			            </ul>
+	        		</div>
+	        	</c:if>
+			        <%------------------------------------------------------------------------------ 페이징바 끝--%>
             </div>
-
         </div>
 
     </section>
-
-    <%-- 예약확인 및 삭제(모달창) -------------------------------------------------------------------------------%>
-        
-    <!-- The Modal -->
-    <div class="modal" id="rez-detail">
-        <div class="modal-dialog">
-            <div class="modal-content">
-        
-                <!-- Modal Header -->
-                <div class="modal-header">
-	                <b class="modal-title">예약 확인</b>
-	                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-        
-                <!-- Modal body -->
-                <div class="modal-body">
-	                <table class="" align="center">
-	                    <tr>
-	                        <th width="120px">자원 이름</th>
-	                        <td colspan="2">회의실A(401호)</td>
-	                    </tr>
-	                    
-	                    <tr>
-	                        <th>예약 시간</th>
-	                        <td>2021-07-01 오전09:00 ~ 2021-07-01 오전10:00</td>
-	                        
-	                    </tr>
-	                    <tr>
-	                        <th>등록자</th>
-	                        <td>사원 김개똥</td>
-	                    </tr>
-	                    <tr>
-	                        <th>사용 용도</th>
-	                        <td>프로젝트 회의</td>
-	                    </tr>
-	            
-	                </table>
-                
-                </div>
-        
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <div class="button-area">
-                        <button class="btn btn-primary" type="submit">확인</button>
-                        <a href="delete.rez" class="btn btn-danger" data-toggle="modal" data-target="#rez-del">삭제</a>
-                    </div>
-                </div>
-        
-            </div>
-        </div>
-    </div>
     
+    <script>
+    	function detail(num){
+    		var option = "width = 700, height = 350, top = 100, left = 200, location = no";
+			window.open("detail.rez?rezNo=" + num, "자원예약 상세조회", option);
+    	}
+    	
+    	function delete1(num){
+    		$("#rez-del").modal(num);
+    		$("#num").val(num);
+    	}
+    	
+    	function deleteRez(){
+    		location.href = "delete2.rez?memNo=${ loginUser.memNo }&rezNo="+ $("#num").val();
+    		$("#num").val('');
+    	}
+    </script>
+
     <!-- The Modal -->
-    <div class="modal" id="rez-del">
-        <div class="modal-dialog">
-            <div class="modal-content">
-        
-                <!-- Modal Header -->
-                <div class="modal-header">
-	                <b class="modal-title">삭제 확인</b>
-	                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-        
-                <!-- Modal body -->
-                <div class="modal-body">
-                	해당 예약을 정말 삭제하시겠습니까? <br>
-                	<b>*예약이 취소되고, 예약내역도 삭제됩니다.</b>
-                </div>
-        
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <div class="button-area">
-                        <a href="delete.rez" class="btn btn-danger">삭제</a>
-                        <button class="btn btn-secondary" class="close" data-dismiss="modal">취소</button>
-                    </div>
-                </div>
-        
-            </div>
-        </div>
-    </div>
+	<div class="modal" id="rez-del">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">삭제 확인</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">해당 예약을 취소하고 삭제하시겠습니까?</div>
+				
+				<!-- Modal footer -->
+				<div class="modal-footer" align="center">
+					<input type="hidden" id="num" value="">
+					<button class="btn btn-danger" onclick="deleteRez();">삭제</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
        
 </body>
 </html>

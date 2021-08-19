@@ -7,113 +7,237 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-   .innerOuter{
-      width: 1000px;
-      margin:auto;
-      padding:5% 5%;
-      background:white;
-    }
-	#content1, #content2{
-        float:left;
-    }
-    #content1{
-        width:25%;
-        border: 1px solid lightgray;
-    }
-    #content2{
-        width:75%;
-    }
-    #group{
-        border: 1px solid lightgray;
-        width: 100%;
-        height: 500px;
-        margin:auto;
-        padding:5% 5%;
-        background:white;
-    }
-    ul{
-        list-style:none;
-    }
+			.pageTitle{font-size: 20pt; font-weight: bolder; color:rgb(241,196,15)!important; margin-top: 30px; margin-left: 20px; text-align: left; }
+    		.pageTitle b{color: rgb(20,70,104); font-size: 25pt;}
+			.input-group-text {width: 80px}
+			ul,
+			#apprOrgTree {list-style-type: none;}
+			.currentList{list-style-type:none;}
+			#apprOrgTree {
+				font-size: 13pt;
+				margin: 0;
+				padding: 0;
+				line-height: 2.3em;
+			}		
+			.box {
+				cursor: pointer;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}		
+			.box::before {
+				content: "\25B6";
+				color: rgb(121, 121, 121);
+				display: inline-block;
+				margin-right: 6px;
+			}		
+			.line::before {
+				content: "\268A";
+				color: lightgray;
+				display: inline-block;
+				margin-right: 6px;
+			}
+			.check-box::before {
+				-ms-transform: rotate(90deg);
+				-webkit-transform: rotate(90deg);
+				transform: rotate(90deg);
+			}
+			.nested { display: none;}
+			.active {display: block;}
+			label {  margin-bottom: 0rem !important;}
+			#ceoCheck,#ceoCheck>label{cursor:pointer}
+			#ceoCheck:hover, #ceoCheck>label:hover, .box:hover{
+				cursor: pointer;
+				background-color: lightgray;
+			}
 </style>
 </head>
 <body>
-
-
-	<!-- view 수정중 -->
 	<jsp:include page="../common/header.jsp"/>
-	
-	<c:if test="${loginUser.memId eq 'admin' }">
-		<script>	
-			document.getElementById("admin-header").style.display = "block";
-			document.getElementById("admin-mode").style.color = "red";
-		</script>
-		<br><br><br><br>
-	</c:if>
-
+	<br><br><br><br>
 	<section>
 		<div class="outer">
-		
-			<div class="innerOuter">
-		
-				<h2><b>조직도</b></h2>
-            
-					<div id="content1">
-						<div id="group">
-							<div id="nav">
-								<br>
-								<img src="" alt=""><h5>kh그룹</h5>
-								<ul class="menu">
-									<li>대표이사</li>
-									<li><a href="#">경영지원본부</a>
-										<ul class="sub">
-										<li><a href="#">인사팀</a></li>
-										<li><a href="#">총무팀</a></li>
-										<li><a href="#">회계팀</a></li>
+			<p class="pageTitle"> contact <b> 조직도(연락처)</b></p>
+			<div class="row  justify-content-center">
+				<br><br>
+				
+				<hr>
+				<div class="p-3" style=" width:300px;">
+					<h3><i class="far fa-building"></i>&nbsp;&nbsp;조직도</h3>
+					<ul id="apprOrgTree">
+						<li class="eachPerson" id="ceoCheck"></li>
+						<ul>
+							<li class="departmentLevel">
+								<span class="box">경영관리본부</span>
+								<ul class="nested">
+									<li>
+										<span class="box">인사팀</span>
+										<ul class="nested">
+											<li></li>
 										</ul>
 									</li>
-									<li><a href="#">개발본부</a>
-										<ul class="sub">
-										<li><a href="#">개발1팀</a></li>
-										<li><a href="#">개발2팀</a></li>
-										<li><a href="#">인프라팀</a></li>
+									<li>
+										<span class="box">총무팀</span>
+										<ul class="nested">
+											<li></li>
 										</ul>
 									</li>
-									<li><a href="#">운영본부</a>
-										<ul class="sub">
-										<li><a href="#">운영팀</a></li>
-										<li><a href="#">영업팀</a></li>
-										<li><a href="#">구매팀</a></li>
+									<li>
+										<span class="box">회계팀</span>
+										<ul class="nested">
+											<li></li>
 										</ul>
 									</li>
 								</ul>
-							</div>
-							
-
-						<script>
-							$(document).ready(function(){
-								$("#nav ul.sub").hide();
-								$("#nav ul.menu li").click(function(){
-									$("ul",this).slideToggle("fast");
-								});
-							});
-						</script>       
-						</div>
+							</li>
+							<li class="departmentLevel">
+								<span class="box">개발본부</span>
+								<ul class="nested">
+									<li>
+										<span class="box">개발1팀</span>
+										<ul class="nested">
+											<li></li>
+										</ul>
+									</li>
+									<li>
+										<span class="box">개발2팀</span>
+										<ul class="nested">
+											<li></li>
+										</ul>
+									</li>
+									<li>
+										<span class="box">인프라팀</span>
+										<ul class="nested">
+											<li></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li class="departmentLevel">
+								<span class="box">운영본부</span>
+								<ul class="nested">
+									<li>
+										<span class="box">운영팀</span>
+										<ul class="nested">
+											<li></li>
+										</ul>
+									</li>
+									<li>
+										<span class="box">영업팀</span>
+										<ul class="nested">
+											<li></li>
+										</ul>
+									</li>
+									<li>
+										<span class="box">구매팀</span>
+										<ul class="nested">
+											<li></li>
+										</ul>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</ul>
+				</div>
+				
+				<div class="m-5">
+					<div></div>
+				</div>
+					<div class="p-3" style="width:600px; border-left: 1px solid lightgrey;padding-left: 40px!important;">
+						<br><br>
+						<input class="form-control" id="searchInput" type="text" placeholder="검색어를 입력하세요"><br>
+						<ul class="list-group" id="searchList">
+							<c:forEach var="p" items="${ empList }" varStatus="status">
+								<li class="w3-bar currentList list-group-item">
+									<span onclick="this.parentElement.style.display='none'"
+										class="w3-bar-item w3-button w3-xlarge w3-right">&times;</span>
+									<c:choose>
+										<c:when test="${!empty p.path}">
+											<img src="${p.path}" class="w3-bar-item w3-circle"
+												style=" max-width: 100px; max-height: 100px;overflow: hidden;">
+										</c:when>
+										<c:otherwise>
+											<img src="resources/images/user.png" class="w3-bar-item w3-circle"
+												style=" max-width: 100px; max-height: 100px;overflow: hidden;">
+										</c:otherwise>
+									</c:choose>
+									<div class="w3-bar-item">
+										<span class='employee' hidden>${p.department}</span>
+										<span class='employee' hidden>${p.parentDep}</span>
+										<span class="w3-large">${p.memName} ${p.rank} <c:if test="${!empty p.job}">(${p.job})</c:if></span><br>
+										<span>${p.department}</span><br>
+										<span><i class="far fa-envelope"></i> ${p.email}</span><br>
+										<span><i class="fas fa-mobile-alt"></i> ${p.phone} ( <i class="fas fa-phone"></i> ${p.extensionNo}
+											)</span>
+									</div>
+								</li>
+							</c:forEach>
+						</ul>
 					</div>
-
-					<div id="content2">
-
-					</div>
-
 
 			</div>
-		
+			<!--모달 내 area 끝 -->
 		</div>
 	
-	
-	
+		<script>
+			$(document).ready(function(){
+			  $("#searchInput").on("keyup", function() {
+				var value = $(this).val().toLowerCase();
+				$("#searchList li").filter(function() {
+				  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			  });
+			});
+			</script>
+
+<script>
+	$(".box").click(function(){
+		var value = $(this).text();
+		$(".currentList").toggle(false);
+		$(".employee").each(function(){
+			if($(this).text()==value){
+				$(this).parent().parent().toggle(true);
+				$(this).parent().parent().css("border-top","1px solid lightgrey")
+			}
+		})
+	});
+	$("#ceoCheck").click(function(){
+		$(".currentList").toggle(true);
+	})
+	</script>
 	
 	</section>
-	
-
+	<script>
+	// 왼쪽 조직트리 클릭시 하위 조직 표시
+	var toggler = document.getElementsByClassName("box");
+	var i;
+	for (i = 0; i < toggler.length; i++) {
+	  toggler[i].addEventListener("click", function () {
+		this.parentElement.querySelector(".nested").classList.toggle("active");
+		this.classList.toggle("check-box");
+	  });
+	}
+	// 조직트리 내 직원 리스트
+	$(function () {
+		$("#apprOrgTree").find(".box").each(function (index, el) {
+		  <c:forEach var="p" items="${ empList }" varStatus="status">
+			if("대표이사"=="${p.department}"){
+			  var ceoInfo="<label><input type='checkbox' style='display:none' value='${p.memNo}'/> ${p.memName} 대표이사</label>";
+			  $("#ceoCheck").html(ceoInfo);
+			}
+			if($(this).text()=="${p.department}"){                  
+			  if($(this).text().includes("본부")){
+				var temp=$(this).next();
+				$("<li class='eachPerson'><label><span class='employee' hidden>${p.email}</span>${p.memName} ${p.rank} <c:if test='${!empty p.job }'>(${p.job})</c:if></label></li>").prependTo(temp);
+			  } else {
+				var temp=$(this).parent().find("ul");
+				  $("<li class='eachPerson'><label> ${p.memName} ${p.rank} <c:if test='${!empty p.job }'>(${p.job})</c:if> </label></li>").appendTo(temp);
+			  }                    
+			}
+		  </c:forEach>
+		})
+	})
+</script>
 </body>
 </html>

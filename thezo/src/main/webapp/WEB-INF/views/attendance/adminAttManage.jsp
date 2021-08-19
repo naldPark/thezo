@@ -38,16 +38,6 @@
 
     .content-other{display: none;}
 
-    .cbtn{
-        font-size: 14px;
-        background-color: gray;
-        color: white;
-        border: 0;
-        padding-left : 3%;
-        padding-right : 3%;
-    }
-    #tab-1 {width: 30%; height: 100%;}
-    #tab-2 {width: 40%; height: 100%;}
 
     .content{height: 800px;}
 
@@ -169,6 +159,7 @@
       document.getElementById("admin-header").style.display ="block"; 
         document.getElementById("admin-mode").style.color = "red";
    </script>
+
     
 
     <section>
@@ -177,17 +168,11 @@
                 <div class="sub-menu">
                     <div id="sub-name"><i class="fas fa-laptop-house"></i> 근태관리</div>
                     <div class="tab" id="sub-button">
-                        <button onclick="location.href='adminAtt.ma'"type="button" class="btn btn-secondary focus">휴가일수 수정</button>&nbsp;
+                        <button onclick="location.href='adminAtt.ma'" type="button" class="btn btn-secondary focus">휴가일수 수정</button>&nbsp;
                         <button onclick="location.href='adminAttFixRequest.ma'"  type="button" class="btn btn-secondary">근태조정신청내역</button>&nbsp;
                     </div>
                 </div>
-                <script>
-                    $(".cbtn").click(function(){
-                        $(".cbtn").removeClass("focus");
-    
-                        $(this).addClass("focus");
-                    })
-                </script>
+                
             </div>
 
             <div class="content">
@@ -219,41 +204,46 @@
                     </form>
                     <!-- 페이징바 -->
                     <div id="pagingArea">
-                      <ul class="pagination">
-                         <c:choose>
-                               <c:when test="${ pi.currentPage eq 1 }">
-                                     <li class="page-item disabled"><a class="page-link">Previous</a></li>
-                                </c:when>
-                                <c:otherwise>
-                                   <li class="page-item"><a class="page-link" href="adminAtt.ma?currentPage=${ pi.currentPage-1 }">Previous</a></li>
-                                </c:otherwise>
-                          </c:choose>
-                          
-                          <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                                <c:choose>
-                                   <c:when test="${ p eq pi.currentPage }">
-                                      <li class="page-item"><a class="page-link currentPage" href="adminAtt.ma?currentPage=${ p }">${ p }</a></li>
-                                   </c:when>
-                                   <c:otherwise>
-                                      <li class="page-item"><a class="page-link" href="adminAtt.ma?currentPage=${ p }">${ p }</a></li>
-                                   </c:otherwise>
-                                </c:choose>
-                          </c:forEach>
-                          
-                          <c:choose>
-                             <c:when test="${ pi.currentPage eq pi.maxPage }">
-                                <li class="page-item disabled"><a class="page-link">Next</a></li>
-                            </c:when>
-                            <c:otherwise>
-                                <li class="page-item"><a class="page-link" href="adminAtt.ma?currentPage=${ pi.currentPage+1 }">Next</a></li>
-                            </c:otherwise>    
-                        </c:choose>        
-                      </ul>
-                  </div>
-               <br clear="both"><br>
-             </div>
-          </div>
-       </div>
+
+		                <ul class="pagination">
+		                	<c:choose>
+			                		<c:when test="${ pi.currentPage eq 1 }">
+				                   		<li class="page-item disabled"><a class="page-link">Previous</a></li>
+				                    </c:when>
+				                    <c:otherwise>
+		                    			<li class="page-item"><a class="page-link" href="adminAtt.ma?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+			                    	</c:otherwise>
+		                    </c:choose>
+		                    
+		                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+		                    		<c:choose>
+		                    			<c:when test="${ p eq pi.currentPage }">
+			                    			<li class="page-item"><a class="page-link currentPage" href="adminAtt.ma?currentPage=${ p }">${ p }</a></li>
+		                    			</c:when>
+		                    			<c:otherwise>
+			                    			<li class="page-item"><a class="page-link" href="adminAtt.ma?currentPage=${ p }">${ p }</a></li>
+		                    			</c:otherwise>
+		                    		</c:choose>
+		                    </c:forEach>
+		                    
+		                    <c:choose>
+		                    	<c:when test="${ pi.currentPage eq pi.maxPage }">
+				                    <li class="page-item disabled"><a class="page-link">Next</a></li>
+				                </c:when>
+				                <c:otherwise>
+		                    		<li class="page-item"><a class="page-link" href="adminAtt.ma?currentPage=${ pi.currentPage+1 }">Next</a></li>
+				                </c:otherwise>    
+				            </c:choose>        
+		                </ul>
+		            </div>
+			               
+			      <br clear="both"><br>
+                    
+                </div>
+
+
+            </div>
+        </div>
     </section>
     <!-- 
     <div class="modal fade" id="enrcode-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -327,7 +317,6 @@
             })
            
         </script> -->
-   
    
     <!--모달 기능-->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>

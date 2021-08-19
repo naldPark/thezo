@@ -28,7 +28,9 @@ public class Market {
 	private int count;
 	private String status;
 	
-	private String originName;
-	private String changeName;
+	private String memName;
+	private String department;
+	private String rank;
+	private String memId;
 	
 }

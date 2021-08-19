@@ -61,10 +61,13 @@ table tbody {
 	<!-- 관리자 : 퇴사한 사원들의 정보 모두 삭제(이성경) -->
 	<jsp:include page="../common/header.jsp" />
 
-	<script>
-		document.getElementById("admin-header").style.display = "block";
-		document.getElementById("admin-mode").style.color = "red";
-	</script>
+	<c:if test="${loginUser.memId eq 'admin' }">
+		<script>	
+			document.getElementById("admin-header").style.display = "block";
+			document.getElementById("admin-mode").style.color = "red";
+		</script>
+	</c:if>
+	
 	<section>
 
 	<div class="outer">

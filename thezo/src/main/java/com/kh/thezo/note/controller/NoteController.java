@@ -45,15 +45,26 @@ public class NoteController {
 	 *  노트 상세 조회
 	 */
 	@RequestMapping("detail.note")
-	public String selectNoteDetail(int noteNo, Model model) {
+	public String selectNoteDetail(int noteNo, Model model, int memNo) {
 		Note nt = ntService.selectNote(noteNo);
 		Schedule sc = scService.selectScheduleDetail(nt.getScNo());
 		
-		sc.setStart(sc.getStart().replace("T"," "));
-		sc.setEnd(sc.getEnd().replace("T"," "));
+		if(sc != null) {
+			sc.setStart(sc.getStart().replace("T"," "));
+			sc.setEnd(sc.getEnd().replace("T"," "));
+		}
 		
 		model.addAttribute("sc", sc);
 		model.addAttribute("nt", nt);
+		
+		HashMap map = new HashMap();
+		map.put("memNo", memNo);
+		ArrayList<Schedule> scList = scService.selectScheduleList(map);
+		for(int i=0; i<scList.size(); i++) {
+			scList.get(i).setStart(scList.get(i).getStart().replace("T"," "));
+			scList.get(i).setEnd(scList.get(i).getEnd().replace("T"," "));
+		}
+		model.addAttribute("scList", scList);
 		return "schedule/note/noteDetailView";
 	}
 	
@@ -96,7 +107,7 @@ public class NoteController {
 	public String updateNote(Note nt, HttpSession session) {
 		int result = ntService.updateNote(nt);
 		session.setAttribute("alertMsg", "저장되었습니다.");
-		return "redirect:/detail.note?noteNo=" + nt.getNoteNo();
+		return "redirect:/detail.note?noteNo=" + nt.getNoteNo() +"&memNo=" + nt.getNoteWriter();
 	}
 	
 	/**

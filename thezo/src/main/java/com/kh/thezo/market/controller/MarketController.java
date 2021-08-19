@@ -28,6 +28,7 @@ import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.market.model.service.MarketService;
 import com.kh.thezo.market.model.vo.Market;
 import com.kh.thezo.market.model.vo.PLike;
+import com.kh.thezo.member.model.vo.Member;
 
 @Controller
 public class MarketController {
@@ -77,14 +78,49 @@ public class MarketController {
 		
 	}
 	
+	// 찜목록 
+	@RequestMapping("likeList.mk")
+	public String marketLikeList(Model model, HttpSession session, @RequestParam(value="currentPage", defaultValue="1") int currentPage) {
+		
+		String memId = ((Member)session.getAttribute("loginUser")).getMemId();
+		
+		int listCount = mkService.likeListCount(memId);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 6);
+		ArrayList<Market> list = mkService.selectLiketList(pi, memId);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
+		
+		return "market/marketListView";
+		
+	}
+	
 	// 벼룩시장 상세조회(사용자)
 	@RequestMapping("marketDetail.bo")
-	public ModelAndView marketDetail(int mkno, ModelAndView mv) {
+	public ModelAndView marketDetail(HttpSession session, int mkno, ModelAndView mv) {
+		
+		System.out.println(mkno);
 		int result = mkService.increaseMarketCount(mkno);
-			
+		
+		String memId = ((Member)session.getAttribute("loginUser")).getMemId();
+		System.out.println(memId);
+		HashMap<String,String> likeCheck = new HashMap<>();
+		likeCheck.put("memId", memId);
+		likeCheck.put("marketNo", String.valueOf(mkno));
+		int like = mkService.selectMarketLike(likeCheck);
+		
+		System.out.println(like);
+		
+		
 		if(result>0) { 
 			Market mk = mkService.selectMarket(mkno); 
+			//PLike p = mkService.selectPLike(mkno);
+			
+			
+			mv.addObject("like", like);
 			mv.addObject("mk", mk).setViewName("market/marketDetailView");
+			//mv.addObject("p", p).setViewName("market/marketDetailView");
 				
 		}else {
 			mv.addObject("errorMsg", "상세조회 실패").setViewName("common/errorPage");
@@ -227,7 +263,7 @@ public class MarketController {
 		
 	// 사용자 : 벼룩시장 댓글 신고하기 
 	@RequestMapping("marketReplyReport.bo")
-	public String BoardReplyReport(Report rp, HttpSession session, Model model) {
+	public String marketReplyReport(Report rp, HttpSession session, Model model) {
 				
 		int result = mkService.marketReport(rp);
 				
@@ -259,29 +295,69 @@ public class MarketController {
 		}
 	}
 	
+
 	
+	// 벼룩시장 : 찜하기 
+	 @ResponseBody
+	 @RequestMapping(value = "productLike.mk", produces="application/json; charset=utf-8")
+	    public int heart(int marketNo, HttpSession session, String currentStatus){
+//	        int heart = Integer.parseInt(httpRequest.getParameter("heart"));
+//	        int marketNo = Integer.parseInt(httpRequest.getParameter("marketNo"));
+	        String memId = ((Member)session.getAttribute("loginUser")).getMemId();
+	        
+	        
+	        PLike p = new PLike();
+	        p.setMarketNo(marketNo);
+	        p.setMemId(memId);
+	        System.out.println(p);
+	        int result=0;
+	        
+	        	if(currentStatus.equals("insert")) {
+	        		 mkService.insertMarketLike(p);
+	        	}else{
+	        		mkService.deleteMarketLike(p);
+	        		result=2;
+	        	}
+	        
+
+	        return result;
+	        
+	        
+	        //원래 찜하기가 되어있을 경우 -> 해제
+	        // 원래 안되어있을경우 -> 등록
+	        // 원래되어있다가 해제를 한거를 다시 등록하는경우 >
+
+	    }
 	
-	/*
-    @ResponseBody
-    @RequestMapping(value = "productLike.mk", method = RequestMethod.POST, produces = "application/json")
-    public int heart(HttpServletRequest httpRequest, int marketNo, String memId, int productLike) throws Exception {
-    	
-    	System.out.println(marketNo);
-    	System.out.println(memId);
-    	System.out.println(productLike);
-    	
-    	// 찜하기 테이블에 추가하기 
-    	//PLike p = new PLike();
-    	//p.setMarketNo(marketNo);
-    	//p.setMemId(memId);
-    	
-    	// 동시에 market게시글에 productLike를 update해야함
-    	
-    	return productLike;
-    }
-	
-	*/
-	
+//	 // 벼룩시장 : 찜하기 
+//	 @ResponseBody
+//	 @RequestMapping(value = "productLike.mk", method = RequestMethod.POST, produces = "application/json")
+//	    public int heart(HttpServletRequest httpRequest) throws Exception {
+//System.out.println("dasdsadsadas난 컨트롤러야");
+//	        int heart = Integer.parseInt(httpRequest.getParameter("heart"));
+//	        int marketNo = Integer.parseInt(httpRequest.getParameter("marketNo"));
+//	        String memId = ((Member)httpRequest.getSession().getAttribute("loginUser")).getMemId();
+//	        System.out.println(heart);
+//
+//	        PLike p = new PLike();
+//	        p.setMarketNo(marketNo);
+//	        p.setMemId(memId);
+//	        
+//	        System.out.println(heart);
+//
+//	        if(heart >= 1) {
+//	            mkService.deleteMarketLike(p);
+//	            heart=0;
+//	        } else {
+//	            mkService.insertMarketLike(p);
+//	            heart=1;
+//	        }
+//
+//	        return heart;
+//
+//	    }
+	 
+	 
 	// 서버에 업로드 시키는 것(파일저장)을 메소드로 작성
 	public String saveFile(HttpSession session, MultipartFile upfile) {
 		// 경로

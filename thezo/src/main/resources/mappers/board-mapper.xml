@@ -46,6 +46,25 @@
 		<result column="status" property="status"/>
 	</resultMap>
 	
+	<!-- main -->
+	<select id="mainBoard" resultMap="boardResult">
+		select *
+		  from (select
+		               board_no
+				     , board_title
+				     , board_writer
+				     , to_char(board_date, 'YYYY-MM-DD') as board_date
+				  from board
+				 where status = 'Y'
+				   and board_type = 1
+		         order
+		            by board_date desc)
+		   where rownum between 1 and 3         
+	</select>
+	
+	
+	
+	
 
 	<!-- 사용자 : 공지사항 글 총 갯수  -->
 	<select id="noticeListCount" resultType="_int">
@@ -558,11 +577,19 @@
 	</update>
 
 
-	<!-- 신고관리 : 해당 신고참조글 STATUS='N'으로  변경 -->
+	<!-- 신고관리 : 해당 신고글 참조게시글 STATUS='N'으로  변경 -->
 	<update id="updateBoardStatus">
 		update
 				  board
 			  set status = 'N'
 			where board_no = #{rpNo}  
+	</update>
+	
+	<!-- 신고관리 : 해당 신고글 참조 댓글 status = 'N'으로 변경 -->
+	<update id="updateBoardReplyStatus">
+		update
+				  reply
+			  set status = 'N'
+			where reply_no = #{rpNo}  
 	</update>
 </mapper>

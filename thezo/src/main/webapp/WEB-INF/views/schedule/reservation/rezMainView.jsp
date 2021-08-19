@@ -32,7 +32,8 @@
 			},
 			// uncomment this line to hide the all-day slot
 			allDaySlot: false,
-
+			//dayHeaderFormat: {day : 'numeric'},
+			
 			eventOverlap: function(stillEvent, movingEvent) { // 예약이 겹치지 않도록
 				return stillEvent.allDay && movingEvent.allDay;
 			},
@@ -58,7 +59,8 @@
 					if($(this).text() == arg.resource._resource.title){
 						$(this).attr("selected", true);
 					}
-				})
+				});
+				console.log(arg.resource._resource.title)
 				$('#insertRez').modal();
 			},
 			  
@@ -74,19 +76,33 @@
 			}
 		  
 		});
-	  
+	  	
+		// 자원(resources) 조회
 		$.ajax({
 			url :'select.re?caNo=' + ${ param.caNo },
 			cache: false,
 			success:function(list){
 				var resourceList = Object.values(JSON.parse(list));
 				for(var i=0; i<resourceList.length; i++){
-					if(resourceList[i].resourceNo == 1){
-						resourceList[i].eventBackgroundColor = '#00BFFF';
-					}else if(resourceList[i].resourceNo == 2){
-						resourceList[i].eventBackgroundColor = '#FF8E99';
-					}else{
-						resourceList[i].eventBackgroundColor = '#FFAF0A';
+					switch(resourceList[i].resourceNo){
+						case 1: resourceList[i].eventBackgroundColor = '#00BFFF';
+								break;
+						case 2: resourceList[i].eventBackgroundColor = '#FF8E99';
+								break;
+						case 3: resourceList[i].eventBackgroundColor = '#FFAF0A';
+								break;
+						case 4: resourceList[i].eventBackgroundColor = '#6ED746';
+								break;
+						case 5: resourceList[i].eventBackgroundColor = '#50BEBE';
+								break;
+						case 6: resourceList[i].eventBackgroundColor = '#8C8CFF';
+								break;						
+						case 7: resourceList[i].eventBackgroundColor = '#FFB399'; 
+								break;
+						case 8: resourceList[i].eventBackgroundColor = '#FDD296'; 
+								break;
+						case 9: resourceList[i].eventBackgroundColor = '#69A8AA'; 
+								break;
 					}
 					calendar.addResource({
 						id: resourceList[i].resourceNo,
@@ -100,6 +116,7 @@
 			}
 		});
 		
+		// 자원예약(reservation) 조회
 		$.ajax({
 			url :'select.rez',
 			cache: false,
@@ -119,7 +136,6 @@
 				console.log("자원예약 조회용 ajax 통신 실패");
 			}
 		})
-		  
 		calendar.render();
 	});
 	

@@ -16,7 +16,16 @@ import com.kh.thezo.common.model.vo.PageInfo;
 @Repository
 public class BoardDao {
 
+	// main
+	public ArrayList<Board> mainBoard(SqlSessionTemplate sqlSession){
+		return (ArrayList)sqlSession.selectList("boardMapper.mainBoard");
+	}
 	
+	
+	
+	
+	
+	// -------------------------------------------------------------------------
 	// 사용자 : 공지사항 글 갯수 조회
 	public int noticeListCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("boardMapper.noticeListCount");
@@ -210,6 +219,11 @@ public class BoardDao {
 	// 신고관리 : 신고 참조글 상태 N으로 변경
 	public int updateBoardStatus(SqlSessionTemplate sqlSession, int rpNo) {
 		return sqlSession.update("boardMapper.updateBoardStatus", rpNo);
+	}
+	
+	// 신고관리 : 신고 댓글 status => Y(처리완료)
+	public int updateBoardReplyStatus(SqlSessionTemplate sqlSession, int rpNo) {
+		return sqlSession.update("boardMapper.updateBoardReplyStatus", rpNo);
 	}
 	
 }

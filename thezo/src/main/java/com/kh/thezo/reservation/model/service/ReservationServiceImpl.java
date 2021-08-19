@@ -6,7 +6,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.reservation.model.dao.ReservationDao;
+import com.kh.thezo.reservation.model.vo.ReCategory;
 import com.kh.thezo.reservation.model.vo.Reservation;
 import com.kh.thezo.reservation.model.vo.Resources;
 
@@ -29,25 +31,38 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	@Override
-	public int deleteReservation() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteReservation(int rezNo) {
+		return rDao.deleteReservation(sqlSession, rezNo);
 	}
 
 	@Override
-	public int updateReservation() {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateReservation(Reservation rez) {
+		return rDao.updateReservation(sqlSession, rez);
 	}
 
 	@Override
-	public ArrayList<Resources> selectResourceList() {
-		return rDao.selectResourceList(sqlSession);
+	public ArrayList<Resources> selectResourceList(int caNo) {
+		return rDao.selectResourceList(sqlSession, caNo);
 	}
 
 	@Override
 	public Reservation selectReservationDetail(int rezNo) {
 		return rDao.selectReservationDetail(sqlSession, rezNo);
+	}
+
+	@Override
+	public ArrayList<ReCategory> selectCategoryList() {
+		return rDao.selectCategoryList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<Reservation> selectMyReservationList(PageInfo pi, int memNo) {
+		return rDao.selectMyReservationList(sqlSession, pi, memNo);
+	}
+
+	@Override
+	public int selectListCount(int memNo) {
+		return rDao.selectListCount(sqlSession, memNo);
 	}
 
 }

@@ -18,6 +18,7 @@
 		<typeAlias type="com.kh.thezo.notification.model.vo.Notification" alias="Notification"/>
 		<typeAlias type="com.kh.thezo.notification.model.vo.NfCheck" alias="NfCheck"/>
 		<typeAlias type="com.kh.thezo.statistic.model.vo.Statistic" alias="Statistic"/>
+		<typeAlias type="com.kh.thezo.statistic.model.vo.AdminLog" alias="AdminLog"/>
 		<typeAlias type="com.kh.thezo.document.model.vo.Document" alias="Document"/>
 		<typeAlias type="com.kh.thezo.approval.model.vo.Approval" alias="Approval"/>
 		<typeAlias type="com.kh.thezo.mail.model.vo.Mail" alias="Mail"/>
@@ -25,6 +26,7 @@
 		<typeAlias type="com.kh.thezo.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.kh.thezo.board.model.vo.BoardFile" alias="BoardFile"/>	
 		<typeAlias type="com.kh.thezo.market.model.vo.Market" alias="Market"/>
+		<typeAlias type="com.kh.thezo.market.model.vo.PLike" alias="PLike"/>
 		<typeAlias type="com.kh.thezo.board.model.vo.Report" alias="Report"/>
 		<typeAlias type="com.kh.thezo.board.model.vo.Reply" alias="Reply"/>
 		<typeAlias type="com.kh.thezo.schedule.model.vo.Schedule" alias="Schedule"/>
@@ -37,7 +39,7 @@
 		<typeAlias type="com.kh.thezo.reservation.model.vo.Reservation" alias="Reservation"/>
 		<typeAlias type="com.kh.thezo.reservation.model.vo.Resources" alias="Resources"/>
 		<typeAlias type="com.kh.thezo.leave.model.vo.Leave" alias="Leave"/>
-
+		<typeAlias type="com.kh.thezo.reservation.model.vo.ReCategory" alias="ReCategory"/>
 	</typeAliases>
 	
 	<mappers>

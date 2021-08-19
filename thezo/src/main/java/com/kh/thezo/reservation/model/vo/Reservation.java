@@ -22,4 +22,6 @@ public class Reservation {
 	private String endTime;
 	private Date applyDate;
 	private String status;
+	private String categoryName;
+	private int categoryNo;
 }

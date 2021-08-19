@@ -56,18 +56,28 @@
 	                        
 	                        
 	                        <div class="sc-area">
-	                        	<b>관련일정 상세보기</b>
+	                        	<span style="font-size:15px;">관련일정 상세보기</span>
 		                        <br>
 		                        <c:choose>
 		                        	<c:when test="${ !empty nt.noteSc }">
 		                        		<a id="noteSc" onclick="noteSc();" class="noteSc" style="cursor:pointer;">
-		                        			<b>${ sc.start } &nbsp; ~ &nbsp; ${ sc.end } &nbsp; ${ sc.title }</b>
+		                        			<b style="font-size:15px;">${ sc.start } &nbsp; ~ &nbsp; ${ sc.end } &nbsp; ${ sc.title }</b>
 		                        		</a>
 		                        	</c:when>
 		                        	<c:otherwise>
-		                        		<b>선택안함</b>
+		                        		<b style="font-size:15px;">선택안함</b>
 		                        	</c:otherwise>
 		                        </c:choose>
+		                        <br>
+		                        <select class="w3-select" name="noteSc" style="font-size:15px;">
+		                        	<option value="" selected>선택안함</option>
+		                        	<c:forEach var="sc" items="${ scList }">
+		                            	<option value="${ sc.scNo }">
+		                            		${ sc.start } &nbsp; ~ &nbsp; ${ sc.end } &nbsp;
+		                            		${ sc.title }
+	                            		</option>
+	                            	</c:forEach>
+	                       		</select>
 	                        </div>
 	                        
 	                        

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+	<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
@@ -96,10 +96,8 @@
 										<td>${ d.department } ${ d.docWriter }</td>
 										<td>${ d.docContent }</td>
 										<td>
-											<a data-toggle="tooltip" title="${ d.originName }" href="${ d.changeName }" download="${ d.originName }">
-												<div>
-													<i class='far fa-file' style='font-size:20px'></i>
-												</div>
+											<a data-toggle="tooltip" title='${ d.originName }' href="${ d.changeName }" download="${ d.originName }">
+												<i class='far fa-file' style='font-size:20px'></i>
 											</a>
 										</td>
 										<td>${ d.createDate }</td>

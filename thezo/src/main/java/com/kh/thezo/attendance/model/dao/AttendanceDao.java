@@ -1,6 +1,7 @@
 package com.kh.thezo.attendance.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -65,7 +66,32 @@ public class AttendanceDao {
 	}
 	*/
 	
+	// (날드)관리자 : 근태조정신청내역 조회 카운트
+	public int selectAdminFixRequestListCount(SqlSessionTemplate sqlSession, HashMap<String,String> searchDate){
+		return sqlSession.selectOne("attendanceMapper.selectAdminFixRequestListCount",searchDate);
+		}
+	// (날드)관리자 : 근태조정신청내역 조회
+	public ArrayList<Attendance> selectAdminFixRequestList(SqlSessionTemplate sqlSession, HashMap<String,String> searchDate, PageInfo pi){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectAdminFixRequestList", searchDate, rowBounds);
+	}
 	
+	// (날드)관리자 : 근태조정신청내역 업데이트
+	public int updateAdminFixRequest(SqlSessionTemplate sqlSession, Attendance a){
+		return sqlSession.update("attendanceMapper.updateAdminFixRequest",a);
+	}
 	
+	// (날드)관리자 : 근태조정신청내역 업데이트2
+	public int updateAdminFixRequest2(SqlSessionTemplate sqlSession, Attendance a){
+		return sqlSession.update("attendanceMapper.updateAdminFixRequest2",a);
+	}
+	
+	// (날드)관리자 : 근태조정신청내역 업데이트3
+		public int updateAdminFixRequest3(SqlSessionTemplate sqlSession, Attendance a){
+			return sqlSession.update("attendanceMapper.updateAdminFixRequest3",a);
+		}
+
 	
 }

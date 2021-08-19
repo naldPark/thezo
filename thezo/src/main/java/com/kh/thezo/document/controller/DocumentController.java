@@ -157,8 +157,6 @@ public class DocumentController {
 		int listCount = dService.searchListCount(map);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, dCount);
 		
-		
-		
 		ArrayList<Document> list = dService.searchDocumentList(map, pi);
 		
 		ArrayList<DocCategory> category = dService.selectCategoryList();

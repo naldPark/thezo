@@ -11,6 +11,7 @@ import com.kh.thezo.board.model.vo.Reply;
 import com.kh.thezo.board.model.vo.Report;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.market.model.vo.Market;
+import com.kh.thezo.market.model.vo.PLike;
 
 @Repository
 public class MarketDao {
@@ -41,6 +42,27 @@ public class MarketDao {
 		return (ArrayList)sqlSession.selectList("marketMapper.marketSearchList", map, rowBounds);
 	}
 	
+	
+	// 사용자 : 찜하기 글 갯수 조회
+	public int likeListCount(SqlSessionTemplate sqlSession, String memId) {
+		return sqlSession.selectOne("marketMapper.likeListCount", memId);
+	}
+		
+	// 사용자 : 찜하기 리스트 조회
+	public ArrayList<Market> selectLiketList(SqlSessionTemplate sqlSession, PageInfo pi, String memId){
+		int offset =(pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+			
+		return (ArrayList)sqlSession.selectList("marketMapper.selectLiketList", memId , rowBounds );
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	// 사용자 : 벼룩시장 상세 조회용(조회수)
 	public int increaseMarketCount(SqlSessionTemplate sqlSession, int marketNo) {
 		return sqlSession.update("marketMapper.increaseMarketCount", marketNo);
@@ -50,6 +72,11 @@ public class MarketDao {
 	public Market selectMarket(SqlSessionTemplate sqlSession, int marketNo) {
 		return sqlSession.selectOne("marketMapper.selectMarket", marketNo);
 	}
+	
+	public PLike selectPLike(SqlSessionTemplate sqlSession, int marketNo) {
+		return sqlSession.selectOne("marketMapper.selectPLike", marketNo);
+	}
+	
 	
 	// 사용자 : 벼룩시장 글 등록 
 	public int insertMarket(SqlSessionTemplate sqlSession, Market mk) {
@@ -87,22 +114,21 @@ public class MarketDao {
 	}
 	
 	// 벼룩시장 찜하기 (수정중)
-	/*
-	
-    @Override
-    public void insertMarketLike(PLike pLike) throws Exception {
-        session.insert("marketMapper.createMarketLike",pLike);
+    public void insertMarketLike(SqlSessionTemplate sqlSession, PLike p) throws Exception {
+        sqlSession.insert("marketMapper.insertMarketLike",p);
     }
 
-    @Override
-    public void deleteMarketLike(PLike pLike) throws Exception {
-        session.delete("marketMapper.deleteMarketLike",pLike);
+    public void deleteMarketLike(SqlSessionTemplate sqlSession,PLike p) throws Exception {
+    	sqlSession.delete("marketMapper.deleteMarketLike",p);
     }
 
-    @Override
-    public void updateMarketLike(int memId) throws Exception {
-        session.update("marketMapper.updateMarketLike",memId);
+    public void updateMarketLike(SqlSessionTemplate sqlSession, int marketNo) throws Exception {
+    	sqlSession.update("marketMapper.updateMarketLike", marketNo);
     }
-    */
+    
+    public int selectMarketLike(SqlSessionTemplate sqlSession, HashMap<String,String> likeCheck) {
+    	return sqlSession.selectOne("marketMapper.selectMarketLike", likeCheck);
+    }
+    
 
 }

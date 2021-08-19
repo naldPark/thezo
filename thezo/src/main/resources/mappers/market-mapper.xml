@@ -14,8 +14,10 @@
 		<result column="productImg" property="productImg"/>
 		<result column="p_like" property="productLike"/>
 		<result column="count" property="count"/>
-		<result column="origin_name" property="originName"/>
-		<result column="change_name" property="changeName"/>
+		<result column="mem_name" property="memName"/>
+		<result column="department" property="department"/>
+		<result column="rank" property="rank"/>
+		<result column="mem_id" property="memId"/>
 	</resultMap>
 	
 	<resultMap id="replyResult" type="Reply">
@@ -41,6 +43,14 @@
 		<result column="handling_date" property="handlingDate"/>
 		<result column="status" property="status"/>
 	</resultMap>
+	
+	<resultMap id="PLikeResult" type="PLike">
+		<result column="like_no" property="likeNo"/>
+		<result column="market_no" property="marketNo"/>
+		<result column="mem_id" property="memId"/>
+		<result column="like_date" property="likeDate"/>
+	</resultMap>
+	
 	
 	
 	<!-- 사용자 : 벼룩시장 글 총 갯수  -->
@@ -112,6 +122,36 @@
 			     by market_no desc 
 	</select>
 	
+	<!-- 사용자 : 찜하기 글 갯수 조회 -->
+	<select id="likeListCount" resultType="_int">
+		select 
+		       count(*)
+		  from p_like
+		 where mem_id = #{memId}
+	</select>
+	
+	<!-- 사용자 : 찜하기 리스트 조회 -->
+	<select id="selectLiketList" resultMap="marketResult">
+		select
+			   market_no
+		     , market_title
+		     , market_writer
+		     , to_char(market_date, 'YYYY-MM-DD') as market_date
+             , market_section
+             , price
+             , p_img as productImg
+             , p_like
+             , count
+		  from market mk
+          join p_like p using(market_no)
+		 where status = 'Y'
+           and mem_id = #{memId}
+		 order 
+		    by market_no desc
+	</select>
+	
+	
+	
 	
 		
 	<!-- 사용자 : 벼룩시장 게시글 조회수 증가 -->
@@ -126,24 +166,34 @@
 	<!-- 사용자 : 벼룩시장 상세 조회 -->
 	<select id="selectMarket" resultMap="marketResult">
 		select
-			   market_no
-		     , market_title
-		     , market_writer
-		     , market_content
-		     , to_char(market_date, 'YYYY-MM-DD') as market_date
-		     , market_section
+            market_no
+           , market_title
+           , market_writer
+             , mem_name
+             , department
+             , rank
+           , market_content
+           , to_char(market_date, 'YYYY-MM-DD') as market_date
+           , market_section
              , price
              , p_img as productImg
              , p_like
              , count
-		     , origin_name
-			 , change_name
- 		  from market mk
-          left outer join board_file on(market_no = ref_bno)
-		 where market_no = #{marketNo}
-           and mk.status = 'Y'
+         from market mk
+          left outer join member using (mem_no)
+	       where market_no =#{market_no}
+	           and mk.status = 'Y'
+	   
 	</select>
 	
+	<!-- 사용자 : 벼룩시장 좋아요 조회 -->
+	<!--
+	<select id="selectPLike" resultMap="PLikeResult">
+		select mem_id
+		  from p_like
+		 where mem_id = #{memId}
+	</select>
+	  -->
 		
 	<!-- 사용자 : 벼룩시장 글 등록 -->
 	<insert id="insertMarket">
@@ -247,6 +297,45 @@
 			  )  
 	</insert>
 
-	
+	<insert id="insertMarketLike">
+		insert 
+		  into p_like
+		     (
+		       like_no
+		     , market_no
+		     , mem_id  
+		     )
+		 values
+		 	 (
+		 	   seq_lkno.nextval
+		 	 , #{marketNo}
+		 	 , #{memId}    
+		 	 )   
+        </insert>
+
+     <delete id="deleteMarketLike">
+     	delete
+          from p_like
+         where market_no = #{marketNo}
+           and mem_id = #{memId} 
+     </delete>
+
+     <update id="updateMarketLike">
+        update market
+           set p_like = (select count(*)
+        	   			   from p_like
+        	   			   where market_no = #{marketNo} 
+				         ) 
+         where market_no = #{marketNo}
+      </update>
+        
+        
+      <select id="selectMarketLike" resultType="_int">
+	      select count(*)
+	      from p_like
+	       where market_no = #{marketNo}
+	         and mem_id = #{memId}
+      </select>
+        
 
 </mapper>

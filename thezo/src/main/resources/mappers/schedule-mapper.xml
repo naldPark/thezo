@@ -4,6 +4,7 @@
 
 	<resultMap id="scheduleResult" type="Schedule">
 		<result column="sc_no" property="scNo"/>
+		<result column="mem_no" property="memNo"/>
 		<result column="sc_writer" property="scWriter"/>
 		<result column="sc_title" property="title"/>
 		<result column="sc_content" property="scContent"/>
@@ -68,6 +69,7 @@
 	<select id="selectScheduleDetail" resultMap="scheduleResult">
 		select
 			   sc_no
+			 , m.mem_no
 		     , mem_name as sc_writer
 		     , sc_title
 		     , sc_content

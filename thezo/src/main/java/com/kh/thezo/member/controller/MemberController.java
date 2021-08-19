@@ -203,7 +203,7 @@ public class MemberController {
 		
 		if(result > 0) {
 			
-			session.setAttribute("loginUser", mService.loginMember(m));
+			//session.setAttribute("loginUser", mService.loginMember(m));
 			session.setAttribute("alertMsg", "성공적으로 정보 수정되었습니다.");
 			
 			return "redirect:memberInfo.me";
@@ -378,10 +378,13 @@ public class MemberController {
 	
 	
 	
-	// 사용자 : 조직도(연락처) 화면 포워딩
+	// 날드:  조직도(연락처) 
 	@RequestMapping("contactInfo.me")
-	public String memberContactInfo() {
-		return "member/memberContactInfo";
+	public ModelAndView memberContactInfo(ModelAndView mv, HttpSession session) {
+		ArrayList<Member> empList = apprService.employeeList();
+		mv.addObject("empList", empList); // 전사원 리스트
+		mv.setViewName("member/memberContactInfo");
+		return mv;
 	}
 
 	

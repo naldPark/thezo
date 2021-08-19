@@ -162,10 +162,11 @@ table {
                                           + "<td style='width: 400px;'>" + list[i].replyContent + "</td>"
                                           + "<td>" + list[i].createDate + "</td>"
                                           + "<td><input type='hidden' name='replyNo' class='replyNo' value='" + list[i].replyNo 
-                                          + "'> <a href='' class='reportboardReply' data-toggle='modal' data-target='#bReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
-                                          + "<c:if test='${ loginUser.memId eq " + list[i].replyWriter + "}'>"
-                                          + "<td><a href='deleteReply.bo?replyNo=" + list[i].replyNo + "&bno=" + ${ b.boardNo } + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
-                                          + "</c:if>"
+                                          + "'> <a href='' class='reportboardReply' data-toggle='modal' data-target='#bReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>";
+                                          
+                                          if(${loginUser.memNo} == list[i].memNo) {
+                                        	  value += "<td><a href='deleteReply.bo?replyNo=" + list[i].replyNo + "&bno=" + ${ b.boardNo } + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>";
+                                          }
                                        + "</tr>";
                           }
                           

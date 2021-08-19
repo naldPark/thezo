@@ -419,6 +419,7 @@
 	<select id="selectReplyList" resultMap="replyResult">
 		select 
 		       reply_no
+		     , mem_no  
 		     , reply_content
 		     , reply_writer
 		     , to_char(create_date, 'YYYY-MM-DD') create_date

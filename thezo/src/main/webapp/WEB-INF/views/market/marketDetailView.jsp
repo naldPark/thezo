@@ -245,15 +245,18 @@
 		        				
 		        			var value = "";
 		        			for(var i in list){
+		        				
 		        				value += "<tr>"
 				                             + "<th>" + list[i].replyWriter + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>"
 				                             + "<td colspan='2' style='width: 400px;'>" + list[i].replyContent + "</td>"
 				                             + "<td>" + list[i].createDate + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
 				                             + "<td><input type='hidden' name='replyNo' class='replyNo' value='" + list[i].replyNo 
-				                             + "'><a href='' class='reportMarketReply' data-toggle='modal' data-target='#mReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>"
-				                             + "<c:if test='${ loginUser.memId eq mk.marketWriter}'>"
-				                             + "<td><a href='deleteReply.mk?replyNo=" + list[i].replyNo + "&mkno=" + ${ mk.marketNo } + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>"
-				                             + "</c:if>"
+				                             + "'><a href='' class='reportMarketReply' data-toggle='modal' data-target='#mReplyReportForm'><img src='resources/images/warning.png' width='20' height='20'></a></td>";
+				                             
+				                             if(${loginUser.memNo} == list[i].memNo) {
+				                            	   value += "<td><a href='deleteReply.mk?replyNo=" + list[i].replyNo + "&mkno=" + ${ mk.marketNo } + "' style='text-decoration:none;color:#ff5252;'>삭제</a></td>";
+				                            	}
+				                             
 				                          + "</tr>";
 		        			}
 		        				

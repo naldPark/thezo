@@ -53,7 +53,7 @@
     #restEditTable th, #restEditTable td{border: 1px solid lightgray;}
     #restEditTable th{text-align: center; background-color: rgb(234,234,234)}
     #restEditTable button{padding:5% !important; height: 4%; font-size: 12px;}
-    #restEditBtn{float: right; margin-right: 40px; margin-top: 500px; width: 7%;}
+    #restEditBtn{float: right; margin-right: 200px; margin-top: 150px; width: 7%;}
     #pagingArea{width:fit-content; margin-top: 30px;}
     .currentPage{background-color: rgb(234,234,234) !important;}
 
@@ -110,7 +110,6 @@
         margin-top: 0px;
         vertical-align: middle;
     }
-    .term{display: none}
 
     #enr-content{
         width: 95%;
@@ -151,25 +150,26 @@
 </style>
 </head>
 <body>
-	<jsp:include page="../common/header.jsp"/>
-	<script>
-		$(function(){
-			var adminNav = document.getElementById("admin-header");
-			$("section").css("margin-top", (adminNav.style.display != 'none'?"115px":"70px"));
-		})
-		document.getElementById("admin-header").style.display ="block"; 
+   <jsp:include page="../common/header.jsp"/>
+   <script>
+      $(function(){
+         var adminNav = document.getElementById("admin-header");
+         $("section").css("margin-top", (adminNav.style.display != 'none'?"115px":"70px"));
+      })
+      document.getElementById("admin-header").style.display ="block"; 
         document.getElementById("admin-mode").style.color = "red";
-	</script>
+   </script>
+
     
 
     <section>
-		<div class="outer" align="center">
+      <div class="outer" align="center">
             <div class="outer-wrap">
                 <div class="sub-menu">
                     <div id="sub-name"><i class="fas fa-laptop-house"></i> 근태관리</div>
                     <div class="tab" id="sub-button">
-                        <button onclick="location.href='adminAtt.ma'" id="tab-1" type="button" class="btn btn-secondary focus">휴가일수 수정</button>&nbsp;
-                        <button onclick="location.href='adminAttFixRequest.ma'" id="tab-2" type="button" class="btn btn-secondary">근태조정신청내역</button>&nbsp;
+                        <button onclick="location.href='adminAtt.ma'" type="button" class="btn btn-secondary focus">휴가일수 수정</button>&nbsp;
+                        <button onclick="location.href='adminAttFixRequest.ma'"  type="button" class="btn btn-secondary">근태조정신청내역</button>&nbsp;
                     </div>
                 </div>
                 
@@ -178,29 +178,33 @@
             <div class="content">
                 <!--휴가일수 수정 탭-->
                 <div id="restEditTap">
-                    <form>
-                        <table id="restEditTable" class="table table-bordered">
+                    <form action="leaveSet.att" method="post">
+                        <table id="restEditTable">
                             <tr>
                                 <th width="200">직책</th>
                                 <th width="100">이름</th>
                                 <th width="130">부서명</th>
                                 <th>휴가잔여일수</th>
-                                <th></th>
+                                <!-- <th></th> -->
                             </tr>
                             <c:forEach var="at" items="${ list }">
-	                            <tr>
-	                                <td>${ at.rank }</td>
-	                                <td>${ at.memName }</td>
-	                                <td>${ at.department }</td>
-	                                <td><input type="number" class="form-control form-control-sm" value="${ at.memTotalDate }"></td>
-	                                <td><button type="button" class="btn btn-secondary leaveHistory" onclick="history_click()" data-toggle="modal">휴가 사용 현황</button></td>
-	                            </tr>
+                               <tr>
+                                   <td hidden><input type="text" name="memNo" value="${ at.memNo }"></td>
+                                   <td>${ at.rank }</td>
+                                   <td>${ at.memName }</td>
+                                   <td>${ at.department }</td>
+                                   <td><input type="number" name="memTotalDate" class="form-control form-control-sm" value="${ at.memTotalDate }"></td>
+                                   <!-- <td hidden><button type="button" class="btn btn-secondary leaveHistory" data-toggle="modal" data-backdrop="static" data-keyboard="false" href="#enrcode-modal">휴가 사용 현황</button></td> -->
+                               </tr>
                             </c:forEach>
                         </table>
+
+                        
+                    	<button type="submit" class="btn btn-dark" id="restEditBtn">저장</button>
                     </form>
-                    <button class="btn btn-dark" id="restEditBtn">저장</button>
                     <!-- 페이징바 -->
                     <div id="pagingArea">
+
 		                <ul class="pagination">
 		                	<c:choose>
 			                		<c:when test="${ pi.currentPage eq 1 }">
@@ -241,8 +245,8 @@
             </div>
         </div>
     </section>
-    <!-- 부서등록 모달-->
-    <div class="modal fade" id="rest-used" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- 
+    <div class="modal fade" id="enrcode-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header" id="myModalheader">
@@ -281,7 +285,6 @@
                                 <td style="text-align: center;" id="leaveContent">개인사유</td>
                             </tr>
                         </table>
-                        <!--페이지네이션-->
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -291,26 +294,30 @@
             
         </div>
     </div>
-    
-    <script>
-       $(document).on("click", ".leaveHistory", function(){
-	       	var enrollDate = $(list.)
-	       	var memTotalDate = $(this).parent().prev().children().val();
-	       	console.log(memTotalDate);
-	       	$(".modal-body #memTotalDate").text( memTotalDate + "일" );
-       })
-       
-       function history_click(){
-    	   $.ajax({
-    		   url:"history.att?"
-    	   })
-       }
-       
-       
-       
-    </script>
+     
+	    <script>
 
-    
+        $(".leaveHistory").click(function(){
+          
+                 var memTotalDate = $(this).parent().prev().children().val();
+                 $(".modal-body #memTotalDate").text( memTotalDate + "일" );
+                 var rname = $(this).parent().parent().children().eq(0).text();
+        
+                 console.log(rname);
+                 $.ajax({
+                   url: "history.att",
+                   data:{
+                      memNo : rname
+                   }, success:function(lData){
+                      $(".modal-body #leaveCate").text(lData.leaveCate);
+                   }, error:function(){
+                      console.log("조회용 ajax통신 실패");
+                   }
+                 })
+            })
+           
+        </script> -->
+   
     <!--모달 기능-->
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -321,5 +328,7 @@
             });
         });
     </script>
+     
+    
 </body>
 </html>

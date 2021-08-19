@@ -60,6 +60,22 @@ public class AttendanceServiceImpl implements AttendanceService{
 		return aDao.selectLeaveData(sqlSession, pi);
 	}
 	
+	@Override
+	public int setLeave(Member m) {
+		return aDao.setLeave(sqlSession, m);
+	}
+
+	@Override
+	public ArrayList<Leave> leaveData(Member m) {
+		return aDao.leaveData(sqlSession, m);
+	}
+	/* 회원 휴가 정보 조회(모달용 차후)
+	@Override
+	public Leave selectLeaveData2(int memNo) {
+		return aDao.selectLeaveData2(sqlSession, memNo);
+	}
+	*/
+  
 	// (날드)관리자 : 근태조정신청내역 조회 카운트
 	@Override
 	public int selectAdminFixRequestListCount(HashMap<String,String> searchDate) {
@@ -81,7 +97,5 @@ public class AttendanceServiceImpl implements AttendanceService{
 		result = result*aDao.updateAdminFixRequest3(sqlSession, a);
 		return result;
 	}
-	
-	
 
 }

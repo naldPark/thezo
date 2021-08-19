@@ -25,7 +25,18 @@ public interface AttendanceService {
 	int memberListCount();
 	ArrayList<Member> selectMember(PageInfo pi);
 	ArrayList<Leave> selectLeaveData(PageInfo pi);
+
+	// 휴가 정보 수정
+	int setLeave(Member m);
 	
+	// 근태 관리 정보 조회
+	ArrayList<Leave> leaveData(Member m);
+	
+
+	/* 회원 휴가 정보 조회(모달용 차후)
+	Leave selectLeaveData2(int memNo);
+	*/
+
 	// (날드)관리자 : 근태조정신청내역 조회 카운트
 		
 	public int selectAdminFixRequestListCount(HashMap<String,String> searchDate);
@@ -35,6 +46,5 @@ public interface AttendanceService {
 	
 	// (날드)관리자 : 근태조정신청내역 조회
 	public int updateAdminFixRequest(Attendance a);
-		
-	
+
 }

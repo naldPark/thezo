@@ -28,6 +28,7 @@ import com.kh.thezo.attendance.model.vo.Attendance;
 import com.kh.thezo.chatting.model.service.ChattingService;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
+import com.kh.thezo.leave.model.vo.Leave;
 import com.kh.thezo.mail.controller.MailController;
 import com.kh.thezo.mail.model.service.MailService;
 import com.kh.thezo.member.model.service.MemberService;
@@ -53,6 +54,8 @@ public class MemberController {
 	private NotificationService nfService;
 	@Autowired
 	private ChattingService chatService;
+	@Autowired
+	private AttendanceService aService;
 
 	
 	@RequestMapping("logout.me")
@@ -65,12 +68,15 @@ public class MemberController {
 	public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
 		
 		Member loginUser = mService.loginMember(m);
-		Attendance attData = atService.attendanceData2(m); //메인화면 출퇴근 조회용
+		Attendance attData = atService.attendanceData2(loginUser); //메인화면 출퇴근 조회용
+		ArrayList<Leave> lData = atService.leaveData(loginUser); //근태정보 조회용
+		System.out.println(loginUser);
 		
 		if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) { // 로그인 성공
 			loginUser.setUserId(loginUser.getMemId()); //userId임시로 넣은 jsp오류방지용
 			session.setAttribute("loginUser", loginUser);
 			session.setAttribute("attData", attData);
+			session.setAttribute("lData", lData);
 			
 			// 전자결재 파트 시작 (DB 확정되고 테스트 단계에서 주석 지우겠습니다)
 				HashMap<String, Integer> mainApprCount= apprService.mainApprCount(loginUser.getMemNo());

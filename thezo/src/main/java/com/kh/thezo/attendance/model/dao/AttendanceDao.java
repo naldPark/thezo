@@ -52,6 +52,20 @@ public class AttendanceDao {
 		return (ArrayList)sqlSession.selectList("attendanceMapper.selectLeaveData", null, rowBounds);
 	}
 	
+	public int setLeave(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("attendanceMapper.setLeave", m);
+	}
+	
+	public ArrayList<Leave> leaveData(SqlSessionTemplate sqlSession, Member m) {
+		return (ArrayList)sqlSession.selectList("attendanceMapper.leaveData", m);
+	}
+	
+	/* 차후
+	public Leave selectLeaveData2(SqlSessionTemplate sqlSession, int memNo) {
+		return sqlSession.selectOne("attendanceMapper.selectLeaveData2", memNo);
+	}
+	*/
+	
 	// (날드)관리자 : 근태조정신청내역 조회 카운트
 	public int selectAdminFixRequestListCount(SqlSessionTemplate sqlSession, HashMap<String,String> searchDate){
 		return sqlSession.selectOne("attendanceMapper.selectAdminFixRequestListCount",searchDate);
@@ -78,6 +92,6 @@ public class AttendanceDao {
 		public int updateAdminFixRequest3(SqlSessionTemplate sqlSession, Attendance a){
 			return sqlSession.update("attendanceMapper.updateAdminFixRequest3",a);
 		}
-	
+
 	
 }

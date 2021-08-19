@@ -59,6 +59,7 @@ public class AttendanceController{
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
 		ArrayList<Member> list = aService.selectMember(pi);
 		ArrayList<Leave> lData = aService.selectLeaveData(pi);
+		System.out.println(list);
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
@@ -114,6 +115,45 @@ public class AttendanceController{
 		session.setAttribute("attData", attData);
 		return new Gson().toJson(attData);			
 	}
+
+	// 휴가 내역 수정
+	@RequestMapping("leaveSet.att")
+	public String leaveSet(Member m, HttpSession session) {
+		int result = aService.setLeave(m);
+		System.out.println(m);
+		System.out.println(result);
+		
+		if(result > 0) {
+			session.setAttribute("alertMsg", "성공적으로 수정되었습니다");
+			return "redirect:adminAtt.ma";
+		}else {
+			session.setAttribute("errorMsg", "수정 실패");
+			return "redirect:adminAtt.ma";
+		}
+	}
+	
+	
+	/*휴가 내역 조회(차후)
+	@ResponseBody
+	@RequestMapping(value="history.att", produces="application/json; charset=utf-8")
+	public String attHistory(int memNo, HttpSession session) {
+		int listCount = aService.leaveListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		ArrayList<Member> list = aService.selectMember(pi);
+		ArrayList<Leave> lData = aService.selectLeaveData(pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("list", list);
+		model.addAttribute("lData", lData);
+		
+		return "attendance/adminAttManage";
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		Leave lData = aService.selectLeaveData2(memNo);
+		session.setAttribute("lData", lData);
+		return new Gson().toJson(lData);
+	}
+	*/
 	
 	// (날드)관리자 : 근태조정신청내역 조회
 		@RequestMapping("adminAttFixRequest.ma")

@@ -460,7 +460,8 @@ public class MailController {
 				mm.setRefReceiver(setReceiversFunction(mm.getRefReceiver()));
 			}
 			if (mm.getMemNo() == memNo) {
-				mv.addObject("mm", mm);
+				ArrayList<Member> empList = mmService.employeeList();// 전사원 리스트
+				mv.addObject("mm", mm).addObject("empList", empList);
 				mv.setViewName("mail/mailDetail");
 			} else {
 				mv.addObject("errorMsg", "오류가 발생했습니다");

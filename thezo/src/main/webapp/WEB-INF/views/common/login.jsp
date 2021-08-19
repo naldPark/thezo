@@ -19,6 +19,7 @@
     #form-area span{width: 55px ; height: 100%; display: inline-block; background-color: rgb(237,237,237) ;}
     #form-area span>img{ width: 45px; height: 42px; margin-left: 5px; margin-top: 1px;}
     input:focus{outline: none;}
+    input{height:30px}
     #form-area input{border: none; height: 42px; transform: translateY(-16px); width: 210px;}
     #form-area button{width: 100%; height: 36px; color: white;  font-size: 16px; font-weight: 400; border: none; border-radius: 4px; margin-top: 15px; background-color:rgb(44,62,80) ;}
     /* 임시로 만들어 놓은 페이지 입니다. 

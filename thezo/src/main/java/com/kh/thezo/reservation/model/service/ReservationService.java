@@ -35,8 +35,17 @@ public interface ReservationService {
 	// 4. 예약 수정
 	int updateReservation(Reservation rez);
 	
+	// 5. 관리자메뉴
+	// 자원 관리 조회
+	ArrayList<Resources> selectResourcesManage();
 	
+	// 카테고리/자원명 수정
+	int updateReCategory(Resources re);
+	int updateResource(Resources re);
 	
+	// 카테고리/자원 추가
+	int insertReCategory(Resources re);
+	int insertResource(Resources re);
 	
 	
 }

@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.kh.thezo.common.model.vo.PageInfo;
 import com.kh.thezo.common.template.Pagination;
-import com.kh.thezo.document.model.vo.DocCategory;
-import com.kh.thezo.document.model.vo.Document;
 import com.kh.thezo.reservation.model.service.ReservationService;
 import com.kh.thezo.reservation.model.vo.ReCategory;
 import com.kh.thezo.reservation.model.vo.Reservation;
@@ -151,6 +149,76 @@ public class ReservationController {
 		int result = rService.deleteReservation(rezNo);
 		session.setAttribute("alertMsg", "성공적으로 삭제되었습니다.");
 		return "redirect:/myList.rez?memNo=" + memNo;
+	}
+	
+	/**
+	 *  자원관리 페이지 (관리자메뉴)
+	 */
+	@RequestMapping("manage.rez")
+	public String selectResourcesManage(Model model){
+		ArrayList<ReCategory> caList = rService.selectCategoryList();
+		//ArrayList<Resources> reList = rService.selectResourceList(caNo);
+		model.addAttribute("caList", caList);
+		//model.addAttribute("reList", reList);
+		return "schedule/reservation/rezManagementView";
+	}
+	
+	/**
+	 *  자원관리 카테고리명 변경 
+	 */
+	@RequestMapping("update.reca")
+	public String updateReCategory(Resources re, String changeCaName, HttpSession session) {
+		re.setCategoryName(changeCaName);
+		int result = rService.updateReCategory(re);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "이름을 변경했습니다.");
+			return "redirect:/manage.rez";
+		}else {
+			session.setAttribute("alertMsg", "이름 변경을 실패했습니다.");
+			return "redirect:/manage.rez";
+		}
+	}
+	
+	/**
+	 *  자원관리 자원명 변경
+	 */
+	@RequestMapping("update.re")
+	public String updateResource(Resources re, String changeReName, HttpSession session) {
+		re.setResourceName(changeReName);
+		int result = rService.updateResource(re);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "이름을 변경했습니다.");
+			return "redirect:/manage.rez";
+		}else {
+			session.setAttribute("alertMsg", "이름 변경을 실패했습니다.");
+			return "redirect:/manage.rez";
+		}
+	}
+	
+	/**
+	 *  카테고리/ 자원 추가
+	 */
+	@RequestMapping("insert.reca")
+	public String insertReCategory(Resources re, HttpSession session) {
+		int result = rService.insertReCategory(re);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "카테고리를 추가했습니다.");
+			return "redirect:/manage.rez";
+		}else {
+			session.setAttribute("alertMsg", "카테고리 추가를 실패했습니다.");
+			return "redirect:/manage.rez";
+		}
+	}
+	@RequestMapping("insert.re")
+	public String insertResource(Resources re, HttpSession session) {
+		int result = rService.insertResource(re);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "자원을 추가했습니다.");
+			return "redirect:/manage.rez";
+		}else {
+			session.setAttribute("alertMsg", "자원 추가를 실패했습니다.");
+			return "redirect:/manage.rez";
+		}
 	}
 	
 	

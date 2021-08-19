@@ -9,7 +9,8 @@
 	
 	<resultMap id="resourceResult" type="Resources">
 		<result column="resource_no" property="resourceNo" />
-		<result column="category_no" property="category" />
+		<result column="category_no" property="categoryNo" />
+		<result column="category_name" property="categoryName" />
 		<result column="resource_name" property="resourceName" />
 	</resultMap>
 	
@@ -25,10 +26,20 @@
 		<result column="rez_endtime" property="endTime" />
 		<result column="apply_date" property="applyDate" />
 		<result column="status" property="status" />
+		<result column="category_name" property="categoryName"/>
+		<result column="category_no" property="categoryNo"/>
 	</resultMap>
+	
+	<select id="selectListCount" resultType="_int">
+		select count(*)
+		  from reservation
+		 where status = 'Y'
+		   and rez_writer = #{memNo}
+	</select>
 	
 	<select id="selectResourceList" resultMap="resourceResult">
 		select resource_no
+			 , category_no
 			 , category_name
 			 , resource_name
 		  from resources
@@ -79,6 +90,36 @@
 		  from re_category
 	</select>
 	
+	<select id="selectMyReservationList" resultMap="reservationResult">
+		select rez_no
+		     , re.resource_no
+		     , re.resource_name
+		     , mem_no
+		     , mem_name as rez_writer
+		     , use_for
+		     , rez_date
+		     , rez_starttime
+		     , rez_endtime
+		     , apply_date
+		     , category_name
+		  from reservation r
+		  join resources re on (re.resource_no = r.resource_name)
+		  join member m on (mem_no = rez_writer)
+		  join re_category using (category_no)
+		 where r.status = 'Y'
+		   and rez_writer = #{memNo}
+	</select>
+	
+	<select id="selectResourcesManage" resultMap="resourceResult">
+		select resource_no
+			 , resource_name
+		     , cateogry_no
+		     , category_name
+		  from resources
+		  join re_category using (category_no)
+		 where category_no = #{categoryNo};
+	</select>
+	
 	<insert id="insertReservation">
 		insert
 		  into reservation
@@ -125,5 +166,47 @@
 		   set status = 'N'
 		 where rez_no = #{rezNo}
 	</update>
+	
+	<update id="updateReCategory">
+		update re_category
+		   set category_name = #{categoryName}
+		 where category_no = #{categoryNo}
+	</update>
+	
+	<update id="updateResource">
+		update resources
+		   set resource_name = #{resourceName}
+		 where resource_no = #{resourceNo}
+	</update>
+	
+	<insert id="insertReCategory">
+		insert 
+		  into re_category
+		  	   (
+		  	     category_no
+		  	   , category_name
+		  	   )
+		 values
+		 	    (
+		 	      seq_rcno.nextval
+		 	    , #{categoryName}
+		 	    )
+	</insert>
+	
+	<insert id="insertResource">
+		insert 
+		  into resources
+		  	   (
+		  	     resource_no
+		  	   , category_no
+		  	   , resource_name
+		  	   )
+		 values
+		 	    (
+		 	      seq_rsno.nextval
+		 	    , #{categoryNo}
+		 	    , #{resourceName}
+		 	    )
+	</insert>
 	
 </mapper>

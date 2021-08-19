@@ -10,6 +10,7 @@ import lombok.ToString;
 @ToString
 public class Resources {
 	private int resourceNo;
-	private String category;
+	private int categoryNo;
 	private String resourceName;
+	private String categoryName;
 }

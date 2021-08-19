@@ -92,7 +92,7 @@ public class MarketController {
 		model.addAttribute("pi", pi);
 		model.addAttribute("list", list);
 		
-		return "market/marketListView";
+		return "market/marketLikeList";
 		
 	}
 	

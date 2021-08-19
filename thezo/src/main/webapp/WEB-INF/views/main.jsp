@@ -229,7 +229,6 @@
                     <script>
 				    	$(function(){
 				    		boardListMain();
-				    		setInterval(boardListMain, 1000);
 				    		
 				    		$(document).on("click", "#mainBoardList tbody tr", function(){
 				    			location.href = "noticeDetail.bo?bno=" + $(this).children(".bno").text();

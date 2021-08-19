@@ -6,7 +6,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="author" content="Jaewon.s">
 <title>TheZo Login</title>
 <style>
     .outer{width: 320px; height: 620px;margin: auto;}
@@ -27,9 +26,14 @@
 
         단지 처음 ! main페이지 가기전에 로그인 조건검사용으로 넣어둔 페이지입니다!! 
     */
-
-
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="resources/css/login.css">
+
 </head>
 <c:if test="${!empty alertMsg }">
 	<script>	
@@ -41,40 +45,32 @@
 
 
 <body>
-    <div class="outer">
-        <div id="biglogo-area">
-            <img src="resources/images/bigLogo.png">
-        </div>
 
-        <div class="middle-area">
-            <span>The Zo</span> &nbsp;
-            <span><img src="resources/images/smallLogo.png"></span>
-        </div>
-        
-        <form action="login.me" method="POST">
-            <div id="form-area">
-                <table>
-                    <tr>
-                        <td>
-                            <div>
-                                <span><img src="resources/images/loginIcon1.png"></span>
-                                <input type="text" name="memId" value="">
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div>
-                                <span><img src="resources/images/loginIcon2.png"></span>
-                                <input type="password" name="memPwd" value="">
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <button type="submit">로그인</button>
-            </div>
+    <div class="login-box">
+        <h2><img src="resources\images/logo.png" style="width:50px; margin-right: 20px;">Login</h2>
+        <form action="login.me" method="POST" id="submitLogin">
+          <div class="user-box">
+            <input type="text" name="memId" value="" required>
+            <label>Id</label>
+          </div>
+          <div class="user-box">
+            <input type="password" name="memPwd" value="" required>
+            <label>Password</label>
+          </div>
+          <a href="#" id="loginBtn">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            로그인
+          </a>
         </form>
-      
-    </div>
+      </div>
+
+      <script>
+          $("#loginBtn").click(function(){
+          $("#submitLogin").submit();
+          })
+      </script>
 </body>
 </html>

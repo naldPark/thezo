@@ -23,5 +23,4 @@ public class Attendance {
 	private String attBoardStatus;
 	private int attBoardNo;
 	private String attStaContent;
-	
 }

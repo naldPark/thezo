@@ -25,7 +25,7 @@
     
     .form-check{margin-left: 0% !important; position: static !important; margin-top: 0% !important; padding-left: 0% !important;}
     .form-check-input{margin-left: 20% !important; position: static !important; margin-top: 0% !important; padding-left: 0% !important;}
-    #dept-table{width: 70%; margin-top: 20%;}
+    #dept-table{width: 70%; margin-top: 10%;}
     #dept-table a{font-weight: 400; color: black;}
     #dept-table tr, #dept-table td, #dept-table th{border-bottom: 1px solid rgb(177, 177, 177); text-align: center;}
     #dept-table th{background-color: lightgray;}
@@ -47,7 +47,7 @@
     #codeUse, #codecUse{font-size: 13px;}
 
 	#dept_add, #cancel, #dept_modi, #cancel2 {border: none; background-color:transparent;}
-	#dept_add:hover, #cancel:hover, #dept_modi:hover {font-weight: bold;}
+	#dept_add:hover, #cancel:hover, #dept_modi:hover, #cancel2:hover {font-weight: bold;}
     .modal-footer{font-size: 13px;}
     .modal-footer>a:hover{text-decoration: none; font-weight: bold;}
 </style>

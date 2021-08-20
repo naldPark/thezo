@@ -148,6 +148,7 @@
 			 , leave_content
 			 , leave_cate
 			 , leave_enr_date
+			 , leave_status
 		  from leave
 		 where mem_no = #{ memNo }
 		 order

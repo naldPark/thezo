@@ -47,6 +47,9 @@
     #myModalLabel{color: white; font-size: 14px; font-weight: bold;}
     .modal-footer{font-size: 13px;}
     .modal-footer>a:hover{text-decoration: none; font-weight: bold;}
+    
+    #att_modi {border: none; background-color:transparent;}
+    #att_modi:hover {font-weight: bold;}
 
     #adminenrstatement{
         margin-top: 10%;
@@ -258,7 +261,7 @@
                 
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" style="color: rgb(26,188,156);">수정하기</button>&nbsp;
+                        <button type="submit" id="att_modi" style="color: rgb(26,188,156);">수정하기</button>&nbsp;
                         <a href="#" data-dismiss="modal" style="color: lightslategray;">취소하기</a>
                     </div>
                 </form>

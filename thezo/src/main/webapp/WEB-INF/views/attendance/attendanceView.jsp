@@ -566,24 +566,6 @@
                             </tr>
                         </table>
                     </div>
-                    <div id="rest-usedinform">
-                        <p id="myused-name"><i class="fas fa-rainbow"></i> 연차 사용일수</p>
-                        <br><br>
-                        <table id="myused-table">
-                            <tr>
-                                <th width="300">휴가</th>
-                                <th width="300">결근</th>
-                                <th width="300">조퇴</th>
-                                <th width="300">경조사</th>
-                            </tr>
-                            <tr>
-                                <td>0일</td>
-                                <td>0일</td>
-                                <td>0일</td>
-                                <td>0일</td>
-                            </tr>
-                        </table>
-                    </div>
                     <div id="rest-usedhistory">
                         <p id="history-name"><i class="fas fa-history"></i> 연차 사용현황</p>
                         <br><br>

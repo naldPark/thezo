@@ -758,6 +758,7 @@
 		 	 <if test='docName!=null'>
                     and doc_name like '%' || #{docName} || '%'
              </if> 
+             DOC_DATE desc
 	</select>
 	
 </mapper>

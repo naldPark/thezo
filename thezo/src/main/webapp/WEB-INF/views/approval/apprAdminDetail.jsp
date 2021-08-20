@@ -180,7 +180,7 @@
                     </div>
                     <form action="cancelDocu.appr" method="post" id="cancelDocuform">
                     <div class="modal-body">
-                        회수하면 임시저장함으로 이동 됩니다
+                        회수하면 기안이 취소됩니다
                     </div>
                     <div class="modal-footer">
                       <input type="hidden" value="${a.memNo}" name="memNo">

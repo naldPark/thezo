@@ -19,7 +19,7 @@
     <br><br>
     <a href='main.mail?folder=받은' class="w3-bar-item w3-button w3-padding"><i class="fas fa-envelope"></i>&nbsp; 받은편지함</a>
     <a href="sendInbox.mail" class="w3-bar-item w3-button w3-padding"><i class="fas fa-paper-plane"></i>&nbsp; 보낸편지함</a>
-    <a href="main.mail?folder=임시" class="w3-bar-item w3-button w3-padding"><i class="fas fa-inbox"></i>&nbsp; 임시보관함</a>
+    <!-- <a href="main.mail?folder=임시" class="w3-bar-item w3-button w3-padding"><i class="fas fa-inbox"></i>&nbsp; 임시보관함</a> -->
     <a href="main.mail?folder=스팸" class="w3-bar-item w3-button w3-padding"><i class="fas fa-ban"></i>&nbsp; 스팸메일함</a>
     <a href="main.mail?folder=휴지" class="w3-bar-item w3-button w3-padding"><i class="fas fa-trash-alt"></i>&nbsp; 휴지통</a>
     <!-- <a class="w3-bar-item w3-button w3-padding" onclick="extend('receiveDocu')"><i

@@ -102,8 +102,7 @@
             
 	                <!-- 문서리스트 -->
 					<c:forEach var="a" items="${ list }">
-					<div class="apprList shadow p-4 mb-3 bg-white w3-cell-row"
-					onclick="location.href='editForm.appr?formNo=${a.formNo}'">
+					<div class="shadow p-4 mb-3 bg-white w3-cell-row">
 						<div class="w3-cell" style="width:10%">
 							<h3 class="w3-cell">
 								<c:choose>

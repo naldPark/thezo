@@ -31,6 +31,7 @@ import com.kh.thezo.common.template.Pagination;
 import com.kh.thezo.leave.model.vo.Leave;
 import com.kh.thezo.mail.controller.MailController;
 import com.kh.thezo.mail.model.service.MailService;
+import com.kh.thezo.mail.model.vo.Mail;
 import com.kh.thezo.member.model.service.MemberService;
 import com.kh.thezo.member.model.vo.Member;
 import com.kh.thezo.notification.model.service.NotificationService;
@@ -78,6 +79,7 @@ public class MemberController {
 			session.setAttribute("attData", attData);
 			session.setAttribute("lData", lData);
 			
+
 			// 전자결재 파트 시작 (DB 확정되고 테스트 단계에서 주석 지우겠습니다)
 				HashMap<String, Integer> mainApprCount= apprService.mainApprCount(loginUser.getMemNo());
 				Approval appr = new Approval();
@@ -90,15 +92,22 @@ public class MemberController {
 			// 전자결재 파트 끝
 			
 			// 이메일 파트 시작 (DB 확정되고 테스트 단계에서 주석 지우겠습니다)
-			try {
-				mailController.mailReceivecheck(loginUser.getEmail(),loginUser.getMemNo(), session);
-			} catch (MessagingException e) {
-				e.printStackTrace();
-			}
-				
+				// 해당 두 계정만 서버와 연동시켰기 때문에 조건처리했습니다.
+				if (loginUser.getEmail().equals("user05@thezo.site") || loginUser.getEmail().equals("user06@thezo.site")) {
+					try {
+						ArrayList<Mail> mList = new ArrayList<>();
+						// 외부에 새로들어온 메일이 있는지 체크
+						mList = mailController.mailReceivecheck(loginUser.getMemNo(), loginUser.getEmail(), session);
+						if (mList.size() != 0) {
+							mailService.insertPopList(mList);
+						}
+					} catch (MessagingException e) {
+						e.printStackTrace();
+					}
+				}				
 				int mainMailCount= mailService.mainMailCount(loginUser.getMemNo());
 				session.setAttribute("mainMailCount", mainMailCount);
-			// 이메일 파트 끝
+				// 이메일 파트 끝	
 
 			mv.setViewName("redirect:/");
 			

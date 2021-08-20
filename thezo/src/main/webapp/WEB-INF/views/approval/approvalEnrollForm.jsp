@@ -115,7 +115,7 @@
                   <input type="hidden" id="tempStatus" name="tempStatus">
                   <div class="row justify-content-center">
                     <button type="button" id="submitBtn" class="btn btn-primary">기안하기</button>&nbsp;
-                    <button type="button" onclick="tempSave();" class="btn btn-primary">임시저장</button>&nbsp;
+                    <!-- <button type="button" onclick="tempSave();" class="btn btn-primary">임시저장</button>&nbsp; -->
                     <button type="button" onclick="location.href='main.appr'" class="btn btn-secondary">취소</button>
                   </div>
               

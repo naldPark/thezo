@@ -90,10 +90,10 @@
 	#ad-progress-area{line-height: 18px;}
 	#ad-progress-area span:nth-of-type(2), #ad-progress-area span:nth-of-type(4n+2) {color: black; font-weight: bolder;}
 	/*오른쪽 하단 박스영역*/
-	.memstat-table>p{font-size: 15px; font-weight: bolder; margin-left: 12px; margin-bottom: 0px; position: absolute; z-index: 100;}
+	.memstat-table>p{font-size: 15px; font-weight: bolder; margin-left: 12px; margin-bottom: 0px; position: absolute; z-index: 10;}
 	.memstat-table{position: relative; overflow: hidden;}
 	.memstat-table>div:nth-child(2){position: absolute; top: 30px; left:25px;}
-	.memstat-table>div:nth-child(3){ margin-left:5px; font-size: 25px; font-weight: bolder; color: rgb(171,235,198); letter-spacing: 2px; position: absolute; top: 90px; left: 50%; z-index: 50; transform: translateX(-50%); text-shadow: -1px 0 green, 0 1px green, 1px 0 green, 0 -1px green;}
+	.memstat-table>div:nth-child(3){ margin-left:5px; font-size: 25px; font-weight: bolder; color: rgb(171,235,198); letter-spacing: 2px; position: absolute; top: 90px; left: 50%; transform: translateX(-50%); text-shadow: -1px 0 green, 0 1px green, 1px 0 green, 0 -1px green;}
 	.memstat-table>div:nth-child(2):hover+div{display:none;}
 
 	/* 중앙 오른쪽 하단 table 영역 css*/
@@ -105,8 +105,17 @@
 	.deptItems>td:nth-child(2){border: none; border-left: 1px solid #212529;}
 	#inner-table-area{overflow-y: scroll;}
 
+	/* 중앙 왼쪽 하단 테이블 영역으로 입퇴사자 현황 표 css영역 */
+	.some-chart, .dal-chart{position: relative;}
+	.some-chart>p, .dal-chart>p{margin:0px; font-weight: bold; color:rgb(237,117,105); font-size: 15px; position: absolute; left: 50%; transform: translateX(-50%); }
+	#join-resign-past-year, #attendance-past-year{ color: navy ; position: absolute; left: 22%; cursor: pointer;}
+	#join-resign-next-year, #attendance-next-year{ color: navy; position: absolute; right: 22%; cursor: pointer;}
+	#join-resign-past-year:hover, #join-resign-next-year:hover, #attendance-past-year:hover, #attendance-next-year:hover{transform: scale(1.2); color: orangered;}
 
-	/* ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 위에 레이아웃 요소 싸그리 끝낸것!! ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑*/
+	/* 메인 차트 css영역 */
+	.dal-chart > canvas{margin-top: 25px ;}
+	.dal-chart>p, #attendance-past-year, #attendance-next-year{ font-size: 17px;}
+	.data-null-notification{width: 100%; text-align: center; border-top: 1px solid orangered ; border-bottom: 1px solid orangered ; position: absolute; top: 52%; transform: translateY(-50%); background-color: rgba(255,224,230, 0.5);}
 </style>
 
 <body>
@@ -145,8 +154,8 @@
         	ajaxSelectRightTopDept(); // progress bar
         	ajaxSelectRightBottomChart(); // 도넛차트
         	ajaxSelectTableAreaDate();// table형태의 영역데이터 조회
-        	ajaxBringBarChartDate();
-        	ajaxBringLineChartDate();        	
+        	ajaxBringBarChartDate(); // 중앙 왼쪽하단의 입퇴사자 현황표 데이터 조회
+        	ajaxBringLineChartDate();  // 중앙 상단의 근태 현황표 데이터 조회       	
         })
 		document.getElementById("admin-header").style.display ="block"; 
         document.getElementById("admin-mode").style.color = "red";
@@ -273,7 +282,7 @@
 		 	});
 		}
 		//--------------------------------------------------------------------------------------------------------------------------------
-
+		// 중앙 오른쪽 하단 테이블 표 데이터 뿌려주는 함수 
 		function ajaxSelectTableAreaDate(){
             $.ajax({
 		 		url:"selectTableAreaDate.ad",
@@ -319,38 +328,38 @@
 		}
 		
 		//---------------------------------------------------------	
+		// 입퇴사자 현황을 가져오는 함수로 가져와야할게!! 
+		// 첫번째로 ! 매개변수로 현재 년도를 넘기고 ! 
+		// 월을 기준으로 입사한 사원수와 퇴사한 사원 수를 담아와야한다. 
+		// has many 구조를 2번 타자! vo 객체를 3개만들면 된다. 
+
+		// 또한 고려해줘야할게 ! 해당 표에 있어서 ! 이전 년도 다음년도 값 넘길때 ! 먼저 조건 검사를 통해서 아무값도 안담겨있으면 
+		// alert띄우고 막아줘야한다. 
+
 		function ajaxBringBarChartDate(){
 					
+			//---------------------------------------------여기가 바로 API부분 -------------------------------------------------
 			// 우선 컨텍스트를 가져오고 
 			var ctx = document.getElementById("join-resign-chart").getContext('2d');
-			
 			// Chart를 생성하면서, 
 			// ctx(context라는 의미)를 첫번째 argument로 넘겨주고, 
 			// 두번째 argument로 그림을 그릴때 필요한 요소들을 모두 넘겨준다. 
 			var JRChart = new Chart(ctx, {
 			    type: 'bar',
 			    data: {
-			        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-			        datasets: [{label: '# of Votes',
-			            data: [12, 19, 3, 5, 2, 3],
-			            backgroundColor: [
-			                'rgba(255, 99, 132, 0.2)',
-			                'rgba(54, 162, 235, 0.2)',
-			                'rgba(255, 206, 86, 0.2)',
-			                'rgba(75, 192, 192, 0.2)',
-			                'rgba(153, 102, 255, 0.2)',
-			                'rgba(255, 159, 64, 0.2)'
-			            ],
-			            borderColor: [
-			                'rgba(255,99,132,1)',
-			                'rgba(54, 162, 235, 1)',
-			                'rgba(255, 206, 86, 1)',
-			                'rgba(75, 192, 192, 1)',
-			                'rgba(153, 102, 255, 1)',
-			                'rgba(255, 159, 64, 1)'
-			            ],
-			            borderWidth: 1
-			        }]
+			        labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			        datasets: [
+						{label: '입사자',
+						backgroundColor: "rgb(214,236,250)",
+						borderColor: 'rgb(173,200,210)',
+			            borderWidth: 1,
+			            data: [12, 19, 3, 5, 2, 3]},
+						{label: '퇴사자',
+						backgroundColor: "rgb(255,224,230)",
+						borderColor: 'rgb(196,173,180)',
+			            borderWidth: 1,
+			            data: [12, 19, 3, 5, 2, 3]}						
+					]
 			    },
 			    options: {
 			        maintainAspectRatio: false, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
@@ -360,13 +369,68 @@
 			                    beginAtZero:true
 			                }
 			            }]
-			        }
+			        },
+					plugins: {
+						legend: {
+							display: false,
+						}
+					}
 			    }
 			});
+
+			//현재 날짜를 바꿔줘야하고 ! 
+			// onclick으로 넘겨주는 값도 다시 설정해줘야한다. 
+			//$("#join-resign-past-year").
+			$("#join-resign-present-year").html("2021");
+			//$("#join-resign-next-year").
+
+			//----------------------------------------------------------------------------------------------------------
 		}
-		//join-resign-chart
-		//attendance-chart
-		
+
+//------------------------------------------------메인 차트쪽이다 !!!! -------------------------------------------------
+		// 얘는 부서별로 하면 스케일이 너무 커지고 (시간도 없고 셈플데이터도 충분치 않다.)
+		// 전사원을 기준으로 해당 월의 total 일한 시간을 평균까지만 내자 그래도 시간이 부족할듯하다. 
+		// 후에 시간내서 부서별, 그리고 가장 일을 많이한 부서 적게한 부서까지도 뽑아내는 것을 만들자.  
+		function ajaxBringLineChartDate(){
+			var ctx = document.getElementById("attendance-chart").getContext('2d');
+			// Chart를 생성하면서, 
+			// ctx(context라는 의미)를 첫번째 argument로 넘겨주고, 
+			// 두번째 argument로 그림을 그릴때 필요한 요소들을 모두 넘겨준다. 
+			var ATChart = new Chart(ctx, {
+			    type: 'line',
+			    data: {
+			        labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+			        datasets: [
+						{label: '입사자',
+						backgroundColor: "rgb(255,0,0)",
+						borderColor: 'rgb(20,70,104)',
+			            borderWidth: 1,
+			            data: [8.5, 9.7, 3, 5, 2, 3]}
+					]
+			    },
+			    options: {
+			        maintainAspectRatio: true, 
+			        scales: {
+			            yAxes: [{
+			                ticks: {
+			                    beginAtZero:true
+			                }
+			            }]
+			        },
+					plugins: {
+						legend: {
+							display: false,
+							//labels: {color: 'rgb(255, 99, 132)'}
+						}
+					}
+			    }
+			});
+
+			//---------------------------------------메인차트 api 끝------------------------------------------------------------
+
+		}
+//------------------------------------------------메인 차트쪽 끝 -------------------------------------------------
+
 	</script>
 	
 	<section>
@@ -417,10 +481,18 @@
 			<%-- 가운데 박스 영역 --%>
 			<div class="center-section">
 				<div class="dal-chart" >
-					  <canvas id="myChart"></canvas>					
+					<div id="attendance-past-year" onclick="">◀</div>
+					<p>※ <span id="attendance-present-year">2021</span>년도 Working Hour Average Chart</p>
+					<div id="attendance-next-year" onclick="">▶</div>
+					<div class="data-null-notification" style="display: none;">해당 년도에 조회된 데이터가 없습니다.</div>
+					<canvas id="attendance-chart" style="width: 100%; height: 270px;"></canvas>					
 				</div>
 
 				<div class="some-chart">
+					<div id="join-resign-past-year" onclick="">◀</div>
+					<p>※ <span id="join-resign-present-year">2021</span>년도 입퇴사자 현황 표</p>
+					<div id="join-resign-next-year" onclick="">▶</div>
+					<div class="data-null-notification" style="display: none;">해당 년도에 조회된 데이터가 없습니다.</div>
 					<canvas id="join-resign-chart"></canvas>
 				</div>
 

@@ -53,4 +53,16 @@ public class ScheduleServiceImpl implements ScheduleService {
 		return scDao.updateBizReport(sqlSession, sc);
 	}
 
+	@Override
+	public int deleteBizReport(int scNo) {
+		return scDao.deleteBizReport(sqlSession, scNo);
+	}
+
+	@Override
+	public Schedule selectBizReport(int scNo) {
+		return scDao.selectBizReport(sqlSession, scNo);
+	}
+	
+	
+
 }

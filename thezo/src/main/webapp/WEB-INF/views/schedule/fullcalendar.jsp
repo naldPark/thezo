@@ -73,9 +73,6 @@
 					}
 				});
 			}
-			
-			
-			
 		});
 	    
 	    var calendar = new FullCalendar.Calendar(calendarEl, {

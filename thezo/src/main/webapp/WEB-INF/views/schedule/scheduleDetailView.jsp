@@ -26,6 +26,7 @@
 	<div class="schedueDetail" style="font-family:'Noto Sans KR', sans-serif;">
 		<input type="hidden" id="scWriter" value="${ loginUser.memNo }"> <!-- 현재 로그인한 유저 전달 -->
 		<input type="hidden" id="scNo" value="${ sc.scNo }">
+		
 		<div class="detail-area w3-panel w3-border w3-round">
 			<div class="modal-header">
 				<h4>&nbsp;&nbsp;일정 정보</h4>
@@ -70,6 +71,14 @@
 				</tr> 
 			</table>
 			
+			<div class="button-area" align="right">
+				<c:if test="${ loginUser.memNo eq sc.memNo }">
+					<button class="btn btn-primary" type="button" id="updateSc">수정</button>
+					<button class="btn btn-danger" type="button" id="deleteModal" data-toggle="modal" data-target="#deleteSc">삭제</button>
+				</c:if>
+			</div>
+			
+			
 			<script>
 				// 일정 시간에서 'T'없애주기
 				$(function(){
@@ -79,6 +88,7 @@
 					console.log(start + ", " + end);
 				})
 			</script>
+			
 		</div>
 		<br>
 		<div id="btn-area" align="right">
@@ -105,7 +115,7 @@
 	    	})
 	    </script>
 	
-		<!-- 보고서 영역 -->
+		<%---- 보고서 영역 ----------------------------------------------------------------%>
 		<div class="report-area w3-panel w3-border w3-round" style="display:none;">
 			
 			<div class="modal-header">
@@ -157,6 +167,12 @@
 	   					 	  	</c:choose>
 	   					    </tr> 
 						</table>
+						<div class="button-area" align="right">
+								<button class="btn btn-primary" type="button" id="updateRep">수정</button>
+							<c:if test="${ loginUser.memNo eq sc.memNo }">
+								<button class="btn btn-danger" type="button" id="deleteModal" data-toggle="modal" data-target="#deleteRep">삭제</button>
+							</c:if>
+						</div>
 					</div>
 				</c:otherwise>
 			</c:choose>
@@ -164,62 +180,101 @@
 		
 		<br>
 	
-		<!-- Modal footer -->
-		<div class="modal-footer center">
-			<div class="button-area">
-				<button class="btn btn-secondary" onclick="window.close();">취소</button>
-				<c:if test="${ loginUser.memNo eq sc.memNo }">
-					<button class="btn btn-primary" type="button" id="updateSc">수정</button>
-					<button class="btn btn-danger" type="button" id="deleteModal" data-toggle="modal" data-target="#deleteSc">삭제</button>
-				</c:if>
-			</div>
-			
-			<!-- The Modal -->
-			<div class="modal" id="deleteSc">
-			  <div class="modal-dialog">
-			    <div class="modal-content">
-			
-			      <!-- Modal Header -->
-			      <div class="modal-header">
-			        <h4 class="modal-title">일정 삭제</h4>
-			        <button type="button" class="close" data-dismiss="modal">&times;</button>
-			      </div>
-			
-			      <!-- Modal body -->
-			      <div class="modal-body">
-			        	일정을 삭제하시겠습니까? <br>
-			        	<b>* 관련 보고 내용도 함께 삭제됩니다.</b>
-			      </div>
-				
-			      <!-- Modal footer -->
-			      <div class="modal-footer">
-			      	<button type="button" class="btn btn-danger" id="deleteScBtn">삭제</button>
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-			      </div>
-			
-			    </div>
-			  </div>
-			</div>
-			<script>
-				$(function(){
-					$("#updateSc").click(function(){
-						var option = "width = 750, height = 800, top = 100, left = 200, location = no";
-						window.open("updateForm.sc?scNo=" + $("#scNo").val(), "일정수정", option);
-						self.close();
-					})
-					
-					$("#deleteScBtn").click(function(){
-						location.href = "delete.sc?scNo=" + $("#scNo").val()
-					})
-					
-					$("#repInsert").click(function(){
-						var option = "width = 700, height = 530, top = 100, left = 200, location = no";
-						window.open("insertForm.bizRep?scNo=" + $("#scNo").val(), "업무 보고하기", option);
-						self.close();
-					})
-				})
-			</script>
+		<div class="button-area" align="right" style="margin-right:10px;">
+			<button class="btn btn-secondary" onclick="window.close();">취소</button>
 		</div>
+			
+			
+			
+			
+			
+		<%--  일정 삭제 모달창 --------------------------------------------------  --%>
+		<!-- The Modal -->
+		<div class="modal" id="deleteSc">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		
+		      <!-- Modal Header -->
+		      <div class="modal-header">
+		        <h4 class="modal-title">일정 삭제</h4>
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		      </div>
+		
+		      <!-- Modal body -->
+		      <div class="modal-body">
+		        	일정을 삭제하시겠습니까? <br>
+		        	<b>* 관련 보고 내용도 함께 삭제됩니다.</b>
+		      </div>
+			
+		      <!-- Modal footer -->
+		      <div class="modal-footer">
+		      	<button type="button" class="btn btn-danger" id="deleteScBtn">삭제</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+		      </div>
+		
+		    </div>
+		  </div>
+		</div>
+		
+		
+		<%-- 업무 보고서 삭제 모달창 --------------------------------------------------  --%>
+		<!-- The Modal -->
+		<div class="modal" id="deleteRep">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		
+		      <!-- Modal Header -->
+		      <div class="modal-header">
+		        <h4 class="modal-title">업무 보고 삭제</h4>
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		      </div>
+		
+		      <!-- Modal body -->
+		      <div class="modal-body">
+		        	업무 보고 내용을 삭제하시겠습니까? 
+		      </div>
+			
+		      <!-- Modal footer -->
+		      <div class="modal-footer">
+		      	<button type="button" class="btn btn-danger" id="deleteRepBtn">삭제</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+		      </div>
+		
+		    </div>
+		  </div>
+		</div>
+		
+		<script>
+			$(function(){
+				$("#updateSc").click(function(){
+					var option = "width = 750, height = 800, top = 100, left = 200, location = no";
+					window.open("updateForm.sc?scNo=" + $("#scNo").val(), "일정수정", option);
+					self.close();
+				})
+				
+				$("#deleteScBtn").click(function(){
+					location.href = "delete.sc?scNo=" + $("#scNo").val()
+				})
+				
+				$("#repInsert").click(function(){
+					var option = "width = 700, height = 530, top = 100, left = 200, location = no";
+					window.open("insertForm.bizRep?scNo=" + $("#scNo").val(), "업무 보고하기", option);
+					self.close();
+				})
+				
+				$("#updateRep").click(function(){
+					var option = "width = 750, height = 800, top = 100, left = 200, location = no";
+					window.open("updateForm.bizRep?scNo=" + $("#scNo").val(), "업무 보고 수정", option);
+					self.close();
+				})
+				
+				$("#deleteRepBtn").click(function(){
+					location.href = "delete.bizRep?scNo=" + $("#scNo").val();
+				})
+				
+			})
+		</script>
+		
 	</div>
 </body>
 </html>

@@ -274,8 +274,7 @@
 							</div>
 			
 							<!-- Modal body -->
-							<form action="update.doc" id="docUpdateForm" method="post"
-								enctype="multipart/form-data">
+							<form action="update.doc" id="docUpdateForm" method="post" enctype="multipart/form-data">
 								<input type="hidden" value="" name="docNo" id="docNo"> 
 								<div class="modal-body">
 									<table class="" align="center">

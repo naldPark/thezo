@@ -47,5 +47,9 @@ public interface ReservationService {
 	int insertReCategory(Resources re);
 	int insertResource(Resources re);
 	
+	// 카테고리/자원 삭제
+	int deleteReCategory(int caNo);
+	int deleteResource(int reNo);
+	
 	
 }

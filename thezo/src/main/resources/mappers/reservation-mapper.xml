@@ -209,4 +209,17 @@
 		 	    )
 	</insert>
 	
+	<delete id="deleteReCategory">
+		delete
+		  from re_category
+		 where category_no = #{caNo}
+	</delete>
+	
+	<delete id="deleteResource">
+		delete
+		  from resources
+		 where resource_no = #{reNo}
+	</delete>
+	
+	
 </mapper>

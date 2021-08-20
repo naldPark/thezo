@@ -11,7 +11,7 @@
 	<c:if test="${!empty alertMsg }">
 		<script>	
 			alert("${ alertMsg }");
-			if(location.href.includes("insert")){
+			if(location.href.includes("insert") || location.href.includes("update.sc") || location.href.includes("update.bizRep")){
 				self.close();
 			}else{
 				opener.location.reload();

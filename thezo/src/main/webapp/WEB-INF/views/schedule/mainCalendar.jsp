@@ -20,14 +20,12 @@
 				window.open("detail.sc?scNo=" + scNo, "일정상세정보", option);
 	        },
 	      	headerToolbar: { // 헤더설정
-				left: 'prev',
-				center: 'title',
-				right: 'next'
+	      		left: 'title',
+				right: 'prev,next'
 	        },
-	       titleFormat: {
-	        	year: 'numeric',
-	            month: '2-digit',
-         	},
+	        titleFormat: {
+	        	month: 'long'
+	        },
          	initialView: 'dayGridMonth',
 	        lazyFetching : 'false',
 	        themeSystem: 'bootstrap', // 테마 설정
@@ -46,7 +44,6 @@
 						success:function(list){
 							var scList = Object.values(JSON.parse(list));
 							for(var i=0; i<scList.length; i++){
-								scList[i].color = '#378006';
 								mainCalendar.addEvent(scList[i]);
 							}
 						},error: function(){
@@ -55,24 +52,28 @@
 					})
 				]
 	        }],
-			eventDisplay: 'list-item',
+			//eventDisplay: 'list-item',
+			//eventDisplay: 'none',
+			eventDisplay: 'background',
 			displayEventTime: false,
-			dayMaxEventRows: 1
+			dayMaxEventRows: 1,
+			height: 'auto'
 		});
 	    
 	    $(function(){
 			$("#mainCalendar .btn").addClass("btn-sm");
 			$("#mainCalendar .btn").removeClass("btn-primary");
+			
+			// 스크롤바 숨김
+			$(".fc-scroller").css("overflow", "hidden");
 		});
 	    mainCalendar.setOption('height', 280);
 	    mainCalendar.setOption('contentHeight', 30);
 	    mainCalendar.render();
 	});
-	// 1. 이벤트 하나만 나오게 (점 하나만..)
-	// 2. 셀 정사각형 만들기
 </script>
 <style>
-	#mainCalendar .fc-toolbar-title{font-size:16px; font-family: 'Noto Sans KR', sans-serif;}
+	#mainCalendar .fc-toolbar-title{font-size:16px; font-family: 'Noto Sans KR', sans-serif; font-weight:bold;}
 	#mainCalendar .fc-list-event-time{width:60px; height:60px;}
 	#mainCalendar td{white-space: normal;}
 	#mainCalendar .fc-list-day-cushion{display:none;}
@@ -84,16 +85,19 @@
 	#mainCalendar .fc-daygrid-day-number{font-size: 13px; text-align: center;}
 	
 	/* 툴바 */
-	#mainCalendar .fc-header-toolbar{margin:0px;}
+	#mainCalendar .fc-header-toolbar{margin:5px;}
 	
 	/* 요일 셀 */
-	#mainCalendar .fc-col-header-cell-cushion{font-size:12px;}
+	#mainCalendar .fc-col-header-cell-cushion{font-size:13px; line-height:30px; padding:0px;}
 	#mainClaendar .fc-col-header-cell{background: rgb(20,70,104);}
-	.fc-daygrid-day{height:15px;}
-	/* .fc-daygrid-day-events{display:none;} */
-	
+	#mainCalendar .fc-daygrid-day{height:15px;}
+	#mainCalendar .fc-daygrid-day-events{display:none;}
+	#mainCalendar .fc-col-header-cell{background: rgb(20,70,104); color:white; height:30px;}
+	#mainCalendar .fc-bg-event{ background:rgb(243,156,18); border-radius: 50px; height: 10px; line-height:50px; top:25px; /* width:10px; left:12px; clip-path: circle(50%); */}
+	#mainCalendar .fc-bg-event:hover{cursor:pointer; background:rgb(20,70,104); opacity: 0.5;}
+	#mainCalendar .fc-daygrid-day-top{justify-content: center}/* 날짜 가운데로 */
 	/* event 제목 숨기기 */
-	.fc-event-title{visibility: hidden; /* hides event title */}
+	#mainCalendar .fc-event-title{visibility: hidden; /* hides event title */}
 </style>
 </head>
 <body>

@@ -139,7 +139,6 @@ public class ScheduleController {
 			sc.setEnd(sc.getEnd().replace(",", ""));
 		}
 		int result1 = scService.updateSchedule(sc);
-		int result2 = scService.updateBizReport(sc);
 		
 		if(result1 > 0) {
 			session.setAttribute("alertMsg", "일정을 수정했습니다.");
@@ -155,6 +154,8 @@ public class ScheduleController {
 	 */
 	@RequestMapping("insertForm.bizRep")
 	public String insertFormBizReport(int scNo, Model model) {
+		Schedule sc = scService.selectScheduleDetail(scNo);
+		model.addAttribute("sc", sc);
 		model.addAttribute("scNo", scNo);
 		return "schedule/bizReportInsertView";
 	}
@@ -178,6 +179,54 @@ public class ScheduleController {
 		
 		}else {
 			session.setAttribute("alertMsg", "등록하지 못했습니다. 다시 시도해주세요!!");
+			return "schedule/quitView";
+		}
+	}
+	
+	@RequestMapping("updateForm.bizRep")
+	public String bizReportUpdateForm(int scNo, Model model) {
+		Schedule sc = scService.selectBizReport(scNo);
+		model.addAttribute("sc", sc);
+		return "schedule/bizReportUpdateForm";
+	}
+	
+	
+	/**
+	 *  업무보고서 수정하기
+	 */
+	@RequestMapping("update.bizRep")
+	public String updateBizReport(Schedule sc, MultipartFile reupfile, HttpSession session) {
+		// 새로 넘어온 첨부파일이 있을 경우
+		if(!reupfile.getOriginalFilename().equals("")) {
+			// 기존에 첨부파일이 있었을 경우 => 기존의 첨부파일 지우기
+			if(sc.getOriginName() != null) {
+				new File(session.getServletContext().getRealPath(sc.getChangeName())).delete();
+			}
+			// 새로 넘어온 첨부파일 서버에 업로드
+			String changeName = saveFile(session, reupfile);
+			sc.setOriginName(reupfile.getOriginalFilename());
+			sc.setChangeName("resources/uploadFiles/" + changeName);
+		}
+		System.out.println(sc);
+		System.out.println(reupfile);
+		int result = scService.updateBizReport(sc);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "업무보고서 수정을 완료했습니다.");
+			return "schedule/quitView";
+		}else {
+			session.setAttribute("alertMsg", "업무보고서 수정 실패!!");
+			return "schedule/quitView";
+		}
+	}
+	
+	@RequestMapping("delete.bizRep")
+	public String deleteBizReport(int scNo, HttpSession session) {
+		int result = scService.deleteBizReport(scNo);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "업무보고서 삭제를 완료했습니다.");
+			return "schedule/quitView";
+		}else {
+			session.setAttribute("alertMsg", "업무보고서 삭제 실패!!");
 			return "schedule/quitView";
 		}
 	}

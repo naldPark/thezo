@@ -37,10 +37,9 @@
 		<br>
 	
       	<table class="text-left">
-      		
-      		<tr>
-      			<th width=100px; height=50px;>카테고리명</th>
-      			<form action="update.reca" type="POST">
+      		<form action="update.reca" type="POST">
+	      		<tr>
+	      			<th width=100px; height=50px;>카테고리명</th>
 	      			<td width=140px;>
 	      				<select class="w3-border" name="categoryNo" style="width: 130px;">
 	      					<option value="">선택안함</option>
@@ -50,36 +49,50 @@
 	      				</select>
 	      			</td>
 	      			
+	      			<td>
+	      				<i style='font-size:18px' class='fas' onclick="update1();">&#xf304;</i>
+	      				<i style='font-size:18px' class='fas' data-toggle="modal" data-target="#deleteModal1">&#xf2ed;</i>
+	      			</td>
+	      		</tr>
+	      		
+	      		<tr>
+	      			<th></th>
 	      			<td width=130px;>
 	      				<input style="width:120px;" type="text" class="w3-border" id="changeName1" name="changeCaName" placeholder="변경할 이름입력" required hidden>
 	      			</td>
 	      			
 	      			<td>
 	      				<button type="submit" class="btn btn-primary btn-sm" id="changeBtn1" hidden>이름 변경</button>
-	      				<button type="submit" class="btn btn-primary btn-danger" id="deleteBtn1" hidden>삭제</button>
 	      			</td>
-      			</form>
-      		</tr>
+	      		</tr>
+      		</form>
       		
-      		<tr>
-      			<th height=50px;>자원 이름</th>
-      			<form action="update.re" type="POST">
+      		<form action="update.re" type="POST">
+	      		<tr>
+	      			<th height=50px;>자원 이름</th>
+	      			
 	      			<td>
 	      				<select class="w3-border text-center" name="resourceNo" style="width: 130px;">
 	      					<option value="">선택안함</option>
 	      				</select>
 	      			</td>
 	      			<td>
+	      				<i style='font-size:18px' class='fas' onclick="update2();">&#xf304;</i>
+	      				<i style='font-size:18px' class='fas' data-toggle="modal" data-target="#deleteModal2">&#xf2ed;</i>
+	      			</td>
+		      	</tr>
+		      	<tr>
+		      		<th></th>
+		      		<td>
 	      				<input style="width:120px;" type="text" class="w3-border" id="changeName2" name="changeReName" placeholder="변경할 이름입력" required hidden>
 	      			</td>
 	      				
 	      			<td>
 	      				<button type="submit" class="btn btn-primary btn-sm" id="changeBtn2" hidden>이름 변경</button>
-	      				<button type="submit" class="btn btn-primary btn-danger" id="deleteBtn2" hidden>삭제</button>
-	      			</td>
-	      				
-	      		</form>
-      		</tr>
+	      			</td>	
+		      	</tr>		
+      		</form>
+      		
       	</table>
       	<br>
       	
@@ -93,6 +106,7 @@
 				var caNo = $(this).val();
 				
 				if(caNo != ""){
+					// select값이 선택안함이 아니라면 카테고리에 맞는 자원 가져오기
 					$.ajax({
 						url: "select.re",
 						data: {caNo: caNo},
@@ -105,16 +119,8 @@
 											+ "</option>";
 								$("select[name=resourceNo]").append(option);
 							}
-							// 변경자원명 입력칸 활성화
-							$("#changeName1").removeAttr("hidden");
-							$("#changeName2").removeAttr("hidden");
 							
-							// 이름변경 버튼 활성화
-							$("#changeBtn1").removeAttr("hidden");
-							$("#changeBtn2").removeAttr("hidden");
 							
-							$("deleteBtn1").removeAttr("hidden");
-							$("deleteBtn2").removeAttr("hidden");
 						}, error: function(){
 							console.log("자원조회용 ajax 통신 실패");
 						}
@@ -122,20 +128,38 @@
 				}else{
 					$("select[name=resourceNo]").empty();
 					$("select[name=resourceNo]").append("<option value=>선택안함</option>");
-					$("#changeName1").attr("hidden", true);
-					$("#changeName2").attr("hidden", true);
-					$("#changeBtn1").attr("hidden", true);
-					$("#changeBtn2").attr("hidden", true);
-					
-					$("deleteBtn1").attr("hidden");
-					$("deleteBtn2").attr("hidden");
 				}
 			})
 		})
+		// 수정 input 나타나게 하기
+		function update1(){
+			$("#changeName1").removeAttr("hidden");
+			$("#changeBtn1").removeAttr("hidden");
+		}
 		
+		function update2(){
+			$("#changeName2").removeAttr("hidden");
+			$("#changeBtn2").removeAttr("hidden");
+		}
+		
+		
+		
+		// 카테고리 삭제 기능
+		function deleteBtn1(){
+			var caNo = $("select[name=categoryNo] :selected").val();
+			location.href = "delete.reca?caNo=" + caNo;
+		}
+		
+		// 자원 삭제 기능
+		function deleteBtn2(){
+			var reNo = $("select[name=resourceNo] :selected").val();
+			location.href = "delete.re?reNo=" + reNo;
+		}
 	</script>
 
-
+	
+	
+	<%-- 자원추가 모달창 ------------------------------------------ --%>
 	<!-- The Modal -->
 	<div class="modal" id="insertModal">
 		<div class="modal-dialog modal-lg">
@@ -170,7 +194,6 @@
 								<th height=50px;>자원</th>
 								<td width=140px;>
 									<select class="w3-border" name="categoryNo" style="width: 130px;">
-										<option value="">선택안함</option>
 										<c:forEach var="c" items="${ caList }">
 											<option value="${ c.categoryNo }">${ c.categoryName }</option>
 										</c:forEach>
@@ -183,23 +206,12 @@
 									<input type="text" class="w3-border" style="width: 180px;" name="resourceName" placeholder="추가할 자원명 입력" required>
 								</td>
 								<td>
-									<button type="button" class="btn btn-success btn-sm" style="width: 120px;" onclick="insertRe();">자원 추가</button>
+									<button type="submit" class="btn btn-success btn-sm" style="width: 120px;" onclick="insertRe();">자원 추가</button>
 								</td>
 							</tr>
 						</form>
 					</table>
 				</div>
-				
-				<script>
-					function insertRe(){
-						console.log($("#insertForm option").val());
-						if($("#insertForm select").val() == ""){
-							alert("카테고리를 선택해 주세요");
-						}else{
-							//$("#insertForm").submit();
-						}
-					}
-				</script>
 
 				<!-- Modal footer -->
 				<div class="modal-footer">
@@ -209,10 +221,62 @@
 			</div>
 		</div>
 	</div>
+	
+	<%-- 카테고리 삭제 모달창 ------------------------------------------------- --%>
+	<!-- The Modal -->
+	<div class="modal" id="deleteModal1">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title">카테고리 삭제</h4>
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      </div>
+	
+	      <!-- Modal body -->
+	      <div class="modal-body">
+	        	선택한 카테고리를 삭제하시겠습니까? <br>
+	        	<b>*주의 : 카테고리 내의 자원과 예약내역이 모두 삭제 되며, 복구가 불가능합니다!</b>
+	      </div>
+	
+	      <!-- Modal footer -->
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" onclick="deleteBtn1();">삭제</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	      </div>
+	
+	    </div>
+	  </div>
+	</div>
 
-
-
-
+	<%-- 자원 삭제 모달창 ------------------------------------------------- --%>
+	<!-- The Modal -->
+	<div class="modal" id="deleteModal2">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	
+	      <!-- Modal Header -->
+	      <div class="modal-header">
+	        <h4 class="modal-title">자원 삭제</h4>
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      </div>
+	
+	      <!-- Modal body -->
+	      <div class="modal-body">
+	        	선택한 자원을 삭제하시겠습니까? <br>
+	        	<b>*주의 : 해당 자원과 관련된 예약내역도 삭제 되며, 복구가 불가능합니다!</b>
+	      </div>
+	
+	      <!-- Modal footer -->
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-danger" onclick="deleteBtn2();">삭제</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+	      </div>
+	
+	    </div>
+	  </div>
+	</div>
 
 
 

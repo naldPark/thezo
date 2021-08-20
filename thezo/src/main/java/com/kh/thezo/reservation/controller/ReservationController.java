@@ -164,7 +164,7 @@ public class ReservationController {
 	}
 	
 	/**
-	 *  자원관리 카테고리명 변경 
+	 *  자원관리 카테고리명/자원명 수정
 	 */
 	@RequestMapping("update.reca")
 	public String updateReCategory(Resources re, String changeCaName, HttpSession session) {
@@ -179,9 +179,6 @@ public class ReservationController {
 		}
 	}
 	
-	/**
-	 *  자원관리 자원명 변경
-	 */
 	@RequestMapping("update.re")
 	public String updateResource(Resources re, String changeReName, HttpSession session) {
 		re.setResourceName(changeReName);
@@ -217,6 +214,33 @@ public class ReservationController {
 			return "redirect:/manage.rez";
 		}else {
 			session.setAttribute("alertMsg", "자원 추가를 실패했습니다.");
+			return "redirect:/manage.rez";
+		}
+	}
+	
+	/**
+	 *  카테고리/ 자원 삭제
+	 */
+	@RequestMapping("delete.reca")
+	public String deleteReCategory(int caNo, HttpSession session) {
+		int result = rService.deleteReCategory(caNo);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "카테고리를 삭제했습니다.");
+			return "redirect:/manage.rez";
+		}else {
+			session.setAttribute("alertMsg", "카테고리 삭제 실패!!!");
+			return "redirect:/manage.rez";
+		}
+	}
+	
+	@RequestMapping("delete.re")
+	public String deleteResource(int reNo, HttpSession session) {
+		int result = rService.deleteResource(reNo);
+		if(result > 0) {
+			session.setAttribute("alertMsg", "자원을 삭제했습니다.");
+			return "redirect:/manage.rez";
+		}else {
+			session.setAttribute("alertMsg", "자원 삭제 실패!!!");
 			return "redirect:/manage.rez";
 		}
 	}

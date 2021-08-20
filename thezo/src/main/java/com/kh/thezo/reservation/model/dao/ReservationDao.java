@@ -71,4 +71,12 @@ public class ReservationDao {
 		return sqlSession.insert("reservationMapper.insertResource", re);
 	}
 	
+	public int deleteReCategory(SqlSession sqlSession, int caNo) {
+		return sqlSession.delete("reservationMapper.deleteReCategory", caNo);
+	}
+	
+	public int deleteResource(SqlSession sqlSession, int reNo) {
+		return sqlSession.delete("reservationMapper.deleteResource", reNo);
+	}
+	
 }

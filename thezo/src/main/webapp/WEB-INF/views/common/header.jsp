@@ -278,8 +278,7 @@
                         <li><a href="main.sc">일정관리</a>
                             <ul>
                                 <li><a href="main.sc">일정관리</a></li>
-                                <li><a href="list.note?memNo=${ loginUser.memNo }">노트관리</a></li>
-                                <li><a href="myList.rez?memNo=${ loginUser.memNo }">자원예약</a></li>
+                                <li><a href="myList.rez?memNo=${ loginUser.memNo }">자원관리</a></li>
                             </ul>
                         </li>
         

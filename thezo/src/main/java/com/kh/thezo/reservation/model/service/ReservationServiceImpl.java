@@ -89,5 +89,15 @@ public class ReservationServiceImpl implements ReservationService {
 		return rDao.insertResource(sqlSession, re);
 	}
 	
+	public int deleteReCategory(int caNo) {
+		return rDao.deleteReCategory(sqlSession, caNo);
+	}
+
+	@Override
+	public int deleteResource(int reNo) {
+		return rDao.deleteResource(sqlSession, reNo);
+	}
+	
+	
 
 }

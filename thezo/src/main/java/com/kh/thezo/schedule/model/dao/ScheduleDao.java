@@ -38,4 +38,12 @@ public class ScheduleDao {
 	public int insertBizReport(SqlSession sqlSession, Schedule sc) {
 		return sqlSession.insert("scheduleMapper.insertBizReport", sc);
 	}
+	
+	public int deleteBizReport(SqlSession sqlSession, int scNo) {
+		return sqlSession.delete("scheduleMapper.deleteBizReport", scNo);
+	}
+	
+	public Schedule selectBizReport(SqlSession sqlSession, int scNo) {
+		return sqlSession.selectOne("scheduleMapper.selectBizReport", scNo);
+	}
 }

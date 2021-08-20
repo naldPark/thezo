@@ -13,9 +13,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 <style>
-	#hideRep, #showRep{color: grey;}
 	.scColorBox{width:15px; height: 15px; border-radius:5px; display: inline-block;}
-	.report-area{width: 80%; margin:0 auto; text-align: center; border: 1px solid black; padding: 30px;}
 	.detail-area{width: 80%; margin:0 auto; text-align: center; border: 1px solid black; padding: 30px;}
 	table th{height:50px;}
 </style>
@@ -80,67 +78,6 @@
 		    </table>
 		</div>
 		
-	    <c:if test="${ !empty sc.reportTitle }">
-		    <br>
-			<div id="btn-area" align="right">
-				<button type="button" class="btn" id="hideRep">
-					업무 보고 접기 <i class='fas fa-angle-double-up' style='font-size: 15px'></i>
-				</button>
-				<button type="button" class="btn" id="showRep" hidden>
-					업무 보고 보기 <i class='fas fa-angle-double-down'
-						style='font-size: 15px'></i>
-				</button>
-			</div>
-			<script>
-		    	$(function(){
-		    		$("#hideRep").click(function(){
-		    			$(".report-area").hide();
-		    			$("#hideRep").prop("hidden", true);
-		    			$("#showRep").removeAttr("hidden");
-		    		})
-		    		$("#showRep").click(function(){
-		    			$(".report-area").show();
-		    			$("#showRep").prop("hidden", true);
-		    			$("#hideRep").removeAttr("hidden");
-		    		})
-		    	})
-		    </script>
-			<br><br>
-		    <div class="report-area w3-panel w3-border w3-round text-left">
-			    <!-- 보고서 영역 -->
-				<h4 class="modal-title">업무 보고</h4>
-				<hr>
-				<table id="repInfo" align="center" class="text-left">
-			 		<tr> 
-						<th width='100px'>제목</th> 
-						<td width='250px'><input class="w3-input w3-border w3-round" name="reportTitle" type="text" value="${ sc.reportTitle }"></td> 
-				    </tr>
-				    <tr>
-				    	<th>최종 작성자</th>
-				    	<td><input class="w3-input w3-border w3-round w3-light-grey" type="text" value="${ sc.reportWriter }" readonly></td>
-				    	<input type="hidden" name="reportWriter" value="${ loginUser.memNo }">
-				    </tr>
-				    <tr> 
- 	 	 				<th>내용</th> 
-				 	  	<td>
-				 	  		<textarea class="w3-border w3-round" name="reportContent" cols="45" rows="10" style="resize: none;" required>${ sc.reportContent }</textarea>
-				 	  	</td> 
-				    </tr> 
-				    <tr> 
-				 	  	<th><label for="upfile">첨부파일</label></th>
-						<td>
-							<input type="file" id="upfile" class="form-control-file border" name="reupfile">
-								<b>현재 업로드된 파일</b> <br>
-							<a href="${ sc.originName }" download="${ sc.changeName }" id="file1">${ sc.originName }</a>
-							<input type="hidden" name="originName" id="originName">
-							<input type="hidden" name="changeName" id="changeName">
-						</td>
-				    </tr> 
-				</table>
-			</div>
-		</c:if>
-		
-		    
 		<script>
 	    	// 시간설정 -> 기본을 체크로 두고, 체크해제시 시간설정 input을 hidden처리하고 입력받지않는다.
 	    	// 시간 input의 value값을 지우는 설정도 해야될듯 안그러면 값입력하고 hidden 처리시 값이 넘어오니까

@@ -59,11 +59,12 @@
 			 , report_title
 		     , mem_name as report_writer
 		     , report_content
-		     , origin_name
-		     , change_name
-		     , create_date
+		     , b.origin_name
+		     , b.change_name
+		     , b.create_date
 		  from biz_report b
-		  join member on (b.report_writer = m.mem_no)
+		  join member m on (b.report_writer = m.mem_no)
+		 where sc_no = #{scNo}
 	</select>
 	
 	<select id="selectScheduleDetail" resultMap="scheduleResult">
@@ -175,5 +176,11 @@
 		   	 , create_date = #{createDate}
 		 where sc_no = #{scNo}		   	 
 	</update>
+	
+	<delete id="deleteBizReport">
+		delete
+		  from biz_report
+		 where sc_no = #{scNo}
+	</delete>
 	
 </mapper>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.thezo.department.model.vo.Department;
 import com.kh.thezo.statistic.model.vo.AdminLog;
+import com.kh.thezo.statistic.model.vo.Statistic;
 
 //@author Jaewon.s
 @Repository
@@ -51,6 +52,26 @@ public class StatisticDao {
 	 */
 	public ArrayList<Department> selectTableAreaDate(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("statisticMapper.selectTableAreaDate");
+	}
+
+	/** 바 차트로 입사 퇴사정보 가져오는 DAO
+	 * @param sqlSession
+	 * @param year
+	 * @return
+	 */
+	public ArrayList<Statistic> selectJoinAndResignDate(SqlSessionTemplate sqlSession, String curYear) {
+		//System.out.println(curYear);
+		return (ArrayList)sqlSession.selectList("statisticMapper.selectJoinAndResignDate", curYear); 
+	}
+
+	/** 메인페이지 근태 정보 가져오는 DAO
+	 * @param sqlSession
+	 * @param curYear
+	 * @return
+	 */
+	public ArrayList<Statistic> selectAttendanceDate(SqlSessionTemplate sqlSession, String curYear) {
+		//System.out.println(curYear);
+		return (ArrayList)sqlSession.selectList("statisticMapper.selectAttendanceDate", curYear); 
 	}
 
 }

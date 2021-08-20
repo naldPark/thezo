@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.thezo.department.model.vo.Department;
 import com.kh.thezo.statistic.model.dao.StatisticDao;
 import com.kh.thezo.statistic.model.vo.AdminLog;
+import com.kh.thezo.statistic.model.vo.Statistic;
 
 //@author Jaewon.s
 
@@ -58,6 +59,22 @@ public class StatisticServiceImpl implements StatisticService{
 	@Override
 	public ArrayList<Department> selectTableAreaDate() {
 		return statDao.selectTableAreaDate(sqlSession);
+	}
+
+
+	/** 바 차트로 입사 퇴사정보 가져오는 서비스
+	 */
+	@Override
+	public ArrayList<Statistic> selectJoinAndResignDate(String curYear) {
+		return statDao.selectJoinAndResignDate(sqlSession, curYear);
+	}
+
+
+	/** 메인차트 근태 정보 가져오는 서비스
+	 */
+	@Override
+	public ArrayList<Statistic> selectAttendanceDate(String curYear) {
+		return statDao.selectAttendanceDate(sqlSession, curYear);
 	}
 
 	

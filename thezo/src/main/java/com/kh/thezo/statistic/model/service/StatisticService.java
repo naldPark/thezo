@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.thezo.department.model.vo.Department;
 import com.kh.thezo.statistic.model.vo.AdminLog;
+import com.kh.thezo.statistic.model.vo.Statistic;
 
 //@author Jaewon.s
 public interface StatisticService {
@@ -22,5 +23,11 @@ public interface StatisticService {
 
 	//table 형태의 표에 자료를 가져오는 서비스 
 	ArrayList<Department> selectTableAreaDate();
+
+	// 바 차트로 입사 퇴사정보 가져오는 서비스 
+	ArrayList<Statistic> selectJoinAndResignDate(String curYear);
+
+	// 메인차트 근태 정보 가져오는 서비스
+	ArrayList<Statistic> selectAttendanceDate(String curYear);
 
 }

@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.kh.thezo.department.model.vo.Department;
 import com.kh.thezo.statistic.model.service.StatisticService;
 import com.kh.thezo.statistic.model.vo.AdminLog;
+import com.kh.thezo.statistic.model.vo.Statistic;
 
 @Controller
 public class StatisticController {
@@ -74,5 +75,28 @@ public class StatisticController {
 		return new Gson().toJson(statistic);
 	}
 
+	
+	/** 바 차트로 입사 퇴사정보 가져오는 Controller
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="selectJoinAndResignDate.ad", produces="application/json; charset=utf-8")
+	public String selectJoinAndResignDate(String curYear) {
+		ArrayList<Statistic> chartList = statService.selectJoinAndResignDate(curYear); 
+		return new Gson().toJson(chartList);
+	}
+
+	/** 메인차트 근태 정보 가져오는 Controller
+	 * @param curYear
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="selectAttendanceDate.ad", produces="application/json; charset=utf-8")
+	public String selectAttendanceDate(String curYear) {
+		ArrayList<Statistic> chartList = statService.selectAttendanceDate(curYear); 
+		return new Gson().toJson(chartList);
+	}
+
+	
 }
 

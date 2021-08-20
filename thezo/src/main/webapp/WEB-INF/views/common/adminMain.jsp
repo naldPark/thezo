@@ -87,10 +87,10 @@
 	#ad-progress-area .progress:nth-of-type(12) .progress-bar{background-color : rgb(73,202,159);}
 	#ad-progress-area span{margin-left : 14px; font-size:13px; color:rgb(75, 72, 72);}
 	#ad-progress-area p{margin-bottom: 2px; margin-left: 12px; font-weight: bold; color:rgb(237,117,105); font-size: 15px;}
-	#ad-progress-area{line-height: 18px;}
+	#ad-progress-area{line-height: 17px;}
 	#ad-progress-area span:nth-of-type(2), #ad-progress-area span:nth-of-type(4n+2) {color: black; font-weight: bolder;}
 	/*오른쪽 하단 박스영역*/
-	.memstat-table>p{font-size: 15px; font-weight: bolder; margin-left: 12px; margin-bottom: 0px; position: absolute; z-index: 10;}
+	.memstat-table>p{font-size: 15px; font-weight: bolder; margin-left: 12px; margin-bottom: 0px; position: absolute;}
 	.memstat-table{position: relative; overflow: hidden;}
 	.memstat-table>div:nth-child(2){position: absolute; top: 30px; left:25px;}
 	.memstat-table>div:nth-child(3){ margin-left:5px; font-size: 25px; font-weight: bolder; color: rgb(171,235,198); letter-spacing: 2px; position: absolute; top: 90px; left: 50%; transform: translateX(-50%); text-shadow: -1px 0 green, 0 1px green, 1px 0 green, 0 -1px green;}
@@ -115,7 +115,7 @@
 	/* 메인 차트 css영역 */
 	.dal-chart > canvas{margin-top: 25px ;}
 	.dal-chart>p, #attendance-past-year, #attendance-next-year{ font-size: 17px;}
-	.data-null-notification{width: 100%; text-align: center; border-top: 1px solid orangered ; border-bottom: 1px solid orangered ; position: absolute; top: 52%; transform: translateY(-50%); background-color: rgba(255,224,230, 0.5);}
+	.data-null-notification{width: 100%; text-align: center; border-top: 1px solid orangered ; border-bottom: 1px solid orangered ; position: absolute; top: 47%; transform: translateY(-50%); background-color: rgba(255,224,230, 0.5);}
 </style>
 
 <body>
@@ -149,6 +149,10 @@
 			var adminNav = document.getElementById("admin-header");
 			$("section").css("margin-top", (adminNav.style.display != 'none'?"115px":"70px"));
         	$(".notification-innerline").show();
+        	
+			$("#attendance-present-year").html(new Date().getFullYear());// 메인차트 날짜 지정
+			$("#join-resign-present-year").html(new Date().getFullYear());// 입퇴사자 날짜 지정
+
 			// 마지막 사이트 로그 가져오는 함수 호출 
         	ajaxSelectAdminLog(); // 사이트관리 기록 조회
         	ajaxSelectRightTopDept(); // progress bar
@@ -156,6 +160,7 @@
         	ajaxSelectTableAreaDate();// table형태의 영역데이터 조회
         	ajaxBringBarChartDate(); // 중앙 왼쪽하단의 입퇴사자 현황표 데이터 조회
         	ajaxBringLineChartDate();  // 중앙 상단의 근태 현황표 데이터 조회       	
+        	
         })
 		document.getElementById("admin-header").style.display ="block"; 
         document.getElementById("admin-mode").style.color = "red";
@@ -328,107 +333,200 @@
 		}
 		
 		//---------------------------------------------------------	
-		// 입퇴사자 현황을 가져오는 함수로 가져와야할게!! 
-		// 첫번째로 ! 매개변수로 현재 년도를 넘기고 ! 
-		// 월을 기준으로 입사한 사원수와 퇴사한 사원 수를 담아와야한다. 
-		// has many 구조를 2번 타자! vo 객체를 3개만들면 된다. 
-
 		// 또한 고려해줘야할게 ! 해당 표에 있어서 ! 이전 년도 다음년도 값 넘길때 ! 먼저 조건 검사를 통해서 아무값도 안담겨있으면 
 		// alert띄우고 막아줘야한다. 
+		var JRChart;// 전역변수로 만들어서 destroy 가능하게 하기 
+		
+		function ajaxBringBarChartDate(tossedYear){
+			var year;
+			if(tossedYear == null){
+				year = new Date().getFullYear();				
+			}else{
+				year = tossedYear;
+			}
 
-		function ajaxBringBarChartDate(){
+			// 바 차트로 입사 퇴사정보 가져와서 canvas에다가 그려주는 ajax 
+			$.ajax({
+				url:"selectJoinAndResignDate.ad",
+				data:{curYear: year},
+				success: function(chartList){
+					//console.log(chartList); //가져온것을 바탕으로  자바스크립트용 배열로 변환 시켜줘야한다. 
 					
-			//---------------------------------------------여기가 바로 API부분 -------------------------------------------------
-			// 우선 컨텍스트를 가져오고 
-			var ctx = document.getElementById("join-resign-chart").getContext('2d');
-			// Chart를 생성하면서, 
-			// ctx(context라는 의미)를 첫번째 argument로 넘겨주고, 
-			// 두번째 argument로 그림을 그릴때 필요한 요소들을 모두 넘겨준다. 
-			var JRChart = new Chart(ctx, {
-			    type: 'bar',
-			    data: {
-			        labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			        datasets: [
-						{label: '입사자',
-						backgroundColor: "rgb(214,236,250)",
-						borderColor: 'rgb(173,200,210)',
-			            borderWidth: 1,
-			            data: [12, 19, 3, 5, 2, 3]},
-						{label: '퇴사자',
-						backgroundColor: "rgb(255,224,230)",
-						borderColor: 'rgb(196,173,180)',
-			            borderWidth: 1,
-			            data: [12, 19, 3, 5, 2, 3]}						
-					]
-			    },
-			    options: {
-			        maintainAspectRatio: false, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
-			        scales: {
-			            yAxes: [{
-			                ticks: {
-			                    beginAtZero:true
-			                }
-			            }]
-			        },
-					plugins: {
-						legend: {
-							display: false,
-						}
-					}
-			    }
+					// chartList에 담아왔다!!! 
+					
+	 				const array = chartList;
+	 				// 입사자 data
+					let joinMemCount = [];
+	 				array.forEach((item) => {joinMemCount.push(item.joinMem);});
+	 				
+	 				// 퇴사자 data
+					let resignMemCount = [];
+	 				array.forEach((item) => {resignMemCount.push(item.resignMem);});
+					
+ 	 				var flag = false;
+	 				for(var i in chartList){
+	 					if(chartList[i].joinMem != 0 || chartList[i].resignMem != 0){
+	 						flag = true;
+	 					}
+	 				}
+	 				
+	 				if(flag){
+	 					$("#nullForJR").hide();	 					
+	 				}else{
+	 					$("#nullForJR").show();
+	 				}
+	 				
+	 				
+					//---------------------------------------------여기가 바로 API부분 -------------------------------------------------
+					// 우선 컨텍스트를 가져오고 
+					var ctx = document.getElementById("join-resign-chart").getContext('2d');
+					// Chart를 생성하면서, 
+					// ctx(context라는 의미)를 첫번째 argument로 넘겨주고, 
+					// 두번째 argument로 그림을 그릴때 필요한 요소들을 모두 넘겨준다. 
+					JRChart = new Chart(ctx, {
+					    type: 'bar',
+					    data: {
+					        labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+					        datasets: [
+								{label: '입사자',
+								backgroundColor: "rgb(214,236,250)",
+								borderColor: 'rgb(173,200,210)',
+					            borderWidth: 1,
+					            data: joinMemCount},
+								{label: '퇴사자',
+								backgroundColor: "rgb(255,224,230)",
+								borderColor: 'rgb(196,173,180)',
+					            borderWidth: 1,
+					            data: resignMemCount}						
+							]
+					    },
+					    options: {
+					        maintainAspectRatio: false, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
+					        scales: {
+					            yAxes: [{
+					                ticks: {
+					                    beginAtZero:true,
+					                }
+					            }]
+					        },
+							plugins: {
+								legend: {
+									display: false,
+								}
+							}
+					    }
+					});
+					
+				},error: function(){
+					console.log("ajax통신 실패");
+				}
 			});
-
-			//현재 날짜를 바꿔줘야하고 ! 
-			// onclick으로 넘겨주는 값도 다시 설정해줘야한다. 
-			//$("#join-resign-past-year").
-			$("#join-resign-present-year").html("2021");
-			//$("#join-resign-next-year").
-
-			//----------------------------------------------------------------------------------------------------------
 		}
 
+		// 입퇴사  전년도 조회용 
+		function joinAndResignPastYear(){
+			JRChart.destroy();
+			var pastYear = $("#join-resign-present-year").html() - 1 ;
+			ajaxBringBarChartDate(pastYear);			
+			$("#join-resign-present-year").html(pastYear);
+		}
+		
+		// 입퇴사  후년도 조회용 
+		function joinAndResignNextYear(){
+			JRChart.destroy();
+			var nextYear = Number($("#join-resign-present-year").html()) + 1 ; // 형변환 시켜줘야한다.
+			ajaxBringBarChartDate(nextYear);
+			$("#join-resign-present-year").html(nextYear);			
+		}
+		
 //------------------------------------------------메인 차트쪽이다 !!!! -------------------------------------------------
 		// 얘는 부서별로 하면 스케일이 너무 커지고 (시간도 없고 셈플데이터도 충분치 않다.)
 		// 전사원을 기준으로 해당 월의 total 일한 시간을 평균까지만 내자 그래도 시간이 부족할듯하다. 
 		// 후에 시간내서 부서별, 그리고 가장 일을 많이한 부서 적게한 부서까지도 뽑아내는 것을 만들자.  
-		function ajaxBringLineChartDate(){
-			var ctx = document.getElementById("attendance-chart").getContext('2d');
-			// Chart를 생성하면서, 
-			// ctx(context라는 의미)를 첫번째 argument로 넘겨주고, 
-			// 두번째 argument로 그림을 그릴때 필요한 요소들을 모두 넘겨준다. 
-			var ATChart = new Chart(ctx, {
-			    type: 'line',
-			    data: {
-			        labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-			        datasets: [
-						{label: '입사자',
-						backgroundColor: "rgb(255,0,0)",
-						borderColor: 'rgb(20,70,104)',
-			            borderWidth: 1,
-			            data: [8.5, 9.7, 3, 5, 2, 3]}
-					]
-			    },
-			    options: {
-			        maintainAspectRatio: true, 
-			        scales: {
-			            yAxes: [{
-			                ticks: {
-			                    beginAtZero:true
-			                }
-			            }]
-			        },
-					plugins: {
-						legend: {
-							display: false,
-							//labels: {color: 'rgb(255, 99, 132)'}
-						}
-					}
-			    }
-			});
+		var ATChart;
+		function ajaxBringLineChartDate(tossedYear){
+			var year;
+			if(tossedYear == null){
+				year = new Date().getFullYear();				
+			}else{
+				year = tossedYear;
+			}
 
-			//---------------------------------------메인차트 api 끝------------------------------------------------------------
-
+            $.ajax({
+				url:"selectAttendanceDate.ad",
+				data:{curYear: year},
+				success: function(chartList){
+					//console.log(chartList);
+	 				const array = chartList;
+	 				// data
+					let attendanceHourCount = [];
+	 				array.forEach((item) => {attendanceHourCount.push((item != null ? item.avgTotalWorkHour: 0));});
+	 				//console.log(attendanceHourCount);
+					
+ 	 				var flag = false;
+	 				for(var i in chartList){
+	 					if(chartList[i] != null){
+	 						flag = true;
+	 					}
+	 				}
+	 				
+	 				if(flag){
+	 					$("#nullForAtt").hide();	 					
+	 				}else{
+	 					$("#nullForAtt").show();
+	 				}
+	 				
+					var ctx = document.getElementById("attendance-chart").getContext('2d');
+					ATChart = new Chart(ctx, {
+					    type: 'line',
+					    data: {
+					        labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+					        datasets: [
+								{label: '전사원 평균 근무 시간',
+								backgroundColor: "rgb(255,0,0)",
+								borderColor: 'rgb(20,70,104)',
+					            borderWidth: 1,
+					            data: attendanceHourCount}
+							]
+					    },
+					    options: {
+					        maintainAspectRatio: false, // default value. false일 경우 포함된 div의 크기에 맞춰서 그려짐.
+					        scales: {
+					            yAxes: [{
+					                ticks: {
+					                    beginAtZero:true
+					                }
+					            }]
+					        },
+							plugins: {
+								legend: {
+									display: false,
+								}
+							}
+					    }
+					});
+		 		},error:function(){
+		 			console.log("ajax통신 실패");
+		 		}				
+		 	});
 		}
+		
+		// 메인차트 전년도 조회용 
+		function attendancePastYear(){
+			ATChart.destroy();
+			var pastYear = $("#attendance-present-year").html() - 1 ;
+			ajaxBringLineChartDate(pastYear);			
+			$("#attendance-present-year").html(pastYear);
+		}
+
+		// 메인차트 후년도 조회용 
+		function attendanceNextYear(){
+			ATChart.destroy();
+			var nextYear = Number($("#attendance-present-year").html()) + 1 ; // 형변환 시켜줘야한다.
+			ajaxBringLineChartDate(nextYear);
+			$("#attendance-present-year").html(nextYear);			
+		}
+
 //------------------------------------------------메인 차트쪽 끝 -------------------------------------------------
 
 	</script>
@@ -481,18 +579,18 @@
 			<%-- 가운데 박스 영역 --%>
 			<div class="center-section">
 				<div class="dal-chart" >
-					<div id="attendance-past-year" onclick="">◀</div>
-					<p>※ <span id="attendance-present-year">2021</span>년도 Working Hour Average Chart</p>
-					<div id="attendance-next-year" onclick="">▶</div>
-					<div class="data-null-notification" style="display: none;">해당 년도에 조회된 데이터가 없습니다.</div>
+					<div id="attendance-past-year" onclick="attendancePastYear();">◀</div>
+					<p>※ <span id="attendance-present-year" style="color:black;"></span>년도 Working Hour Average Chart</p>
+					<div id="attendance-next-year" onclick="attendanceNextYear();">▶</div>
+					<div class="data-null-notification" id="nullForAtt" style="display: none;">해당 년도에 조회된 데이터가 없습니다.</div>
 					<canvas id="attendance-chart" style="width: 100%; height: 270px;"></canvas>					
 				</div>
 
 				<div class="some-chart">
-					<div id="join-resign-past-year" onclick="">◀</div>
-					<p>※ <span id="join-resign-present-year">2021</span>년도 입퇴사자 현황 표</p>
-					<div id="join-resign-next-year" onclick="">▶</div>
-					<div class="data-null-notification" style="display: none;">해당 년도에 조회된 데이터가 없습니다.</div>
+					<div id="join-resign-past-year" onclick="joinAndResignPastYear()">◀</div>
+					<p>※ <span id="join-resign-present-year" style="color:black;"></span>년도 입퇴사자 현황 표</p>
+					<div id="join-resign-next-year" onclick="joinAndResignNextYear()">▶</div>
+					<div class="data-null-notification" id="nullForJR" style="display: none;">해당 년도에 조회된 데이터가 없습니다.</div>
 					<canvas id="join-resign-chart"></canvas>
 				</div>
 

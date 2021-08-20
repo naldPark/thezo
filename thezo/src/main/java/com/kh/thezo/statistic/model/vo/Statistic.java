@@ -1,7 +1,5 @@
 package com.kh.thezo.statistic.model.vo;
 
-import java.util.ArrayList;
-
 import com.kh.thezo.attendance.model.vo.Attendance;
 import com.kh.thezo.member.model.vo.Member;
 
@@ -15,9 +13,8 @@ import lombok.ToString;
 @Getter	@Setter
 @ToString
 public class Statistic {
-	private int months;
-	
-	ArrayList<Member> memStat = new ArrayList<>();
-	ArrayList<Attendance> attendanceList = new ArrayList<>();
-
+	private String months; //0부터 집어 넣어줘야한다. 그래야 값뽑기가 수월해진다.  	
+	private double avgTotalWorkHour;
+	private int joinMem;
+	private int resignMem;
 }

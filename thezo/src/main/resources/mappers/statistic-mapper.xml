@@ -120,5 +120,62 @@
                  end      
                  NULLS first
 	</select>
-
+	
+	
+	<!-- month에는 월을 0부터 11까지 담아오고 -->
+	<resultMap id="adminMiddleChartResult" type="Statistic">
+		<result column="months" property="months"/>
+		<result column="avg_total_work_hour" property="avgTotalWorkHour"/>
+		<result column="join_mem" property="joinMem"/>
+		<result column="resign_mem" property="resignMem"/>
+	</resultMap>
+	
+	
+	<!-- 바 차트로 입사 퇴사정보 가져오는 -->
+	<!-- 일단 일반 반복문은 쓸수가 없고 
+		bind 사용해서 배열 선언해놓고 사용할까 ?
+	 -->
+	<select id="selectJoinAndResignDate" resultMap="adminMiddleChartResult" parameterType="string">
+		<bind name="months" value="{1,2,3,4,5,6,7,8,9,10,11,12}"/>
+		
+		<foreach collection="months" item="month">
+		select *
+		from (
+		select '${month}' as months
+		       , count(mem_no) as join_mem 
+		from member 
+		where RESIGN_DATE is null 
+		  and status = 'Y'
+		  and enroll_date between TO_date('${curYear}-${month}','YYYY-MM') 
+		                     and  TO_date('${curYear}-${month}-' || to_char(last_day(to_date('${curYear}-${month}','YYYY-MM')),'DD'), 'YYYY-MM-DD')
+		), 
+		(select count(mem_no) as resign_mem
+		from member 
+		where RESIGN_DATE is not null 
+		  and RESIGN_DATE between TO_date('${curYear}-${month}','YYYY-MM') 
+		                     and  TO_date('${curYear}-${month}-' || to_char(last_day(to_date('${curYear}-${month}','YYYY-MM')),'DD'), 'YYYY-MM-DD')
+		  and status = 'N')	
+		<if test="month != 12">
+			union all
+		</if>
+		</foreach>
+	</select>
+	
+	<!-- 메인페이지 근태 정보 가져오는 sql문  -->
+	<select id="selectAttendanceDate" resultMap="adminMiddleChartResult" parameterType="string">
+		<bind name="months" value="{1,2,3,4,5,6,7,8,9,10,11,12}"/>
+		
+		<foreach collection="months" item="month">
+		select round(totalTime / (select count(mem_no) from member where status in ('Y', 'A')) 
+		    / (select to_char(last_day(to_date('${curYear}-${month}','YYYY-MM')),'DD')from dual), 2) as avg_total_work_hour
+		from(select sum(att_total_time) as totalTime
+				from attendance
+				where to_date(to_char(to_date(att_date, 'MM/DD/YYYY'), 'YYYY-MM-DD'), 'YYYY-MM-DD')
+		        between TO_date('${curYear}-${month}','YYYY-MM') 
+				   and  TO_date('${curYear}-${month}-' || to_char(last_day(to_date('${curYear}-${month}','YYYY-MM')),'DD'), 'YYYY-MM-DD'))
+		<if test="month != 12">
+			union all
+		</if>
+		</foreach>
+	</select>
 </mapper>

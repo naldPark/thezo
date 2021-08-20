@@ -70,7 +70,7 @@ public class MemberController {
 		Member loginUser = mService.loginMember(m);
 		Attendance attData = atService.attendanceData2(loginUser); //메인화면 출퇴근 조회용
 		ArrayList<Leave> lData = atService.leaveData(loginUser); //근태정보 조회용
-		System.out.println(loginUser);
+		//System.out.println(loginUser);
 		
 		if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemPwd(), loginUser.getMemPwd())) { // 로그인 성공
 			loginUser.setUserId(loginUser.getMemId()); //userId임시로 넣은 jsp오류방지용

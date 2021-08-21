@@ -84,7 +84,6 @@
 				}
 
 			</script>
-			<hr>
 			<!-- 사용자 == 관리자일때 !!-->
 			<c:if test="${ loginUser.status == 'A' }">
 				<button class="btn btn-primary" style="width: 180px;" align="center" onclick="manage();">
@@ -118,13 +117,13 @@
 				})
 
 			</script>
-
+			
 			<hr>
-			
-			
 		</div>
 		
+		
+		
 	</div>
-	  
+	  <jsp:include page="rezInsertView.jsp"/>
 </body>
 </html>

@@ -169,6 +169,7 @@
           join nf_check using(nf_no)
 		 where del_status = 'Y'
            and mem_no = #{ memNo }
+           and dept_name in ('전사원', (select department from member where mem_no= #{ memNo }) )
 		 order
 		    by enroll_date desc  		
 	</select>
@@ -181,6 +182,7 @@
           join nf_check using(nf_no)
 		 where del_status = 'Y'
            and mem_no = #{ memNo }
+           and dept_name in ('전사원', (select department from member where mem_no= #{ memNo }) )
            and read_status = 'Y'
 	</select>
 	
@@ -199,6 +201,7 @@
 		 where del_status = 'Y'
            and mem_no = #{ memNo }
            and read_status = 'Y'
+           and dept_name in ('전사원', (select department from member where mem_no= #{ memNo }) )
          order
 		    by start_date desc  		
 	</select>

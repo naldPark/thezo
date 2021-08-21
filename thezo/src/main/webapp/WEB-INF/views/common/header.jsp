@@ -399,6 +399,8 @@
             }
 
             function moveToMessage(){
+	            	showRcMsg();              
+	            	ajaxBringUnreadedMsgCount();
 	                $("#userChatMain").hide();
 	                $("#userMessageMain").show();
 	                $("#userNotificationMain").hide();

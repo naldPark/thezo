@@ -252,7 +252,7 @@
  	<!-- 단체 채팅방에서 동료를 추가하는 sql문 -->
  	<update id="ajaxAddGroupChat" parameterType="hashMap">
         <foreach item="coMemNo" open="INSERT ALL" close="SELECT * FROM DUAL" collection="addGroupMemMultiVal">
-		     into chat_connect (room_no, mem_no) values (#{roomNo} , ${coMemNo}) 
+		     into chat_connect (room_no, mem_no) values (${roomNo} , ${coMemNo}) 
         </foreach>
  	
  	</update>
@@ -342,7 +342,7 @@
  	
  	<!-- 읽지않은 채팅 총갯수 가져오는 sql문  -->
  	<select id="totalUnreadCount" resultType="_int">
-		select sum(unread_count)
+		select nvl(sum(unread_count),0)
 	      from chat_connect
 	     where conn_status = 'Y'
 	       and mem_no = #{memNo}

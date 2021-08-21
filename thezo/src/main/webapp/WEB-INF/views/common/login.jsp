@@ -35,7 +35,7 @@
             
           </div>
           <div class="user-box">
-            <input type="password" name="memPwd" value="" required>
+            <input type="password" name="memPwd" value="pass01" required>
            <br> <label>Password</label>
           </div>
           <a href="#" id="loginBtn">

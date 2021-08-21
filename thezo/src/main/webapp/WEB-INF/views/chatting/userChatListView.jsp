@@ -175,6 +175,7 @@
     	
     	$(function(){
     		showMyChatList();
+    		totalUnreadCount()
     	})
     </script>
     

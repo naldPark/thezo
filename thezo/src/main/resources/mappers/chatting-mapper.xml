@@ -42,6 +42,7 @@
 			<result column="room_no" property="roomNo"/>	
 			<result column="chat_content" property="chatContent"/>	
 			<result column="chat_time" property="chatDate"/>	
+			<result column="path" property="path"/>				
 		</collection>
 	</resultMap>
 	
@@ -283,6 +284,7 @@
 		     , room_no
 		     , chat_content
 		     , to_char(chat_date, 'AM HH24:MI') as chat_time
+		     , mb.path
 		  from chatlog cl
 		  join member mb on (mb.mem_no = cl.mem_no) 
 		where room_no = #{roomNo}

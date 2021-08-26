@@ -220,13 +220,12 @@ public class CheckInbox {
 	    // 첨부파일이 담긴 메일 수신 시 내용 출력
     private String getText(Part p) throws MessagingException, IOException {
 
-        boolean textIsHtml = false;
-    	
+    	// 타입이 텍스트로 시작하면 getContent로 본문을 가져올 수 있음
         if (p.isMimeType("text/*")) {
             String s = (String)p.getContent();
-            textIsHtml = p.isMimeType("text/html");
             return s;
         }
+        // 타입이 alternative라면 첨부가 아닌 본문만 가지고 와야함
         if (p.isMimeType("multipart/alternative")) {
             Multipart mp = (Multipart)p.getContent();
             String text = null;
@@ -245,14 +244,18 @@ public class CheckInbox {
                 }
             }
             return text;
+        // MimeBodyPart가 alternative가 아닌 경우에는 
         } else if (p.isMimeType("multipart/*")) {
+        	// 멀티파트에 컨텐츠를 담아서 강제 형변환을 시키고
             Multipart mp = (Multipart)p.getContent();
             for (int i = 0; i < mp.getCount(); i++) {
+            	// 바디파트에 있는 내용을 getText메소드로 다시 돌림
                 String s = getText(mp.getBodyPart(i));
                 if (s != null)
                     return s;
             }
         }
+        // 어디에도 속하지 않은 경우 null 반환
         return null;
     }
   

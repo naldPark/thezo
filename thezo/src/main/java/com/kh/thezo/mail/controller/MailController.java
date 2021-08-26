@@ -76,7 +76,6 @@ public class MailController {
 				}
 			}
 			// 받은편지함만 해당 끝
-			
 			ArrayList<Mail> list = new ArrayList<>();
 			PageInfo pi = new PageInfo();
 			
@@ -489,10 +488,5 @@ public class MailController {
 		return receiver;
 		
 	}
-	
-	// ------------------ admin 영역 -------------------------------------
-	
-	
-
 	
 }

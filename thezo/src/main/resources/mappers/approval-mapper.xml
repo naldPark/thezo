@@ -758,7 +758,7 @@
 		 	 <if test='docName!=null'>
                     and doc_name like '%' || #{docName} || '%'
              </if> 
-             DOC_DATE desc
+             order by doc_date desc
 	</select>
 	
 </mapper>

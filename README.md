@@ -2,7 +2,7 @@
 
 
 ## Intro
-  theZo system is groupware that help people work together collectively by supporting communication and other resources.
+  theZo system is groupware that helps people work together collectively by supporting communication and other resources.
   theZo groupware also offers the sharing of calendars, e-mail handling, meetings with each person. 
 
 ## Stack

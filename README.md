@@ -15,4 +15,4 @@
 
 
 ## ERD
-![image](<img width="2296" alt="erdTheZo" src="https://user-images.githubusercontent.com/81441317/131040358-c2776636-9e7c-4956-9733-4d7d9c912062.png">)
+![image](https://user-images.githubusercontent.com/81441317/131040358-c2776636-9e7c-4956-9733-4d7d9c912062.png)

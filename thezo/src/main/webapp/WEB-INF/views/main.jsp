@@ -57,17 +57,30 @@
         <div class="outer" align="center">      
             <div class="outer-wrap" style="width:24%">
                 <div class="wrap"><br>
-                    <div class="row mt-4 mb-4" style="width:100%;">
-                        <div class="col-sm-4" style="height: 45%;">
-                            <img src="resources/images/person.png" style="height: 70px;">
+                
+                 	<div class="row" style="width:100%;">
+                        <div class="col-sm-4">
+                             <span id="cicon"> </span>
                         </div>
-                        <div class="col-sm-8"  style="height: 45%;">
-                            <h5>${loginUser.memName} ${loginUser.rank}</h5> <h5>${loginUser.department}</h5>
+                        <div class="col-sm-8">
+				           	 <span id="ctemp">현재 &nbsp;&nbsp; </span><br>
+				           	 <span id="clowtemp">최저 &nbsp;&nbsp; </span><br>
+				           	 <span id="chightemp">최고 &nbsp;&nbsp; </span>   
+                        </div>
+                    </div>
+                    <hr>
+     
+                    <div class="row" style="width:100%;">
+                        <div class="col-sm-4" style="height: 40%;">
+                            <img src="resources/images/person.png" style="height: 65px;">
+                        </div>
+                        <div class="col-sm-8"  style="height: 40%;">
+                            <h5>${loginUser.department} / ${loginUser.memName}</h5>
                             <button type="button" class="btn btn-sm btn-secondary">정보수정</button>
                              <a href="logout.me" class="btn btn-sm btn-secondary">로그아웃</a>                            
                         </div>
                     </div>
-                    <div class="ml-5 mb-3" align="left">
+                    <div class="ml-5" align="left">
                         <table>
                             <tr>
                                 <td>출근시간 :</td>
@@ -78,11 +91,11 @@
                                 <th><div id="finTime">${ attData.finTime }</div></th>
                             </tr>
                         </table>
-                    </div>
+                    </div><br>
                     	<c:choose>
                     		<c:when test="${ empty attData.strTime }">
-	                    		<button type="button" id="start" onclick="start_click();" class="btn btn-primary">출근</button>&nbsp;&nbsp;
-	                    		<button type="button" id="finish" onclick="finish_click();" class="btn btn-primary" disabled>퇴근</button><br>
+	                    		<button type="button" id="start" onclick="start_click();" class="btn btn-sm btn-primary">출근</button>&nbsp;&nbsp;
+	                    		<button type="button" id="finish" onclick="finish_click();" class="btn btn-sm btn-primary" disabled>퇴근</button><br>
 	                    	</c:when>
 	                    	<c:otherwise>
 	                    		<button type="button" id="start" onclick="start_click();" class="btn btn-primary" disabled>출근</button>&nbsp;&nbsp;
@@ -298,6 +311,23 @@
             </div>  
     </div>
     </section>
+    
+     <script>
+      
+      // 좌측 현재 날씨 표시
+      $.getJSON('http://api.openweathermap.org/data/2.5/forecast?id=1835848&appid=eab501f155c77b4ce09351dfb9a70dd8&units=metric'
+        , function(data){
+          var $minTemp = data.list[0].main.temp_min.toFixed(1);
+          var $maxTemp = data.list[0].main.temp_max.toFixed(1);
+          var $cTemp = data.list[0].main.temp.toFixed(1);
+          var $wIcon = data.list[0].weather[0].icon;
+          $('#clowtemp').append($minTemp);
+          $('#ctemp').append($cTemp);
+          $('#chightemp').append($maxTemp);
+          $('#cicon').append('<img src="http://openweathermap.org/img/w/'+$wIcon+'.png" style="width:120%; height:120%;"/>');
+
+        });
+      </script>   
 
     <script>
      

@@ -48,7 +48,7 @@
                       <tr>
                         <th>파일첨부</th>
                         <td>
-                          <c:forEach var="at" items="${ mm.at }">
+                          <c:forEach var="at" items="${ a.at }">
                             <a href="${at.fileUrl}">${at.originName}</a><br>
                           </c:forEach>
                         </td>

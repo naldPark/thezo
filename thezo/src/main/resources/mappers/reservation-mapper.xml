@@ -44,7 +44,9 @@
 			 , resource_name
 		  from resources
 		  join re_category using (category_no)
-		 where category_no = #{caNo}
+		  <if test="caNo != 0">
+		 	where category_no = #{caNo}
+		  </if>
 	</select>
 	
 	<select id="selectReservationList" resultMap="reservationResult">
@@ -78,9 +80,11 @@
 		     , rez_endtime
 		     , apply_date
 		     , r.status
+		     , ca.category_no
 		  from reservation r
 		  join resources re on (re.resource_no = r.resource_name)
 		  join member m on (mem_no = rez_writer)
+		  join re_category ca on (re.category_no = ca.category_no)
 		 where r.status = 'Y'
 		   and rez_no = #{rezNo}
 	</select>

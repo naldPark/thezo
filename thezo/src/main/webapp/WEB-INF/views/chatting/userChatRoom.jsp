@@ -387,7 +387,7 @@
 				$("#last-chat-log-no").val(rcChatInfo[1]);       
 				updateLastChat(rcChatInfo[0], ${ loginUser.memNo } ,rcChatInfo[1]);
 			}
-			
+						
 			//document.getElementById("room-for-lastchat" + rcChatInfo[0]).innerHTML = rcChatInfo[5];// 마지막 채팅 보여지게하기
 			if((sessionRN == null && rcChatInfo[2] != ${loginUser.memNo}) || (sessionRN != null && rcChatInfo[0] != sessionRN && rcChatInfo[2] != ${loginUser.memNo})){
 				// 막약 현재 session에 roomNo이 담겨있지 않거나 혹은 담겨있는데 받은 문자들이 현재 내가 가진 세션의 방번호와 일치 하지 않는다면 

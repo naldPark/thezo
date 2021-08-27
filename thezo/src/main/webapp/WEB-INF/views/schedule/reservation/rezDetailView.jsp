@@ -48,11 +48,12 @@
 			</table>
 		</div>
 		<br>
-		<div class="button-area" align="center">
-			<button class="btn btn-primary" onclick="update();">수정</button>
-			<button data-toggle="modal" data-target="#myModal" class="btn btn-danger">삭제</button>
-			
-		</div>
+		<c:if test="${ loginUser.memNo eq rez.memNo }">
+			<div class="button-area" align="center">
+				<button class="btn btn-primary" onclick="update();">수정</button>
+				<button data-toggle="modal" data-target="#myModal" class="btn btn-danger">삭제</button>
+			</div>
+		</c:if>
 	</div>
 	
 	<script>
@@ -61,7 +62,7 @@
 			if($("#rezWriter").val() != ${ rez.memNo }){
 				alert("작성자만 수정할 수 있습니다.");
 			}else{
-				location.href="updateForm.rez?rezNo=${ rez.rezNo }"
+				location.href="updateForm.rez?rezNo=" + ${ rez.rezNo } + "&caNo=" + ${ rez.categoryNo };
 			}
 		}			
 	</script>

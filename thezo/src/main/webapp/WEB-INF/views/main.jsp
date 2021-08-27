@@ -301,6 +301,40 @@
 
     <script>
      
+    // @Author: Jaewon.S
+    // 알림쪽 보이게 하거나 안보이게 하기! 
+ 	$(function(){
+    	if(${!empty unreadNotification}){
+	    	$("#notifyNewNf").show();    
+    	}else{    		
+	    	$("#notifyNewNf").hide();    		
+    	}    	    	
+ 	})
+    
+    function mainOpenUnreadNf(){
+    	if(${!empty unreadNotification}){
+	    	$("#messenger-outer").hide();    		
+			$(".notification-outer").css("display","block");
+    	}else{    		
+    		showMessengerArea();
+    		moveToNotification(); 
+   		}
+    }
+
+    // @Author: Jaewon.S    
+    function mainOpenUnreadChat(){
+		showMessengerArea();
+    	moveTochatListArea();
+    }
+    
+    // @Author: Jaewon.S
+    function mainOpenUnreadMsg(){
+		showMessengerArea();
+    	moveToMessage();    	
+    }
+    //---------------------------
+    
+    
     var today = new Date();
     function prevClaendar(){
       today = new Date(today.getFullYear(), today.getMonth()-1,today.getDate());
@@ -341,23 +375,27 @@
         }
 	 
     }
-    buildCalendar();
+    //buildCalendar();
     
     //main페이지 시작시 또는 로그아웃 이후에 값이 출력 가능하도록
     function startPage(){
     	$.ajax({
         		url:"startPage.att?memNo=${loginUser.memNo}",
         		success:function(attData){
-        			var str = attData.strTime;
-        			$("#strTime").html(str);
-        			console.log(str);
-        			if( str == null){
-        				document.getElementById("start").disabled = false;
-        			}else{
-        				document.getElementById("start").disabled = true;
+        			
+        			if(attData != null){
+        				var str = attData.strTime;        				
+	        			
+	        			$("#strTime").html(str);
+	        			console.log(str);
+	        			if( str == null){
+	        				document.getElementById("start").disabled = false;
+	        			}else{
+	        				document.getElementById("start").disabled = true;
+	        			}
+	        			var fin = attData.finTime;
+	        			$("#finTime").html(fin);
         			}
-        			var fin = attData.finTime;
-        			$("#finTime").html(fin);
         		},error:function(){
         			alert("메인 조회 실패!!"); 			
         		}
@@ -397,37 +435,6 @@
     	})
     }
     
-    // @Author: Jaewon.S
-    // 알림쪽 보이게 하거나 안보이게 하기! 
- 	$(function(){
-    	if(${!empty unreadNotification}){
-	    	$("#notifyNewNf").show();    		
-    	}else{    		
-	    	$("#notifyNewNf").hide();    		
-    	}    	    	
- 	})
-    
-    function mainOpenUnreadNf(){
-    	if(${!empty unreadNotification}){
-	    	$("#messenger-outer").hide();    		
-			$(".notification-outer").css("display","block");
-    	}else{    		
-    		showMessengerArea();
-    		moveToNotification(); 
-   		}
-    }
-
-    // @Author: Jaewon.S    
-    function mainOpenUnreadChat(){
-		showMessengerArea();
-    	moveTochatListArea();
-    }
-    
-    // @Author: Jaewon.S
-    function mainOpenUnreadMsg(){
-		showMessengerArea();
-    	moveToMessage();    	
-    }
 
 
     

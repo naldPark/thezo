@@ -614,6 +614,7 @@
         	 			$("#sendingMsgContent").val("");
                 		$("#sendingMsgContent").attr('placeholder', '쪽지 내용을 입력해주세요.' );
                     	showRcMsg();                        
+                    	ajaxBringUnreadedMsgCount();
         	 			$("#reply-send-message").modal('hide')
         	 		},error:function(){
         	 			console.log("ajax통신 실패");

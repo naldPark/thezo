@@ -335,7 +335,7 @@
 							<i class="fas fa-lightbulb"></i> &nbsp;다시 알림을 하고 싶을 시 선택해 주세요  
 							<input type="checkbox" name="reNotify" value="true">
 						</div>
-						<button type="submit" class="for-modify">등록하기</button>
+						<button type="submit" class="for-modify">수정하기</button>
 						<button class="close-back-button for-view" type="button" data-dismiss="modal" style="background-color: gray;">뒤로가기</button>
 					</form>
 				</div>
@@ -479,6 +479,10 @@
                 }
             });            
         });
+		
+		$(function(){
+			$("#nf-insert-content").val("");			
+		})
         		
 	</script>
 <%-------------------------------------------- 스크립트 영역 끝 ----------------------------------------------%>

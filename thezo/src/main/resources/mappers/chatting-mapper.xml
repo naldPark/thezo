@@ -42,6 +42,7 @@
 			<result column="room_no" property="roomNo"/>	
 			<result column="chat_content" property="chatContent"/>	
 			<result column="chat_time" property="chatDate"/>	
+			<result column="path" property="path"/>				
 		</collection>
 	</resultMap>
 	
@@ -252,7 +253,7 @@
  	<!-- 단체 채팅방에서 동료를 추가하는 sql문 -->
  	<update id="ajaxAddGroupChat" parameterType="hashMap">
         <foreach item="coMemNo" open="INSERT ALL" close="SELECT * FROM DUAL" collection="addGroupMemMultiVal">
-		     into chat_connect (room_no, mem_no) values (#{roomNo} , ${coMemNo}) 
+		     into chat_connect (room_no, mem_no) values (${roomNo} , ${coMemNo}) 
         </foreach>
  	
  	</update>
@@ -283,6 +284,7 @@
 		     , room_no
 		     , chat_content
 		     , to_char(chat_date, 'AM HH24:MI') as chat_time
+		     , mb.path
 		  from chatlog cl
 		  join member mb on (mb.mem_no = cl.mem_no) 
 		where room_no = #{roomNo}
@@ -342,7 +344,7 @@
  	
  	<!-- 읽지않은 채팅 총갯수 가져오는 sql문  -->
  	<select id="totalUnreadCount" resultType="_int">
-		select sum(unread_count)
+		select nvl(sum(unread_count),0)
 	      from chat_connect
 	     where conn_status = 'Y'
 	       and mem_no = #{memNo}

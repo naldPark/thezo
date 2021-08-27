@@ -46,13 +46,15 @@ public class ReservationController {
 	@RequestMapping("myList.rez")
 	public String reservationList(Model model, int memNo,
 			@RequestParam(value="currentPage", defaultValue="1")int currentPage) {
-		
+		int caNo = 0;
 		int listCount = rService.selectListCount(memNo);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 		
 		ArrayList<ReCategory> caList = rService.selectCategoryList();
 		ArrayList<Reservation> myRezList = rService.selectMyReservationList(pi, memNo);
+		ArrayList<Resources> reList = rService.selectResourceList(caNo);
 		
+		model.addAttribute("reList", reList);
 		model.addAttribute("pi", pi);
 		model.addAttribute("caList", caList);
 		model.addAttribute("myRezList", myRezList);
